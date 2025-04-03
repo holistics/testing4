@@ -1,7 +1,7 @@
 Dataset s_ecommerce {
   label: 'Ecommerce (demo dynamic schema)'
   description: ''
-  data_source_name: 'dev_data_source'
+  data_source_name: 'demodb' //Replace 'dev_data_source'
   models: [
     s_locations,
     s_users,

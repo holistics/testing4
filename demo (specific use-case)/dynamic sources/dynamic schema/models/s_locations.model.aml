@@ -2,7 +2,7 @@ Model s_locations {
   type: 'query'
   label: 'Ds Locations'
   description: ''
-  data_source_name: 'dev_data_source'
+  data_source_name: 'demodb' //Replace 'dev_data_source'
   dimension city_id {
     label: 'City Id'
     type: 'number'

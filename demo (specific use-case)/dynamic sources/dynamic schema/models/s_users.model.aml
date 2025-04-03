@@ -2,7 +2,7 @@ Model s_users {
   type: 'table'
   label: 'Users'
   description: ''
-  data_source_name: 'dev_data_source'
+  data_source_name: 'demodb' //Replace 'dev_data_source'
   dimension id {
     label: 'Id'
     type: 'number'
