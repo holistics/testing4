@@ -196,26 +196,26 @@ Dashboard aggregate_awareness_demo_dashboard_lite {
       }
     }
   }
-  block agg_count_rows: VizBlock {
-    label: 'Total Scanned Rows'
-    viz: MetricKpi {
-      dataset: movie_ratings_analysis
-      value: VizFieldFull {
-        label: ' '
-        ref: ref('public_ratings_yearly', 'count_all_year_rows')
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
-      }
-      settings {
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
+  // block agg_count_rows: VizBlock {
+  //   label: 'Total Scanned Rows'
+  //   viz: MetricKpi {
+  //     dataset: movie_ratings_analysis
+  //     value: VizFieldFull {
+  //       label: ' '
+  //       ref: ref('public_ratings_yearly', 'count_all_year_rows')
+  //       format {
+  //         type: 'number'
+  //         pattern: 'inherited'
+  //       }
+  //     }
+  //     settings {
+  //       aggregate_awareness {
+  //         enabled: true
+  //         debug_comments: true
+  //       }
+  //     }
+  //   }
+  // }
 
   // ------------------------------------------------
   // ---------- 3. Dashboard Customization ----------

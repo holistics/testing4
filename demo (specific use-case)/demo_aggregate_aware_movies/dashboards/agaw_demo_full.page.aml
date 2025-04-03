@@ -108,18 +108,18 @@ different use cases on [Aggregate Awareness | Tutorial](https://docs.holistics.i
       value: '$H_NIL$'
     }
   }
-  block tags_filter: FilterBlock {
-    label: 'Tags'
-    type: 'field'
-    source: FieldFilterSource {
-      dataset: movie_ratings_analysis
-      field: ref('public_tags', 'tag')
-    }
-    default {
-      operator: 'is'
-      value: []
-    }
-  }
+  // block tags_filter: FilterBlock {
+  //   label: 'Tags'
+  //   type: 'field'
+  //   source: FieldFilterSource {
+  //     dataset: movie_ratings_analysis
+  //     field: ref('public_tags', 'tag')
+  //   }
+  //   default {
+  //     operator: 'is'
+  //     value: []
+  //   }
+  // }
   block date_drill: DateDrillBlock {
     label: 'Date Drill'
   }
