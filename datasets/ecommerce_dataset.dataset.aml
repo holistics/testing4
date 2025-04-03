@@ -1,0 +1,25 @@
+Dataset ecommerce_dataset {
+  label: 'Ecommerce Dataset'
+  description: ''
+  data_source_name: 'mysql_ecommerce'
+  models: [
+    categories,
+    cities,
+    countries,
+    merchants,
+    order_items,
+    orders,
+    products,
+    users
+  ]
+  relationships: [
+    relationship(order_items.order_id > orders.id, true),
+    relationship(order_items.product_id > products.id, true),
+    relationship(orders.user_id > users.id, true),
+    relationship(products.category_id > merchants.id, true),
+    relationship(cities.country_code > countries.code, true),
+    relationship(users.city_id > cities.id, true),
+    relationship(categories.id > products.category_id, true)
+  ]
+  owner: 'vu.dq+testing4@holistics.io'
+}
