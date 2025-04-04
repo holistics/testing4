@@ -31,10 +31,10 @@ Dashboard untitled_1 {
     height: 840
     grid_size: 20
     block guide {
-      position: pos(20, 160, 1160, 660)
+      position: pos(20, 180, 1160, 660)
     }
     block title {
-      position: pos(20, 20, 1160, 120)
+      position: pos(20, 40, 1160, 120)
     }
   }
   theme: H.themes.classic
