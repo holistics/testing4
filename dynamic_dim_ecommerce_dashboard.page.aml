@@ -1,0 +1,10 @@
+Dashboard dynamic_dim_ecommerce_dashboard {
+  title: 'Dynamic Dim Ecommerce Dashboard'
+  interactions: []
+  view: CanvasLayout {
+    label: 'View 1'
+    height: 840
+    grid_size: 20
+  }
+  theme: H.themes.classic
+}
