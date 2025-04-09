@@ -68,6 +68,9 @@ Dashboard dynamic_dim_ecommerce_dashboard {
         }
       }
       y_axis {
+        settings {
+          stack_series_by: 'value'
+        }
         series {
           field: VizFieldFull {
             ref: 'total_orders'
@@ -93,11 +96,11 @@ Dashboard dynamic_dim_ecommerce_dashboard {
     type: 'field'
     source: FieldFilterSource {
       dataset: demo_ecommerce
-      field: ref('order_master', 'dim_selector')
+      field: ref('param_model_nam', 'dim_selections')
     }
     default {
       operator: 'is'
-      value: 'Countries'
+      value: 'Country Names'
     }
     settings {
       input_type: 'single'
