@@ -63,6 +63,7 @@ Dashboard dynamic_dim_dashboard {
       settings {
         row_limit: 5000
         legend_label: 'left'
+        x_axis_show_null_datetime: true
         aggregate_awareness {
           enabled: true
           debug_comments: true
