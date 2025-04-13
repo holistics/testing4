@@ -1,0 +1,50 @@
+Dashboard khai_test {
+  title: 'Khai Test'
+  block v1: VizBlock {
+    label: 'Revenue by Month Created At'
+    viz: LineChart {
+      dataset: khai_ecommerce
+      x_axis: VizFieldFull {
+        ref: ref('orders', 'created_at')
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: 'revenue'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color_palette: 0
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  interactions: []
+  view: CanvasLayout {
+    label: 'View 1'
+    height: 500
+    grid_size: 20
+    block v1 {
+      position: pos(20, 20, 1160, 460)
+      layer: 1
+    }
+  }
+  theme: H.themes.classic
+}
