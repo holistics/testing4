@@ -4,6 +4,9 @@ Dashboard khai_test {
     label: 'Revenue by Month Created At'
     viz: LineChart {
       dataset: khai_ecommerce
+      conditions: [
+        "countries.name == 'Vietnam'"
+      ]
       x_axis: VizFieldFull {
         ref: ref('orders', 'created_at')
         transformation: 'datetrunc month'
