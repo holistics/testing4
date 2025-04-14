@@ -315,5 +315,11 @@ Model order_master {
   //     , when: 'Gender' in dynamic_model.dim_choice
   //     , then: dynamic_model.gender
   //   ) ;;
-  // }
+  // } 
+
+  dimension customer_lifetime_value {
+    label: "CLV"
+    type: "number"
+    definition: @aql sum(order_master.amount) | dimensionalize(ecommerce_users.id) ;;
+  }
 }
