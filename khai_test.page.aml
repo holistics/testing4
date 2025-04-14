@@ -1,0 +1,98 @@
+Dashboard khai_test {
+  title: 'Khai Test'
+  block v1: VizBlock {
+    label: 'Revenue by Month Created At'
+    viz: DataTable {
+      dataset: khai_ecommerce
+      conditions: [
+        "countries.name == 'Vietnam'"
+      ]
+      fields: [
+        VizFieldFull {
+          ref: ref('orders', 'created_at')
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        },
+        VizFieldFull {
+          ref: 'revenue'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v2: VizBlock {
+    label: 'Revenue by Month Created At'
+    viz: DataTable {
+      dataset: khai_ecommerce
+      filter_groups: [
+        OrFilters {
+          filters: [
+            VizFilter {
+              field: ref('countries', 'name')
+              operator: 'is'
+              value: 'Vietnam'
+            },
+            VizFilter {
+              field: ref('countries', 'name')
+              operator: 'is'
+              value: 'Singapore'
+            }
+          ]
+        }
+      ]
+      fields: [
+        VizFieldFull {
+          ref: ref('orders', 'created_at')
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        },
+        VizFieldFull {
+          ref: 'revenue'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  view: CanvasLayout {
+    label: 'View 1'
+    height: 1080
+    grid_size: 20
+    block v1 {
+      position: pos(20, 20, 1160, 460)
+      layer: 1
+    }
+    block v2 {
+      position: pos(20, 540, 1160, 460)
+      layer: 1
+    }
+  }
+  theme: H.themes.classic
+}
