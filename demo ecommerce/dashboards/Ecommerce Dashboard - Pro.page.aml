@@ -1127,7 +1127,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       position: pos(840, 2200, 680, 500)
     }
     block v7 {
-      position: pos(60, 3280, 1120, 430)
+      position: pos(60, 3280, 1440, 430)
     }
     block v8 {
       position: pos(380, 2860, 560, 400)
