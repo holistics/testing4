@@ -1240,6 +1240,9 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       position: pos(1300, 2860, 220, 60)
       layer: 2
     }
+    mobile {
+      mode: 'manual'
+    }
   }
   settings {
     timezone: 'America/Los_Angeles'

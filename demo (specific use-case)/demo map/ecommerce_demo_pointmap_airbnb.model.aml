@@ -396,6 +396,7 @@ Model ecommerce_demo_pointmap_airbnb {
   dimension reviews_per_month {
     label: 'Reviews Per Month'
     type: 'number'
+    description: ""
     hidden: false
     definition: @sql {{ #SOURCE.reviews_per_month }};;
   }
