@@ -1059,6 +1059,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
           format {
             type: 'text'
           }
+          uname: 'ecommerce_countries_name'
         },
         VizFieldFull {
           ref: ref('order_master', 'order_count')
@@ -1080,6 +1081,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'custom_cancelled_order_ratio'
         }
       ]
       settings {
@@ -1090,6 +1092,16 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
           debug_comments: true
         }
         frozen_columns: 0
+        column_styles: [
+          ColumnStyle {
+            key: 'ecommerce_countries_name'
+            width: 216
+          },
+          ColumnStyle {
+            key: 'custom_cancelled_order_ratio'
+            width: 180
+          }
+        ]
       }
     }
   }
