@@ -61,6 +61,27 @@ Model overlapped_time {
     definition: @aql (epoch(overlapped_time.event_time) - epoch(overlapped_time.prev_event_time)) / 60 / 60 ;;
   }
 
+  measure total_hours {
+    label: 'Total Hours'
+    type: 'number'
+    hidden: false
+    definition: @aql sum(overlapped_time.total_hours) ;;
+  }
+
+  measure work_start {
+    label: 'Work Start'
+    type: 'datetime'
+    hidden: false
+    definition: @aql min(overlapped_time.prev_event_time) ;;
+  }
+
+  measure work_end {
+    label: 'Work End'
+    type: 'datetime'
+    hidden: false
+    definition: @aql max(overlapped_time.event_time) ;;
+  }
+
   owner: 'khai.to@holistics.io'
   query: @sql
     SELECT {{ #ot.id }} as id, {{ #ot.start_datetime }} AS event_time, 1 AS event_type
