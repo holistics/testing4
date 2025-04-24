@@ -1,4 +1,4 @@
-Model overlapping_time {
+Model sample_overlapping_time {
   type: 'query'
   label: 'Overlapping Time'
   description: ''
