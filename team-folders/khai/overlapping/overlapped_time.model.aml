@@ -37,7 +37,7 @@ Model overlapped_time {
     hidden: false
     definition: @aql 
       previous(max(overlapped_time.event_time), partition: overlapped_time.id, order: overlapped_time.event_time)
-        | dimensionalize(overlapped_time.event_time, overlapped_time.event_type) ;;
+        | dimensionalize(overlapped_time.event_time) ;;
   }
 
   dimension prev_active_count {
