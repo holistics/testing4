@@ -65,7 +65,7 @@ Model overlapped_time {
     label: 'Total Hours'
     type: 'number'
     hidden: false
-    definition: @aql sum(overlapped_time.total_hours) ;;
+    definition: @aql sum(overlapped_time.segment_hours) ;;
   }
 
   measure work_start {
