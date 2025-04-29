@@ -23,6 +23,14 @@ Dashboard untitled_5 {
         mode: 'auto'
       }
     }
+    tab tab4: CanvasLayout {
+      label: 'hello'
+      height: 800
+      grid_size: 20
+      mobile {
+        mode: 'auto'
+      }
+    }
   }
 
   theme: H.themes.classic
