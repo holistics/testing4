@@ -1,0 +1,44 @@
+Dashboard untitled_1 {
+  title: 'test_dashboard'
+  block v1: VizBlock {
+    label: 'test_ecommerce'
+    viz: DataTable {
+      dataset: simple_dataset
+      theme {
+
+      }
+      fields: [
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'created_at')
+          format {
+            type: 'datetime'
+          }
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'status')
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  view: CanvasLayout {
+    label: 'View 1'
+    height: 840
+    grid_size: 20
+    block v1 {
+      position: pos(20, 20, 400, 300)
+      layer: 1
+    }
+  }
+  theme: H.themes.classic
+}
