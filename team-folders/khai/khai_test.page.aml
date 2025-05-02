@@ -1,4 +1,4 @@
-Dashboard khai_test {
+Dashboards khai_test {
   title: 'Khai Test'
   block v1: VizBlock {
     label: 'Revenue by Month Created At'
