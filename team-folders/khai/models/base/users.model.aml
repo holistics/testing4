@@ -1,4 +1,4 @@
-Model userss {
+Model users {
   type: 'table'
   label: 'Users'
   description: ''
