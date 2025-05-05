@@ -21,7 +21,7 @@ Dataset khai_ecommerce {
     relationship(users.city_id > cities.id, true),
     relationship(order_items.product_id > products.id, true),
     relationship(products.merchant_id > merchants.id, true),
-    relationship(merchants.city_id > cities.id, false)
+    relationship(merchants.city_id > cities.id, true)
   ]
 
   owner: 'khai.to+demo4@holistics.io'
@@ -58,5 +58,4 @@ Dataset khai_ecommerce {
       )
      ;;
   }
-
 }
