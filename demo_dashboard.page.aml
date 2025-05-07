@@ -151,7 +151,7 @@ Dashboard demo_dashboard {
       layer: 5
     }
     block v3 {
-      position: pos(280, 140, 320, 140)
+      position: pos(300, 140, 320, 140)
       layer: 6
     }
     block f1 {
