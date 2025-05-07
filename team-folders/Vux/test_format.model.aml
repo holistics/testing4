@@ -1,4 +1,4 @@
-Model test_1 {
+Model test_format {
   type: 'query'
   label: 'Num'
   description: ''
