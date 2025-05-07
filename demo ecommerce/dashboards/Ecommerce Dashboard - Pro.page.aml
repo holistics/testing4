@@ -530,6 +530,8 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
         }
       }
     }
+    description: @md # Description
+abc;;
   }
   block f1: FilterBlock {
     label: 'Country'
