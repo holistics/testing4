@@ -15,7 +15,7 @@ Model orders {
     hidden: false
     definition: @sql {{ #SOURCE.status }};;
   }
-  dimension created_at {
+  dimension created_at_ {
     label: 'Created At'
     type: 'datetime'
     hidden: false
