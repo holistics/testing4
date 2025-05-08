@@ -11,6 +11,7 @@ Dataset khai_ecommerce {
     merchants,
     products,
     cities,
+    khai_date_d,
     param_model
   ]
 
@@ -22,6 +23,8 @@ Dataset khai_ecommerce {
     relationship(order_items.product_id > products.id, true),
     relationship(products.merchant_id > merchants.id, true),
     relationship(merchants.city_id > cities.id, true)
+    ,
+    relationship(orders.created_date > khai_date_d.date_key, true)
   ]
 
   owner: 'khai.to+demo4@holistics.io'
