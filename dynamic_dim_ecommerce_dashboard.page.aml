@@ -17,7 +17,7 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       layer: 2
     }
     block t1 {
-      position: pos(360, 20, 40, 40)
+      position: pos(360, 20, 60, 60)
       layer: 3
     }
   }
@@ -118,7 +118,14 @@ Dashboard dynamic_dim_ecommerce_dashboard {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bottom-Left Tooltip Attribution</title>
   <style>
-
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+    }
 
     .tooltip-container {
       position: relative;
