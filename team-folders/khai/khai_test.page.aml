@@ -45,7 +45,7 @@ Dashboard khai_test {
   block v2: VizBlock {
     label: 'Revenue by Month Created At'
     viz: DataTable {
-      dataset: khai_ecommerce
+      dataset: demo_ecommerce
       filter_groups: [
         OrFilters {
           filters: [
@@ -98,7 +98,7 @@ Dashboard khai_test {
       layer: 1
     }
     block v2 {
-      position: pos(-20, 800, 1160, 460)
+      position: pos(20, 560, 1160, 460)
       layer: 1
     }
   }
