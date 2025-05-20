@@ -23,7 +23,7 @@ Dashboard demo_ecommerce_overview_funky {
     }
     default {
       operator: 'is'
-      value: []
+      value: 'Male'
     }
   }
   block age_demographic: FilterBlock {
