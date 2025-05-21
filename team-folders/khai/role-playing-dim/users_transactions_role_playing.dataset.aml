@@ -27,7 +27,8 @@ Dataset users_transactions_role_playing {
   | with_relationships(
     transactions_buyers_sellers.seller_id > users.id,
     relationship(transactions_buyers_sellers.buyer_id > users.id, false, 'two_way')
-    );;
+    )
+  | dimensionalize(transactions_buyers_sellers.seller_id);;
     model: transactions_buyers_sellers
   }
 }
