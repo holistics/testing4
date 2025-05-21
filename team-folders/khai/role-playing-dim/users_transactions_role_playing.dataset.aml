@@ -1,0 +1,14 @@
+Dataset users_transactions_role_playing {
+  label: 'Users Transactions Role Playing'
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    users,
+    transactions_buyers_sellers
+  ]
+  relationships: [
+    relationship(transactions_buyers_sellers.buyer_id > users.id, true),
+    relationship(transactions_buyers_sellers.seller_id > users.id, true)
+  ]
+  owner: 'khai.to@holistics.io'
+}
