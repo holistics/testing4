@@ -8,7 +8,7 @@ Dataset users_transactions_role_playing {
   ]
   relationships: [
     relationship(transactions_buyers_sellers.buyer_id > users.id, true),
-    relationship(transactions_buyers_sellers.seller_id > users.id, true)
+    relationship(transactions_buyers_sellers.seller_id > users.id, false)
   ]
   owner: 'khai.to@holistics.io'
 }
