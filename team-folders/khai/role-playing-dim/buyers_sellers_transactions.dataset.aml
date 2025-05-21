@@ -1,0 +1,15 @@
+Dataset buyers_sellers_transactions {
+  label: 'Buyers Sellers Transactions'
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    transactions_buyers_sellers,
+    buyers,
+    sellers
+  ]
+  relationships: [
+    relationship(transactions_buyers_sellers.seller_id > sellers.id, true),
+    relationship(transactions_buyers_sellers.buyer_id > buyers.id, true)
+  ]
+  owner: 'khai.to@holistics.io'
+}

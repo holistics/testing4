@@ -1,0 +1,1 @@
+Model buyers = users.extend({label: 'Buyers'})
