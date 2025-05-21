@@ -1,1 +1,6 @@
-Model buyers = users.extend({label: 'Buyers'})
+Model buyers = users.extend({
+  label: 'Buyers'
+  dimension full_name {
+    label: 'Buyer Name'
+  }
+})
