@@ -1170,6 +1170,9 @@ abc;;
       }
     }
   }
+  block t57: TextBlock {
+    content: @md test commit;;
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1540
@@ -1317,6 +1320,10 @@ abc;;
     block v19 {
       position: pos(20, 4490, 400, 300)
       layer: 3
+    }
+    block t57 {
+      position: pos(440, 4490, 160, 60)
+      layer: 4
     }
   }
   settings {
