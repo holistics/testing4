@@ -34,25 +34,31 @@ Dataset khai_ecommerce {
     type: 'number'
     definition: @aql sum(order_items, order_items.quantity * products.price) ;;
   }
-  metric total_orders_per_users {
-    label: "Total Orders Per Users"
-    type: "number"
-    hidden: false
-    description: ""
-    definition: @aql (total_orders * 1.0) / total_users;;
-  }
+
   metric total_orders {
-    label: "Total Orders"
-    type: "number"
-    hidden: false
-    description: ""
-    definition: @aql count(orders.id);;
+    label: 'Total Orders'
+    type: 'number'
+    definition: @aql count(orders.id) ;;
   }
+
   metric total_users {
-    label: "Total Users"
-    type: "number"
-    hidden: false
-    description: ""
-    definition: @aql count(users.id);;
+    label: 'Total Users'
+    type: 'number'
+    definition: @aql count(users.id) ;;
+  }
+
+  metric dynamic_metric {
+    label: 'Dynamic Metric'
+    type: 'number'
+    definition: @aql
+      case(
+        when: (param_model.metric_selection | first()) == 'Revenue'
+        , then: revenue
+        , when: (param_model.metric_selection | first()) == 'Total Orders'
+        , then: total_orders
+        , when: (param_model.metric_selection | first()) == 'Total Users'
+        , then: total_users
+      )
+     ;;
   }
 }

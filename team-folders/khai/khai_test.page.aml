@@ -12,8 +12,14 @@ Dashboard khai_test {
   theme: H.themes.classic
   block v1: VizBlock {
     label: 'Total Orders by Month Order Created Date and Dynamic Breakdown Dimension'
-    viz: AreaChart {
+    viz: LineChart {
       dataset: khai_ecommerce
+      calculation total_quantity {
+        label: 'Total Quantity'
+        formula: @aql sum(order_items.quantity);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
       theme {
 
       }
@@ -31,7 +37,7 @@ Dashboard khai_test {
         }
         series {
           field: VizFieldFull {
-            ref: 'total_orders_per_users'
+            ref: 'total_quantity'
             format {
               type: 'number'
               pattern: 'inherited'
