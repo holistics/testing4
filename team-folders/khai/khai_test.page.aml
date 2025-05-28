@@ -14,24 +14,6 @@ Dashboard khai_test {
     label: 'Total Orders by Month Order Created Date and Dynamic Breakdown Dimension'
     viz: AreaChart {
       dataset: khai_ecommerce
-      calculation total_users {
-        label: 'Total Users'
-        formula: @aql count(users.id);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation total_orders {
-        label: 'Total Orders'
-        formula: @aql count(orders.id);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation total_orders_per_users {
-        label: 'Total Orders Per Users'
-        formula: @aql (total_orders * 1.0) / total_users;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
       theme {
 
       }
