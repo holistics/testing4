@@ -61,4 +61,10 @@ Dataset khai_ecommerce {
       )
      ;;
   }
+  metric total_quantity {
+    label: "Total Quantity"
+    type: "number"
+    hidden: false
+    definition: @aql sum(order_items.quantity);;
+  }
 }

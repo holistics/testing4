@@ -14,12 +14,6 @@ Dashboard khai_test {
     label: 'Total Orders by Month Order Created Date and Dynamic Breakdown Dimension'
     viz: LineChart {
       dataset: khai_ecommerce
-      calculation total_quantity {
-        label: 'Total Quantity'
-        formula: @aql sum(order_items.quantity);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
       theme {
 
       }
