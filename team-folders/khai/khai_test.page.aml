@@ -54,5 +54,8 @@ Dashboard khai_test {
         }
       }
     }
+    settings {
+      hide_label: true
+    }
   }
 }
