@@ -11,7 +11,7 @@ Dashboard khai_test {
   }
   theme: H.themes.classic
   block v1: VizBlock {
-    label: 'Total Orders by Month Order Created Date and Dynamic Breakdown Dimension'
+    label: ' '
     viz: LineChart {
       dataset: khai_ecommerce
       calculation total_quantity {
