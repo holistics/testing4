@@ -4,7 +4,7 @@ Dashboard column_width {
 
   view: CanvasLayout {
     label: 'View 1'
-    height: 840
+    height: 1880
     grid_size: 20
     block v1 {
       position: pos(0, 0, 1200, 260)
@@ -13,7 +13,7 @@ Dashboard column_width {
       position: pos(0, 260, 1200, 280)
     }
     block v3 {
-      position: pos(0, 560, 860, 300)
+      position: pos(0, 560, 1120, 1300)
       layer: 1
     }
   }
@@ -271,7 +271,7 @@ Dashboard column_width {
             format: SingleFormat {
               condition {
                 operator: 'greater_than_equal'
-                value: 2000
+                value: 1500
               }
               text_color: '#328159'
               background_color: '#B5E3CD'
