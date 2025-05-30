@@ -23,6 +23,9 @@ Dashboard column_width {
     label: 'avc'
     viz: DataTable {
       dataset: global_temps
+      theme {
+
+      }
       fields: [
         VizFieldFull {
           ref: ref('persisted_global_temps', 'year')
@@ -74,35 +77,59 @@ Dashboard column_width {
       ]
       settings {
         show_row_number: true
-        row_limit: 5000
-        column_width {
-          manual_widths: [
-            ColumnWidth {
-              key: 'persisted_global_temps_apr'
-              width: 119
-            },
-            ColumnWidth {
-              key: 'persisted_global_temps_jan'
-              width: 164
-            },
-            ColumnWidth {
-              key: 'persisted_global_temps_jul'
-              width: 169
-            },
-            ColumnWidth {
-              key: 'persisted_global_temps_may'
-              width: 186
-            },
-            ColumnWidth {
-              key: 'persisted_global_temps_year'
-              width: 163
+        conditional_formats: [
+          ConditionalFormat {
+            key: 'persisted_global_temps_year'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 1900
+              }
+              text_color: '#BF0E08'
+              background_color: '#FAD2D1'
+              apply_to_row: true
             }
-          ]
-        }
+          },
+          ConditionalFormat {
+            key: 'persisted_global_temps_year'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than_equal'
+                value: 1900
+              }
+              text_color: '#328159'
+              background_color: '#B5E3CD'
+              apply_to_row: true
+            }
+          }
+        ]
+        row_limit: 5000
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
+        column_styles: [
+          ColumnStyle {
+            key: 'persisted_global_temps_apr'
+            width: 119
+          },
+          ColumnStyle {
+            key: 'persisted_global_temps_jan'
+            width: 164
+          },
+          ColumnStyle {
+            key: 'persisted_global_temps_jul'
+            width: 169
+          },
+          ColumnStyle {
+            key: 'persisted_global_temps_may'
+            width: 186
+          },
+          ColumnStyle {
+            key: 'persisted_global_temps_year'
+            width: 163
+          }
+        ]
       }
     }
   }
