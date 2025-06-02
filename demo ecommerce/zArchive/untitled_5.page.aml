@@ -18,6 +18,7 @@ Dashboard untitled_5 {
         position: pos(20, 20, 400, 300)
         layer: 2
       }
+      default_zoom: 1
     }
     tab tab3: CanvasLayout {
       label: 'Untitled'
@@ -26,6 +27,7 @@ Dashboard untitled_5 {
       mobile {
         mode: 'auto'
       }
+      default_zoom: 1
     }
     tab tab4: CanvasLayout {
       label: 'hello'
@@ -34,6 +36,7 @@ Dashboard untitled_5 {
       mobile {
         mode: 'auto'
       }
+      default_zoom: 1
     }
   }
 
