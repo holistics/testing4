@@ -2,7 +2,7 @@
 // use demo
 
 Dashboard demo_ecommerce_dashboard_amyra {
-  title: 'Ecommerce Dashboard - Pro'
+  title: 'Ecommerce Dashboard - Amyra'
 
   block hd1: TextBlock {
     content: @md 
