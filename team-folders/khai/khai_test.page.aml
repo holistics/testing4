@@ -2,7 +2,7 @@ Dashboard khai_test {
   title: 'Khai Test'
   view: CanvasLayout {
     label: 'View 1'
-    height: 1080
+    height: 600
     grid_size: 20
     block v1 {
       position: pos(20, 20, 1160, 520)
