@@ -25,7 +25,34 @@ Dashboard test_huyvu {
       </div>
     </div>;;
   }
-  interactions: []
+  block v1: VizBlock {
+    label: 'Daily GMV vs. 7-day Moving Average'
+    description: @md # Description
+abc;;
+    viz: DataTable {
+      dataset: demo_ecommerce
+      filter {
+        field: ref('order_master', 'status')
+        operator: 'is'
+        value: 'delivered'
+      }
+      fields: [
+        VizFieldFull {
+          ref: ref('order_master', 'status')
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     height: 840
@@ -35,6 +62,10 @@ Dashboard test_huyvu {
     }
     block title {
       position: pos(20, 20, 1160, 120)
+    }
+    block v1 {
+      position: pos(20, 840, 400, 300)
+      layer: 1
     }
   }
   theme: H.themes.classic
