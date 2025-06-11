@@ -1,0 +1,53 @@
+Dashboard vux_canvas {
+  title: 'Vux Canvas'
+  description: ''
+  block title: TextBlock {
+    content: @md # Your title goes here ;;
+  }
+  block v1: VizBlock {
+    label: 'Daily GMV vs. 7-day Moving Average'
+    description: @md # Description
+abc;;
+    viz: DataTable {
+      dataset: demo_ecommerce
+      filter {
+        field: ref('order_master', 'status')
+        operator: 'is'
+        value: 'delivered'
+      }
+      fields: [
+        VizFieldFull {
+          ref: ref('order_master', 'status')
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+
+  view: CanvasLayout {
+    label: 'View 1'
+    height: 840
+    grid_size: 20
+    block title {
+      position: pos(20, 20, 1160, 60)
+    }
+    block v1 {
+      position: pos(20, 180, 400, 220)
+      layer: 1
+    }
+    mobile {
+      mode: 'auto'
+    }
+  }
+
+  theme: H.themes.vanilla
+}
