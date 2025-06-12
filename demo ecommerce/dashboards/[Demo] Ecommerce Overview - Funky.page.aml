@@ -1,5 +1,5 @@
 Dashboard demo_ecommerce_overview_funky {
-  title: '[Demo] Ecommerce Overview - Vinhhh Test'
+  title: '[Demo] Ecommerce Overview - Funky'
 
 
   block user_country: FilterBlock {
