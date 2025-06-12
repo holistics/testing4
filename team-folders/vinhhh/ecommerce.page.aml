@@ -123,7 +123,7 @@ Dashboard vinhhh_ecommerce {
         MetricHeading {
           label: '🎯Orders'
           settings {
-            background_color: '#C5E8E7'
+            background_color: '#C5E8E6'
           }
         },
         MetricSeries {
