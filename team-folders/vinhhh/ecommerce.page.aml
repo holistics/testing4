@@ -23,7 +23,7 @@ Dashboard vinhhh_ecommerce {
     }
     default {
       operator: 'is'
-      value: ['Male']
+      value: ['Male', 'Female']
     }
   }
   block age_demographic: FilterBlock {
