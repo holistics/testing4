@@ -40,17 +40,75 @@ Dashboard thongs_test_dashboard {
       }
     }
   }
-  interactions: []
+  block f1: FilterBlock {
+    label: 'Order Master Status'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: ref('order_master', 'status')
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
+  block t1: TextBlock {
+    content: @md <style>
+    /* Optional eye-candy */
+    select {
+      padding: .4rem .6rem;
+      font-size: 1rem;
+      border-radius: 4px;
+    }
+  </style>
+
+
+<label for="jumpbox">Jump to:</label>
+  <select id="jumpbox">
+    <option value="">— choose a destination —</option>
+    <option value="https://google.com/">Viblo (VN dev blog)</option>
+    <option value="https://google.com/">Dân Trí (news)</option>
+    <option value="https://google.com/">Stack Overflow</option>
+    <option value="https://google.com/wiki/HTML">HTML @ Wikipedia</option>
+  </select>
+
+  <script>
+    // 1. Grab the <select>
+    const jumpbox = document.getElementById('jumpbox');
+
+    // 2. Listen for a change
+    jumpbox.addEventListener('change', (e) => {
+      const url = e.target.value;
+      if (url) window.location.href = url;     // 3. Navigate
+    });
+  </script>
+;;
+  }
+  block t2: TextBlock {
+    content: @md <a>Test</a>;;
+  }
   view: CanvasLayout {
     label: 'View 1'
     height: 840
     grid_size: 20
     block v1 {
-      position: pos(20, 100, 400, 300)
+      position: pos(20, 200, 560, 400)
       layer: 1
     }
     block title {
       position: pos(20, 20, 1160, 60)
+    }
+    block f1 {
+      position: pos(20, 120, 300, 100)
+      layer: 2
+    }
+    block t1 {
+      position: pos(680, 80, 600, 60)
+      layer: 3
+    }
+    block t2 {
+      position: pos(660, 220, 500, 320)
+      layer: 1
     }
     mobile {
       mode: 'auto'
