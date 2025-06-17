@@ -36,7 +36,18 @@ Dashboard thongs_test_dashboard {
             }
           }
           settings {
-            color_palette: 0
+            point {
+              value: 'refunded'
+              color: '#07326C'
+            }
+            point {
+              value: 'cancelled'
+              color: '#A50E43'
+            }
+            point {
+              value: 'delivered'
+              color: '#255DD4'
+            }
           }
         }
       }
