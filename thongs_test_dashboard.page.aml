@@ -85,25 +85,25 @@ ul.content { padding-left: 1.2em; }
 </ul>;;
   }
   block t3: TextBlock {
-    content: @md <div style="background-color: white; border-right: 1px solid #dddddd; display: block; width: 100%; height: 100%"></div>;;
+    content: @md <div style="border-right: 1px solid #dddddd; display: block; width: 100%; height: 100%"></div>;;
   }
   view: CanvasLayout {
     label: 'View 1'
-    height: 600
+    height: 560
     grid_size: 20
     block v1 {
       position: pos(280, 160, 600, 380)
       layer: 1
     }
     block title {
-      position: pos(280, 20, 600, 60)
+      position: pos(280, 20, 600, 40)
     }
     block f1 {
       position: pos(280, 80, 240, 80)
       layer: 2
     }
     block t2 {
-      position: pos(20, 40, 380, 180)
+      position: pos(20, 20, 380, 180)
       layer: 1
     }
     block t3 {
