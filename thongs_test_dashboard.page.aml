@@ -85,7 +85,10 @@ Dashboard thongs_test_dashboard {
 ;;
   }
   block t2: TextBlock {
-    content: @md <a href="https://testing4.holistics.io/dashboards/v4/100219-thong-s-test-dashboard?_fstate=EosVeLA0">Cancelled Orders</a>;;
+    content: @md - <a href="https://testing4.holistics.io/dashboards/v4/100219-thong-s-test-dashboard?f1=cancelled">Cancelled Orders</a>
+- <a href="https://testing4.holistics.io/dashboards/v4/100219-thong-s-test-dashboard?f1=delivered">Delivered Orders</a>
+- <a href="https://testing4.holistics.io/dashboards/v4/100219-thong-s-test-dashboard?f1=refunded">Refunded Orders</a>
+;;
   }
   view: CanvasLayout {
     label: 'View 1'
@@ -107,7 +110,7 @@ Dashboard thongs_test_dashboard {
       layer: 3
     }
     block t2 {
-      position: pos(660, 220, 500, 320)
+      position: pos(660, 200, 500, 320)
       layer: 1
     }
     mobile {
