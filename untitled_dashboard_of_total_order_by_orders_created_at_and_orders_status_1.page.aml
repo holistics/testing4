@@ -1,5 +1,5 @@
 Dashboard untitled_dashboard_of_total_order_by_orders_created_at_and_orders_status_1 {
-  title: 'Untitled Dashboard of Total Order by Orders Created At and Orders Status'
+  title: 'My Own Dashboard'
   block v1: VizBlock {
     label: 'Total Order by Orders Created At and Orders Status'
     viz: CombinationChart {
