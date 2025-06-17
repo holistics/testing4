@@ -1,7 +1,7 @@
 Dashboard dashboards_created_in_shared_exxft {
   title: 'Dashboards (created in shared)'
   block title: TextBlock {
-    content: @md # Your title goes here ;;
+    content: @md New Dashboard;;
   }
   interactions: []
   view: CanvasLayout {
