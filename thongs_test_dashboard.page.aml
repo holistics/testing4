@@ -52,43 +52,35 @@ Dashboard thongs_test_dashboard {
       value: []
     }
   }
-  block t1: TextBlock {
-    content: @md <style>
-    /* Optional eye-candy */
-    select {
-      padding: .4rem .6rem;
-      font-size: 1rem;
-      border-radius: 4px;
-    }
-  </style>
-
-
-<label for="jumpbox">Jump to:</label>
-  <select id="jumpbox">
-    <option value="">— choose a destination —</option>
-    <option value="https://google.com/">Viblo (VN dev blog)</option>
-    <option value="https://google.com/">Dân Trí (news)</option>
-    <option value="https://google.com/">Stack Overflow</option>
-    <option value="https://google.com/wiki/HTML">HTML @ Wikipedia</option>
-  </select>
-
-  <script>
-    // 1. Grab the <select>
-    const jumpbox = document.getElementById('jumpbox');
-
-    // 2. Listen for a change
-    jumpbox.addEventListener('change', (e) => {
-      const url = e.target.value;
-      if (url) window.location.href = url;     // 3. Navigate
-    });
-  </script>
-;;
-  }
   block t2: TextBlock {
     content: @md - <a href="https://testing4.holistics.io/dashboards/v4/100219-thong-s-test-dashboard?f1=cancelled">Cancelled Orders</a>
 - <a href="https://testing4.holistics.io/dashboards/v4/100219-thong-s-test-dashboard?f1=delivered">Delivered Orders</a>
 - <a href="https://testing4.holistics.io/dashboards/v4/100219-thong-s-test-dashboard?f1=refunded">Refunded Orders</a>
-;;
+
+<style>
+  .collapser { display:none; }
+  .toggle     { cursor:pointer; font-weight:bold; }
+  .content    { max-height:0; overflow:hidden; transition:max-height .3s ease; }
+
+  /* when the hidden checkbox ➜ checked, reveal the content */
+  .collapser:checked + .toggle + .content { max-height:999px; }
+</style>
+
+<input type="checkbox" id="faq1" class="collapser">
+<label for="faq1" class="toggle">Why is the sky blue? ▸</label>
+<div class="content">
+  <p>Rayleigh scattering kicks shorter wavelengths around …</p>
+</div>
+
+<details>
+  <summary>What is a collapsible?</summary>
+  <p>This entire block hides until you click the summary above.</p>
+  <ul>
+    <li>No JavaScript</li>
+    <li>Keyboard accessible (Space/Enter)</li>
+    <li>Works in every evergreen browser</li>
+  </ul>
+</details>;;
   }
   view: CanvasLayout {
     label: 'View 1'
@@ -104,10 +96,6 @@ Dashboard thongs_test_dashboard {
     block f1 {
       position: pos(20, 120, 300, 100)
       layer: 2
-    }
-    block t1 {
-      position: pos(680, 80, 600, 60)
-      layer: 3
     }
     block t2 {
       position: pos(660, 200, 500, 320)
