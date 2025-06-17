@@ -1,0 +1,55 @@
+Dashboard untitled_dashboard_of_total_order_by_orders_created_at_and_orders_status_1 {
+  title: 'Untitled Dashboard of Total Order by Orders Created At and Orders Status'
+  block v1: VizBlock {
+    label: 'Total Order by Orders Created At and Orders Status'
+    viz: CombinationChart {
+      dataset: simple_dataset
+      x_axis: VizFieldFull {
+        ref: ref('ecommerce_orders', 'created_at')
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      legend: VizFieldFull {
+        ref: ref('ecommerce_orders', 'status')
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        settings {
+          stack_series_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: ref('ecommerce_orders', 'total_order')
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  interactions: []
+  view: CanvasLayout {
+    label: 'View 1'
+    height: 840
+    grid_size: 20
+    block v1 {
+      position: pos(20, 20, 400, 300)
+    }
+  }
+  theme: H.themes.vanilla
+}
