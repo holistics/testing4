@@ -85,7 +85,7 @@ Dashboard thongs_test_dashboard {
 ;;
   }
   block t2: TextBlock {
-    content: @md <a>Test</a>;;
+    content: @md <a href="https://testing4.holistics.io/dashboards/v4/100219-thong-s-test-dashboard?_fstate=EosVeLA0">Test</a>;;
   }
   view: CanvasLayout {
     label: 'View 1'
