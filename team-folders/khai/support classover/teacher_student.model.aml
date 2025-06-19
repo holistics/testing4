@@ -1,0 +1,52 @@
+Model teacher_student {
+  type: 'query'
+  label: 'Teacher Student'
+  description: ''
+  data_source_name: 'demodb'
+  dimension teacher_name {
+    label: 'Teacher Name'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.teacher_name }};;
+  }
+  dimension lesson_sn {
+    label: 'Lesson Sn'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.lesson_sn }};;
+  }
+  dimension duration {
+    label: 'Duration'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.duration }};;
+  }
+  dimension student {
+    label: 'Student'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.student }};;
+  }
+  dimension rating {
+    label: 'Rating'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.rating }};;
+  }
+
+  owner: 'khai.to@holistics.io'
+  query: @sql
+    SELECT *
+    FROM (
+      VALUES
+        ('aaaa', 1, 0.5, 'A', 3),
+        ('aaaa', 1, 0.5, 'B', 4),
+        ('aaaa', 1, 0.5, 'C', 5),
+        ('aaaa', 2, 1.0, 'A', 4),
+        ('aaaa', 2, 1.0, 'B', 5),
+        ('bbbb', 3, 1.0, 'D', 5)
+    ) AS t(teacher_name, lesson_sn, duration, student, rating);
+  ;;
+  models: [
+  ]
+}
