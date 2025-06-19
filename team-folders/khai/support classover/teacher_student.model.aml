@@ -33,20 +33,24 @@ Model teacher_student {
     hidden: false
     definition: @sql {{ #SOURCE.rating }};;
   }
+  dimension start_at {
+    label: "Start At"
+    type: "datetime"
+    hidden: false
+    definition: @sql {{ #SOURCE.start_at }};;
+  }
 
   owner: 'khai.to@holistics.io'
-  query: @sql
-    SELECT *
-    FROM (
-      VALUES
-        ('aaaa', 1, 0.5, 'A', 3),
-        ('aaaa', 1, 0.5, 'B', 4),
-        ('aaaa', 1, 0.5, 'C', 5),
-        ('aaaa', 2, 1.0, 'A', 4),
-        ('aaaa', 2, 1.0, 'B', 5),
-        ('bbbb', 3, 1.0, 'D', 5)
-    ) AS t(teacher_name, lesson_sn, duration, student, rating)
-  ;;
+  query: @sql SELECT *
+FROM (
+  VALUES
+    ('aaaa', 1, 0.5, 'A', 3, '2022-03-21 10:00:00'::TIMESTAMP),
+    ('aaaa', 1, 0.5, 'B', 4, '2022-03-21 10:00:00'::TIMESTAMP),
+    ('aaaa', 1, 0.5, 'C', 5, '2022-03-21 10:00:00'::TIMESTAMP),
+    ('aaaa', 2, 1.0, 'A', 4, '2022-04-05 10:00:00'::TIMESTAMP),
+    ('aaaa', 2, 1.0, 'B', 5, '2022-04-05 10:00:00'::TIMESTAMP),
+    ('bbbb', 3, 1.0, 'D', 5, '2022-04-05 10:00:00'::TIMESTAMP)
+) AS t(teacher_name, lesson_sn, duration, student, rating, start_at);;
   models: [
   ]
 }
