@@ -30,7 +30,7 @@ Func block_cohort_retention(time_granularity:String) {
         model: users
       }
       calculation months_from_first_orders {
-        label: 'Months From First Orders'
+        label: '${time_granularity} from first orders'
         formula: @aql date_diff(
   '${time_granularity}',
   users.first_acquired_at,
