@@ -17,6 +17,6 @@ Dashboard testing_reuse_block {
 
   theme: H.themes.vanilla
   block v1: block_cohort_retention(
-    'year'
+    'quarter'
   )
 }
