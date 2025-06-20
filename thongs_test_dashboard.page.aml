@@ -99,11 +99,13 @@ ul.content { padding-left: 1.2em; }
     content: @md <div style="border-right: 1px solid #dddddd; display: block; width: 100%; height: 100%"></div>;;
   }
   block t4: TextBlock {
-    content: @md  <p>The current URL is: <span id="url"></span></p>
+    content: @md <p>The current URL is: <span id="url">[loading]</span></p>
 
   <script>
-    const currentUrl = window.location.href;
-    document.getElementById('url').textContent = currentUrl;
+    window.onload = function () {
+      const currentUrl = window.location.href;
+      document.getElementById('url').textContent = currentUrl;
+    };
   </script>;;
   }
   view: CanvasLayout {
