@@ -10,7 +10,7 @@ Dashboard company_dashboard_v {
   block v20: VizBlock {
     label: 'Products Listed'
     viz: MetricKpi {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -45,7 +45,7 @@ Dashboard company_dashboard_v {
   block v21: VizBlock {
     label: 'Total Users'
     viz: MetricKpi {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -78,7 +78,7 @@ Dashboard company_dashboard_v {
   block v22: VizBlock {
     label: 'All-Time Orders'
     viz: MetricKpi {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -111,7 +111,7 @@ Dashboard company_dashboard_v {
   block v25: VizBlock {
     label: 'Merchants Onboarded'
     viz: MetricKpi {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -145,7 +145,7 @@ Dashboard company_dashboard_v {
   block v27: VizBlock {
     label: 'GMV (Sales) by Country'
     viz: FilledMap {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -176,7 +176,7 @@ Dashboard company_dashboard_v {
   block v28: VizBlock {
     label: 'AOV'
     viz: MetricKpi {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -204,7 +204,7 @@ Dashboard company_dashboard_v {
   block v29: VizBlock {
     label: ' KPI Overview'
     viz: MetricSheet {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -333,7 +333,7 @@ It brings together a consolidated view of:
   block v30: VizBlock {
     label: 'Total Orders by Continents'
     viz: PieChart {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -374,7 +374,7 @@ It brings together a consolidated view of:
   block v31: VizBlock {
     label: 'GMV (Sales) by Country Name'
     viz: BarChart {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -453,7 +453,7 @@ Young adult female customers (under 30) are currently our most valuable and loya
   block v34: VizBlock {
     label: 'Top 10 Users by Orders'
     viz: DataTable {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       calculation average_nmv {
         label: 'Average NMV '
         formula: @aql nmv/total_delivered_orders;;
@@ -591,7 +591,7 @@ Young adult female customers (under 30) are currently our most valuable and loya
   block v36: VizBlock {
     label: 'User Demographics'
     viz: PivotTable {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       calculation untitled_metric_316015f {
         label: 'Untitled Metric'
         formula: @aql total_repeated_buyers/total_buyers;;
@@ -697,7 +697,7 @@ This format is especially useful for:
   block v37: VizBlock {
     label: 'Users Sign Up Over Time'
     viz: ColumnChart {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -748,7 +748,7 @@ This format is especially useful for:
     label: 'Country Name'
     type: 'field'
     source: FieldFilterSource {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       field: ref('ecommerce_countries', 'name')
     }
     default {
@@ -759,7 +759,7 @@ This format is especially useful for:
   block v43: VizBlock {
     label: 'User Demographics'
     viz: PivotTable {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       calculation untitled_metric_316015f {
         label: 'Untitled Metric'
         formula: @aql total_repeated_buyers/total_buyers;;
@@ -860,7 +860,7 @@ Use this to:
     label: 'Product Category'
     type: 'field'
     source: FieldFilterSource {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       field: ref('map_categories', 'parent_category')
     }
     default {
@@ -894,7 +894,7 @@ To ensure consistent interpretation of financial metrics, here’s how value flo
   block v44: VizBlock {
     label: 'GMV Over Time'
     viz: LineChart {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -992,7 +992,7 @@ Use the **[Drill Down]** or **[View Underlying Data]** features to explore break
   block v52a: VizBlock {
     label: 'NMV Realized from GMV'
     viz: GaugeChart {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       calculation net_orders {
         label: 'Net Orders'
         formula: @aql total_orders - total_cancelled_orders - total_refunded_orders;;
@@ -1050,7 +1050,7 @@ Use the **[Drill Down]** or **[View Underlying Data]** features to explore break
   block v53a: VizBlock {
     label: 'Total Orders Count by Delivery Status'
     viz: CombinationChart {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       calculation order_status_success_fail {
         label: 'Order Status Success Fail'
         formula: @aql case(
@@ -1111,7 +1111,7 @@ Use the **[Drill Down]** or **[View Underlying Data]** features to explore break
   block v52: VizBlock {
     label: 'Last Quarter Success Order Rate'
     viz: GaugeChart {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       calculation net_orders {
         label: 'Net Orders'
         formula: @aql total_orders - total_cancelled_orders - total_refunded_orders;;
@@ -1174,7 +1174,7 @@ Use the **[Drill Down]** or **[View Underlying Data]** features to explore break
   block v53: VizBlock {
     label: 'Total Orders by Delivery Status'
     viz: ColumnChart {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       calculation order_success_status {
         label: 'Order Success Status'
         formula: @aql case(
@@ -1250,7 +1250,7 @@ Use the **[Drill Down]** or **[View Underlying Data]** features to explore break
   block v57: VizBlock {
     label: 'Any Metrics by Product Category'
     viz: BarChart {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -1295,7 +1295,7 @@ Use the **[Drill Down]** or **[View Underlying Data]** features to explore break
   block v58: VizBlock {
     label: 'Cohort Report by Product'
     viz: RetentionHeatmap {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       theme {
 
       }
@@ -1362,7 +1362,7 @@ Whether you're in the main chart or within a drilled-down view:
     label: 'Select Metric'
     type: 'field'
     source: FieldFilterSource {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       field: ref('param_model_demo', 'metric_selections_currency')
     }
     default {
@@ -1377,7 +1377,7 @@ Whether you're in the main chart or within a drilled-down view:
     label: 'Country Name'
     type: 'field'
     source: FieldFilterSource {
-      dataset: demo_ecommerce
+      dataset: demo_ecommerce_version_2
       field: ref('ecommerce_countries', 'name')
     }
     default {
@@ -1545,7 +1545,7 @@ Uncover trends by comparing current performance against a previous period.
     tab tab1: CanvasLayout {
       label: 'Users'
       width: 1480
-      height: 2640
+      height: 1900
       grid_size: 20
       block f1 {
         position: pos(620, 880, 300, 80)
