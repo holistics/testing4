@@ -29,6 +29,13 @@ Dataset khai_ecommerce {
 
   owner: 'khai.to+demo4@holistics.io'
 
+  dimension user_acquired_at {
+    model: users
+    label: 'User Acquired At'
+    type: 'datetime'
+    definition: @aql min(orders.created_at) | dimensionalize(users.id) ;;
+  }
+  
   metric revenue {
     label: 'Revenue'
     type: 'number'
