@@ -688,70 +688,81 @@ Dashboard ecommerce_dashboard_amyra {
     }
   }
   interactions: []
-  view: CanvasLayout {
-    label: 'Canvas Layout'
-    width: 1220
-    height: 2720
-    grid_size: 20
-    block v1 {
-      position: pos(20, 120, 280, 180)
-      layer: 1
+  view: TabLayout {
+    label: 'View 1'
+    tab tab1: CanvasLayout {
+      label: 'Tab 1'
+      width: 1220
+      height: 2720
+      grid_size: 20
+      block v1 {
+        position: pos(20, 120, 280, 180)
+        layer: 1
+      }
+      block v2 {
+        position: pos(20, 320, 280, 180)
+        layer: 1
+      }
+      block v3 {
+        position: pos(320, 120, 880, 380)
+        layer: 1
+      }
+      block v4 {
+        position: pos(20, 520, 1180, 380)
+        layer: 1
+      }
+      block t1 {
+        position: pos(20, 20, 1180, 80)
+        layer: 1
+      }
+      block t2 {
+        position: pos(20, 920, 1180, 80)
+        layer: 1
+      }
+      block v5 {
+        position: pos(20, 1020, 580, 380)
+        layer: 1
+      }
+      block v6 {
+        position: pos(620, 1020, 580, 380)
+        layer: 1
+      }
+      block v7 {
+        position: pos(20, 1420, 1180, 380)
+        layer: 1
+      }
+      block v8 {
+        position: pos(20, 1820, 330, 380)
+        layer: 1
+      }
+      block v9 {
+        position: pos(370, 1820, 330, 380)
+        layer: 1
+      }
+      block v10 {
+        position: pos(720, 1820, 480, 380)
+        layer: 1
+      }
+      block t3 {
+        position: pos(20, 2220, 1180, 80)
+        layer: 1
+      }
+      block v11 {
+        position: pos(20, 2320, 580, 380)
+        layer: 1
+      }
+      block v12 {
+        position: pos(620, 2320, 580, 380)
+        layer: 1
+      }
     }
-    block v2 {
-      position: pos(20, 320, 280, 180)
-      layer: 1
-    }
-    block v3 {
-      position: pos(320, 120, 880, 380)
-      layer: 1
-    }
-    block v4 {
-      position: pos(20, 520, 1180, 380)
-      layer: 1
-    }
-    block t1 {
-      position: pos(20, 20, 1180, 80)
-      layer: 1
-    }
-    block t2 {
-      position: pos(20, 920, 1180, 80)
-      layer: 1
-    }
-    block v5 {
-      position: pos(20, 1020, 580, 380)
-      layer: 1
-    }
-    block v6 {
-      position: pos(620, 1020, 580, 380)
-      layer: 1
-    }
-    block v7 {
-      position: pos(20, 1420, 1180, 380)
-      layer: 1
-    }
-    block v8 {
-      position: pos(20, 1820, 330, 380)
-      layer: 1
-    }
-    block v9 {
-      position: pos(370, 1820, 330, 380)
-      layer: 1
-    }
-    block v10 {
-      position: pos(720, 1820, 480, 380)
-      layer: 1
-    }
-    block t3 {
-      position: pos(20, 2220, 1180, 80)
-      layer: 1
-    }
-    block v11 {
-      position: pos(20, 2320, 580, 380)
-      layer: 1
-    }
-    block v12 {
-      position: pos(620, 2320, 580, 380)
-      layer: 1
+    tab tab2: CanvasLayout {
+      label: 'Tab 2'
+      height: 800
+      grid_size: 20
+      mobile {
+        mode: 'auto'
+      }
     }
   }
   theme: H.themes.vanilla
