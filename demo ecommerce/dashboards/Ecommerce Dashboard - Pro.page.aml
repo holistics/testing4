@@ -530,6 +530,8 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
         }
       }
     }
+    description: @md # Description
+abc;;
   }
   block f1: FilterBlock {
     label: 'Country'
@@ -1177,7 +1179,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       position: pos(1320, 20, 180, 50)
     }
     block hd2 {
-      position: pos(180, 260, 630, 60)
+      position: pos(40, 20, 640, 60)
     }
     block hd3 {
       position: pos(0, 0, 1540, 200)
@@ -1215,7 +1217,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       position: pos(80, 2920, 260, 40)
     }
     block t5 {
-      position: pos(40, 220, 1460, 70)
+      position: pos(40, 220, 1460, 80)
     }
     block t6 {
       position: pos(40, 1190, 1460, 80)
