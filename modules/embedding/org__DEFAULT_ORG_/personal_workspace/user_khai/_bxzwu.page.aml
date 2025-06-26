@@ -44,7 +44,7 @@ Dashboard _bxzwu {
       position: pos(20, 20, 1160, 60)
     }
     block v1 {
-      position: pos(20, 100, 260, 180)
+      position: pos(20, 100, 340, 180)
       layer: 1
     }
     mobile {
