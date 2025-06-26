@@ -43,6 +43,12 @@ pre_aggregates: {
     param_model_nam
   ]
 
+  permission country_access {
+    field: ref('ecommerce_countries', 'name')
+    operator: 'matches_user_attribute'
+    value: 'country_attribute'
+  }
+
   // view {
   //   model ecommerce_users {
   //     field users_signed_up_count
