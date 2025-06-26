@@ -26,6 +26,12 @@ pre_aggregates: {
   daily: agg_daily
 }
 
+  permission country_access {
+    field: ref('ecommerce_countries', 'continent_name')
+    operator: 'matches_user_attribute'
+    value: 'region'
+  }
+
 
   models: [
     order_master,
