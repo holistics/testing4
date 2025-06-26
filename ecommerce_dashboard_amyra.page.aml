@@ -687,7 +687,6 @@ Dashboard ecommerce_dashboard_amyra {
       }
     }
   }
-  interactions: []
   view: TabLayout {
     label: 'View 1'
     tab tab1: CanvasLayout {
@@ -762,6 +761,10 @@ Dashboard ecommerce_dashboard_amyra {
       grid_size: 20
       mobile {
         mode: 'auto'
+      }
+      block t1 {
+        position: pos(20, 20, 1180, 80)
+        layer: 1
       }
     }
   }
