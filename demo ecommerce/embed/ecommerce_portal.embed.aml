@@ -5,6 +5,7 @@ EmbedPortal ecommerce_portal {
     _1_country_breakdown,
     _2_category_breakdown,
     _3_customer_demographics,
-    _4_product_x_merchant_drill_down
+    _4_product_x_merchant_drill_down,
+    demo_ecommerce
   ],
 }
