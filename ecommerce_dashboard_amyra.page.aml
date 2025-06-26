@@ -763,8 +763,16 @@ Dashboard ecommerce_dashboard_amyra {
         mode: 'auto'
       }
       block t1 {
-        position: pos(20, 20, 1180, 80)
+        position: pos(20, 120, 1180, 80)
         layer: 1
+      }
+    }
+    tab tab3: CanvasLayout {
+      label: 'Untitled'
+      height: 800
+      grid_size: 20
+      mobile {
+        mode: 'auto'
       }
     }
   }
