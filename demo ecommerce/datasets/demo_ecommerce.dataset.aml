@@ -44,9 +44,9 @@ pre_aggregates: {
   ]
 
   permission country_access {
-    field: ref('ecommerce_countries', 'name')
+    field: ref('ecommerce_countries', 'continent_name')
     operator: 'matches_user_attribute'
-    value: 'country_attribute'
+    value: 'region'
   }
 
   // view {
