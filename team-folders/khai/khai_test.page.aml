@@ -1,8 +1,18 @@
 Dashboard khai_test {
   title: 'Khai Test'
+  view: CanvasLayout {
+    label: 'View 1'
+    height: 560
+    grid_size: 20
+    block v1 {
+      position: pos(20, 20, 1160, 520)
+      layer: 1
+    }
+  }
+  theme: H.themes.classic
   block v1: VizBlock {
-    label: 'Total Quantity by Month Created At'
-    viz: ColumnChart {
+    label: ' '
+    viz: LineChart {
       dataset: khai_ecommerce
       calculation total_quantity {
         label: 'Total Quantity'
@@ -14,7 +24,7 @@ Dashboard khai_test {
 
       }
       x_axis: VizFieldFull {
-        ref: ref('orders', 'created_at')
+        ref: ref('khai_date_d', 'date_key')
         transformation: 'datetrunc month'
         format {
           type: 'date'
@@ -22,6 +32,9 @@ Dashboard khai_test {
         }
       }
       y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
         series {
           field: VizFieldFull {
             ref: 'total_quantity'
@@ -41,15 +54,8 @@ Dashboard khai_test {
         }
       }
     }
-  }
-  view: CanvasLayout {
-    label: 'View 1'
-    height: 1080
-    grid_size: 20
-    block v1 {
-      position: pos(20, 20, 1160, 460)
-      layer: 1
+    settings {
+      hide_label: true
     }
   }
-  theme: H.themes.classic
 }
