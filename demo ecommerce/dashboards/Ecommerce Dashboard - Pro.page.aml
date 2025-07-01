@@ -530,6 +530,8 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
         }
       }
     }
+    description: @md # Description
+abc;;
   }
   block f1: FilterBlock {
     label: 'Country'
@@ -1059,6 +1061,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
           format {
             type: 'text'
           }
+          uname: 'ecommerce_countries_name'
         },
         VizFieldFull {
           ref: ref('order_master', 'order_count')
@@ -1080,6 +1083,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'custom_cancelled_order_ratio'
         }
       ]
       settings {
@@ -1090,11 +1094,81 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
           debug_comments: true
         }
         frozen_columns: 0
+        column_styles: [
+          ColumnStyle {
+            key: 'ecommerce_countries_name'
+            width: 216
+          },
+          ColumnStyle {
+            key: 'custom_cancelled_order_ratio'
+            width: 180
+          }
+        ]
       }
     }
   }
   block p1: PopBlock {
     label: 'Compare with Period'
+  }
+  block v19: VizBlock {
+    label: 'Total Users and Total Users by Age Demographic and Gender'
+    viz: ColumnChart {
+      dataset: demo_ecommerce
+      theme {
+
+      }
+      x_axis: VizFieldFull {
+        ref: ref('ecommerce_users', 'age_group')
+        format {
+          type: 'text'
+        }
+      }
+      legend: VizFieldFull {
+        ref: ref('ecommerce_users', 'gender')
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: ref('ecommerce_users', 'total_users')
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color: '#07326C'
+            point {
+              value: 'Male'
+              color: '#FB8761'
+            }
+            point {
+              value: 'Female'
+              color: '#64628c'
+            }
+          }
+        }
+        series {
+          field: VizFieldFull {
+            ref: ref('ecommerce_users', 'total_users')
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            break_by_legend: false
+          }
+        }
+      }
+      settings {
+        x_axis_show_null_datetime: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
   }
   view: CanvasLayout {
     label: 'View 1'
@@ -1105,7 +1179,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       position: pos(1320, 20, 180, 50)
     }
     block hd2 {
-      position: pos(180, 260, 630, 60)
+      position: pos(40, 20, 640, 60)
     }
     block hd3 {
       position: pos(0, 0, 1540, 200)
@@ -1127,7 +1201,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       position: pos(840, 2200, 680, 500)
     }
     block v7 {
-      position: pos(60, 3280, 1460, 430)
+      position: pos(60, 3280, 1440, 430)
     }
     block v8 {
       position: pos(380, 2860, 560, 400)
@@ -1143,7 +1217,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       position: pos(80, 2920, 260, 40)
     }
     block t5 {
-      position: pos(40, 220, 1460, 70)
+      position: pos(40, 220, 1460, 80)
     }
     block t6 {
       position: pos(40, 1190, 1460, 80)
@@ -1239,6 +1313,10 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
     block p1 {
       position: pos(1300, 2860, 220, 60)
       layer: 2
+    }
+    block v19 {
+      position: pos(20, 4490, 400, 300)
+      layer: 3
     }
   }
   settings {
