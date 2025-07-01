@@ -41,7 +41,10 @@ Dashboard tri_test {
 
   theme: H.themes.classic.extend({
     custom_css: @css 
-     .ci-download-tab-xlsx {
+     .ci-download-tab-xlsx, .ci-download-excel {
+      display:none;
+     }
+     #block-v1 {
       display:none;
      }
     ;;
