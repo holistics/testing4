@@ -31,7 +31,13 @@ Dashboard tri_test {
     }
   }
 
-  theme: H.themes.classic
+  theme: H.themes.classic.extend({
+    custom_css: @css 
+     .ci-download-tab-xlsx {
+      display:none;
+     }
+    ;;
+  })
   block v1: VizBlock {
     label: 'CLV'
     viz: DataTable {
