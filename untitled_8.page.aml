@@ -8,7 +8,7 @@ Dashboard untitled_8 {
     label: 'View 1'
     tab tab1: CanvasLayout {
       label: 'Tab 1'
-      height: 840
+      height: 380
       grid_size: 20
       block title {
         position: pos(20, 20, 1160, 60)
