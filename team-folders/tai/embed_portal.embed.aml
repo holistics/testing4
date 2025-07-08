@@ -1,0 +1,5 @@
+EmbedPortal embed_portal {
+  objects: [
+    demo_ecommerce_overview_pro
+  ],
+}

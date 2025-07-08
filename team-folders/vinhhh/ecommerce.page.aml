@@ -1,5 +1,5 @@
-Dashboard demo_ecommerce_overview_funky {
-  title: '[Demo] Ecommerce Overview - Funky'
+Dashboard vinhhh_ecommerce {
+  title: '[Demo] Ecommerce Overview - vinhhh test'
 
 
   block user_country: FilterBlock {
@@ -23,7 +23,7 @@ Dashboard demo_ecommerce_overview_funky {
     }
     default {
       operator: 'is'
-      value: 'Female'
+      value: ['Male', 'Female']
     }
   }
   block age_demographic: FilterBlock {
@@ -123,7 +123,7 @@ Dashboard demo_ecommerce_overview_funky {
         MetricHeading {
           label: '🎯Orders'
           settings {
-            background_color: '#C5E8E7'
+            background_color: '#C5E8E6'
           }
         },
         MetricSeries {

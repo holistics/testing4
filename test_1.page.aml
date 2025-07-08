@@ -1,7 +1,7 @@
 Dashboard test_1 {
   title: 'test'
   block title: TextBlock {
-    content: @md # Your title goes here
+    content: @md # Your title goes here nha
 <font color="#D2D5DF">(Double click to edit)</font>;;
   }
   interactions: []
@@ -10,7 +10,7 @@ Dashboard test_1 {
     height: 840
     grid_size: 20
     block title {
-      position: pos(20, 20, 1160, 120)
+      position: pos(20, 40, 1160, 120)
     }
   }
   theme: H.themes.classic

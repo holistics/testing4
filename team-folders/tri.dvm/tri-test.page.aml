@@ -29,9 +29,26 @@ Dashboard tri_test {
       position: pos(400, 500, 300, 100)
       layer: 6
     }
+    block v3 {
+      position: pos(20, 620, 400, 300)
+      layer: 7
+    }
+    block v4 {
+      position: pos(440, 620, 400, 300)
+      layer: 8
+    }
   }
 
-  theme: H.themes.classic
+  theme: H.themes.classic.extend({
+    custom_css: @css 
+     .ci-download-tab-xlsx, .ci-download-excel {
+      display:none;
+     }
+     #block-v1 {
+      display:none;
+     }
+    ;;
+  })
   block v1: VizBlock {
     label: 'CLV'
     viz: DataTable {
@@ -154,6 +171,88 @@ Dashboard tri_test {
     default {
       operator: 'is'
       value: []
+    }
+  }
+  block v3: VizBlock {
+    label: 'Test 1'
+    viz: DataTable {
+      dataset: buyers_sellers_transactions
+      theme {
+
+      }
+      fields: [
+        VizFieldFull {
+          label: 'Full Name (Team Lead)'
+          ref: ref('buyers', 'full_name')
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          label: 'Full Name (Supervisor)'
+          ref: ref('sellers', 'full_name')
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          label: 'Metric'
+          ref: ref('transactions_buyers_sellers', 'quantity')
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            field_index: 0
+            direction: 'asc'
+          },
+          SortSetting {
+            field_index: 1
+            direction: 'asc'
+          }
+        ]
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v4: VizBlock {
+    label: 'Untitled Report'
+    viz: DataTable {
+      dataset: ecom_dataset_vux
+      fields: [
+        VizFieldFull {
+          ref: 'total_orders'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('order_master', 'order_id')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
     }
   }
   interactions: [
