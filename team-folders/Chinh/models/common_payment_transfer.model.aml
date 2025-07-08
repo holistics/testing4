@@ -231,7 +231,7 @@ Model common_payment_transfer {
   }
   dimension created_at {
     label: 'Created At'
-    type: 'text'
+    type: 'datetime'
     hidden: false
     definition: @sql {{ #SOURCE.created_at }};;
     description: 'The datetime when the transaction is created, distinct by each transaction.'
@@ -252,7 +252,7 @@ Model common_payment_transfer {
   }
   dimension timestamp {
     label: 'Timestamp'
-    type: 'text'
+    type: 'datetime'
     hidden: false
     definition: @sql {{ #SOURCE.timestamp }};;
     description: 'The timestamp for each event, distinct by each event. For example, when the transaction status is updated from CREATED to AUTHENTICATED, the timestamp will be different.'
