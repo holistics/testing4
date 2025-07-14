@@ -65,7 +65,7 @@ Model users {
   }
 
   dimension email_pii {
-    label: 'Email'
+    label: 'Email Pii'
     description: 'The email for the user. [sensitive data may be restricted]'
     type: 'text'
     hidden: false
