@@ -64,6 +64,21 @@ Model users {
     definition: @sql {{ #SOURCE.full_name }};;
   }
 
+  dimension email_pii {
+    label: 'Email'
+    description: 'The email for the user. [sensitive data may be restricted]'
+    type: 'text'
+    hidden: false
+    definition: @aql
+      case(
+        when:
+          in('some_email@test.com', H.current_user.h_email),
+        then: users.email,
+        else: '(redacted)'
+      )
+    ;;
+  }
+
   measure total_users {
     label: 'Total Users'
     type: 'number'
