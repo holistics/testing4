@@ -1,5 +1,5 @@
 Dashboard vyht_ecommerce_dashboard {
-  title: "VyHuynh's Ecommerce Dashboard "
+  title: "VyHuynh's Ecommerce Dashboard"
   description: ''
   block title: TextBlock {
     content: @md # VyHuynh's Ecommerce Dashboard;;
