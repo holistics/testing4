@@ -81,4 +81,8 @@ Dashboard vyht_ecommerce_dashboard {
   }
 
   theme: H.themes.vanilla
+  settings {
+    timezone: 'Etc/UTC'
+    cache_duration: 1440
+  }
 }
