@@ -2,7 +2,7 @@ Dashboard vyht_ecommerce_dashboard {
   title: "VyHuynh's Ecommerce Dashboard "
   description: ''
   block title: TextBlock {
-    content: @md # Ecommerce Dashboard;;
+    content: @md # VyHuynh's Ecommerce Dashboard;;
   }
   block v1: VizBlock {
     label: 'Order created in Nov 2022'

@@ -63,7 +63,31 @@ Model vyht_ecommerce_users {
     hidden: false
     definition: @sql {{ #SOURCE.full_name }};;
   }
+  dimension age {
+    label: "Age"
+    type: "number"
+    description: ""
+    definition: @sql date_part('year', current_date) - date_part('year', {{ birth_date }});;
+  }
+  dimension age_group {
+    label: "Age Group"
+    type: "text"
+    description: ""
+    definition: @sql case
+  when {{ age }} < 20 then '1. Under 20'
+  when {{ age }} >= 20 and {{ age }} < 30 then '2. From 20 to 29'
+  when {{ age }} >= 30 and {{ age }} < 40 then '3. From 30 to 39'
+  when {{ age }} >= 40 then '4. 40 and up'
+end;;
+  }
 
   owner: 'vy.ht@holistics.io'
   table_name: '"ecommerce"."users"'
+  measure all_order_count {
+    label: "All Order Count"
+    type: "number"
+    description: "Total orders"
+    definition: @sql count({{id}});;
+    aggregation_type: "custom"
+  }
 }
