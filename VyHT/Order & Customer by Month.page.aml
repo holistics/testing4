@@ -170,7 +170,7 @@ Dashboard order_customer_by_month {
 
   view: CanvasLayout {
     label: 'View 1'
-    height: 1520
+    height: 900
     grid_size: 20
     block title {
       position: pos(20, 100, 1160, 60)
