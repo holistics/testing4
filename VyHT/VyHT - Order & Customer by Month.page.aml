@@ -1,5 +1,5 @@
 Dashboard order_customer_by_month {
-  title: 'Order Customer By Month'
+  title: 'VyHT - Order Customer By Month'
   description: ''
   block title: TextBlock {
     content: @md # Overview;;
