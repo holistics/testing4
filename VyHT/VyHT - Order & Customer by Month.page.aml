@@ -224,7 +224,7 @@ Dashboard order_customer_by_month {
       layer: 1
     }
     block v2 {
-      position: pos(446, 180, 320, 140)
+      position: pos(440, 180, 320, 140)
       layer: 1
     }
     block v3 {
