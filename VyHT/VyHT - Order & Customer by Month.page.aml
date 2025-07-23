@@ -167,10 +167,54 @@ Dashboard order_customer_by_month {
       }
     }
   }
+  block v5: VizBlock {
+    label: 'Customer List'
+    viz: DataTable {
+      dataset: vyht_test_dataset
+      fields: [
+        VizFieldFull {
+          label: 'Date'
+          ref: ref('vyht_ecommerce_orders_1', 'created_at')
+          transformation: 'datetrunc day'
+          format {
+            type: 'date'
+            pattern: 'LLL dd, yyyy'
+          }
+        },
+        VizFieldFull {
+          ref: ref('vyht_ecommerce_users_1', 'full_name')
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: ref('vyht_ecommerce_users_1', 'email')
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        wrap_header_text: true
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            field_index: 0
+            direction: 'asc'
+          }
+        ]
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
 
   view: CanvasLayout {
     label: 'View 1'
-    height: 900
+    height: 1700
     grid_size: 20
     block title {
       position: pos(20, 100, 1160, 60)
@@ -201,6 +245,10 @@ Dashboard order_customer_by_month {
     block v4 {
       position: pos(20, 460, 1160, 420)
       layer: 4
+    }
+    block v5 {
+      position: pos(20, 900, 1160, 300)
+      layer: 5
     }
     mobile {
       mode: 'auto'
