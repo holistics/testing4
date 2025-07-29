@@ -16,4 +16,49 @@ Dashboard existing_canvas_dashboard {
     }
   }
   theme: H.themes.vanilla
+  description: @md # Business Intelligence Dashboard
+
+## Overview
+This comprehensive business intelligence dashboard provides real-time insights into key performance metrics across multiple departments. The dashboard consolidates data from various sources into a single, intuitive interface designed for both executive decision-makers and operational teams.
+
+## Key Features
+
+### Executive Summary
+- High-level KPI snapshot showing company-wide performance
+- Year-to-date financial metrics with comparison to targets
+- Trend indicators for critical business metrics
+
+### Sales Performance
+- Revenue tracking by product line, region, and sales representative
+- Sales pipeline visualization with conversion rates
+- Customer acquisition cost and lifetime value metrics
+- Win/loss analysis with competitor insights
+
+### Financial Health
+- Cash flow projections and actual performance
+- Accounts receivable aging analysis
+- Profit margin breakdown by business unit
+- Budget variance analysis with drill-down capabilities
+
+### Marketing Effectiveness
+- Campaign performance metrics and ROI analysis
+- Customer engagement across digital channels
+- Lead generation and conversion funnel analytics
+- Market share visualization by geographic region
+
+### Operational Efficiency
+- Supply chain performance metrics
+- Inventory turnover rates and stockout analysis
+- Production efficiency and quality control metrics
+- Resource utilization and capacity planning
+
+## Technical Implementation
+The dashboard is built on a modern data stack with real-time data processing capabilities. It features responsive design for desktop and mobile access, with customizable views for different stakeholders. Advanced filtering and drill-down capabilities allow users to explore data at varying levels of granularity.
+
+## User Access Control
+Role-based access ensures appropriate visibility of sensitive information, with executive-level views for leadership and more detailed operational views for team managers.;;
+  settings {
+    timezone: 'Etc/UTC'
+    cache_duration: 1440
+  }
 }
