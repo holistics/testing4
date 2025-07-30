@@ -1,0 +1,19 @@
+Dataset retails {
+  label: 'Retails'
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    retail_products,
+    retail_promotion,
+    retail_stores,
+    retail_transaction_items,
+    retail_transactions
+  ]
+  relationships: [
+    relationship(retail_promotion.store > retail_stores.store, true),
+    relationship(retail_transactions.store > retail_stores.store, true),
+    relationship(retail_transaction_items.upc > retail_products.upc, true),
+    relationship(retail_transaction_items.basket > retail_transactions.basket, true)
+  ]
+  owner: 'triet.pham@holistics.io'
+}
