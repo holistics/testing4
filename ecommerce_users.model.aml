@@ -1,4 +1,4 @@
-Model users {
+Model vyht_ecommerce_users {
   type: 'table'
   label: 'Users'
   description: ''
@@ -63,28 +63,31 @@ Model users {
     hidden: false
     definition: @sql {{ #SOURCE.full_name }};;
   }
-
-  dimension email_pii {
-    label: 'Email Pii'
-    description: 'The email for the user. [sensitive data may be restricted]'
-    type: 'text'
-    hidden: false
-    definition: @aql
-      case(
-        when:
-          in('some_email@test.com', H.current_user.h_email),
-        then: users.email,
-        else: '(redacted)'
-      )
-    ;;
+  dimension age {
+    label: "Age"
+    type: "number"
+    description: ""
+    definition: @sql date_part('year', current_date) - date_part('year', {{ birth_date }});;
+  }
+  dimension age_group {
+    label: "Age Group"
+    type: "text"
+    description: ""
+    definition: @sql case
+  when {{ age }} < 20 then '1. Under 20'
+  when {{ age }} >= 20 and {{ age }} < 30 then '2. From 20 to 29'
+  when {{ age }} >= 30 and {{ age }} < 40 then '3. From 30 to 39'
+  when {{ age }} >= 40 then '4. 40 and up'
+end;;
   }
 
-  measure total_users {
-    label: 'Total Users'
-    type: 'number'
-    definition: @aql count(users.id);; 
-  }
-
-  owner: 'khai.to+demo4@holistics.io'
+  owner: 'vy.ht@holistics.io'
   table_name: '"ecommerce"."users"'
+  measure all_order_count {
+    label: "All Order Count"
+    type: "number"
+    description: "Total orders"
+    definition: @sql count({{id}});;
+    aggregation_type: "custom"
+  }
 }
