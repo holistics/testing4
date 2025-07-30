@@ -1,5 +1,5 @@
 Dashboard order_customer_by_month {
-  title: 'VyHT - Order Customer By Month'
+  title: '[VyHuynh] Order Customer By Month'
   description: ''
   block title: TextBlock {
     content: @md # Overview;;
@@ -214,7 +214,7 @@ Dashboard order_customer_by_month {
 
   view: CanvasLayout {
     label: 'View 1'
-    height: 1700
+    height: 1220
     grid_size: 20
     block title {
       position: pos(20, 100, 1160, 60)
