@@ -1,0 +1,39 @@
+Model retail_transaction_items {
+  type: 'table'
+  label: 'Transaction Items'
+  description: ''
+  data_source_name: 'demodb'
+  dimension upc {
+    label: 'Upc'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.upc }};;
+  }
+  dimension dollar_sales {
+    label: 'Dollar Sales'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.dollar_sales }};;
+  }
+  dimension units {
+    label: 'Units'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.units }};;
+  }
+  dimension basket {
+    label: 'Basket'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.basket }};;
+  }
+  dimension coupon {
+    label: 'Coupon'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.coupon }};;
+  }
+
+  owner: 'triet.pham@holistics.io'
+  table_name: '"retail"."transaction_items"'
+}
