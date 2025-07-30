@@ -1,7 +1,7 @@
 Dashboard untitled_8 {
   title: 'Untitled 8'
   description: ''
-  block title: TextBlock {
+  block my_title: TextBlock {
     content: @md # Your title goes here ;;
   }
 
@@ -11,7 +11,7 @@ Dashboard untitled_8 {
       label: 'Tab 1'
       height: 840
       grid_size: 20
-      block title {
+      block my_title {
         position: pos(20, 20, 1160, 60)
       }
       mobile {
@@ -25,6 +25,10 @@ Dashboard untitled_8 {
       mobile {
         mode: 'auto'
       }
+      block my_title {
+        position: pos(20, 20, 1160, 60)
+        layer: 1
+      }
     }
     tab tab3: CanvasLayout {
       label: 'Untitled'
@@ -32,6 +36,10 @@ Dashboard untitled_8 {
       grid_size: 20
       mobile {
         mode: 'auto'
+      }
+      block my_title {
+        position: pos(20, 20, 1160, 60)
+        layer: 1
       }
     }
   }
