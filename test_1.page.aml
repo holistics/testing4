@@ -4,13 +4,56 @@ Dashboard test_1 {
     content: @md # Your title goes here nha
 <font color="#D2D5DF">(Double click to edit)</font>;;
   }
-  interactions: []
+  block v1: VizBlock {
+    label: 'Sum of Price by Latitude, Longitude, and Country'
+    viz: PointMap {
+      dataset: homestay
+      lng: VizFieldFull {
+        ref: r(homestay_listings.longitude)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      lat: VizFieldFull {
+        ref: r(homestay_listings.latitude)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      value: VizFieldFull {
+        ref: r(homestay_listings.price)
+        aggregation: 'sum'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(homestay_neighbourhoods.country)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     height: 840
     grid_size: 20
     block title {
       position: pos(20, 40, 1160, 120)
+    }
+    block v1 {
+      position: pos(20, 180, 400, 300)
+      layer: 1
     }
   }
   theme: H.themes.classic
