@@ -11,12 +11,16 @@ Dashboard vy_huynh_abernathy {
         mode: 'auto'
       }
       block v2 {
-        position: pos(20, 20, 260, 140)
+        position: pos(25, 19, 260, 140)
         layer: 2
       }
       block v3 {
         position: pos(20, 180, 1160, 460)
         layer: 3
+      }
+      block v4 {
+        position: pos(320, 20, 260, 140)
+        layer: 2
       }
     }
   }
@@ -39,6 +43,7 @@ Dashboard vy_huynh_abernathy {
         value: 'July 2023'
       }
       value: VizFieldFull {
+        label: 'Total Revenue This Month'
         ref: 'total_revenue'
         format {
           type: 'number'
@@ -122,6 +127,48 @@ Dashboard vy_huynh_abernathy {
           debug_comments: true
         }
       }
+    }
+  }
+  block v4: VizBlock {
+    label: 'This month Total Order'
+    viz: MetricKpi {
+      dataset: vyhuynh_ecommerce_dataset
+      calculation monthly_revenue {
+        label: 'Monthly Revenue'
+        formula: @aql vyht_ecommerce_order_items
+  | sum(vyht_ecommerce_order_items.quantity * vyht_ecommerce_products.price);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(vyht_ecommerce_orders_1.created_at)
+        operator: 'matches'
+        value: 'July 2023'
+      }
+      value: VizFieldFull {
+        label: 'Total Order This Month'
+        ref: r(vyht_ecommerce_orders_1.id)
+        aggregation: 'count distinct'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizPopSettings {
+        field: r(vyht_ecommerce_orders_1.created_at)
+        duration: 1
+        granularity: 'month'
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
     }
   }
 }
