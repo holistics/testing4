@@ -11,16 +11,52 @@ Dashboard vy_huynh_abernathy {
         mode: 'auto'
       }
       block v2 {
-        position: pos(25, 19, 260, 140)
+        position: pos(20, 220, 260, 140)
         layer: 2
       }
       block v3 {
-        position: pos(20, 180, 1160, 460)
+        position: pos(20, 380, 1160, 460)
         layer: 3
       }
       block v4 {
-        position: pos(320, 20, 260, 140)
+        position: pos(300, 220, 260, 140)
         layer: 2
+      }
+      block t3 {
+        position: pos(20, 20, 380, 160)
+        layer: 4
+      }
+      block t4 {
+        position: pos(40, 40, 60, 40)
+        layer: 5
+      }
+      block t5 {
+        position: pos(80, 40, 300, 40)
+        layer: 6
+      }
+      block f1 {
+        position: pos(80, 80, 280, 60)
+        layer: 7
+      }
+      block t6 {
+        position: pos(400, 20, 380, 160)
+        layer: 4
+      }
+      block t7 {
+        position: pos(420, 40, 60, 40)
+        layer: 5
+      }
+      block t8 {
+        position: pos(460, 40, 300, 60)
+        layer: 8
+      }
+      block f2 {
+        position: pos(460, 80, 280, 60)
+        layer: 7
+      }
+      block t9 {
+        position: pos(20, 180, 1160, 20)
+        layer: 9
       }
     }
     tab tab3: CanvasLayout {
@@ -336,6 +372,80 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block t3: TextBlock {
+    content: @md <svg width="361" height="130" viewBox="0 0 361 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="1" y="1" width="359" height="128" rx="6" fill="#E8F2FD" stroke="#4896EA" stroke-dasharray="4 4"/>
+</svg>;;
+  }
+  block t4: TextBlock {
+    content: @md <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="40" width="40" height="40" rx="4" transform="rotate(-90 0 40)" fill="#1B7CE4"/>
+<path d="M30.2524 9.28125H9.74783C8.44664 9.28125 7.79011 10.8599 8.712 11.7819L17.0703 20.1419V28.6904C17.0703 28.8992 17.1149 29.1056 17.2012 29.2957C17.2875 29.4859 17.4134 29.6553 17.5706 29.7928L20.5002 32.3555C21.4358 33.1741 22.9297 32.524 22.9297 31.2531V20.1419L31.2882 11.7819C32.2083 10.8618 31.5562 9.28125 30.2524 9.28125ZM21.4648 19.5352V31.2539L18.5352 28.6904V19.5352L9.74609 10.7461H30.2539L21.4648 19.5352Z" fill="white"/>
+</svg>;;
+  }
+  block t5: TextBlock {
+    content: @md ### Filter by Country;;
+  }
+  block f1: FilterBlock {
+    label: 'Country Name'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: r(ecommerce_countries.name)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+    settings {
+      drillthrough: Drillthrough {
+        enabled: true
+        sources: [
+          AutoDrillthroughSource {
+          }
+        ]
+      }
+    }
+  }
+  block t6: TextBlock {
+    content: @md <svg width="361" height="130" viewBox="0 0 361 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="1" y="1" width="359" height="128" rx="6" fill="#E8F2FD" stroke="#4896EA" stroke-dasharray="4 4"/>
+</svg>;;
+  }
+  block t7: TextBlock {
+    content: @md <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="40" width="40" height="40" rx="4" transform="rotate(-90 0 40)" fill="#1B7CE4"/>
+<path d="M30.2524 9.28125H9.74783C8.44664 9.28125 7.79011 10.8599 8.712 11.7819L17.0703 20.1419V28.6904C17.0703 28.8992 17.1149 29.1056 17.2012 29.2957C17.2875 29.4859 17.4134 29.6553 17.5706 29.7928L20.5002 32.3555C21.4358 33.1741 22.9297 32.524 22.9297 31.2531V20.1419L31.2882 11.7819C32.2083 10.8618 31.5562 9.28125 30.2524 9.28125ZM21.4648 19.5352V31.2539L18.5352 28.6904V19.5352L9.74609 10.7461H30.2539L21.4648 19.5352Z" fill="white"/>
+</svg>;;
+  }
+  block t8: TextBlock {
+    content: @md ### Filter by City;;
+  }
+  block f2: FilterBlock {
+    label: 'City Name'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: r(ecommerce_cities.name)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+    settings {
+      drillthrough: Drillthrough {
+        enabled: true
+        sources: [
+          AutoDrillthroughSource {
+          }
+        ]
+      }
+    }
+  }
+  block t9: H.blocks.line(
+    2,
+    '#8F99A3'
+  )
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -364,6 +474,49 @@ Dashboard vy_huynh_abernathy {
             'v6'
           ]
           disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f2'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v6',
+            'v7'
+          ]
+          disabled: true
+        },
+        CustomMapping {
+          block: [
+            'v2',
+            'v3',
+            'v4'
+          ]
+          field: ref('ecommerce_cities', 'name')
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f2'
+      to: [
+        CustomMapping {
+          block: 'f1'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f1'
+      to: [
+        CustomMapping {
+          block: [
+            'v2',
+            'v3',
+            'v4'
+          ]
+          field: ref('ecommerce_countries', 'name')
         }
       ]
     }
