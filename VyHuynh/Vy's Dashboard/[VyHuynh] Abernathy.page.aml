@@ -5,71 +5,23 @@ Dashboard vy_huynh_abernathy {
     label: 'View 1'
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
-      height: 800
+      height: 1060
       grid_size: 20
       mobile {
         mode: 'auto'
       }
-      block v1 {
-        position: pos(20, 240, 1160, 480)
-        layer: 1
-      }
       block v2 {
-        position: pos(20, 80, 260, 140)
+        position: pos(20, 20, 260, 140)
         layer: 2
       }
       block v3 {
-        position: pos(20, 740, 400, 300)
+        position: pos(20, 180, 1160, 460)
         layer: 3
       }
     }
   }
 
   theme: H.themes.vanilla
-  block v1: VizBlock {
-    label: 'Revenue by Month'
-    viz: LineChart {
-      dataset: vyhuynh_ecommerce_dataset
-      calculation monthly_revenue {
-        label: 'Monthly Revenue'
-        formula: @aql vyht_ecommerce_order_items | sum(vyht_ecommerce_order_items.quantity * vyht_ecommerce_products.price);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      x_axis: VizFieldFull {
-        label: 'Order Month'
-        ref: r(vyht_ecommerce_orders_1.created_at)
-        transformation: 'datetrunc month'
-        format {
-          type: 'date'
-          pattern: 'LLL yyyy'
-        }
-      }
-      y_axis {
-        settings {
-          show_data_label_by: 'value'
-        }
-        series {
-          field: VizFieldFull {
-            ref: 'total_revenue'
-            format {
-              type: 'number'
-              pattern: '[$$]#,###'
-            }
-          }
-        }
-      }
-      settings {
-        row_limit: 5000
-        x_axis_label: 'Order Month'
-        x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
   block v2: VizBlock {
     label: 'This month Revenue'
     viz: MetricKpi {
