@@ -18,6 +18,10 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 80, 260, 140)
         layer: 2
       }
+      block v3 {
+        position: pos(20, 740, 400, 300)
+        layer: 3
+      }
     }
   }
 
@@ -104,6 +108,68 @@ Dashboard vy_huynh_abernathy {
     }
     settings {
       hide_label: true
+    }
+  }
+  block v3: VizBlock {
+    label: 'Total Revenue and Number of Order by Month'
+    viz: CombinationChart {
+      dataset: vyhuynh_ecommerce_dataset
+      x_axis: VizFieldFull {
+        label: 'Order Month'
+        ref: r(vyht_ecommerce_orders_1.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        label: 'Total Revenue'
+        settings {
+          group_values_into: 10
+          show_data_label_by: 'value'
+        }
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            label: 'Total Revenue'
+            ref: 'total_revenue'
+            format {
+              type: 'number'
+              pattern: '[$$]#,###'
+            }
+          }
+          settings {
+            line_interpolation: 'smooth'
+          }
+        }
+      }
+      y_axis {
+        label: 'Number of Order'
+        settings {
+          alignment: 'right'
+          group_values_into: 10
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(vyht_ecommerce_orders_1.id)
+            aggregation: 'count distinct'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 100
+        x_axis_label: 'Order Month'
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
     }
   }
 }
