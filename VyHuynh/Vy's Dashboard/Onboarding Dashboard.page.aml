@@ -7,7 +7,7 @@ Dashboard untitled_8 {
   block v1: VizBlock {
     label: 'Day Created At and Full Name'
     viz: DataTable {
-      dataset: vyht_test_dataset
+      dataset: vyhuynh_ecommerce_dataset
       fields: [
         VizFieldFull {
           ref: ref('vyht_ecommerce_orders_1', 'created_at')
@@ -44,7 +44,7 @@ Dashboard untitled_8 {
   block v2: VizBlock {
     label: 'Order by Month'
     viz: ColumnChart {
-      dataset: vyht_test_dataset
+      dataset: vyhuynh_ecommerce_dataset
       x_axis: VizFieldFull {
         ref: ref('vyht_ecommerce_orders_1', 'created_at')
         transformation: 'datetrunc month'
