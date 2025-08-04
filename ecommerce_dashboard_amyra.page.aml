@@ -747,11 +747,11 @@ Dashboard ecommerce_dashboard_amyra {
         layer: 1
       }
       block v11 {
-        position: pos(20, 2320, 580, 380)
+        position: pos(20, 2300, 580, 380)
         layer: 1
       }
       block v12 {
-        position: pos(620, 2320, 580, 380)
+        position: pos(620, 2300, 580, 380)
         layer: 1
       }
     }
