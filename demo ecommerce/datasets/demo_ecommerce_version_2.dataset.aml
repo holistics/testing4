@@ -117,7 +117,7 @@ Dataset demo_ecommerce_version_2 {
     definition: @aql count(ecommerce_users.id) ;;
   }
 
-  metric total_orders_number {
+  metric total_orders {
     label: "Total Orders"
     type: "number"
     hidden: false
