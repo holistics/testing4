@@ -46,50 +46,5 @@ Dataset simple_dataset {
     definition: @aql average_order_value | where(ecommerce_orders.created_at matches @(last 3 months)) ;;
   }
 
-  view {
-
-    model ecommerce_orders {
-      field status
-      field created_at
-      field discount
-      field total_orders_count
-      field delivered_orders_count
-      field cumm_orders
-    }
-    model ecommerce_users {
-      // Display selected fields from Users 
-      field id
-      field email
-      field age
-
-
-      // Create group "Customer Name" containing fields within model Users
-      group customer_name {
-        field first_name
-        field last_name
-        field full_name
-      }
-    }
-
-    // Create group "Order Master" containing two models Orders and Dates 
-
-    group relevant_models {
-      model ecommerce_products {
-        group field_group {
-          field name
-          field id
-        }
-      }
-      model ecommerce_categories
-    }
-
-    group business_metrics {
-      metric sum_order_value
-      metric average_order_value
-    }
-
-  }
-
-
 
 }
