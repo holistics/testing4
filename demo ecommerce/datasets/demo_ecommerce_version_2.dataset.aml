@@ -125,7 +125,7 @@ Dataset demo_ecommerce_version_2 {
     definition: @aql count(ecommerce_orders.id);;
   }
 
-  metric gmv {
+  metric gross_merchandise_value {
     label: "GMV - Gross Merchandise Value"
     type: "number"
     hidden: false
