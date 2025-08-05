@@ -84,17 +84,10 @@ Model ecommerce_orders {
     aggregation_type: "custom"
   }
   measure total_order {
-    label: "Total Orders Count"
+    label: "Total Orders"
     type: "number"
-    definition: @sql {{ id }};;
+    definition: @sql COUNT({{ id }});;
     description: "The total number of orders"
-    aggregation_type: "count"
-  }
-  measure total_orders_count {
-    label: "Total Orders Count"
-    type: "number"
-    definition: @sql {{ id }};;
-    aggregation_type: "count"
   }
 
   measure first_order_date {
