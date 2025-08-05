@@ -170,34 +170,6 @@ Dashboard company_dashboard_v {
       }
     }
   }
-  block v28: VizBlock {
-    label: 'AOV'
-    viz: MetricKpi {
-      dataset: demo_ecommerce_version_2
-      theme {
-
-      }
-      value: VizFieldFull {
-        label: 'Average Order Value'
-        ref: 'aov'
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
-      }
-      settings {
-        display_mode: 'single'
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-        alignment: 'left'
-      }
-    }
-    settings {
-      hide_label: true
-    }
-  }
   block v29: VizBlock {
     label: ' KPI Overview'
     viz: MetricSheet {
@@ -1407,28 +1379,24 @@ Uncover trends by comparing current performance against a previous period.
         layer: 19
       }
       block v20 {
-        position: pos(1020, 640, 220, 120)
+        position: pos(940, 640, 300, 120)
         layer: 1
       }
       block v21 {
-        position: pos(500, 640, 220, 120)
+        position: pos(340, 640, 300, 120)
         layer: 1
       }
       block v22 {
-        position: pos(20, 640, 200, 120)
+        position: pos(20, 640, 300, 120)
         layer: 2
       }
       block v25 {
-        position: pos(740, 640, 260, 120)
+        position: pos(660, 640, 260, 120)
         layer: 1
       }
       block v27 {
         position: pos(20, 2660, 1220, 480)
         layer: 6
-      }
-      block v28 {
-        position: pos(240, 640, 240, 120)
-        layer: 7
       }
       block v29 {
         position: pos(20, 1120, 1220, 440)
@@ -1622,241 +1590,6 @@ Uncover trends by comparing current performance against a previous period.
   theme: H.themes.classic
   interactions: [
     FilterInteraction {
-      from: 'v20'
-      to: [
-        CustomMapping {
-          block: [
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v21'
-      to: [
-        CustomMapping {
-          block: [
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v22'
-      to: [
-        CustomMapping {
-          block: [
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v25'
-      to: [
-        CustomMapping {
-          block: [
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v27'
-      to: [
-        CustomMapping {
-          block: [
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v28'
-      to: [
-        CustomMapping {
-          block: [
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v29'
-      to: [
-        CustomMapping {
-          block: [
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v30'
-      to: [
-        CustomMapping {
-          block: [
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v31'
-      to: [
-        CustomMapping {
-          block: [
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v34'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v37'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f2'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v34',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
       from: 'f2'
       to: [
         CustomMapping {
@@ -1870,56 +1603,6 @@ Uncover trends by comparing current performance against a previous period.
       ]
     },
     FilterInteraction {
-      from: 'v43'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v44',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f4'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v34',
-            'v37',
-            'v43',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
       from: 'f4'
       to: [
         CustomMapping {
@@ -1927,32 +1610,6 @@ Uncover trends by comparing current performance against a previous period.
             'f10',
             'f11',
             'f12'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v44'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v34',
-            'v37',
-            'v43',
-            'v52',
-            'v53',
-            'v57',
-            'v58'
           ]
           disabled: true
         }
@@ -1983,124 +1640,6 @@ Uncover trends by comparing current performance against a previous period.
       ]
     },
     FilterInteraction {
-      from: 'v52'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v34',
-            'v37',
-            'v43',
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v53'
-      to: [
-        CustomMapping {
-          block: [
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v57'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52a',
-            'v53a',
-            'v52',
-            'v53'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v58'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52a',
-            'v53a',
-            'v52',
-            'v53'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f10'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52a',
-            'v53a',
-            'v52',
-            'v53',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
       from: 'f10'
       to: [
         CustomMapping {
@@ -2119,66 +1658,10 @@ Uncover trends by comparing current performance against a previous period.
       to: [
         CustomMapping {
           block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52a',
-            'v53a',
-            'v52',
-            'v53',
-            'v57'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f11'
-      to: [
-        CustomMapping {
-          block: [
             'f2',
             'f4',
             'f10',
             'f12'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f12'
-      to: [
-        CustomMapping {
-          block: [
-            'v20',
-            'v21',
-            'v22',
-            'v25',
-            'v27',
-            'v28',
-            'v29',
-            'v30',
-            'v31',
-            'v34',
-            'v37',
-            'v43',
-            'v44',
-            'v52a',
-            'v53a',
-            'v52',
-            'v53',
-            'v57'
           ]
           disabled: true
         }
@@ -2203,20 +1686,7 @@ Uncover trends by comparing current performance against a previous period.
       to: [
         CustomMapping {
           block: 'v37'
-          field: ref('ecommerce_users', 'sign_up_at')
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f3'
-      to: [
-        CustomMapping {
-          block: [
-            'v53a',
-            'v52a',
-            'v53'
-          ]
-          field: ref('ecommerce_orders', 'created_at')
+          field: r(ecommerce_users.sign_up_at)
         }
       ]
     },
@@ -2225,11 +1695,11 @@ Uncover trends by comparing current performance against a previous period.
       to: [
         CustomMapping {
           block: 'v58'
-          field: ref('ecommerce_users', 'cohort_month')
+          field: r(demo_ecommerce_version_2, ecommerce_users.cohort_month)
         },
         CustomMapping {
           block: 'v57'
-          field: ref('ecommerce_orders', 'created_at')
+          field: r(ecommerce_orders.created_at)
         }
       ]
     }
