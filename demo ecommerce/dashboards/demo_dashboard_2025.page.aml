@@ -80,19 +80,15 @@ Dashboard company_dashboard_v {
     label: 'All-Time Orders'
     viz: MetricKpi {
       dataset: demo_ecommerce_version_2
-      theme {
-
-      }
       value: VizFieldFull {
-        label: 'All-Time Orders'
-        ref: ref('ecommerce_orders', 'total_orders_count')
+        ref: 'total_orders'
         format {
           type: 'number'
           pattern: 'inherited'
         }
       }
       compare_value: VizPopSettings {
-        field: ref('ecommerce_orders', 'created_at')
+        field: r(ecommerce_orders.created_at)
         duration: 1
         granularity: 'quarter'
       }
