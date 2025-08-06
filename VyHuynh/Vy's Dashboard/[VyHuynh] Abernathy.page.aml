@@ -5,7 +5,7 @@ Dashboard vy_huynh_abernathy {
     label: 'View 1'
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
-      height: 1060
+      height: 1480
       grid_size: 20
       mobile {
         mode: 'auto'
@@ -58,6 +58,11 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 180, 1160, 20)
         layer: 9
       }
+      block v8 {
+        position: pos(20, 860, 1160, 580)
+        layer: 1
+      }
+      width: 1220
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
@@ -81,18 +86,6 @@ Dashboard vy_huynh_abernathy {
       block v6 {
         position: pos(20, 600, 1160, 580)
         layer: 4
-      }
-    }
-    tab tab4: CanvasLayout {
-      label: 'Overview'
-      height: 800
-      grid_size: 20
-      mobile {
-        mode: 'auto'
-      }
-      block v7 {
-        position: pos(20, 20, 1160, 580)
-        layer: 1
       }
     }
   }
@@ -334,44 +327,6 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
-  block v7: VizBlock {
-    label: 'Cross Merchandise Value by Month'
-    viz: AreaChart {
-      dataset: demo_ecommerce
-      x_axis: VizFieldFull {
-        ref: r(ecommerce_orders.created_at)
-        transformation: 'datetrunc month'
-        format {
-          type: 'date'
-          pattern: 'LLL yyyy'
-        }
-      }
-      y_axis {
-        label: 'GMV'
-        settings {
-          show_data_label_by: 'value'
-        }
-        series {
-          field: VizFieldFull {
-            ref: r(order_master.gmv)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-        }
-      }
-      settings {
-        show_rows_with_no_data: true
-        row_limit: 5000
-        x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
   block t3: TextBlock {
     content: @md <svg width="361" height="130" viewBox="0 0 361 130" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect x="1" y="1" width="359" height="128" rx="6" fill="#E8F2FD" stroke="#4896EA" stroke-dasharray="4 4"/>
@@ -446,12 +401,50 @@ Dashboard vy_huynh_abernathy {
     2,
     '#8F99A3'
   )
+  block v8: VizBlock {
+    label: 'Cross Merchandise Value by Month'
+    viz: AreaChart {
+      dataset: demo_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_orders.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        label: 'GMV'
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.gmv)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        show_rows_with_no_data: true
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
       to: [
         CustomMapping {
-          block: 'v7'
+          block: 'v8'
           disabled: true
         }
       ]
@@ -460,41 +453,8 @@ Dashboard vy_huynh_abernathy {
       from: 'v6'
       to: [
         CustomMapping {
-          block: 'v7'
+          block: 'v8'
           disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v7'
-      to: [
-        CustomMapping {
-          block: [
-            'v5',
-            'v6'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f2'
-      to: [
-        CustomMapping {
-          block: [
-            'v5',
-            'v6',
-            'v7'
-          ]
-          disabled: true
-        },
-        CustomMapping {
-          block: [
-            'v2',
-            'v3',
-            'v4'
-          ]
-          field: ref('ecommerce_cities', 'name')
         }
       ]
     },
@@ -508,15 +468,14 @@ Dashboard vy_huynh_abernathy {
       ]
     },
     FilterInteraction {
-      from: 'f1'
+      from: 'v8'
       to: [
         CustomMapping {
           block: [
-            'v2',
-            'v3',
-            'v4'
+            'v5',
+            'v6'
           ]
-          field: ref('ecommerce_countries', 'name')
+          disabled: true
         }
       ]
     }
