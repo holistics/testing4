@@ -244,6 +244,15 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
+            ref: r(demo_ecommerce_version_2.gmv)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        },
+        MetricSeries {
+          field: VizFieldFull {
             ref: r(demo_ecommerce_version_2.aov)
             format {
               type: 'number'
