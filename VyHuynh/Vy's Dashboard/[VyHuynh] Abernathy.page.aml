@@ -88,7 +88,7 @@ Dashboard vy_huynh_abernathy {
         layer: 4
       }
       block v9 {
-        position: pos(20, 1200, 1160, 460)
+        position: pos(20, 1200, 1160, 580)
         layer: 1
       }
     }
@@ -444,48 +444,32 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v9: VizBlock {
-    label: 'Total Revenue and Number of Order by Month'
-    viz: CombinationChart {
-      dataset: vyhuynh_ecommerce_dataset
+    label: 'Number of Order by Country Name and City Name'
+    viz: ColumnChart {
+      dataset: demo_ecommerce
       x_axis: VizFieldFull {
-        label: 'Order Month'
-        ref: r(vyht_ecommerce_orders_1.created_at)
+        ref: r(order_master.order_created_month)
         transformation: 'datetrunc month'
         format {
           type: 'date'
           pattern: 'LLL yyyy'
         }
       }
-      y_axis {
-        label: 'Total Revenue'
-        settings {
-          group_values_into: 10
-          show_data_label_by: 'value'
-        }
-        series {
-          mark_type: 'line'
-          field: VizFieldFull {
-            label: 'Total Revenue'
-            ref: r(vyhuynh_ecommerce_dataset.total_revenue)
-            format {
-              type: 'number'
-              pattern: '[$$]#,###'
-            }
-          }
-          settings {
-            line_interpolation: 'smooth'
-          }
+      legend: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
         }
       }
       y_axis {
-        label: 'Number of Order'
+        label: 'Total Order'
         settings {
-          alignment: 'right'
-          group_values_into: 10
+          show_data_label_by: 'value'
+          stack_series_by: 'value'
         }
         series {
           field: VizFieldFull {
-            ref: r(vyht_ecommerce_orders_1.id)
+            ref: r(order_master.order_id)
             aggregation: 'count distinct'
             format {
               type: 'number'
@@ -495,8 +479,8 @@ Dashboard vy_huynh_abernathy {
         }
       }
       settings {
-        row_limit: 100
-        x_axis_label: 'Order Month'
+        row_limit: 5000
+        x_axis_label: 'Country'
         x_axis_show_null_datetime: false
         aggregate_awareness {
           enabled: true
@@ -506,33 +490,6 @@ Dashboard vy_huynh_abernathy {
     }
   }
   interactions: [
-    FilterInteraction {
-      from: 'v2'
-      to: [
-        CustomMapping {
-          block: 'v9'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v3'
-      to: [
-        CustomMapping {
-          block: 'v9'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v4'
-      to: [
-        CustomMapping {
-          block: 'v9'
-          disabled: true
-        }
-      ]
-    },
     FilterInteraction {
       from: 'v5'
       to: [
@@ -552,6 +509,24 @@ Dashboard vy_huynh_abernathy {
       ]
     },
     FilterInteraction {
+      from: 'f1'
+      to: [
+        CustomMapping {
+          block: 'v9'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f2'
+      to: [
+        CustomMapping {
+          block: 'v9'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
       from: 'f2'
       to: [
         CustomMapping {
@@ -566,7 +541,8 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v5',
-            'v6'
+            'v6',
+            'v9'
           ]
           disabled: true
         }
@@ -576,11 +552,7 @@ Dashboard vy_huynh_abernathy {
       from: 'v9'
       to: [
         CustomMapping {
-          block: [
-            'v2',
-            'v3',
-            'v4'
-          ]
+          block: 'v8'
           disabled: true
         }
       ]
