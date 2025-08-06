@@ -66,7 +66,7 @@ Dashboard vy_huynh_abernathy {
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
-      height: 1220
+      height: 1820
       grid_size: 20
       mobile {
         mode: 'auto'
@@ -86,6 +86,10 @@ Dashboard vy_huynh_abernathy {
       block v6 {
         position: pos(20, 600, 1160, 580)
         layer: 4
+      }
+      block v9 {
+        position: pos(20, 1200, 1160, 580)
+        layer: 1
       }
     }
   }
@@ -439,6 +443,44 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v9: VizBlock {
+    label: 'Cross Merchandise Value by Month'
+    viz: ColumnChart {
+      dataset: demo_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_orders.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        label: 'GMV'
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.gmv)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        show_rows_with_no_data: true
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -459,6 +501,24 @@ Dashboard vy_huynh_abernathy {
       ]
     },
     FilterInteraction {
+      from: 'f1'
+      to: [
+        CustomMapping {
+          block: 'v9'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f2'
+      to: [
+        CustomMapping {
+          block: 'v9'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
       from: 'f2'
       to: [
         CustomMapping {
@@ -473,8 +533,18 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v5',
-            'v6'
+            'v6',
+            'v9'
           ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v9'
+      to: [
+        CustomMapping {
+          block: 'v8'
           disabled: true
         }
       ]
