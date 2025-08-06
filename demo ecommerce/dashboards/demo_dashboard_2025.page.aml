@@ -174,11 +174,8 @@ Dashboard company_dashboard_v {
     label: ' KPI Overview'
     viz: MetricSheet {
       dataset: demo_ecommerce_version_2
-      theme {
-
-      }
       date_field: VizFieldFull {
-        ref: ref('dim_dates', 'date_key')
+        ref: r(dim_dates.date_key)
         transformation: 'datetrunc month'
         format {
           type: 'date'
@@ -195,7 +192,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: 'total_orders'
+            ref: r(demo_ecommerce_version_2.total_orders)
             format {
               type: 'number'
               pattern: 'inherited'
@@ -204,7 +201,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: 'total_cancelled_orders'
+            ref: r(demo_ecommerce_version_2.total_cancelled_orders)
             format {
               type: 'number'
               pattern: 'inherited'
@@ -213,7 +210,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: 'total_refunded_orders'
+            ref: r(demo_ecommerce_version_2.total_refunded_orders)
             format {
               type: 'number'
               pattern: 'inherited'
@@ -222,7 +219,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: 'total_delivered_orders'
+            ref: r(demo_ecommerce_version_2.total_delivered_orders)
             format {
               type: 'number'
               pattern: 'inherited'
@@ -238,7 +235,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: 'nmv'
+            ref: r(demo_ecommerce_version_2.nmv)
             format {
               type: 'number'
               pattern: 'inherited'
@@ -247,16 +244,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: 'gmv'
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-        },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: 'aov'
+            ref: r(demo_ecommerce_version_2.aov)
             format {
               type: 'number'
               pattern: 'inherited'
