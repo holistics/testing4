@@ -403,7 +403,7 @@ Dashboard vy_huynh_abernathy {
   )
   block v8: VizBlock {
     label: 'Cross Merchandise Value by Month'
-    viz: AreaChart {
+    viz: ColumnChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
         ref: r(ecommerce_orders.created_at)
