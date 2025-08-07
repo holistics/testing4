@@ -72,7 +72,7 @@ Dashboard vy_huynh_abernathy {
         mode: 'auto'
       }
       block v5 {
-        position: pos(20, 80, 1160, 500)
+        position: pos(-2, 70, 1160, 500)
         layer: 1
       }
       block t1 {
