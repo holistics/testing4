@@ -57,6 +57,36 @@ Dashboard tai_test_new_block {
       }
     }
   }
+  block v_ydnh: VizBlock {
+    label: 'Order Id and User Id'
+    viz: DataTable {
+      dataset: demo_ecommerce
+      fields: [
+        VizFieldFull {
+          ref: r(order_master.order_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(order_master.user_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
 
   view: CanvasLayout {
     label: 'View 1'
@@ -73,6 +103,10 @@ Dashboard tai_test_new_block {
     block v_61hq {
       position: pos(440, 100, 400, 300)
       layer: 2
+    }
+    block v_ydnh {
+      position: pos(20, 420, 400, 300)
+      layer: 3
     }
     mobile {
       mode: 'auto'
