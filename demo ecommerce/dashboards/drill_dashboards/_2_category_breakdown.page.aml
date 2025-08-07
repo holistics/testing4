@@ -311,6 +311,14 @@ Dashboard _2_category_breakdown {
         mode: 'auto'
       }
     }
+    tab tab3: CanvasLayout {
+      label: 'Untitled'
+      height: 800
+      grid_size: 20
+      mobile {
+        mode: 'auto'
+      }
+    }
   }
   theme: H.themes.classic
   settings {

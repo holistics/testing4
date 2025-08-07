@@ -1,0 +1,22 @@
+Dashboard testing_reuse_block {
+  title: 'Testing Reuse Block'
+  description: ''
+
+  view: CanvasLayout {
+    label: 'View 1'
+    height: 840
+    grid_size: 20
+    mobile {
+      mode: 'auto'
+    }
+    block v1 {
+      position: pos(20, 20, 1180, 520)
+      layer: 1
+    }
+  }
+
+  theme: H.themes.vanilla
+  block v1: block_cohort_retention(
+    'quarter'
+  )
+}
