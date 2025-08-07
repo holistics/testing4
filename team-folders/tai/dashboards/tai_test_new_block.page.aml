@@ -56,6 +56,28 @@ Dashboard tai_test_new_block {
       }
     }
   }
+  block v_u2un: VizBlock {
+    label: 'City Name'
+    viz: DataTable {
+      dataset: demo_ecommerce
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_cities.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
 
   view: CanvasLayout {
     label: 'View 1'
@@ -72,6 +94,10 @@ Dashboard tai_test_new_block {
     block v_zv68 {
       position: pos(440, 100, 400, 300)
       layer: 2
+    }
+    block v_u2un {
+      position: pos(20, 420, 400, 300)
+      layer: 3
     }
     mobile {
       mode: 'auto'
