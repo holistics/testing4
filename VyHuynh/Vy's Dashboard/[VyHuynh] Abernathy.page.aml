@@ -1,0 +1,561 @@
+Dashboard vy_huynh_abernathy {
+  title: 'Vy Huynh Abernathy'
+  description: ''
+  view: TabLayout {
+    label: 'View 1'
+    tab tab2: CanvasLayout {
+      label: 'Revenue Overview'
+      height: 1480
+      grid_size: 20
+      mobile {
+        mode: 'auto'
+      }
+      block v2 {
+        position: pos(20, 220, 260, 140)
+        layer: 2
+      }
+      block v3 {
+        position: pos(20, 380, 1160, 460)
+        layer: 3
+      }
+      block v4 {
+        position: pos(300, 220, 260, 140)
+        layer: 2
+      }
+      block t3 {
+        position: pos(20, 20, 380, 160)
+        layer: 4
+      }
+      block t4 {
+        position: pos(40, 40, 60, 40)
+        layer: 5
+      }
+      block t5 {
+        position: pos(80, 40, 300, 40)
+        layer: 6
+      }
+      block f1 {
+        position: pos(80, 80, 280, 60)
+        layer: 7
+      }
+      block t6 {
+        position: pos(400, 20, 380, 160)
+        layer: 4
+      }
+      block t7 {
+        position: pos(420, 40, 60, 40)
+        layer: 5
+      }
+      block t8 {
+        position: pos(460, 40, 300, 60)
+        layer: 8
+      }
+      block f2 {
+        position: pos(460, 80, 280, 60)
+        layer: 7
+      }
+      block t9 {
+        position: pos(20, 180, 1160, 20)
+        layer: 9
+      }
+      block v8 {
+        position: pos(20, 860, 1160, 580)
+        layer: 1
+      }
+      width: 1220
+    }
+    tab tab3: CanvasLayout {
+      label: 'Regional Analysis'
+      height: 1820
+      grid_size: 20
+      mobile {
+        mode: 'auto'
+      }
+      block v5 {
+        position: pos(20, 80, 1160, 500)
+        layer: 1
+      }
+      block t1 {
+        position: pos(20, 20, 60, 60)
+        layer: 2
+      }
+      block t2 {
+        position: pos(80, 20, 400, 60)
+        layer: 3
+      }
+      block v6 {
+        position: pos(20, 600, 1160, 580)
+        layer: 4
+      }
+      block v9 {
+        position: pos(20, 1200, 1160, 580)
+        layer: 1
+      }
+    }
+  }
+
+  theme: H.themes.vanilla
+  block v2: VizBlock {
+    label: 'This month Revenue'
+    viz: MetricKpi {
+      dataset: vyhuynh_ecommerce_dataset
+      calculation monthly_revenue {
+        label: 'Monthly Revenue'
+        formula: @aql vyht_ecommerce_order_items
+  | sum(vyht_ecommerce_order_items.quantity * vyht_ecommerce_products.price);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(vyht_ecommerce_orders_1.created_at)
+        operator: 'matches'
+        value: 'July 2023'
+      }
+      value: VizFieldFull {
+        label: 'Total Revenue This Month'
+        ref: 'total_revenue'
+        format {
+          type: 'number'
+          pattern: '[$$]#,###'
+        }
+      }
+      compare_value: VizPopSettings {
+        field: r(vyht_ecommerce_orders_1.created_at)
+        duration: 1
+        granularity: 'month'
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v3: VizBlock {
+    label: 'Total Revenue and Number of Order by Month'
+    viz: CombinationChart {
+      dataset: vyhuynh_ecommerce_dataset
+      x_axis: VizFieldFull {
+        label: 'Order Month'
+        ref: r(vyht_ecommerce_orders_1.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        label: 'Total Revenue'
+        settings {
+          group_values_into: 10
+          show_data_label_by: 'value'
+        }
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            label: 'Total Revenue'
+            ref: 'total_revenue'
+            format {
+              type: 'number'
+              pattern: '[$$]#,###'
+            }
+          }
+          settings {
+            line_interpolation: 'smooth'
+          }
+        }
+      }
+      y_axis {
+        label: 'Number of Order'
+        settings {
+          alignment: 'right'
+          group_values_into: 10
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(vyht_ecommerce_orders_1.id)
+            aggregation: 'count distinct'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 100
+        x_axis_label: 'Order Month'
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v4: VizBlock {
+    label: 'This month Total Order'
+    viz: MetricKpi {
+      dataset: vyhuynh_ecommerce_dataset
+      calculation monthly_revenue {
+        label: 'Monthly Revenue'
+        formula: @aql vyht_ecommerce_order_items
+  | sum(vyht_ecommerce_order_items.quantity * vyht_ecommerce_products.price);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(vyht_ecommerce_orders_1.created_at)
+        operator: 'matches'
+        value: 'July 2023'
+      }
+      value: VizFieldFull {
+        label: 'Total Order This Month'
+        ref: r(vyht_ecommerce_orders_1.id)
+        aggregation: 'count distinct'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizPopSettings {
+        field: r(vyht_ecommerce_orders_1.created_at)
+        duration: 1
+        granularity: 'month'
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v5: VizBlock {
+    label: 'GMV - Gross Merchandise Value by Continent Name'
+    viz: BarChart {
+      dataset: demo_ecommerce
+      legend: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.gmv)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block t1: TextBlock {
+    content: @md <div id="regional-analysis">  <svg width="40" height="40
+    " viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="49.7598" cy="49.7598" r="49.7598" fill="#1B7CE4"/>
+<path d="M39.2641 56.5871C33.6879 48.5033 32.6528 47.6736 32.6528 44.7027C32.6528 40.6332 35.9518 37.3342 40.0213 37.3342C44.0909 37.3342 47.3899 40.6332 47.3899 44.7027C47.3899 47.6736 46.3548 48.5033 40.7786 56.5871C40.4127 57.1157 39.63 57.1157 39.2641 56.5871ZM40.0213 47.7729C41.717 47.7729 43.0916 46.3983 43.0916 44.7027C43.0916 43.0071 41.717 41.6325 40.0213 41.6325C38.3257 41.6325 36.9511 43.0071 36.9511 44.7027C36.9511 46.3983 38.3257 47.7729 40.0213 47.7729Z" fill="white"/>
+<path d="M54.0011 46.7624C48.4249 38.6786 47.3899 37.849 47.3899 34.878C47.3899 30.8085 50.6888 27.5095 54.7584 27.5095C58.8279 27.5095 62.1269 30.8085 62.1269 34.878C62.1269 37.849 61.0918 38.6786 55.5156 46.7624C55.1497 47.291 54.367 47.291 54.0011 46.7624ZM54.7584 37.9482C56.454 37.9482 57.8286 36.5737 57.8286 34.878C57.8286 33.1824 56.454 31.8078 54.7584 31.8078C53.0627 31.8078 51.6881 33.1824 51.6881 34.878C51.6881 36.5737 53.0627 37.9482 54.7584 37.9482Z" fill="white"/>
+<path d="M51.5777 48.44L51.5749 48.436C51.0899 47.7329 50.6341 47.0776 50.2068 46.466C50.1505 46.809 50.0726 47.1567 49.9671 47.5131C49.6852 48.4651 49.2472 49.3386 48.7011 50.2466C48.0331 51.3573 47.0331 52.7823 45.6642 54.7331C44.9473 55.7547 44.1293 56.9204 43.2048 58.2607L43.202 58.2647C41.664 60.4865 38.3785 60.4863 36.8407 58.2647L36.8379 58.2607C35.9135 56.9206 35.0956 55.7551 34.3789 54.7336C33.0099 52.7829 32.0096 51.3573 31.3416 50.2466C30.7955 49.3386 30.3575 48.4651 30.0756 47.5131C29.787 46.5385 29.7054 45.6296 29.7054 44.7027C29.7054 42.4528 30.4257 40.3711 31.6483 38.6756L31.5947 38.6221C31.2668 38.2941 30.8035 38.1397 30.3443 38.2053L23.5932 39.1697C22.9279 39.2648 22.4112 39.7979 22.3369 40.4659L21.8547 44.8058C21.8181 45.1357 21.8938 45.4682 22.0697 45.7496L26.524 52.8765L24.8146 58.0047C24.6381 58.5342 24.7759 59.1181 25.1707 59.5128L28.5462 62.8883C28.7415 63.0836 28.9877 63.2201 29.2569 63.2822L34.5411 64.5016L34.8804 66.8768C34.9255 67.1925 35.0718 67.485 35.2972 67.7105L36.0492 68.4624C36.5549 68.9681 37.3507 69.0378 37.9365 68.6276L41.7612 65.9495L44.7584 70.2299C45.0043 70.5812 45.3911 70.8079 45.8178 70.8509L51.2426 71.3974C51.7871 71.4523 52.3171 71.2009 52.6192 70.7445L56.128 65.4435L70.6645 59.3475C71.0371 59.1913 71.3292 58.8889 71.4725 58.5111L76.7769 44.5268C76.9541 44.0596 76.8825 43.5345 76.5868 43.1318C76.291 42.729 75.8113 42.5036 75.3125 42.533L68.084 42.9582L64.9377 36.678C64.8819 37.0091 64.8059 37.3447 64.7041 37.6885C64.4222 38.6404 63.9842 39.5139 63.4381 40.4219C62.7701 41.5326 61.7701 42.9577 60.4012 44.9085C59.6843 45.93 58.8663 47.0957 57.9418 48.436L57.939 48.44C56.401 50.6618 53.1155 50.6616 51.5777 48.44Z" fill="white"/>
+</svg>
+</div>;;
+  }
+  block t2: TextBlock {
+    content: @md # Regional Analysis;;
+  }
+  block v6: VizBlock {
+    label: 'Number of Order by Country Name and City Name'
+    viz: ColumnChart {
+      dataset: demo_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_countries.name)
+        format {
+          type: 'text'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(ecommerce_cities.name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        label: 'Total Order'
+        settings {
+          show_data_label_by: 'value'
+          stack_series_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.order_id)
+            aggregation: 'count distinct'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_label: 'Country'
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block t3: TextBlock {
+    content: @md <svg width="361" height="130" viewBox="0 0 361 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="1" y="1" width="359" height="128" rx="6" fill="#E8F2FD" stroke="#4896EA" stroke-dasharray="4 4"/>
+</svg>;;
+  }
+  block t4: TextBlock {
+    content: @md <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="40" width="40" height="40" rx="4" transform="rotate(-90 0 40)" fill="#1B7CE4"/>
+<path d="M30.2524 9.28125H9.74783C8.44664 9.28125 7.79011 10.8599 8.712 11.7819L17.0703 20.1419V28.6904C17.0703 28.8992 17.1149 29.1056 17.2012 29.2957C17.2875 29.4859 17.4134 29.6553 17.5706 29.7928L20.5002 32.3555C21.4358 33.1741 22.9297 32.524 22.9297 31.2531V20.1419L31.2882 11.7819C32.2083 10.8618 31.5562 9.28125 30.2524 9.28125ZM21.4648 19.5352V31.2539L18.5352 28.6904V19.5352L9.74609 10.7461H30.2539L21.4648 19.5352Z" fill="white"/>
+</svg>;;
+  }
+  block t5: TextBlock {
+    content: @md ### Filter by Country;;
+  }
+  block f1: FilterBlock {
+    label: 'Country Name'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: r(ecommerce_countries.name)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+    settings {
+      drillthrough: Drillthrough {
+        enabled: true
+        sources: [
+          AutoDrillthroughSource {
+          }
+        ]
+      }
+    }
+  }
+  block t6: TextBlock {
+    content: @md <svg width="361" height="130" viewBox="0 0 361 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="1" y="1" width="359" height="128" rx="6" fill="#E8F2FD" stroke="#4896EA" stroke-dasharray="4 4"/>
+</svg>;;
+  }
+  block t7: TextBlock {
+    content: @md <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="40" width="40" height="40" rx="4" transform="rotate(-90 0 40)" fill="#1B7CE4"/>
+<path d="M30.2524 9.28125H9.74783C8.44664 9.28125 7.79011 10.8599 8.712 11.7819L17.0703 20.1419V28.6904C17.0703 28.8992 17.1149 29.1056 17.2012 29.2957C17.2875 29.4859 17.4134 29.6553 17.5706 29.7928L20.5002 32.3555C21.4358 33.1741 22.9297 32.524 22.9297 31.2531V20.1419L31.2882 11.7819C32.2083 10.8618 31.5562 9.28125 30.2524 9.28125ZM21.4648 19.5352V31.2539L18.5352 28.6904V19.5352L9.74609 10.7461H30.2539L21.4648 19.5352Z" fill="white"/>
+</svg>;;
+  }
+  block t8: TextBlock {
+    content: @md ### Filter by City;;
+  }
+  block f2: FilterBlock {
+    label: 'City Name'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: r(ecommerce_cities.name)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+    settings {
+      drillthrough: Drillthrough {
+        enabled: true
+        sources: [
+          AutoDrillthroughSource {
+          }
+        ]
+      }
+    }
+  }
+  block t9: H.blocks.line(
+    2,
+    '#8F99A3'
+  )
+  block v8: VizBlock {
+    label: 'Cross Merchandise Value by Month'
+    viz: ColumnChart {
+      dataset: demo_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_orders.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        label: 'GMV'
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.gmv)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        show_rows_with_no_data: true
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v9: VizBlock {
+    label: 'Number of Order by Country Name and City Name'
+    viz: ColumnChart {
+      dataset: demo_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(order_master.order_created_month)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        label: 'Total Order'
+        settings {
+          show_data_label_by: 'value'
+          stack_series_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.order_id)
+            aggregation: 'count distinct'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_label: 'Country'
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  interactions: [
+    FilterInteraction {
+      from: 'v5'
+      to: [
+        CustomMapping {
+          block: 'v8'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v6'
+      to: [
+        CustomMapping {
+          block: 'v8'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f1'
+      to: [
+        CustomMapping {
+          block: 'v9'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f2'
+      to: [
+        CustomMapping {
+          block: 'v9'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f2'
+      to: [
+        CustomMapping {
+          block: 'f1'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v8'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v6',
+            'v9'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v9'
+      to: [
+        CustomMapping {
+          block: 'v8'
+          disabled: true
+        }
+      ]
+    }
+  ]
+}

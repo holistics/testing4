@@ -22,8 +22,7 @@ Dataset khai_ecommerce {
     relationship(users.city_id > cities.id, true),
     relationship(order_items.product_id > products.id, true),
     relationship(products.merchant_id > merchants.id, true),
-    relationship(merchants.city_id > cities.id, true)
-    ,
+    relationship(merchants.city_id > cities.id, false),
     relationship(orders.created_date > khai_date_d.date_key, true)
   ]
 
@@ -35,7 +34,7 @@ Dataset khai_ecommerce {
     type: 'datetime'
     definition: @aql min(orders.created_at) | dimensionalize(users.id) ;;
   }
-  
+
   metric revenue {
     label: 'Revenue'
     type: 'number'
