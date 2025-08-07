@@ -1,30 +1,24 @@
-Dashboard vux_canvas {
-  title: 'Vux Canvas'
-  description: ''
+Dashboard _tuwwu {
+  title: 'Khai Personal Dashboard'
   block title: TextBlock {
     content: @md # Your title goes here ;;
   }
   block v1: VizBlock {
-    label: 'Daily GMV vs. 7-day Moving Average'
-    description: @md # Description
-abc;;
+    label: 'Total Orders'
     viz: DataTable {
       dataset: demo_ecommerce
-      filter {
-        field: ref('order_master', 'status')
-        operator: 'is'
-        value: 'delivered'
-      }
       fields: [
         VizFieldFull {
-          ref: ref('order_master', 'status')
+          ref: 'total_orders'
           format {
-            type: 'text'
+            type: 'number'
+            pattern: 'inherited'
           }
         }
       ]
       settings {
         show_row_number: true
+        row_limit: 5000
         aggregate_awareness {
           enabled: true
           debug_comments: true
@@ -32,22 +26,21 @@ abc;;
       }
     }
   }
-
+  interactions: []
   view: CanvasLayout {
     label: 'View 1'
     height: 840
     grid_size: 20
+    block v1 {
+      position: pos(20, 100, 500, 300)
+      layer: 1
+    }
     block title {
       position: pos(20, 20, 1160, 60)
-    }
-    block v1 {
-      position: pos(20, 180, 400, 220)
-      layer: 1
     }
     mobile {
       mode: 'auto'
     }
   }
-
   theme: H.themes.vanilla
 }

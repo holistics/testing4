@@ -1,21 +1,21 @@
-PreAggregate agg_daily {
-  dimension timestamp {
-    for: ref('order_master','order_created_at')
-    time_granularity: 'day'
-  }
+// PreAggregate agg_daily {
+//   dimension timestamp {
+//     for: ref('order_master','order_created_at')
+//     time_granularity: 'day'
+//   }
 
-  measure order_count {
-    for: ref('order_master','order_id')
-    aggregation_type: 'count'
-  }
+//   measure order_count {
+//     for: ref('order_master','order_id')
+//     aggregation_type: 'count'
+//   }
 
-  persistence: IncrementalPersistence {
-    schema: 'persisted'
-    incremental_column: 'timestamp'
-  }
-}
+//   persistence: IncrementalPersistence {
+//     schema: 'persisted'
+//     incremental_column: 'timestamp'
+//   }
+// }
 
-Dataset demo_ecommerce {
+Dataset ecom_dataset_vux {
   __engine__: 'aql' //turn this Dataset to using AQL Engine
   label: '[Demo] Ecommerce (Official)'
   description: "Official dataset for demoing E-commerce use cases test"
@@ -25,12 +25,6 @@ Dataset demo_ecommerce {
 pre_aggregates: {
   daily: agg_daily
 }
-
-  permission country_access {
-    field: ref('ecommerce_countries', 'continent_name')
-    operator: 'matches_user_attribute'
-    value: 'region'
-  }
 
 
   models: [
@@ -48,6 +42,12 @@ pre_aggregates: {
     ecommerce_product_images,
     param_model_nam
   ]
+
+  permission country_access {
+    field: ref('ecommerce_countries', 'continent_name')
+    operator: 'matches_user_attribute'
+    value: 'region'
+  }
 
   // view {
   //   model ecommerce_users {
@@ -328,5 +328,39 @@ pre_aggregates: {
         , then: map_categories.category
       ) ;;
     }
+
+  metric avg_latest_6m_normalized {
+    label: 'Latest 6m Avg Normalized Consumption (Nested Agg.)'
+    type: 'number'
+    definition: @aql unique(order_master.order_created_at)
+      | select(
+        order_master.order_created_at
+        , v: order_master.amount
+        | window_avg(-5..0, order: order_master.order_created_at, null_if_incomplete: false)
+      )
+      filter(
+        order_master.order_created_at == window_max(max(order_master.order_created_at), ..)
+      )
+      | min(v)
+      | of_all(order_master.order_created_at)
+      ;;
+  }
+
+  metric avg_latest_13_18m_normalized {
+    label: 'Latest 13_18m Avg Normalized Consumption (Nested Agg.)'
+    type: 'number'
+    definition: @aql unique(order_master.order_created_at)
+      | select(
+          order_master.order_created_at
+          , v: order_master.amount
+          | window_avg(-17..-12, order: order_master.order_created_at, null_if_incomplete: false)
+        )
+      | filter(
+          order_master.order_created_at == window_max(max(order_master.order_created_at), ..)
+        )
+      | min(v)
+      | of_all(order_master.order_created_at)
+      ;;
+  }
 
 }

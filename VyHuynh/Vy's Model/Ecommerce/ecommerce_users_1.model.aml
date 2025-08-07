@@ -1,4 +1,4 @@
-Model users {
+Model vyht_ecommerce_users_1 {
   type: 'table'
   label: 'Users'
   description: ''
@@ -64,27 +64,6 @@ Model users {
     definition: @sql {{ #SOURCE.full_name }};;
   }
 
-  dimension email_pii {
-    label: 'Email Pii'
-    description: 'The email for the user. [sensitive data may be restricted]'
-    type: 'text'
-    hidden: false
-    definition: @aql
-      case(
-        when:
-          in('some_email@test.com', H.current_user.h_email),
-        then: users.email,
-        else: '(redacted)'
-      )
-    ;;
-  }
-
-  measure total_users {
-    label: 'Total Users'
-    type: 'number'
-    definition: @aql count(users.id);; 
-  }
-
-  owner: 'khai.to+demo4@holistics.io'
+  owner: 'vy.ht@holistics.io'
   table_name: '"ecommerce"."users"'
 }
