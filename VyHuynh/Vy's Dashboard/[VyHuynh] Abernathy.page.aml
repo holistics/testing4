@@ -62,6 +62,10 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 860, 1160, 580)
         layer: 1
       }
+      block v_711g {
+        position: pos(20, 1460, 1160, 580)
+        layer: 1
+      }
       width: 1220
     }
     tab tab3: CanvasLayout {
@@ -86,10 +90,6 @@ Dashboard vy_huynh_abernathy {
       block v6 {
         position: pos(20, 600, 1160, 580)
         layer: 4
-      }
-      block v9 {
-        position: pos(20, 1200, 1160, 580)
-        layer: 1
       }
     }
   }
@@ -443,7 +443,7 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
-  block v9: VizBlock {
+  block v_711g: VizBlock {
     label: 'Number of Order by Country Name and City Name'
     viz: ColumnChart {
       dataset: demo_ecommerce
@@ -494,7 +494,10 @@ Dashboard vy_huynh_abernathy {
       from: 'v5'
       to: [
         CustomMapping {
-          block: 'v8'
+          block: [
+            'v8',
+            'v_711g'
+          ]
           disabled: true
         }
       ]
@@ -503,25 +506,10 @@ Dashboard vy_huynh_abernathy {
       from: 'v6'
       to: [
         CustomMapping {
-          block: 'v8'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f1'
-      to: [
-        CustomMapping {
-          block: 'v9'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f2'
-      to: [
-        CustomMapping {
-          block: 'v9'
+          block: [
+            'v8',
+            'v_711g'
+          ]
           disabled: true
         }
       ]
@@ -541,18 +529,20 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v5',
-            'v6',
-            'v9'
+            'v6'
           ]
           disabled: true
         }
       ]
     },
     FilterInteraction {
-      from: 'v9'
+      from: 'v_711g'
       to: [
         CustomMapping {
-          block: 'v8'
+          block: [
+            'v5',
+            'v6'
+          ]
           disabled: true
         }
       ]
