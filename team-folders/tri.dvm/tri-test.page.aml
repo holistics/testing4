@@ -4,7 +4,7 @@ Dashboard tri_test {
 
   view: CanvasLayout {
     label: 'View 1'
-    height: 4340
+    height: 3620
     grid_size: 20
     mobile {
       mode: 'auto'
@@ -41,7 +41,15 @@ Dashboard tri_test {
       position: pos(460, 260, 340, 100)
       layer: 9
     }
-    width: 1320
+    block v_cx59 {
+      position: pos(60, 980, 400, 300)
+      layer: 10
+    }
+    block f_rfyo {
+      position: pos(140, 1340, 300, 100)
+      layer: 11
+    }
+    width: 2220
   }
 
   theme: H.themes.classic.extend(
@@ -330,7 +338,66 @@ Dashboard tri_test {
       value: '$H_NIL$'
     }
   }
+  block v_cx59: VizBlock {
+    label: 'Total Orders by Country Code'
+    viz: FilledMap {
+      dataset: demo_ecommerce
+      location {
+        field: VizFieldFull {
+          ref: r(ecommerce_cities.country_code)
+          format {
+            type: 'text'
+          }
+        }
+        primary_field: true
+      }
+      value: VizFieldFull {
+        ref: r(demo_ecommerce.total_orders)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      settings {
+        value_colors {
+          min {
+            value: 1718
+            color: '#FDE725'
+          }
+          max {
+            value: 3804
+            color: '#21908D'
+          }
+        }
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block f_rfyo: FilterBlock {
+    label: 'Order Master Status'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: r(order_master.status)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
   interactions: [
+    FilterInteraction {
+      from: 'f1'
+      to: [
+        CustomMapping {
+          block: 'f_rfyo'
+          disabled: true
+        }
+      ]
+    },
     FilterInteraction {
       from: 'f2'
       to: [
@@ -345,6 +412,15 @@ Dashboard tri_test {
       to: [
         CustomMapping {
           block: 'f2'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_rfyo'
+      to: [
+        CustomMapping {
+          block: 'f1'
           disabled: true
         }
       ]
