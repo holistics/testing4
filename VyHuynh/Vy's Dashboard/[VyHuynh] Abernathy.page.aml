@@ -506,6 +506,11 @@ Dashboard vy_huynh_abernathy {
     label: 'Order Created Month, Continent Name, and CountD of User Id'
     viz: DataTable {
       dataset: demo_ecommerce
+      filter {
+        field: r(order_master.order_created_month)
+        operator: 'matches'
+        value: 'may 2023'
+      }
       fields: [
         VizFieldFull {
           ref: r(order_master.order_created_month)
