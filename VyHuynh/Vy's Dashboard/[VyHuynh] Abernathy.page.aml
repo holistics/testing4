@@ -257,6 +257,11 @@ Dashboard vy_huynh_abernathy {
     label: 'GMV - Gross Merchandise Value by Continent Name'
     viz: BarChart {
       dataset: demo_ecommerce
+      filter {
+        field: r(order_master.order_created_month)
+        operator: 'matches'
+        value: 'may 2023'
+      }
       legend: VizFieldFull {
         ref: r(ecommerce_countries.continent_name)
         format {
