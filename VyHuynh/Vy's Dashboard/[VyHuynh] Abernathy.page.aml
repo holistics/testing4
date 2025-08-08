@@ -72,7 +72,7 @@ Dashboard vy_huynh_abernathy {
         mode: 'auto'
       }
       block v5 {
-        position: pos(-2, 70, 1160, 500)
+        position: pos(20, 80, 1160, 500)
         layer: 1
       }
       block t1 {
@@ -89,6 +89,19 @@ Dashboard vy_huynh_abernathy {
       }
       block v9 {
         position: pos(20, 1200, 1160, 580)
+        layer: 1
+      }
+    }
+    tab tab_5auh: CanvasLayout {
+      label: 'Raw Data Table'
+      height: 840
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+      block v_ztqi {
+        position: pos(20, 20, 1160, 420)
         layer: 1
       }
     }
@@ -489,12 +502,51 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v_ztqi: VizBlock {
+    label: 'Order Created Month, Continent Name, and CountD of User Id'
+    viz: DataTable {
+      dataset: demo_ecommerce
+      fields: [
+        VizFieldFull {
+          ref: r(order_master.order_created_month)
+          format {
+            type: 'date'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_countries.continent_name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(order_master.user_id)
+          aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
       to: [
         CustomMapping {
-          block: 'v8'
+          block: [
+            'v8',
+            'v_ztqi'
+          ]
           disabled: true
         }
       ]
@@ -503,7 +555,10 @@ Dashboard vy_huynh_abernathy {
       from: 'v6'
       to: [
         CustomMapping {
-          block: 'v8'
+          block: [
+            'v8',
+            'v_ztqi'
+          ]
           disabled: true
         }
       ]
@@ -512,7 +567,10 @@ Dashboard vy_huynh_abernathy {
       from: 'f1'
       to: [
         CustomMapping {
-          block: 'v9'
+          block: [
+            'v9',
+            'v_ztqi'
+          ]
           disabled: true
         }
       ]
@@ -521,7 +579,10 @@ Dashboard vy_huynh_abernathy {
       from: 'f2'
       to: [
         CustomMapping {
-          block: 'v9'
+          block: [
+            'v9',
+            'v_ztqi'
+          ]
           disabled: true
         }
       ]
@@ -542,7 +603,8 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v5',
             'v6',
-            'v9'
+            'v9',
+            'v_ztqi'
           ]
           disabled: true
         }
@@ -552,7 +614,24 @@ Dashboard vy_huynh_abernathy {
       from: 'v9'
       to: [
         CustomMapping {
-          block: 'v8'
+          block: [
+            'v8',
+            'v_ztqi'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ztqi'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v6',
+            'v8',
+            'v9'
+          ]
           disabled: true
         }
       ]
