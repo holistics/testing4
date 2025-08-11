@@ -536,10 +536,17 @@ Dashboard vy_huynh_abernathy {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'count_distinct_user_id_1'
         }
       ]
       settings {
         show_row_number: true
+        sorts: [
+          SortSetting {
+            key: 'count_distinct_user_id_1'
+            direction: 'asc'
+          }
+        ]
         row_limit: 5000
         aggregate_awareness {
           enabled: true
