@@ -471,6 +471,7 @@ display: block;
           format {
             type: 'text'
           }
+          uname: 'ecommerce_countries_continent_name'
         },
         VizFieldFull {
           ref: r(ecommerce_countries.name)
@@ -510,6 +511,7 @@ display: block;
         }
       ]
       settings {
+        wrap_header_text: true
         show_row_total: true
         show_column_total: true
         aggregate_awareness {
@@ -520,6 +522,10 @@ display: block;
           ColumnStyle {
             key: 'ecommerce_countries_name'
             width: 166
+          },
+          ColumnStyle {
+            key: 'ecommerce_countries_continent_name'
+            width: 54
           }
         ]
       }
