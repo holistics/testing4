@@ -91,6 +91,10 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 600, 1160, 580)
         layer: 4
       }
+      block v_wsww {
+        position: pos(20, 1200, 1160, 420)
+        layer: 1
+      }
     }
     tab tab_5auh: CanvasLayout {
       label: 'Raw Data Table'
@@ -607,6 +611,54 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v_wsww: VizBlock {
+    label: 'Order Created Month, City Name, and CountD of User Id'
+    viz: DataTable {
+      dataset: demo_ecommerce
+      filter {
+        field: r(order_master.order_created_month)
+        operator: 'matches'
+        value: 'may 2023'
+      }
+      fields: [
+        VizFieldFull {
+          ref: r(order_master.order_created_month)
+          format {
+            type: 'date'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_cities.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(order_master.user_id)
+          aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'count_distinct_user_id_1'
+        }
+      ]
+      settings {
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            key: 'count_distinct_user_id_1'
+            direction: 'desc'
+          }
+        ]
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -635,6 +687,24 @@ Dashboard vy_huynh_abernathy {
       ]
     },
     FilterInteraction {
+      from: 'f1'
+      to: [
+        CustomMapping {
+          block: 'v_wsww'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f2'
+      to: [
+        CustomMapping {
+          block: 'v_wsww'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
       from: 'f2'
       to: [
         CustomMapping {
@@ -647,7 +717,10 @@ Dashboard vy_huynh_abernathy {
       from: 'v8'
       to: [
         CustomMapping {
-          block: 'v_hk4u'
+          block: [
+            'v_hk4u',
+            'v_wsww'
+          ]
           disabled: true
         }
       ]
@@ -659,8 +732,18 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v8',
             'v_ztqi',
-            'v_hk4u'
+            'v_hk4u',
+            'v_wsww'
           ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ztqi'
+      to: [
+        CustomMapping {
+          block: 'v_wsww'
           disabled: true
         }
       ]
@@ -673,7 +756,22 @@ Dashboard vy_huynh_abernathy {
             'v5',
             'v6',
             'v8',
-            'v_711g'
+            'v_711g',
+            'v_wsww'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_wsww'
+      to: [
+        CustomMapping {
+          block: [
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u'
           ]
           disabled: true
         }
