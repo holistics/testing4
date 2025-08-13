@@ -635,24 +635,6 @@ Dashboard vy_huynh_abernathy {
       ]
     },
     FilterInteraction {
-      from: 'f1'
-      to: [
-        CustomMapping {
-          block: 'v_hk4u'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f2'
-      to: [
-        CustomMapping {
-          block: 'v_hk4u'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
       from: 'f2'
       to: [
         CustomMapping {
