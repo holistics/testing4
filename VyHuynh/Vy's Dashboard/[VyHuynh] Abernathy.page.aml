@@ -94,7 +94,7 @@ Dashboard vy_huynh_abernathy {
     }
     tab tab_5auh: CanvasLayout {
       label: 'Raw Data Table'
-      height: 840
+      height: 900
       grid_size: 20
       auto_expand_vertically: true
       mobile {
