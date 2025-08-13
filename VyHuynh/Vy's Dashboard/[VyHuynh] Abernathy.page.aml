@@ -677,11 +677,7 @@ Dashboard vy_huynh_abernathy {
       from: 'v6'
       to: [
         CustomMapping {
-          block: [
-            'v8',
-            'v_ztqi',
-            'v_hk4u'
-          ]
+          block: 'v8'
           disabled: true
         }
       ]
