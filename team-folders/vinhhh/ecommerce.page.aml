@@ -23,7 +23,10 @@ Dashboard vinhhh_ecommerce {
     }
     default {
       operator: 'is'
-      value: ['Male', 'Female']
+      value: [
+        'Male',
+        'Female'
+      ]
     }
   }
   block age_demographic: FilterBlock {
@@ -464,19 +467,21 @@ display: block;
       dataset: demo_ecommerce
       rows: [
         VizFieldFull {
-          ref: ref('ecommerce_countries', 'continent_name')
+          ref: r(ecommerce_countries.continent_name)
           format {
             type: 'text'
           }
+          uname: 'ecommerce_countries_continent_name'
         },
         VizFieldFull {
-          ref: ref('ecommerce_countries', 'name')
+          ref: r(ecommerce_countries.name)
           format {
             type: 'text'
           }
+          uname: 'ecommerce_countries_name'
         },
         VizFieldFull {
-          ref: ref('ecommerce_cities', 'name')
+          ref: r(ecommerce_cities.name)
           format {
             type: 'text'
           }
@@ -484,13 +489,13 @@ display: block;
       ]
       columns: [
         VizFieldFull {
-          ref: ref('ecommerce_users', 'age_group')
+          ref: r(ecommerce_users.age_group)
           format {
             type: 'text'
           }
         },
         VizFieldFull {
-          ref: ref('ecommerce_users', 'gender')
+          ref: r(ecommerce_users.gender)
           format {
             type: 'text'
           }
@@ -498,7 +503,7 @@ display: block;
       ]
       values: [
         VizFieldFull {
-          ref: ref('order_master', 'gmv')
+          ref: r(order_master.gmv)
           format {
             type: 'number'
             pattern: 'inherited'
@@ -506,12 +511,23 @@ display: block;
         }
       ]
       settings {
+        wrap_header_text: true
         show_row_total: true
         show_column_total: true
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
+        column_styles: [
+          ColumnStyle {
+            key: 'ecommerce_countries_name'
+            width: 166
+          },
+          ColumnStyle {
+            key: 'ecommerce_countries_continent_name'
+            width: 54
+          }
+        ]
       }
     }
   }
