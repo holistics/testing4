@@ -16,6 +16,11 @@ Model param_model {
     allowed_values: ['Revenue', 'Total Orders', 'Total Users']
   }
 
+  param date_param {
+    label: 'Date Param'
+    type: 'datetime'
+  }
+
   owner: 'khai.to@holistics.io'
   query: @sql select 1;;
   models: [

@@ -35,6 +35,23 @@ Dataset khai_ecommerce {
     definition: @aql min(orders.created_at) | dimensionalize(users.id) ;;
   }
 
+  dimension user_order_frequency {
+    model: users
+    label: 'User Order Frequency'
+    type: 'text'
+    hidden: false
+    definition: @aql 
+      case(
+        when: total_orders < 10, then: '< 10 orders'
+        , when: total_orders > 10 and total_orders < 50, then: 'between 10 and 50 orders'
+        , when: total_orders > 50, then: '> 50 orders'
+        , else: null
+      )
+      | where(orders.created_at matches (param_model.date_param | first()))
+      | dimensionalize(users.id)
+     ;;
+  }
+
   metric revenue {
     label: 'Revenue'
     type: 'number'
