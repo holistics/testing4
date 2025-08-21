@@ -1,5 +1,5 @@
-Dashboard untitled_8 {
-  title: 'Untitled 8'
+Dashboard onboarding_dashboard {
+  title: 'Onboarding Dashboard'
   description: ''
   block title: TextBlock {
     content: @md # Order by Month Dashboard ;;
