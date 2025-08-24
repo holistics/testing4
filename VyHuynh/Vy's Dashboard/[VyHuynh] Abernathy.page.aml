@@ -15,7 +15,7 @@ Dashboard vy_huynh_abernathy {
         layer: 2
       }
       block v3 {
-        position: pos(20, 380, 1160, 460)
+        position: pos(20, 980, 1160, 460)
         layer: 3
       }
       block v4 {
@@ -59,7 +59,7 @@ Dashboard vy_huynh_abernathy {
         layer: 9
       }
       block v8 {
-        position: pos(20, 860, 1160, 580)
+        position: pos(20, 380, 1160, 580)
         layer: 1
       }
       block v_711g {
@@ -169,16 +169,17 @@ Dashboard vy_huynh_abernathy {
           show_data_label_by: 'value'
         }
         series {
-          mark_type: 'line'
+          mark_type: 'column'
           field: VizFieldFull {
             label: 'Total Revenue'
-            ref: 'total_revenue'
+            ref: r(vyhuynh_ecommerce_dataset.total_revenue)
             format {
               type: 'number'
               pattern: '[$$]#,###'
             }
           }
           settings {
+            color: '#255DD4'
             line_interpolation: 'smooth'
           }
         }
@@ -190,6 +191,7 @@ Dashboard vy_huynh_abernathy {
           group_values_into: 10
         }
         series {
+          mark_type: 'line'
           field: VizFieldFull {
             ref: r(vyht_ecommerce_orders_1.id)
             aggregation: 'count distinct'
@@ -197,6 +199,9 @@ Dashboard vy_huynh_abernathy {
               type: 'number'
               pattern: 'inherited'
             }
+          }
+          settings {
+            color: '#18A59E'
           }
         }
       }
@@ -435,8 +440,8 @@ Dashboard vy_huynh_abernathy {
     '#8F99A3'
   )
   block v8: VizBlock {
-    label: 'Cross Merchandise Value by Month'
-    viz: ColumnChart {
+    label: 'GMV - Gross Merchandise Value by Month'
+    viz: AreaChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
         ref: r(ecommerce_orders.created_at)
