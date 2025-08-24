@@ -157,6 +157,11 @@ Dashboard vy_huynh_abernathy {
     label: 'Total Revenue and Number of Order by Month'
     viz: CombinationChart {
       dataset: vyhuynh_ecommerce_dataset
+      filter {
+        field: r(vyht_ecommerce_orders_1.created_at)
+        operator: 'matches'
+        value: '2023'
+      }
       x_axis: VizFieldFull {
         label: 'Order Month'
         ref: r(vyht_ecommerce_orders_1.created_at)
@@ -184,7 +189,6 @@ Dashboard vy_huynh_abernathy {
           }
           settings {
             color: '#255DD4'
-            line_interpolation: 'smooth'
           }
         }
       }
