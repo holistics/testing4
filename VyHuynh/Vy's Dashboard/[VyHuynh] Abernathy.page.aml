@@ -160,7 +160,7 @@ Dashboard vy_huynh_abernathy {
       filter {
         field: r(vyht_ecommerce_orders_1.created_at)
         operator: 'matches'
-        value: '2023'
+        value: '2024'
       }
       x_axis: VizFieldFull {
         label: 'Order Month'
