@@ -557,6 +557,103 @@ Dashboard vy_huynh_abernathy {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'count_distinct_user_id_1'
+        }
+      ]
+      settings {
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            key: 'count_distinct_user_id_1'
+            direction: 'desc'
+          }
+        ]
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_hk4u: VizBlock {
+    label: 'Order Created Month, City Name, and CountD of User Id'
+    viz: DataTable {
+      dataset: demo_ecommerce
+      filter {
+        field: r(order_master.order_created_month)
+        operator: 'matches'
+        value: 'may 2023'
+      }
+      fields: [
+        VizFieldFull {
+          ref: r(order_master.order_created_month)
+          format {
+            type: 'date'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_cities.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(order_master.user_id)
+          aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'count_distinct_user_id_1'
+        }
+      ]
+      settings {
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            key: 'count_distinct_user_id_1'
+            direction: 'desc'
+          }
+        ]
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_wsww: VizBlock {
+    label: 'Order Created Month, City Name, and CountD of User Id'
+    viz: DataTable {
+      dataset: demo_ecommerce
+      filter {
+        field: r(order_master.order_created_month)
+        operator: 'matches'
+        value: 'may 2023'
+      }
+      fields: [
+        VizFieldFull {
+          ref: r(order_master.order_created_month)
+          format {
+            type: 'date'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_cities.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(order_master.user_id)
+          aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'count_distinct_user_id_1'
         }
       ]
       settings {
@@ -623,7 +720,8 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v8',
-            'v_ztqi'
+            'v_ztqi',
+            'v_hk4u'
           ]
           disabled: true
         }
@@ -633,10 +731,7 @@ Dashboard vy_huynh_abernathy {
       from: 'v6'
       to: [
         CustomMapping {
-          block: [
-            'v8',
-            'v_ztqi'
-          ]
+          block: 'v8'
           disabled: true
         }
       ]
@@ -645,7 +740,12 @@ Dashboard vy_huynh_abernathy {
       from: 'f2'
       to: [
         CustomMapping {
-          block: 'f1'
+          block: [
+            'v8',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww'
+          ]
           disabled: true
         }
       ]
@@ -655,8 +755,11 @@ Dashboard vy_huynh_abernathy {
       to: [
         CustomMapping {
           block: [
+            'v5',
+            'v6',
             'v8',
-            'v_ztqi'
+            'v_711g',
+            'v_wsww'
           ]
           disabled: true
         }

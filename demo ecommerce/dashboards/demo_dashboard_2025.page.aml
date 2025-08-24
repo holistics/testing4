@@ -336,7 +336,7 @@ It brings together a consolidated view of:
 
       }
       legend: VizFieldFull {
-        ref: ref('ecommerce_countries', 'name')
+        ref: r(ecommerce_countries.name)
         format {
           type: 'text'
         }
@@ -349,7 +349,7 @@ It brings together a consolidated view of:
         }
         series {
           field: VizFieldFull {
-            ref: 'gmv'
+            ref: r(demo_ecommerce_version_2.gmv)
             format {
               type: 'number'
               pattern: 'inherited'
@@ -360,6 +360,17 @@ It brings together a consolidated view of:
           }
         }
       }
+      tooltips: [
+        VizTooltip {
+          field: VizFieldFull {
+            ref: r(demo_ecommerce_version_2.total_users)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      ]
       settings {
         row_limit: 5000
         legend_label: 'right'
