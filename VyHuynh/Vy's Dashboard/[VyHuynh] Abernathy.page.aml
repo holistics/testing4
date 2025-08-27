@@ -5,17 +5,15 @@ Dashboard vy_huynh_abernathy {
     label: 'View 1'
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
-      height: 1480
+      width: 1220
+      height: 2580
       grid_size: 20
-      mobile {
-        mode: 'auto'
-      }
       block v2 {
         position: pos(20, 220, 260, 140)
         layer: 2
       }
       block v3 {
-        position: pos(20, 380, 1160, 460)
+        position: pos(20, 980, 1160, 460)
         layer: 3
       }
       block v4 {
@@ -59,22 +57,38 @@ Dashboard vy_huynh_abernathy {
         layer: 9
       }
       block v8 {
-        position: pos(20, 860, 1160, 580)
+        position: pos(20, 380, 1160, 580)
         layer: 1
       }
       block v_711g {
-        position: pos(20, 1460, 1160, 580)
+        position: pos(20, 1940, 1160, 580)
         layer: 1
       }
-      width: 1220
+      block v_nehb {
+        position: pos(20, 1460, 1160, 460)
+        layer: 1
+      }
+      mobile {
+        mode: 'auto'
+      }
+    }
+    tab tab_5auh: CanvasLayout {
+      label: 'Raw Data Table'
+      height: 840
+      grid_size: 20
+      auto_expand_vertically: true
+      block v_ztqi {
+        position: pos(20, 20, 1160, 420)
+        layer: 1
+      }
+      mobile {
+        mode: 'auto'
+      }
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
       height: 1820
       grid_size: 20
-      mobile {
-        mode: 'auto'
-      }
       block v5 {
         position: pos(20, 80, 1160, 500)
         layer: 1
@@ -91,26 +105,8 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 600, 1160, 580)
         layer: 4
       }
-      block v_wsww {
-        position: pos(20, 1200, 1160, 420)
-        layer: 1
-      }
-    }
-    tab tab_5auh: CanvasLayout {
-      label: 'Raw Data Table'
-      height: 900
-      grid_size: 20
-      auto_expand_vertically: true
       mobile {
         mode: 'auto'
-      }
-      block v_ztqi {
-        position: pos(20, 20, 1160, 420)
-        layer: 1
-      }
-      block v_hk4u {
-        position: pos(20, 460, 1160, 420)
-        layer: 1
       }
     }
   }
@@ -161,6 +157,11 @@ Dashboard vy_huynh_abernathy {
     label: 'Total Revenue and Number of Order by Month'
     viz: CombinationChart {
       dataset: vyhuynh_ecommerce_dataset
+      filter {
+        field: r(vyht_ecommerce_orders_1.created_at)
+        operator: 'matches'
+        value: '2024'
+      }
       x_axis: VizFieldFull {
         label: 'Order Month'
         ref: r(vyht_ecommerce_orders_1.created_at)
@@ -177,17 +178,17 @@ Dashboard vy_huynh_abernathy {
           show_data_label_by: 'value'
         }
         series {
-          mark_type: 'line'
+          mark_type: 'column'
           field: VizFieldFull {
             label: 'Total Revenue'
-            ref: 'total_revenue'
+            ref: r(vyhuynh_ecommerce_dataset.total_revenue)
             format {
               type: 'number'
               pattern: '[$$]#,###'
             }
           }
           settings {
-            line_interpolation: 'smooth'
+            color: '#255DD4'
           }
         }
       }
@@ -198,6 +199,7 @@ Dashboard vy_huynh_abernathy {
           group_values_into: 10
         }
         series {
+          mark_type: 'line'
           field: VizFieldFull {
             ref: r(vyht_ecommerce_orders_1.id)
             aggregation: 'count distinct'
@@ -205,6 +207,9 @@ Dashboard vy_huynh_abernathy {
               type: 'number'
               pattern: 'inherited'
             }
+          }
+          settings {
+            color: '#18A59E'
           }
         }
       }
@@ -265,11 +270,22 @@ Dashboard vy_huynh_abernathy {
     label: 'GMV - Gross Merchandise Value by Continent Name'
     viz: BarChart {
       dataset: demo_ecommerce
-      filter {
-        field: r(order_master.order_created_month)
-        operator: 'matches'
-        value: 'may 2023'
-      }
+      filter_groups: [
+        OrFilters {
+          filters: [
+            VizFilter {
+              field: r(order_master.order_created_month)
+              operator: 'matches'
+              value: 'may 2023'
+            },
+            VizFilter {
+              field: r(order_master.order_created_month)
+              operator: 'matches'
+              value: 'april 2023'
+            }
+          ]
+        }
+      ]
       legend: VizFieldFull {
         ref: r(ecommerce_countries.continent_name)
         format {
@@ -432,8 +448,8 @@ Dashboard vy_huynh_abernathy {
     '#8F99A3'
   )
   block v8: VizBlock {
-    label: 'Cross Merchandise Value by Month'
-    viz: ColumnChart {
+    label: 'GMV - Gross Merchandise Value by Month'
+    viz: AreaChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
         ref: r(ecommerce_orders.created_at)
@@ -522,7 +538,7 @@ Dashboard vy_huynh_abernathy {
       filter {
         field: r(order_master.order_created_month)
         operator: 'matches'
-        value: 'may 2023'
+        value: '2023'
       }
       fields: [
         VizFieldFull {
@@ -530,6 +546,7 @@ Dashboard vy_huynh_abernathy {
           format {
             type: 'date'
           }
+          uname: 'order_master_order_created_month_1'
         },
         VizFieldFull {
           ref: r(ecommerce_countries.continent_name)
@@ -647,11 +664,52 @@ Dashboard vy_huynh_abernathy {
         show_row_number: true
         sorts: [
           SortSetting {
-            key: 'count_distinct_user_id_1'
-            direction: 'desc'
+            key: 'order_master_order_created_month_1'
+            direction: 'asc'
           }
         ]
         row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_nehb: VizBlock {
+    label: 'Total Revenue and Number of Order by Month'
+    viz: DataTable {
+      dataset: vyhuynh_ecommerce_dataset
+      fields: [
+        VizFieldFull {
+          label: 'Order Month'
+          ref: r(vyht_ecommerce_orders_1.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        },
+        VizFieldFull {
+          label: 'Total Revenue'
+          ref: r(vyhuynh_ecommerce_dataset.total_revenue)
+          format {
+            type: 'number'
+            pattern: '[$$]#,###'
+          }
+        },
+        VizFieldFull {
+          ref: r(vyht_ecommerce_orders_1.id)
+          aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 100
         aggregate_awareness {
           enabled: true
           debug_comments: true
@@ -686,16 +744,9 @@ Dashboard vy_huynh_abernathy {
       from: 'f2'
       to: [
         CustomMapping {
-          block: 'f1'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v8'
-      to: [
-        CustomMapping {
           block: [
+            'v8',
+            'v_ztqi',
             'v_hk4u',
             'v_wsww'
           ]
@@ -708,48 +759,11 @@ Dashboard vy_huynh_abernathy {
       to: [
         CustomMapping {
           block: [
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_ztqi'
-      to: [
-        CustomMapping {
-          block: 'v_wsww'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_hk4u'
-      to: [
-        CustomMapping {
-          block: [
             'v5',
             'v6',
             'v8',
             'v_711g',
             'v_wsww'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_wsww'
-      to: [
-        CustomMapping {
-          block: [
-            'v8',
-            'v_711g',
-            'v_ztqi',
-            'v_hk4u'
           ]
           disabled: true
         }

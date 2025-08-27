@@ -2,10 +2,10 @@ Dashboard khai_test {
   title: 'Khai Test'
   view: CanvasLayout {
     label: 'View 1'
-    height: 560
+    height: 860
     grid_size: 20
     block v1 {
-      position: pos(20, 20, 1160, 520)
+      position: pos(20, 20, 600, 520)
       layer: 1
     }
   }
@@ -24,7 +24,7 @@ Dashboard khai_test {
 
       }
       x_axis: VizFieldFull {
-        ref: ref('khai_date_d', 'date_key')
+        ref: r(khai_date_d.date_key)
         transformation: 'datetrunc month'
         format {
           type: 'date'
@@ -37,7 +37,7 @@ Dashboard khai_test {
         }
         series {
           field: VizFieldFull {
-            ref: 'total_quantity'
+            ref: r(khai_ecommerce.total_orders)
             format {
               type: 'number'
               pattern: 'inherited'

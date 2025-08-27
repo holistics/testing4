@@ -10,7 +10,7 @@ Dashboard testing_reuse_block {
       mode: 'auto'
     }
     block v1 {
-      position: pos(20, 20, 1180, 520)
+      position: pos(20, 20, 760, 340)
       layer: 1
     }
   }
