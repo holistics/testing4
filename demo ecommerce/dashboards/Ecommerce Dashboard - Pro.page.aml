@@ -31,105 +31,89 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
   }
   block v1: VizBlock {
     label: ' KPI Overview'
-    viz: MetricSheet {
+    viz: PivotTable {
       dataset: demo_ecommerce
       filter {
         field: ref('dim_dates', 'date_key')
         operator: 'matches'
-        value: '12 months ago to last month end'
+        value: 'last 1 years to today'
       }
-      date_field: VizFieldFull {
-        ref: ref('dim_dates', 'date_key')
-        transformation: 'datetrunc month'
-        format {
-          type: 'date'
+      columns: [
+        VizFieldFull {
+          ref: ref('dim_dates', 'date_key')
+          transformation: 'datetrunc year'
+          format {
+            type: 'date'
+            pattern: 'yyyy'
+          }
         }
-      }
-      rows: [
-        MetricHeading {
-          label: '🎯Orders'
-          settings {
-            background_color: '#255DD4'
-            text_color: '#FFFFFF'
+      ]
+      values: [
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'total_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'custom_total_orders_count'
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'cancelled_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
         },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('ecommerce_orders', 'total_orders_count')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'refunded_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
         },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('ecommerce_orders', 'cancelled_orders_count')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'delivered_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
         },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('ecommerce_orders', 'refunded_orders_count')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+        VizFieldFull {
+          ref: ref('order_master', 'nmv')
+          format {
+            type: 'number'
+            pattern: '[$$]#,###0.00'
           }
         },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('ecommerce_orders', 'delivered_orders_count')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+        VizFieldFull {
+          ref: ref('order_master', 'gmv')
+          format {
+            type: 'number'
+            pattern: '[$$]#,###0.00'
           }
         },
-        MetricHeading {
-          label: '💰 Revenue'
-          settings {
-            background_color: '#255DD4'
-            text_color: '#FFFFFF'
-          }
-        },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('order_master', 'nmv')
-            format {
-              type: 'number'
-              pattern: '[$$]#,###0.00'
-            }
-          }
-        },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('order_master', 'gmv')
-            format {
-              type: 'number'
-              pattern: '[$$]#,###0.00'
-            }
-          }
-        },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('order_master', 'aov')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+        VizFieldFull {
+          ref: ref('order_master', 'aov')
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
         }
       ]
       settings {
-        max_column: 3
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
+        value_labels_position {
+          placement: 'rows'
+        }
+        column_styles: [
+          ColumnStyle {
+            key: 'custom_total_orders_count'
+            width: 278
+          }
+        ]
       }
     }
     settings {
@@ -1170,6 +1154,470 @@ abc;;
       }
     }
   }
+  block v20: VizBlock {
+    label: ' KPI Overview'
+    viz: PivotTable {
+      dataset: demo_ecommerce
+      filter {
+        field: ref('dim_dates', 'date_key')
+        operator: 'matches'
+        value: '12 months ago to last month end'
+      }
+      columns: [
+        VizFieldFull {
+          ref: ref('dim_dates', 'date_key')
+          transformation: 'datetrunc year'
+          format {
+            type: 'date'
+            pattern: 'yyyy'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'total_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'custom_total_orders_count'
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'cancelled_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'refunded_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'delivered_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('order_master', 'nmv')
+          format {
+            type: 'number'
+            pattern: '[$$]#,###0.00'
+          }
+        },
+        VizFieldFull {
+          ref: ref('order_master', 'gmv')
+          format {
+            type: 'number'
+            pattern: '[$$]#,###0.00'
+          }
+        },
+        VizFieldFull {
+          ref: ref('order_master', 'aov')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        value_labels_position {
+          placement: 'rows'
+        }
+        column_styles: [
+          ColumnStyle {
+            key: 'custom_total_orders_count'
+            width: 322
+          }
+        ]
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v21: VizBlock {
+    label: ' KPI Overview'
+    viz: PivotTable {
+      dataset: demo_ecommerce
+      filter {
+        field: ref('dim_dates', 'date_key')
+        operator: 'matches'
+        value: 'last 1 years to today'
+      }
+      columns: [
+        VizFieldFull {
+          ref: ref('dim_dates', 'date_key')
+          transformation: 'datetrunc year'
+          format {
+            type: 'date'
+            pattern: 'yyyy'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: '%∆ Total Orders Count (prev. 1y)'
+          ref: ref('ecommerce_orders', 'total_orders_count')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_total_orders_count'
+        },
+        VizFieldFull {
+          label: '%∆ Cancelled Orders Count (prev. 1y)'
+          ref: ref('ecommerce_orders', 'cancelled_orders_count')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_cancelled_orders_count'
+        },
+        VizFieldFull {
+          label: '%∆ Refunded Orders Count (prev. 1y)'
+          ref: ref('ecommerce_orders', 'refunded_orders_count')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_refunded_orders_count'
+        },
+        VizFieldFull {
+          label: '%∆ Delivered Orders Count (prev. 1y)'
+          ref: ref('ecommerce_orders', 'delivered_orders_count')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_delivered_orders_count'
+        },
+        VizFieldFull {
+          label: '%∆ Nmv (prev. 1y)'
+          ref: ref('order_master', 'nmv')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_nmv'
+        },
+        VizFieldFull {
+          label: '%∆ Gmv (prev. 1y)'
+          ref: ref('order_master', 'gmv')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_gmv'
+        },
+        VizFieldFull {
+          label: '%∆ Aov (prev. 1y)'
+          ref: ref('order_master', 'aov')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_aov'
+        }
+      ]
+      settings {
+        conditional_formats: [
+          ConditionalFormat {
+            key: 'custom_total_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_total_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_total_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_cancelled_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_cancelled_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_cancelled_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_refunded_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_refunded_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_refunded_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_delivered_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_delivered_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_delivered_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_nmv'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_nmv'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_nmv'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_gmv'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_gmv'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_gmv'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_aov'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_aov'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_aov'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        value_labels_position {
+          placement: 'rows'
+        }
+        column_styles: [
+          ColumnStyle {
+            key: 'custom_total_orders_count'
+            width: 328
+          }
+        ]
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1540
@@ -1189,7 +1637,7 @@ abc;;
       position: pos(40, 100, 660, 50)
     }
     block v1 {
-      position: pos(60, 700, 1420, 380)
+      position: pos(60, 700, 760, 380)
     }
     block v2 {
       position: pos(80, 360, 300, 140)
@@ -1278,8 +1726,8 @@ abc;;
       layer: 1
     }
     block t49 {
-      position: pos(40, 680, 1460, 420)
-      layer: -2
+      position: pos(40, 660, 1460, 420)
+      layer: -4
     }
     block t51 {
       position: pos(1440, 2720, 80, 100)
@@ -1317,6 +1765,17 @@ abc;;
     block v19 {
       position: pos(20, 4490, 400, 300)
       layer: 3
+    }
+    block v20 {
+      position: pos(280, 700, 1180, 380)
+      layer: -3
+    }
+    block v21 {
+      position: pos(280, 700, 860, 260)
+      layer: -1
+    }
+    mobile {
+      mode: 'auto'
     }
   }
   settings {

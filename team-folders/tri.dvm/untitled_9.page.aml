@@ -1,18 +1,16 @@
-Dashboard untitled_dashboard_of_untitled_report {
-  title: 'Untitled Dashboard of Untitled Report'
+Dashboard untitled_9 {
+  title: 'Untitled 9'
+  description: ''
+  block title: TextBlock {
+    content: @md # Your title goes here ;;
+  }
   block v1: VizBlock {
-    label: 'Untitled Report'
+    label: 'Percent Of Total'
     viz: DataTable {
-      dataset: simple_dataset
+      dataset: demo_ecommerce
       fields: [
         VizFieldFull {
-          ref: ref('ecommerce_products', 'name')
-          format {
-            type: 'text'
-          }
-        },
-        VizFieldFull {
-          ref: ref('ecommerce_products', 'id')
+          ref: 'percent_of_total'
           format {
             type: 'number'
             pattern: 'inherited'
@@ -29,14 +27,22 @@ Dashboard untitled_dashboard_of_untitled_report {
       }
     }
   }
-  interactions: []
+
   view: CanvasLayout {
     label: 'View 1'
     height: 840
     grid_size: 20
+    block title {
+      position: pos(20, 20, 1160, 60)
+    }
     block v1 {
-      position: pos(20, 20, 400, 300)
+      position: pos(640, 60, 400, 300)
+      layer: 1
+    }
+    mobile {
+      mode: 'auto'
     }
   }
+
   theme: H.themes.vanilla
 }
