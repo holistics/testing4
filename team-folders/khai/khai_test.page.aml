@@ -1,12 +1,57 @@
 Dashboard khai_test {
   title: 'Khai Test'
-  view: CanvasLayout {
+  view: TabLayout {
     label: 'View 1'
-    height: 860
-    grid_size: 20
-    block v1 {
-      position: pos(20, 20, 600, 520)
-      layer: 1
+    tab tab1: CanvasLayout {
+      label: 'Tab 1'
+      height: 860
+      grid_size: 20
+      block v1 {
+        position: pos(20, 140, 1140, 540)
+        layer: 1
+      }
+      block f_ml3q {
+        position: pos(20, 20, 300, 80)
+        layer: 2
+      }
+      block f_kmoy {
+        position: pos(340, 20, 300, 80)
+        layer: 3
+      }
+      block f_vs3y {
+        position: pos(660, 20, 300, 80)
+        layer: 4
+      }
+    }
+    tab tab2: CanvasLayout {
+      label: 'Tab 2'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+      block v_s6re {
+        position: pos(20, 20, 1240, 540)
+        layer: 1
+      }
+      block f_z363 {
+        position: pos(20, 580, 300, 80)
+        layer: 2
+      }
+      block f_pofb {
+        position: pos(340, 580, 300, 80)
+        layer: 3
+      }
+      block f_uuo1 {
+        position: pos(660, 580, 300, 80)
+        layer: 4
+      }
+      block f_m383 {
+        position: pos(980, 580, 300, 80)
+        layer: 5
+      }
     }
   }
   theme: H.themes.classic
@@ -58,4 +103,337 @@ Dashboard khai_test {
       hide_label: true
     }
   }
+  block f_ml3q: FilterBlock {
+    label: 'Orders Status'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(orders.status)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
+  block f_kmoy: FilterBlock {
+    label: 'Countries Name'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(countries.name)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
+  block f_vs3y: FilterBlock {
+    label: 'Khai Date D Date Key'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(khai_date_d.date_key)
+    }
+    default {
+      operator: 'matches'
+      value: 'last 3 years to today'
+    }
+  }
+  block v_s6re: VizBlock {
+    label: ' '
+    viz: CombinationChart {
+      dataset: khai_ecommerce
+      calculation total_quantity {
+        label: 'Total Quantity'
+        formula: @aql sum(order_items.quantity);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      x_axis: VizFieldFull {
+        ref: r(khai_date_d.date_key)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(khai_ecommerce.revenue)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      y_axis {
+        settings {
+          alignment: 'right'
+        }
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            ref: r(khai_ecommerce.total_users)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block f_z363: FilterBlock {
+    label: 'Orders Status'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(orders.status)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
+  block f_pofb: FilterBlock {
+    label: 'Countries Name'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(countries.name)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
+  block f_uuo1: FilterBlock {
+    label: 'Khai Date D Date Key'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(khai_date_d.date_key)
+    }
+    default {
+      operator: 'matches'
+      value: '$H_NIL$'
+    }
+  }
+  block f_m383: FilterBlock {
+    label: 'Users Gender'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(users.gender)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
+  interactions: [
+    FilterInteraction {
+      from: 'v1'
+      to: [
+        CustomMapping {
+          block: 'v_s6re'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_ml3q'
+      to: [
+        CustomMapping {
+          block: 'v_s6re'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_ml3q'
+      to: [
+        CustomMapping {
+          block: [
+            'f_kmoy',
+            'f_vs3y',
+            'f_z363',
+            'f_pofb',
+            'f_uuo1',
+            'f_m383'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_kmoy'
+      to: [
+        CustomMapping {
+          block: 'v_s6re'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_kmoy'
+      to: [
+        CustomMapping {
+          block: [
+            'f_vs3y',
+            'f_z363',
+            'f_pofb',
+            'f_uuo1',
+            'f_m383'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_vs3y'
+      to: [
+        CustomMapping {
+          block: 'v_s6re'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_vs3y'
+      to: [
+        CustomMapping {
+          block: [
+            'f_z363',
+            'f_pofb',
+            'f_uuo1',
+            'f_m383'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_s6re'
+      to: [
+        CustomMapping {
+          block: 'v1'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_z363'
+      to: [
+        CustomMapping {
+          block: 'v1'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_z363'
+      to: [
+        CustomMapping {
+          block: [
+            'f_ml3q',
+            'f_kmoy',
+            'f_vs3y',
+            'f_pofb',
+            'f_uuo1',
+            'f_m383'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_pofb'
+      to: [
+        CustomMapping {
+          block: 'v1'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_pofb'
+      to: [
+        CustomMapping {
+          block: [
+            'f_ml3q',
+            'f_kmoy',
+            'f_vs3y',
+            'f_uuo1',
+            'f_m383'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_uuo1'
+      to: [
+        CustomMapping {
+          block: 'v1'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_uuo1'
+      to: [
+        CustomMapping {
+          block: [
+            'f_ml3q',
+            'f_kmoy',
+            'f_vs3y',
+            'f_m383'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_m383'
+      to: [
+        CustomMapping {
+          block: 'v1'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_m383'
+      to: [
+        CustomMapping {
+          block: [
+            'f_ml3q',
+            'f_kmoy',
+            'f_vs3y',
+            'f_z363',
+            'f_pofb',
+            'f_uuo1'
+          ]
+          disabled: true
+        }
+      ]
+    }
+  ]
 }
