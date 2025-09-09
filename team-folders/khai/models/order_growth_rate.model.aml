@@ -5,7 +5,7 @@ Model order_growth_rate {
   data_source_name: 'demodb'
   dimension report_date {
     label: 'Report Month'
-    type: 'datetim'
+    type: 'datetime'
     hidden: false
     definition: @sql {{ #SOURCE.report_date }};;
   }
