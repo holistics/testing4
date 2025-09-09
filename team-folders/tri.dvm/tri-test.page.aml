@@ -34,7 +34,7 @@ Dashboard tri_test {
       layer: 7
     }
     block v4 {
-      position: pos(40, 640, 400, 300)
+      position: pos(40, 380, 400, 300)
       layer: 8
     }
     block f4 {
@@ -42,12 +42,20 @@ Dashboard tri_test {
       layer: 9
     }
     block v_cx59 {
-      position: pos(60, 980, 400, 300)
+      position: pos(20, 940, 400, 300)
       layer: 10
     }
     block f_rfyo {
-      position: pos(140, 1340, 300, 100)
+      position: pos(140, 1380, 300, 100)
       layer: 11
+    }
+    block v_2e00 {
+      position: pos(1160, 1060, 400, 300)
+      layer: 1
+    }
+    block v_gcit {
+      position: pos(1200, 620, 400, 300)
+      layer: 1
     }
     width: 2220
   }
@@ -266,7 +274,7 @@ Dashboard tri_test {
     }
   }
   block v4: VizBlock {
-    label: 'Untitled Report'
+    label: 'XYZ'
     viz: DataTable {
       dataset: ecom_dataset_vux
       theme {
@@ -364,6 +372,9 @@ Dashboard tri_test {
             value: 1718
             color: '#FDE725'
           }
+          mid {
+            value: 2761
+          }
           max {
             value: 3804
             color: '#21908D'
@@ -386,6 +397,110 @@ Dashboard tri_test {
     default {
       operator: 'is'
       value: []
+    }
+  }
+  block v_2e00: VizBlock {
+    label: 'ABC'
+    viz: ColumnChart {
+      dataset: ecom_dataset_vux
+      filter {
+        field: r(order_master.order_created_at)
+        operator: 'matches'
+        value: 'this year'
+      }
+      theme {
+        table {
+          general {
+            borders {
+              outer: true
+              horizontal: true
+            }
+          }
+        }
+      }
+      x_axis: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(order_master.status)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecom_dataset_vux.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            uname: 'custom_total_orders'
+          }
+          settings {
+            color_palette: 0
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_gcit: VizBlock {
+    label: 'Count of City Name by Country Code and Delivery Attempts'
+    viz: Heatmap {
+      dataset: demo_ecommerce
+      lng: VizFieldFull {
+        ref: r(order_master.delivery_attempts)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      lat: VizFieldFull {
+        ref: r(ecommerce_cities.country_code)
+        format {
+          type: 'text'
+        }
+      }
+      value: VizFieldFull {
+        ref: r(ecommerce_cities.name)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      settings {
+        value_colors {
+          min {
+            value: 1718
+            color: '#FDE725'
+          }
+          mid {
+            value: 2761
+          }
+          max {
+            value: 3804
+            color: '#21908D'
+          }
+        }
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
     }
   }
   interactions: [
