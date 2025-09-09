@@ -136,7 +136,7 @@ Dashboard khai_test {
     }
     default {
       operator: 'matches'
-      value: '$H_NIL$'
+      value: 'last 3 years to today'
     }
   }
   block v_s6re: VizBlock {
