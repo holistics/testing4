@@ -10,13 +10,14 @@ Dashboard testing_reuse_block {
       mode: 'auto'
     }
     block v1 {
-      position: pos(20, 20, 760, 340)
+      position: pos(20, 20, 1160, 560)
       layer: 1
     }
   }
 
   theme: H.themes.vanilla
   block v1: block_cohort_retention(
-    'quarter'
+    'quarter',
+    'Baking and Cooking'
   )
 }
