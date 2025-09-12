@@ -113,6 +113,16 @@ Dashboard vy_huynh_abernathy {
         mode: 'auto'
       }
     }
+    tab tab_4i2l: CanvasLayout {
+      label: 'User Analysis'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+    }
   }
 
   theme: H.themes.vanilla
