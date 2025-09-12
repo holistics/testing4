@@ -122,6 +122,10 @@ Dashboard vy_huynh_abernathy {
       mobile {
         mode: 'auto'
       }
+      block v_jgur {
+        position: pos(20, 20, 540, 400)
+        layer: 1
+      }
     }
   }
 
@@ -773,6 +777,41 @@ Dashboard vy_huynh_abernathy {
           }
         ]
         row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_jgur: VizBlock {
+    label: 'Funnel Sign up - Purchase'
+    viz: FunnelChart {
+      dataset: demo_bigquery_ecommerce
+      series {
+        field: VizFieldFull {
+          label: 'Sign up'
+          ref: r(bq_dim_users.sign_up_date)
+          aggregation: 'count'
+          format {
+            type: 'number'
+          }
+        }
+      }
+      series {
+        field: VizFieldFull {
+          label: 'Make order'
+          ref: r(demo_bigquery_ecommerce.count_users)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        show_percentage: true
+        data_label_position: 'inside'
         aggregate_awareness {
           enabled: true
           debug_comments: true
