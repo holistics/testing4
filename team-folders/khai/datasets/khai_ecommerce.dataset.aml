@@ -55,6 +55,20 @@ Dataset khai_ecommerce {
       | dimensionalize(users.id)
      ;;
   }
+  dimension country_attribute {
+    label: "Country Attribute"
+    type: "text"
+    description: ""
+    definition: @aql H.current_user.country_attribute;;
+    model: countries
+  }
+  dimension is_country {
+    label: "Is Country"
+    type: "truefalse"
+    description: ""
+    definition: @aql countries.country_attribute == countries.name;;
+    model: countries
+  }
 
   metric revenue {
     label: 'Revenue'
