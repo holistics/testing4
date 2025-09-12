@@ -785,7 +785,7 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v_jgur: VizBlock {
-    label: 'Funnel Sign up - Purchase'
+    label: 'Funnel Sign up - Make order'
     viz: FunnelChart {
       dataset: demo_bigquery_ecommerce
       series {
