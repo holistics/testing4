@@ -868,7 +868,7 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v_cii9: VizBlock {
-    label: 'Count Users, Sum Price, and AOV - Average Order Value by Month Created Date'
+    label: 'Count Users, Sum Price, and AOV - Average Order Value by Name'
     viz: CombinationChart {
       dataset: demo_bigquery_ecommerce
       calculation sum_price {
@@ -883,11 +883,9 @@ Dashboard vy_huynh_abernathy {
         value: '2023'
       }
       x_axis: VizFieldFull {
-        ref: r(bq_fct_order_items.created_date)
-        transformation: 'datetrunc month'
+        ref: r(bq_dim_product_countries.name)
         format {
-          type: 'date'
-          pattern: 'LLL yyyy'
+          type: 'text'
         }
       }
       y_axis {
