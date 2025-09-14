@@ -109,6 +109,10 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 600, 1160, 580)
         layer: 4
       }
+      block v_csef {
+        position: pos(20, 1200, 1160, 480)
+        layer: 5
+      }
       mobile {
         mode: 'auto'
       }
@@ -812,6 +816,46 @@ Dashboard vy_huynh_abernathy {
         row_limit: 5000
         show_percentage: true
         data_label_position: 'inside'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_csef: VizBlock {
+    label: 'Count of Id by Latitude, Longitude, and Neighbourhood'
+    viz: PointMap {
+      dataset: homestay
+      lng: VizFieldFull {
+        ref: r(homestay_listings.longitude)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      lat: VizFieldFull {
+        ref: r(homestay_listings.latitude)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      value: VizFieldFull {
+        ref: r(homestay_bookings.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(homestay_hosts.neighbourhood)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
         aggregate_awareness {
           enabled: true
           debug_comments: true
