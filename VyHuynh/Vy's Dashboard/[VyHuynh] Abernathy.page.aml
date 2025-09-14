@@ -6,7 +6,7 @@ Dashboard vy_huynh_abernathy {
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
       width: 1220
-      height: 2580
+      height: 2960
       grid_size: 20
       block v2 {
         position: pos(20, 220, 260, 140)
@@ -67,6 +67,10 @@ Dashboard vy_huynh_abernathy {
       block v_nehb {
         position: pos(20, 1460, 1160, 460)
         layer: 1
+      }
+      block v_cii9 {
+        position: pos(20, 2540, 1160, 400)
+        layer: 10
       }
       mobile {
         mode: 'auto'
@@ -863,6 +867,75 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v_cii9: VizBlock {
+    label: 'Count Users, Sum Price, and AOV - Average Order Value by Month Created Date'
+    viz: CombinationChart {
+      dataset: demo_bigquery_ecommerce
+      calculation sum_price {
+        label: 'Sum Price'
+        formula: @aql sum(bq_dim_products.price);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(bq_fct_order_items.created_date)
+        operator: 'matches'
+        value: '2023'
+      }
+      x_axis: VizFieldFull {
+        ref: r(bq_fct_order_items.created_date)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(demo_bigquery_ecommerce.count_users)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      y_axis {
+        settings {
+          alignment: 'right'
+        }
+        series {
+          field: VizFieldFull {
+            ref: 'sum_price'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(demo_bigquery_ecommerce.aov)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -962,6 +1035,24 @@ Dashboard vy_huynh_abernathy {
             'v_hk4u',
             'v_wsww'
           ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_jgur'
+      to: [
+        CustomMapping {
+          block: 'v_cii9'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_cii9'
+      to: [
+        CustomMapping {
+          block: 'v_jgur'
           disabled: true
         }
       ]
