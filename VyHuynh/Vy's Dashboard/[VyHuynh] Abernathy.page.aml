@@ -854,7 +854,7 @@ Dashboard vy_huynh_abernathy {
         }
       }
       legend: VizFieldFull {
-        ref: r(homestay_hosts.neighbourhood)
+        ref: r(homestay_neighbourhoods.neighbourhood)
         format {
           type: 'text'
         }
