@@ -286,7 +286,10 @@ Dashboard tri_test {
             pattern: 'inherited'
           }
         },
-        'metric_0a52a5e'
+        VizFieldFull {
+          ref: 'metric_0a52a5e'
+          hidden: true
+        }
       ]
       settings {
         show_row_number: true
