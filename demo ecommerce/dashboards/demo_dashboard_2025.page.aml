@@ -787,6 +787,15 @@ To ensure consistent interpretation of financial metrics, here’s how value flo
             }
           }
         }
+        series {
+          field: VizFieldFull {
+            ref: r(demo_ecommerce_version_2.nmv)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
       }
       settings {
         row_limit: 5000
