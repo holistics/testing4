@@ -261,15 +261,14 @@ Dashboard tri_test {
     label: 'Untitled Report'
     viz: DataTable {
       dataset: ecom_dataset_vux
+      calculation metric_0a52a5e {
+        label: 'is_office_hour'
+        formula: @aql date_part("hour", @now) >= 8 and date_part("hour", @now) <= 17;;
+        calc_type: 'measure'
+        data_type: 'truefalse'
+      }
       theme {
-        table {
-          general {
-            borders {
-              outer: true
-              horizontal: true
-            }
-          }
-        }
+
       }
       fields: [
         VizFieldFull {
@@ -286,7 +285,8 @@ Dashboard tri_test {
             type: 'number'
             pattern: 'inherited'
           }
-        }
+        },
+        'metric_0a52a5e'
       ]
       settings {
         show_row_number: true
