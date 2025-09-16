@@ -765,8 +765,11 @@ To ensure consistent interpretation of financial metrics, here’s how value flo
     label: 'GMV Over Time'
     viz: LineChart {
       dataset: demo_ecommerce_version_2
+      theme {
+
+      }
       x_axis: VizFieldFull {
-        ref: r(ecommerce_orders.created_at)
+        ref: ref('ecommerce_orders', 'created_at')
         transformation: 'datetrunc quarter'
         format {
           type: 'date'
@@ -776,20 +779,11 @@ To ensure consistent interpretation of financial metrics, here’s how value flo
       y_axis {
         settings {
           show_stack_total: true
-          show_data_label_by: 'value'
+          stack_series_by: 'value'
         }
         series {
           field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.gmv)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-        }
-        series {
-          field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.nmv)
+            ref: 'gmv'
             format {
               type: 'number'
               pattern: 'inherited'
