@@ -95,7 +95,7 @@ Dashboard vy_huynh_abernathy {
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
-      height: 2300
+      height: 2940
       grid_size: 20
       block v5 {
         position: pos(20, 80, 1160, 500)
@@ -119,6 +119,10 @@ Dashboard vy_huynh_abernathy {
       }
       block v_qctn {
         position: pos(20, 1700, 1160, 580)
+        layer: 1
+      }
+      block v_9rhg {
+        position: pos(20, 2300, 1160, 580)
         layer: 1
       }
       mobile {
@@ -994,6 +998,50 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v_9rhg: VizBlock {
+    label: 'Number of Order by Country Name and City Name'
+    viz: ColumnChart {
+      dataset: demo_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_countries.name)
+        format {
+          type: 'text'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(ecommerce_cities.name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        label: 'Total Order'
+        settings {
+          show_data_label_by: 'value'
+          stack_series_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.order_id)
+            aggregation: 'count distinct'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_label: 'Country'
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -1027,7 +1075,8 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v_856v',
-            'v_qctn'
+            'v_qctn',
+            'v_9rhg'
           ]
           disabled: true
         }
@@ -1043,7 +1092,8 @@ Dashboard vy_huynh_abernathy {
             'v_hk4u',
             'v_wsww',
             'v_856v',
-            'v_qctn'
+            'v_qctn',
+            'v_9rhg'
           ]
           disabled: true
         }
@@ -1055,7 +1105,8 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v_856v',
-            'v_qctn'
+            'v_qctn',
+            'v_9rhg'
           ]
           disabled: true
         }
@@ -1067,7 +1118,8 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v_856v',
-            'v_qctn'
+            'v_qctn',
+            'v_9rhg'
           ]
           disabled: true
         }
@@ -1077,7 +1129,10 @@ Dashboard vy_huynh_abernathy {
       from: 'v_ztqi'
       to: [
         CustomMapping {
-          block: 'v_qctn'
+          block: [
+            'v_qctn',
+            'v_9rhg'
+          ]
           disabled: true
         }
       ]
@@ -1088,7 +1143,8 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v_856v',
-            'v_qctn'
+            'v_qctn',
+            'v_9rhg'
           ]
           disabled: true
         }
@@ -1100,7 +1156,8 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v_856v',
-            'v_qctn'
+            'v_qctn',
+            'v_9rhg'
           ]
           disabled: true
         }
@@ -1117,7 +1174,8 @@ Dashboard vy_huynh_abernathy {
             'v_711g',
             'v_hk4u',
             'v_wsww',
-            'v_qctn'
+            'v_qctn',
+            'v_9rhg'
           ]
           disabled: true
         }
@@ -1143,6 +1201,22 @@ Dashboard vy_huynh_abernathy {
     },
     FilterInteraction {
       from: 'v_qctn'
+      to: [
+        CustomMapping {
+          block: [
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_9rhg'
       to: [
         CustomMapping {
           block: [
