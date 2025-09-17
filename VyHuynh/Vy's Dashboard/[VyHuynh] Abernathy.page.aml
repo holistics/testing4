@@ -95,7 +95,7 @@ Dashboard vy_huynh_abernathy {
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
-      height: 1820
+      height: 2300
       grid_size: 20
       block v5 {
         position: pos(20, 80, 1160, 500)
@@ -116,6 +116,10 @@ Dashboard vy_huynh_abernathy {
       block v_csef {
         position: pos(20, 1200, 1160, 480)
         layer: 5
+      }
+      block v_qctn {
+        position: pos(20, 1700, 1160, 580)
+        layer: 1
       }
       mobile {
         mode: 'auto'
@@ -934,6 +938,62 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v_qctn: VizBlock {
+    label: 'Number of Order by Country Name and City Name'
+    viz: LineChart {
+      dataset: demo_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        label: 'Total Order'
+        settings {
+          show_data_label_by: 'value'
+          stack_series_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.order_id)
+            aggregation: 'count distinct'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(demo_ecommerce, order_master.aov_by_product)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_label: 'Country'
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -965,7 +1025,10 @@ Dashboard vy_huynh_abernathy {
       from: 'f1'
       to: [
         CustomMapping {
-          block: 'v_856v'
+          block: [
+            'v_856v',
+            'v_qctn'
+          ]
           disabled: true
         }
       ]
@@ -979,7 +1042,8 @@ Dashboard vy_huynh_abernathy {
             'v_ztqi',
             'v_hk4u',
             'v_wsww',
-            'v_856v'
+            'v_856v',
+            'v_qctn'
           ]
           disabled: true
         }
@@ -989,7 +1053,10 @@ Dashboard vy_huynh_abernathy {
       from: 'v8'
       to: [
         CustomMapping {
-          block: 'v_856v'
+          block: [
+            'v_856v',
+            'v_qctn'
+          ]
           disabled: true
         }
       ]
@@ -998,7 +1065,19 @@ Dashboard vy_huynh_abernathy {
       from: 'v_711g'
       to: [
         CustomMapping {
-          block: 'v_856v'
+          block: [
+            'v_856v',
+            'v_qctn'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ztqi'
+      to: [
+        CustomMapping {
+          block: 'v_qctn'
           disabled: true
         }
       ]
@@ -1007,7 +1086,10 @@ Dashboard vy_huynh_abernathy {
       from: 'v_hk4u'
       to: [
         CustomMapping {
-          block: 'v_856v'
+          block: [
+            'v_856v',
+            'v_qctn'
+          ]
           disabled: true
         }
       ]
@@ -1016,7 +1098,10 @@ Dashboard vy_huynh_abernathy {
       from: 'v_wsww'
       to: [
         CustomMapping {
-          block: 'v_856v'
+          block: [
+            'v_856v',
+            'v_qctn'
+          ]
           disabled: true
         }
       ]
@@ -1031,7 +1116,8 @@ Dashboard vy_huynh_abernathy {
             'v8',
             'v_711g',
             'v_hk4u',
-            'v_wsww'
+            'v_wsww',
+            'v_qctn'
           ]
           disabled: true
         }
@@ -1051,6 +1137,22 @@ Dashboard vy_huynh_abernathy {
       to: [
         CustomMapping {
           block: 'v_jgur'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_qctn'
+      to: [
+        CustomMapping {
+          block: [
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v'
+          ]
           disabled: true
         }
       ]
