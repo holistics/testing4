@@ -1,8 +1,8 @@
 Dashboard dynamic_dim_ecommerce_dashboard {
-  title: 'Dynamic Dim Ecommerce Dashboard'
+  title: "Phuong's test dashboard"
   view: CanvasLayout {
     label: 'View 1'
-    height: 1000
+    height: 1100
     grid_size: 20
     block v1 {
       position: pos(20, 140, 540, 420)
@@ -17,8 +17,12 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       layer: 2
     }
     block v_i7uw {
-      position: pos(20, 580, 580, 400)
+      position: pos(20, 680, 580, 400)
       layer: 3
+    }
+    block d_z1xt {
+      position: pos(20, 580, 300, 80)
+      layer: 4
     }
   }
   theme: H.themes.classic
@@ -111,7 +115,7 @@ Dashboard dynamic_dim_ecommerce_dashboard {
     }
   }
   block v_i7uw: VizBlock {
-    label: 'Week Created At, Revenue, and Last Period'
+    label: 'New relative_period formula'
     viz: DataTable {
       dataset: khai_ecommerce
       calculation last_period {
@@ -161,4 +165,18 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       }
     }
   }
+  block d_z1xt: DateDrillBlock {
+    label: 'Date Drill'
+  }
+  interactions: [
+    DateDrillInteraction {
+      from: 'd_z1xt'
+      to: [
+        CustomMapping {
+          block: 'v_i7uw'
+          field: ref('orders', 'created_at')
+        }
+      ]
+    }
+  ]
 }
