@@ -4,7 +4,7 @@ Dashboard column_width {
 
   view: CanvasLayout {
     label: 'View 1'
-    height: 840
+    height: 1880
     grid_size: 20
     block v1 {
       position: pos(0, 0, 1200, 260)
@@ -13,7 +13,7 @@ Dashboard column_width {
       position: pos(0, 260, 1200, 280)
     }
     block v3 {
-      position: pos(20, 560, 400, 300)
+      position: pos(0, 560, 1120, 1300)
       layer: 1
     }
   }
@@ -23,6 +23,9 @@ Dashboard column_width {
     label: 'avc'
     viz: DataTable {
       dataset: global_temps
+      theme {
+
+      }
       fields: [
         VizFieldFull {
           ref: ref('persisted_global_temps', 'year')
@@ -74,35 +77,59 @@ Dashboard column_width {
       ]
       settings {
         show_row_number: true
-        row_limit: 5000
-        column_width {
-          manual_widths: [
-            ColumnWidth {
-              key: 'persisted_global_temps_apr'
-              width: 119
-            },
-            ColumnWidth {
-              key: 'persisted_global_temps_jan'
-              width: 164
-            },
-            ColumnWidth {
-              key: 'persisted_global_temps_jul'
-              width: 169
-            },
-            ColumnWidth {
-              key: 'persisted_global_temps_may'
-              width: 186
-            },
-            ColumnWidth {
-              key: 'persisted_global_temps_year'
-              width: 163
+        conditional_formats: [
+          ConditionalFormat {
+            key: 'persisted_global_temps_year'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 1900
+              }
+              text_color: '#BF0E08'
+              background_color: '#FAD2D1'
+              apply_to_row: true
             }
-          ]
-        }
+          },
+          ConditionalFormat {
+            key: 'persisted_global_temps_year'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than_equal'
+                value: 1900
+              }
+              text_color: '#328159'
+              background_color: '#B5E3CD'
+              apply_to_row: true
+            }
+          }
+        ]
+        row_limit: 5000
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
+        column_styles: [
+          ColumnStyle {
+            key: 'persisted_global_temps_apr'
+            width: 119
+          },
+          ColumnStyle {
+            key: 'persisted_global_temps_jan'
+            width: 164
+          },
+          ColumnStyle {
+            key: 'persisted_global_temps_jul'
+            width: 169
+          },
+          ColumnStyle {
+            key: 'persisted_global_temps_may'
+            width: 186
+          },
+          ColumnStyle {
+            key: 'persisted_global_temps_year'
+            width: 163
+          }
+        ]
       }
     }
   }
@@ -166,26 +193,92 @@ Dashboard column_width {
   block v3: VizBlock {
     label: 'wabc'
     viz: DataTable {
-      dataset: global_temps
+      dataset: demo_ecommerce_internal_training
+      theme {
+
+      }
       fields: [
         VizFieldFull {
-          ref: ref('persisted_global_temps', 'apr')
+          ref: ref('ecommerce_orders', 'id')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'ecommerce_orders_id'
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'status')
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'created_at')
+          format {
+            type: 'datetime'
+          }
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'discount')
           format {
             type: 'number'
             pattern: 'inherited'
           }
         },
         VizFieldFull {
-          ref: ref('persisted_global_temps', 'aug')
+          ref: ref('ecommerce_orders', 'delivery_attempts')
           format {
             type: 'number'
             pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'created_date')
+          format {
+            type: 'date'
           }
         }
       ]
       settings {
         show_row_number: true
-        row_limit: 5000
+        conditional_formats: [
+          ConditionalFormat {
+            key: 'ecommerce_orders_id'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 1000
+              }
+              text_color: '#BF0E08'
+              background_color: '#FAD2D1'
+              apply_to_row: true
+            }
+          },
+          ConditionalFormat {
+            key: 'ecommerce_orders_id'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than_equal'
+                value: 1000
+              }
+              text_color: '#9C5C1C'
+              background_color: '#F0CFAD'
+              apply_to_row: true
+            }
+          },
+          ConditionalFormat {
+            key: 'ecommerce_orders_id'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than_equal'
+                value: 1500
+              }
+              text_color: '#328159'
+              background_color: '#B5E3CD'
+              apply_to_row: true
+            }
+          }
+        ]
         aggregate_awareness {
           enabled: true
           debug_comments: true
