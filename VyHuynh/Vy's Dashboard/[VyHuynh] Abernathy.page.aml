@@ -72,17 +72,13 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 2540, 1160, 400)
         layer: 10
       }
-      block v_dna3 {
-        position: pos(20, 2960, 580, 400)
-        layer: 11
-      }
       mobile {
         mode: 'auto'
       }
     }
     tab tab_5auh: CanvasLayout {
       label: 'Raw Data Table'
-      height: 900
+      height: 1320
       grid_size: 20
       auto_expand_vertically: true
       block v_ztqi {
@@ -91,6 +87,10 @@ Dashboard vy_huynh_abernathy {
       }
       block v_856v {
         position: pos(20, 460, 1160, 420)
+        layer: 1
+      }
+      block v_2qyv {
+        position: pos(20, 900, 1160, 400)
         layer: 1
       }
       mobile {
@@ -1046,7 +1046,7 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
-  block v_dna3: VizBlock {
+  block v_2qyv: VizBlock {
     label: 'Count of Order Id by Continent Name, Gender, and Status'
     viz: PivotTable {
       dataset: ecom_dataset_vux
