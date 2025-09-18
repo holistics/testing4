@@ -125,13 +125,13 @@ Model dim_dates {
 
   param time_grain_choice {
     label: 'Time Grain Choice'
-    type: 'text'
+    type: 'date'
     allowed_values: ['Day', 'Week', 'Quarter']
   }
 
   dimension time_grain_selector {
     label: 'Time Grain Selector'
-    type: 'text'
+    type: 'date'
     
     definition: @aql case(
       when: 'Day' in dim_dates.time_grain_choice
