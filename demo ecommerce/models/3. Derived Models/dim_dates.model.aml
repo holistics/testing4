@@ -9,6 +9,12 @@ Model dim_dates {
     hidden: false
     definition: @sql {{ #SOURCE.date_key }};;
   }
+  dimension day {
+    label: 'Day'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.day }};;
+  }
   dimension day_of_week {
     label: 'Day Of Week'
     type: 'text'
@@ -122,4 +128,26 @@ Model dim_dates {
         FROM  generate_series ('2013-01-01' :: date, current_date ,'1 day' :: interval) date_key;;
   models: [
   ]
+
+  param time_grain_choice {
+    label: 'Time Grain Choice'
+    type: 'text'
+    allowed_values: ['Day', 'Week', 'Quarter']
+  }
+
+  dimension time_grain_selector {
+    label: 'Time Grain Selector'
+    type: 'text'
+    
+    definition: @aql case(
+      when: 'Day' in dim_dates.time_grain_choice
+      , then: users_model.country_name
+
+      , when: 'Quarter' in dim_dates.time_grain_choice
+      , then: dim_dates.quarter
+
+      , when: 'Gender' in dim_dates.time_grain_choice
+      , then: dim_dates.year
+    ) ;;
+  }
 }
