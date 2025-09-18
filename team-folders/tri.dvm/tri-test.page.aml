@@ -41,6 +41,18 @@ Dashboard tri_test {
       position: pos(460, 260, 340, 100)
       layer: 9
     }
+    block v_txfg {
+      position: pos(40, 420, 260, 180)
+      layer: 10
+    }
+    block f_78ij {
+      position: pos(80, 320, 300, 80)
+      layer: 11
+    }
+    block p_io6h {
+      position: pos(340, 440, 300, 140)
+      layer: 12
+    }
     width: 1320
   }
 
@@ -333,7 +345,82 @@ Dashboard tri_test {
       value: '$H_NIL$'
     }
   }
+  block v_txfg: VizBlock {
+    label: '  (Prev. 2y)'
+    viz: MetricKpi {
+      dataset: demo_ecommerce
+      calculation metric_c4c4dff {
+        label: 'Untitled Metric'
+        formula: @aql count(order_master.order_id);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_0b33d48 {
+        label: 'Untitled Metric'
+        formula: @aql concat('aaaa', cast(total_orders, 'text'));;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      filter {
+        field: r(order_master.order_created_at)
+        operator: 'matches'
+        value: '2 years ago'
+      }
+      value: VizFieldFull {
+        label: ' '
+        ref: 'metric_0b33d48'
+        format {
+          type: 'text'
+        }
+      }
+      compare_value: VizPopSettings {
+        field: r(order_master.order_created_at)
+        duration: 2
+        granularity: 'year'
+      }
+      settings {
+        display_mode: 'single'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block f_78ij: FilterBlock {
+    label: 'Order Master Order Created At'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: r(order_master.order_created_at)
+    }
+    default {
+      operator: 'matches'
+      value: '$H_NIL$'
+    }
+  }
+  block p_io6h: PopBlock {
+    label: 'Period Comparison'
+    default {
+      type: 'relative'
+      duration: 1
+      granularity: 'year'
+    }
+  }
   interactions: [
+    FilterInteraction {
+      from: 'f1'
+      to: [
+        CustomMapping {
+          block: 'f_78ij'
+          disabled: true
+        }
+      ]
+    },
     FilterInteraction {
       from: 'f2'
       to: [
@@ -349,6 +436,24 @@ Dashboard tri_test {
         CustomMapping {
           block: 'f2'
           disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_78ij'
+      to: [
+        CustomMapping {
+          block: 'f1'
+          disabled: true
+        }
+      ]
+    },
+    PopInteraction {
+      from: 'p_io6h'
+      to: [
+        CustomMapping {
+          block: 'v_txfg'
+          field: ref('order_master', 'order_created_at')
         }
       ]
     }
