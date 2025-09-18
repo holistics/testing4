@@ -22,6 +22,14 @@ Dashboard khai_test {
         position: pos(660, 20, 300, 80)
         layer: 4
       }
+      block f_j1la {
+        position: pos(20, 720, 300, 80)
+        layer: 5
+      }
+      block v_6g2o {
+        position: pos(340, 700, 580, 120)
+        layer: 6
+      }
     }
     tab tab2: CanvasLayout {
       label: 'Tab 2'
@@ -247,6 +255,47 @@ Dashboard khai_test {
       value: []
     }
   }
+  block f_j1la: FilterBlock {
+    label: 'Countries Is Country'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(khai_ecommerce, countries.is_country)
+    }
+    default {
+      operator: 'is'
+      value: true
+    }
+  }
+  block v_6g2o: VizBlock {
+    label: 'Name and Revenue'
+    viz: DataTable {
+      dataset: khai_ecommerce
+      fields: [
+        VizFieldFull {
+          ref: r(countries.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(khai_ecommerce.revenue)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v1'
@@ -276,7 +325,8 @@ Dashboard khai_test {
             'f_z363',
             'f_pofb',
             'f_uuo1',
-            'f_m383'
+            'f_m383',
+            'f_j1la'
           ]
           disabled: true
         }
@@ -300,7 +350,8 @@ Dashboard khai_test {
             'f_z363',
             'f_pofb',
             'f_uuo1',
-            'f_m383'
+            'f_m383',
+            'f_j1la'
           ]
           disabled: true
         }
@@ -323,7 +374,8 @@ Dashboard khai_test {
             'f_z363',
             'f_pofb',
             'f_uuo1',
-            'f_m383'
+            'f_m383',
+            'f_j1la'
           ]
           disabled: true
         }
@@ -333,7 +385,10 @@ Dashboard khai_test {
       from: 'v_s6re'
       to: [
         CustomMapping {
-          block: 'v1'
+          block: [
+            'v1',
+            'v_6g2o'
+          ]
           disabled: true
         }
       ]
@@ -342,7 +397,10 @@ Dashboard khai_test {
       from: 'f_z363'
       to: [
         CustomMapping {
-          block: 'v1'
+          block: [
+            'v1',
+            'v_6g2o'
+          ]
           disabled: true
         }
       ]
@@ -357,7 +415,8 @@ Dashboard khai_test {
             'f_vs3y',
             'f_pofb',
             'f_uuo1',
-            'f_m383'
+            'f_m383',
+            'f_j1la'
           ]
           disabled: true
         }
@@ -367,7 +426,10 @@ Dashboard khai_test {
       from: 'f_pofb'
       to: [
         CustomMapping {
-          block: 'v1'
+          block: [
+            'v1',
+            'v_6g2o'
+          ]
           disabled: true
         }
       ]
@@ -381,7 +443,8 @@ Dashboard khai_test {
             'f_kmoy',
             'f_vs3y',
             'f_uuo1',
-            'f_m383'
+            'f_m383',
+            'f_j1la'
           ]
           disabled: true
         }
@@ -391,7 +454,10 @@ Dashboard khai_test {
       from: 'f_uuo1'
       to: [
         CustomMapping {
-          block: 'v1'
+          block: [
+            'v1',
+            'v_6g2o'
+          ]
           disabled: true
         }
       ]
@@ -404,7 +470,8 @@ Dashboard khai_test {
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
-            'f_m383'
+            'f_m383',
+            'f_j1la'
           ]
           disabled: true
         }
@@ -414,7 +481,10 @@ Dashboard khai_test {
       from: 'f_m383'
       to: [
         CustomMapping {
-          block: 'v1'
+          block: [
+            'v1',
+            'v_6g2o'
+          ]
           disabled: true
         }
       ]
@@ -429,8 +499,44 @@ Dashboard khai_test {
             'f_vs3y',
             'f_z363',
             'f_pofb',
-            'f_uuo1'
+            'f_uuo1',
+            'f_j1la'
           ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_j1la'
+      to: [
+        CustomMapping {
+          block: 'v_s6re'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_j1la'
+      to: [
+        CustomMapping {
+          block: [
+            'f_ml3q',
+            'f_kmoy',
+            'f_vs3y',
+            'f_z363',
+            'f_pofb',
+            'f_uuo1',
+            'f_m383'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_6g2o'
+      to: [
+        CustomMapping {
+          block: 'v_s6re'
           disabled: true
         }
       ]
