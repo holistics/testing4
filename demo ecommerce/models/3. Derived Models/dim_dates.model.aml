@@ -9,12 +9,6 @@ Model dim_dates {
     hidden: false
     definition: @sql {{ #SOURCE.date_key }};;
   }
-  dimension day {
-    label: 'Day'
-    type: 'text'
-    hidden: false
-    definition: @sql {{ #SOURCE.day }};;
-  }
   dimension day_of_week {
     label: 'Day Of Week'
     type: 'text'
@@ -132,7 +126,7 @@ Model dim_dates {
   param time_grain_choice {
     label: 'Time Grain Choice'
     type: 'text'
-    allowed_values: ['Day', 'Week', 'Quarter']
+    allowed_values: ['Quarter', 'Year']
   }
 
   dimension time_grain_selector {
@@ -140,10 +134,7 @@ Model dim_dates {
     type: 'text'
     
     definition: @aql case(
-      when: 'Day' in dim_dates.time_grain_choice
-      , then: dim_dates.day
-
-      , when: 'Quarter' in dim_dates.time_grain_choice
+      when: 'Quarter' in dim_dates.time_grain_choice
       , then: dim_dates.quarter
 
       , when: 'Gender' in dim_dates.time_grain_choice
