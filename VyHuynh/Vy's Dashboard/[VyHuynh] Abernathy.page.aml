@@ -78,7 +78,7 @@ Dashboard vy_huynh_abernathy {
     }
     tab tab_5auh: CanvasLayout {
       label: 'Raw Data Table'
-      height: 1320
+      height: 1480
       grid_size: 20
       auto_expand_vertically: true
       block v_ztqi {
@@ -90,7 +90,7 @@ Dashboard vy_huynh_abernathy {
         layer: 1
       }
       block v_2qyv {
-        position: pos(20, 900, 1160, 400)
+        position: pos(20, 900, 1160, 520)
         layer: 1
       }
       mobile {
@@ -1047,7 +1047,7 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v_2qyv: VizBlock {
-    label: 'Count of Order Id by Continent Name, Gender, and Status'
+    label: 'CountD of Order Id by Continent Name, Gender, Delivery Attempts, and Status'
     viz: PivotTable {
       dataset: ecom_dataset_vux
       rows: [
@@ -1062,6 +1062,13 @@ Dashboard vy_huynh_abernathy {
           format {
             type: 'text'
           }
+        },
+        VizFieldFull {
+          ref: r(order_master.delivery_attempts)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
         }
       ]
       columns: [
@@ -1075,7 +1082,7 @@ Dashboard vy_huynh_abernathy {
       values: [
         VizFieldFull {
           ref: r(order_master.order_id)
-          aggregation: 'count'
+          aggregation: 'count distinct'
           format {
             type: 'number'
             pattern: 'inherited'
