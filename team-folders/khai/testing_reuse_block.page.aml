@@ -13,6 +13,10 @@ Dashboard testing_reuse_block {
       position: pos(20, 20, 1160, 560)
       layer: 1
     }
+    block f_buya {
+      position: pos(20, 600, 300, 80)
+      layer: 2
+    }
   }
 
   theme: H.themes.vanilla
