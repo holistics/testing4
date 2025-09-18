@@ -6,7 +6,7 @@ Dashboard vy_huynh_abernathy {
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
       width: 1220
-      height: 2960
+      height: 3380
       grid_size: 20
       block v2 {
         position: pos(20, 220, 260, 140)
@@ -71,6 +71,10 @@ Dashboard vy_huynh_abernathy {
       block v_cii9 {
         position: pos(20, 2540, 1160, 400)
         layer: 10
+      }
+      block v_dna3 {
+        position: pos(20, 2960, 580, 400)
+        layer: 11
       }
       mobile {
         mode: 'auto'
@@ -1035,6 +1039,53 @@ Dashboard vy_huynh_abernathy {
         row_limit: 5000
         x_axis_label: 'Country'
         x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_dna3: VizBlock {
+    label: 'Count of Order Id by Continent Name, Gender, and Status'
+    viz: PivotTable {
+      dataset: ecom_dataset_vux
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_countries.continent_name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_users.gender)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(order_master.status)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(order_master.order_id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
         aggregate_awareness {
           enabled: true
           debug_comments: true
