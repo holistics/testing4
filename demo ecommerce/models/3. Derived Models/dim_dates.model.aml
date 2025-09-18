@@ -141,7 +141,7 @@ Model dim_dates {
     
     definition: @aql case(
       when: 'Day' in dim_dates.time_grain_choice
-      , then: users_model.country_name
+      , then: dim_dates.day
 
       , when: 'Quarter' in dim_dates.time_grain_choice
       , then: dim_dates.quarter
