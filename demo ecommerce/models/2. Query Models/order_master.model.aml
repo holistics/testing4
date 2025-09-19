@@ -281,6 +281,60 @@ Model order_master {
     description: "P x Q"
     format: "[$$]#,###0"
   }
+  measure revenue_usd {
+    label: "Revenue In USD"
+    type: "number"
+    definition: @aql order_master.revenue * 2 ;;
+    description: "P x Q"
+    format: '[$$]#,###'
+  }
+  measure revenue_eur {
+    label: "Revenue In EUR"
+    type: "number"
+    definition: @aql order_master.revenue / 2 ;;
+    description: "P x Q"
+    format: '[$€]#,###'
+  }
+   measure selected_revenue {
+    label: "Selected Revenue"
+    type: "number"
+    definition: @aql case(
+      when: order_master.merchant_id > 100
+      , then: order_master.revenue_usd
+      , else: order_master.revenue_eur
+    ) ;;
+    description: "P x Q"
+  }
+  measure selected_revenue_02 {
+    label: "Selected Revenue 02"
+    type: "number"
+    definition: @sql  CASE
+    WHEN {{ #SOURCE.merchant_id }} > 100
+      THEN concat('$', regexp_replace(cast(round({{ revenue }} * 2) AS varchar), '(\\d)(?=(\\d{3})+(?!\\d))', '\\1.'))
+    ELSE concat('€', regexp_replace(cast(round({{ revenue }} / 2) AS varchar), '(\\d)(?=(\\d{3})+(?!\\d))', '\\1,'))
+  END ;;
+  }
+  measure selected_revenue_03 {
+    label: "Selected Revenue 03"
+    type: "text"
+    definition: @aql
+    case(
+      when: order_master.merchant_id > 100
+      , then: concat(
+          '$',
+          regexp_replace(
+            cast(round(order_master.revenue * 2), 'text'),
+            '(\\d)(?=(\\d{3})+(?!\\d))',
+            '\\1,'
+          )
+        )
+      , else: regexp_replace(
+          cast(round(order_master.revenue / 2), 'text'),
+          '(\\d)(?=(\\d{3})+(?!\\d))',
+          '\\1,'
+        )
+    ) ;;
+  }
   measure revenue_delivered {
     label: "Revenue Delivered"
     type: "number"
@@ -323,3 +377,5 @@ Model order_master {
     definition: @aql sum(order_master.amount) | dimensionalize(ecommerce_users.id) ;;
   }
 }
+
+order_master.dim_selector

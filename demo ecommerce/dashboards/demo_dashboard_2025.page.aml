@@ -2,7 +2,7 @@
 Dashboard company_dashboard_v {
   title: '[Demo] Ecommerce Dashboard (2025-05)'
   owner: 'vincent@holistics.io'
-  description: ''''''
+  description: '### Testing Dashboard description'
   block t5: TextBlock {
     content: @md <img src=""/>
 
@@ -236,6 +236,15 @@ Dashboard company_dashboard_v {
         MetricSeries {
           field: VizFieldFull {
             ref: r(demo_ecommerce_version_2.nmv)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        },
+        MetricSeries {
+          field: VizFieldFull {
+            ref: r(demo_ecommerce_version_2.gmv)
             format {
               type: 'number'
               pattern: 'inherited'
@@ -1703,4 +1712,8 @@ Uncover trends by comparing current performance against a previous period.
       ]
     }
   ]
+  settings {
+    timezone: 'Etc/UTC'
+    cache_duration: 1440
+  }
 }
