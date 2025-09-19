@@ -1,40 +1,22 @@
 Dashboard untitled_8 {
-  title: 'Untitled 8'
+  title: 'Untitled'
   description: ''
   block title: TextBlock {
     content: @md # Your title goes here ;;
   }
 
-  view: TabLayout {
+  view: CanvasLayout {
     label: 'View 1'
-    tab tab1: CanvasLayout {
-      label: 'Tab 1'
-      height: 840
-      grid_size: 20
-      block title {
-        position: pos(20, 20, 1160, 60)
-      }
-      mobile {
-        mode: 'auto'
-      }
+    height: 840
+    grid_size: 20
+    block title {
+      position: pos(20, 20, 1160, 60)
     }
-    tab tab2: CanvasLayout {
-      label: 'Tab 2'
-      height: 800
-      grid_size: 20
-      mobile {
-        mode: 'auto'
-      }
-    }
-    tab tab3: CanvasLayout {
-      label: 'Untitled'
-      height: 800
-      grid_size: 20
-      mobile {
-        mode: 'auto'
-      }
+    mobile {
+      mode: 'auto'
     }
   }
 
   theme: H.themes.vanilla
+
 }
