@@ -323,3 +323,5 @@ Model order_master {
     definition: @aql sum(order_master.amount) | dimensionalize(ecommerce_users.id) ;;
   }
 }
+
+order_master.dim_selector
