@@ -61,6 +61,24 @@ Dashboard khai_test {
         layer: 5
       }
     }
+    tab tab_uidb: CanvasLayout {
+      label: 'dynamic top n'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+      block v_52wr {
+        position: pos(80, 120, 740, 580)
+        layer: 1
+      }
+      block f_wimh {
+        position: pos(80, 20, 300, 80)
+        layer: 2
+      }
+    }
   }
   theme: H.themes.classic
   block v1: VizBlock {
@@ -296,21 +314,63 @@ Dashboard khai_test {
       }
     }
   }
+  block v_52wr: VizBlock {
+    label: 'Full Name and Total Orders'
+    viz: DataTable {
+      dataset: khai_ecommerce
+      conditions: [
+        '''users.full_name in (
+  top((param_model.number_param | first())
+    , users.full_name
+    , by: total_orders)
+)'''
+      ]
+      fields: [
+        VizFieldFull {
+          ref: r(users.full_name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(orders.total_orders)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block f_wimh: FilterBlock {
+    label: 'Param Model Number Param'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(param_model.number_param)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v1'
       to: [
         CustomMapping {
-          block: 'v_s6re'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_ml3q'
-      to: [
-        CustomMapping {
-          block: 'v_s6re'
+          block: [
+            'v_s6re',
+            'v_52wr'
+          ]
           disabled: true
         }
       ]
@@ -320,13 +380,16 @@ Dashboard khai_test {
       to: [
         CustomMapping {
           block: [
+            'v_s6re',
+            'v_52wr',
             'f_kmoy',
             'f_vs3y',
             'f_z363',
             'f_pofb',
             'f_uuo1',
             'f_m383',
-            'f_j1la'
+            'f_j1la',
+            'f_wimh'
           ]
           disabled: true
         }
@@ -336,22 +399,16 @@ Dashboard khai_test {
       from: 'f_kmoy'
       to: [
         CustomMapping {
-          block: 'v_s6re'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_kmoy'
-      to: [
-        CustomMapping {
           block: [
+            'v_s6re',
+            'v_52wr',
             'f_vs3y',
             'f_z363',
             'f_pofb',
             'f_uuo1',
             'f_m383',
-            'f_j1la'
+            'f_j1la',
+            'f_wimh'
           ]
           disabled: true
         }
@@ -361,21 +418,15 @@ Dashboard khai_test {
       from: 'f_vs3y'
       to: [
         CustomMapping {
-          block: 'v_s6re'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_vs3y'
-      to: [
-        CustomMapping {
           block: [
+            'v_s6re',
+            'v_52wr',
             'f_z363',
             'f_pofb',
             'f_uuo1',
             'f_m383',
-            'f_j1la'
+            'f_j1la',
+            'f_wimh'
           ]
           disabled: true
         }
@@ -387,7 +438,8 @@ Dashboard khai_test {
         CustomMapping {
           block: [
             'v1',
-            'v_6g2o'
+            'v_6g2o',
+            'v_52wr'
           ]
           disabled: true
         }
@@ -399,24 +451,16 @@ Dashboard khai_test {
         CustomMapping {
           block: [
             'v1',
-            'v_6g2o'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_z363'
-      to: [
-        CustomMapping {
-          block: [
+            'v_6g2o',
+            'v_52wr',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
             'f_pofb',
             'f_uuo1',
             'f_m383',
-            'f_j1la'
+            'f_j1la',
+            'f_wimh'
           ]
           disabled: true
         }
@@ -428,23 +472,15 @@ Dashboard khai_test {
         CustomMapping {
           block: [
             'v1',
-            'v_6g2o'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_pofb'
-      to: [
-        CustomMapping {
-          block: [
+            'v_6g2o',
+            'v_52wr',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
             'f_uuo1',
             'f_m383',
-            'f_j1la'
+            'f_j1la',
+            'f_wimh'
           ]
           disabled: true
         }
@@ -456,22 +492,14 @@ Dashboard khai_test {
         CustomMapping {
           block: [
             'v1',
-            'v_6g2o'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_uuo1'
-      to: [
-        CustomMapping {
-          block: [
+            'v_6g2o',
+            'v_52wr',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
             'f_m383',
-            'f_j1la'
+            'f_j1la',
+            'f_wimh'
           ]
           disabled: true
         }
@@ -483,24 +511,16 @@ Dashboard khai_test {
         CustomMapping {
           block: [
             'v1',
-            'v_6g2o'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_m383'
-      to: [
-        CustomMapping {
-          block: [
+            'v_6g2o',
+            'v_52wr',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
             'f_z363',
             'f_pofb',
             'f_uuo1',
-            'f_j1la'
+            'f_j1la',
+            'f_wimh'
           ]
           disabled: true
         }
@@ -510,23 +530,17 @@ Dashboard khai_test {
       from: 'f_j1la'
       to: [
         CustomMapping {
-          block: 'v_s6re'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_j1la'
-      to: [
-        CustomMapping {
           block: [
+            'v_s6re',
+            'v_52wr',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
             'f_z363',
             'f_pofb',
             'f_uuo1',
-            'f_m383'
+            'f_m383',
+            'f_wimh'
           ]
           disabled: true
         }
@@ -536,7 +550,44 @@ Dashboard khai_test {
       from: 'v_6g2o'
       to: [
         CustomMapping {
-          block: 'v_s6re'
+          block: [
+            'v_s6re',
+            'v_52wr'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_52wr'
+      to: [
+        CustomMapping {
+          block: [
+            'v1',
+            'v_s6re',
+            'v_6g2o'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_wimh'
+      to: [
+        CustomMapping {
+          block: [
+            'v1',
+            'v_s6re',
+            'v_6g2o',
+            'f_ml3q',
+            'f_kmoy',
+            'f_vs3y',
+            'f_z363',
+            'f_pofb',
+            'f_uuo1',
+            'f_m383',
+            'f_j1la'
+          ]
           disabled: true
         }
       ]
