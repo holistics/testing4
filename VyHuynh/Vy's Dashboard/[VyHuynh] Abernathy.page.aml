@@ -6,7 +6,7 @@ Dashboard vy_huynh_abernathy {
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
       width: 1220
-      height: 3380
+      height: 3140
       grid_size: 20
       block v2 {
         position: pos(20, 220, 260, 140)
@@ -73,19 +73,19 @@ Dashboard vy_huynh_abernathy {
         layer: 10
       }
       block t_4ttu {
-        position: pos(20, 2960, 380, 160)
+        position: pos(800, 20, 380, 160)
         layer: 1
       }
       block t_5y3l {
-        position: pos(420, 2960, 60, 40)
+        position: pos(820, 40, 60, 40)
         layer: 2
       }
       block t_vb6z {
-        position: pos(500, 2960, 300, 60)
+        position: pos(860, 40, 300, 60)
         layer: 3
       }
       block f_zwa4 {
-        position: pos(820, 2960, 280, 60)
+        position: pos(860, 80, 280, 60)
         layer: 4
       }
       mobile {
@@ -1128,18 +1128,18 @@ Dashboard vy_huynh_abernathy {
 </svg>;;
   }
   block t_vb6z: TextBlock {
-    content: @md ### Filter by City;;
+    content: @md ### Date Filter;;
   }
   block f_zwa4: FilterBlock {
-    label: 'City Name'
+    label: 'Date'
     type: 'field'
     source: FieldFilterSource {
       dataset: demo_ecommerce
-      field: r(ecommerce_cities.name)
+      field: r(order_master.order_created_at)
     }
     default {
-      operator: 'is'
-      value: []
+      operator: 'matches'
+      value: '$H_NIL$'
     }
     settings {
       drillthrough: Drillthrough {
@@ -1347,16 +1347,25 @@ Dashboard vy_huynh_abernathy {
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v6',
-            'v_ztqi',
             'v_hk4u',
             'v_wsww',
-            'v_856v',
-            'v_qctn',
-            'v_9rhg'
+            'f1',
+            'f2'
           ]
           disabled: true
+        },
+        CustomMapping {
+          block: [
+            'v2',
+            'v3',
+            'v4',
+            'v_nehb'
+          ]
+          field: ref('vyht_ecommerce_orders_1', 'created_at')
+        },
+        CustomMapping {
+          block: 'v_cii9'
+          field: ref('bq_fct_order_items', 'created_at')
         }
       ]
     }
