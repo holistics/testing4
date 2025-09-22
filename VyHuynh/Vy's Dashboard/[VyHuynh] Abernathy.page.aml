@@ -72,6 +72,22 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 2540, 1160, 400)
         layer: 10
       }
+      block t_4ttu {
+        position: pos(20, 2960, 380, 160)
+        layer: 1
+      }
+      block t_5y3l {
+        position: pos(420, 2960, 60, 40)
+        layer: 2
+      }
+      block t_vb6z {
+        position: pos(500, 2960, 300, 60)
+        layer: 3
+      }
+      block f_zwa4 {
+        position: pos(820, 2960, 280, 60)
+        layer: 4
+      }
       mobile {
         mode: 'auto'
       }
@@ -1100,6 +1116,41 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block t_4ttu: TextBlock {
+    content: @md <svg width="361" height="130" viewBox="0 0 361 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="1" y="1" width="359" height="128" rx="6" fill="#E8F2FD" stroke="#4896EA" stroke-dasharray="4 4"/>
+</svg>;;
+  }
+  block t_5y3l: TextBlock {
+    content: @md <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="40" width="40" height="40" rx="4" transform="rotate(-90 0 40)" fill="#1B7CE4"/>
+<path d="M30.2524 9.28125H9.74783C8.44664 9.28125 7.79011 10.8599 8.712 11.7819L17.0703 20.1419V28.6904C17.0703 28.8992 17.1149 29.1056 17.2012 29.2957C17.2875 29.4859 17.4134 29.6553 17.5706 29.7928L20.5002 32.3555C21.4358 33.1741 22.9297 32.524 22.9297 31.2531V20.1419L31.2882 11.7819C32.2083 10.8618 31.5562 9.28125 30.2524 9.28125ZM21.4648 19.5352V31.2539L18.5352 28.6904V19.5352L9.74609 10.7461H30.2539L21.4648 19.5352Z" fill="white"/>
+</svg>;;
+  }
+  block t_vb6z: TextBlock {
+    content: @md ### Filter by City;;
+  }
+  block f_zwa4: FilterBlock {
+    label: 'City Name'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: r(ecommerce_cities.name)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+    settings {
+      drillthrough: Drillthrough {
+        enabled: true
+        sources: [
+          AutoDrillthroughSource {
+          }
+        ]
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -1134,7 +1185,8 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v_856v',
             'v_qctn',
-            'v_9rhg'
+            'v_9rhg',
+            'f_zwa4'
           ]
           disabled: true
         }
@@ -1151,7 +1203,8 @@ Dashboard vy_huynh_abernathy {
             'v_wsww',
             'v_856v',
             'v_qctn',
-            'v_9rhg'
+            'v_9rhg',
+            'f_zwa4'
           ]
           disabled: true
         }
@@ -1284,6 +1337,24 @@ Dashboard vy_huynh_abernathy {
             'v_hk4u',
             'v_wsww',
             'v_856v'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_zwa4'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v6',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v',
+            'v_qctn',
+            'v_9rhg'
           ]
           disabled: true
         }
