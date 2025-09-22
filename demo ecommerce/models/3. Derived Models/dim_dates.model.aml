@@ -122,4 +122,26 @@ Model dim_dates {
         FROM  generate_series ('2013-01-01' :: date, current_date ,'1 day' :: interval) date_key;;
   models: [
   ]
+
+  param time_grain_choice {
+    label: 'Time Grain Choice'
+    type: 'date'
+    allowed_values: ['Day', 'Week', 'Quarter']
+  }
+
+  dimension time_grain_selector {
+    label: 'Time Grain Selector'
+    type: 'date'
+    
+    definition: @aql case(
+      when: 'Day' in dim_dates.time_grain_choice
+      , then: dim_dates.day_of_year
+
+      , when: 'Week' in dim_dates.time_grain_choice
+      , then: dim_dates.year_week_iso
+
+      , when: 'Quarter' in dim_dates.time_grain_choice
+      , then: dim_dates.year_quarter
+    ) ;;
+  }
 }

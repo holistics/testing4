@@ -21,6 +21,11 @@ Model param_model {
     type: 'datetime'
   }
 
+  param number_param {
+    label: 'Number Param'
+    type: 'number'
+  }
+
   owner: 'khai.to@holistics.io'
   query: @sql select 1;;
   models: [
