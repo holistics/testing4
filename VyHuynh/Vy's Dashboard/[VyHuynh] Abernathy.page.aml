@@ -434,13 +434,7 @@ Dashboard vy_huynh_abernathy {
     }
     default {
       operator: 'is'
-      value: [
-        'Australia',
-        'Germany',
-        'Korea',
-        'Singapore',
-        'Vietnam'
-      ]
+      value: []
     }
     settings {
       drillthrough: Drillthrough {
