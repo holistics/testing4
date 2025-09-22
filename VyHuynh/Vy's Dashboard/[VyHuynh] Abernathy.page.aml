@@ -6,14 +6,14 @@ Dashboard vy_huynh_abernathy {
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
       width: 1220
-      height: 3140
+      height: 2960
       grid_size: 20
       block v2 {
         position: pos(20, 220, 260, 140)
         layer: 2
       }
       block v3 {
-        position: pos(20, 980, 1160, 460)
+        position: pos(20, 1580, 1160, 460)
         layer: 3
       }
       block v4 {
@@ -57,15 +57,15 @@ Dashboard vy_huynh_abernathy {
         layer: 9
       }
       block v8 {
-        position: pos(20, 380, 1160, 580)
+        position: pos(20, 980, 1160, 580)
         layer: 1
       }
       block v_711g {
-        position: pos(20, 1940, 1160, 580)
+        position: pos(20, 380, 1160, 580)
         layer: 1
       }
       block v_nehb {
-        position: pos(20, 1460, 1160, 460)
+        position: pos(20, 2060, 1160, 460)
         layer: 1
       }
       block v_cii9 {
