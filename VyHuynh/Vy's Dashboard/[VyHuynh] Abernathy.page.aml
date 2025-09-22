@@ -9,7 +9,7 @@ Dashboard vy_huynh_abernathy {
       height: 2960
       grid_size: 20
       block v2 {
-        position: pos(20, 220, 260, 140)
+        position: pos(20, 820, 260, 140)
         layer: 2
       }
       block v3 {
@@ -17,7 +17,7 @@ Dashboard vy_huynh_abernathy {
         layer: 3
       }
       block v4 {
-        position: pos(300, 220, 260, 140)
+        position: pos(300, 820, 260, 140)
         layer: 2
       }
       block t3 {
@@ -61,7 +61,7 @@ Dashboard vy_huynh_abernathy {
         layer: 1
       }
       block v_711g {
-        position: pos(20, 380, 1160, 580)
+        position: pos(20, 220, 1160, 580)
         layer: 1
       }
       block v_nehb {
