@@ -80,7 +80,7 @@ Dashboard khai_test {
       }
     }
     tab tab_cqbs: CanvasLayout {
-      label: 'Untitled'
+      label: 'high-or-low'
       width: 1020
       height: 800
       grid_size: 20
