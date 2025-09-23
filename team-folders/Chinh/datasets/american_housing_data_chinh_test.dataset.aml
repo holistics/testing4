@@ -1,0 +1,12 @@
+Dataset american_housing_data_chinh_test {
+  label: 'American Housing Data (Chinh Test)'
+  description: 'To reproduce the use case of telegraph.io'
+  data_source_name: 'demodb'
+  owner: 'chinh.dm@holistics.io'
+
+  models: [
+    zipcode_data_american_housing_data,
+  ]
+  relationships: [
+  ] 
+}
