@@ -63,7 +63,7 @@ Dashboard khai_test {
     }
     tab tab_uidb: CanvasLayout {
       label: 'dynamic top n'
-      width: 1300
+      width: 840
       height: 800
       grid_size: 20
       auto_expand_vertically: true
@@ -359,7 +359,7 @@ Dashboard khai_test {
     }
     default {
       operator: 'is'
-      value: []
+      value: '5'
     }
   }
   interactions: [
