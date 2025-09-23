@@ -79,6 +79,24 @@ Dashboard khai_test {
         layer: 2
       }
     }
+    tab tab_cqbs: CanvasLayout {
+      label: 'Untitled'
+      width: 1020
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+      block v_c5p0 {
+        position: pos(60, 140, 940, 420)
+        layer: 1
+      }
+      block f_jmgl {
+        position: pos(60, 40, 300, 80)
+        layer: 2
+      }
+    }
   }
   theme: H.themes.classic
   block v1: VizBlock {
@@ -362,6 +380,67 @@ Dashboard khai_test {
       value: '5'
     }
   }
+  block v_c5p0: VizBlock {
+    label: 'Name, Revenue, and High Or Low'
+    viz: DataTable {
+      dataset: khai_ecommerce
+      calculation high_or_low {
+        label: 'High Or Low'
+        formula: @aql case(
+  when: revenue >= (param_model.number_param | first())
+  , then: 'HIGH'
+  , when: revenue is null 
+  , then: 'IGNORE'
+  , else: 'LOW'
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      fields: [
+        VizFieldFull {
+          ref: r(khai_categories.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(khai_ecommerce.revenue)
+          format {
+            type: 'number'
+            pattern: '#,### [$$]'
+            group_separator: ','
+            decimal_separator: '.'
+          }
+        },
+        VizFieldFull {
+          ref: 'high_or_low'
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block f_jmgl: FilterBlock {
+    label: 'High Congestion Days'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(param_model.number_param)
+    }
+    default {
+      operator: 'is'
+      value: '600000'
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v1'
@@ -369,7 +448,8 @@ Dashboard khai_test {
         CustomMapping {
           block: [
             'v_s6re',
-            'v_52wr'
+            'v_52wr',
+            'v_c5p0'
           ]
           disabled: true
         }
@@ -382,6 +462,7 @@ Dashboard khai_test {
           block: [
             'v_s6re',
             'v_52wr',
+            'v_c5p0',
             'f_kmoy',
             'f_vs3y',
             'f_z363',
@@ -389,7 +470,8 @@ Dashboard khai_test {
             'f_uuo1',
             'f_m383',
             'f_j1la',
-            'f_wimh'
+            'f_wimh',
+            'f_jmgl'
           ]
           disabled: true
         }
@@ -402,13 +484,15 @@ Dashboard khai_test {
           block: [
             'v_s6re',
             'v_52wr',
+            'v_c5p0',
             'f_vs3y',
             'f_z363',
             'f_pofb',
             'f_uuo1',
             'f_m383',
             'f_j1la',
-            'f_wimh'
+            'f_wimh',
+            'f_jmgl'
           ]
           disabled: true
         }
@@ -421,12 +505,14 @@ Dashboard khai_test {
           block: [
             'v_s6re',
             'v_52wr',
+            'v_c5p0',
             'f_z363',
             'f_pofb',
             'f_uuo1',
             'f_m383',
             'f_j1la',
-            'f_wimh'
+            'f_wimh',
+            'f_jmgl'
           ]
           disabled: true
         }
@@ -439,7 +525,8 @@ Dashboard khai_test {
           block: [
             'v1',
             'v_6g2o',
-            'v_52wr'
+            'v_52wr',
+            'v_c5p0'
           ]
           disabled: true
         }
@@ -453,6 +540,7 @@ Dashboard khai_test {
             'v1',
             'v_6g2o',
             'v_52wr',
+            'v_c5p0',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -460,7 +548,8 @@ Dashboard khai_test {
             'f_uuo1',
             'f_m383',
             'f_j1la',
-            'f_wimh'
+            'f_wimh',
+            'f_jmgl'
           ]
           disabled: true
         }
@@ -474,13 +563,15 @@ Dashboard khai_test {
             'v1',
             'v_6g2o',
             'v_52wr',
+            'v_c5p0',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
             'f_uuo1',
             'f_m383',
             'f_j1la',
-            'f_wimh'
+            'f_wimh',
+            'f_jmgl'
           ]
           disabled: true
         }
@@ -494,12 +585,14 @@ Dashboard khai_test {
             'v1',
             'v_6g2o',
             'v_52wr',
+            'v_c5p0',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
             'f_m383',
             'f_j1la',
-            'f_wimh'
+            'f_wimh',
+            'f_jmgl'
           ]
           disabled: true
         }
@@ -513,6 +606,7 @@ Dashboard khai_test {
             'v1',
             'v_6g2o',
             'v_52wr',
+            'v_c5p0',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -520,7 +614,8 @@ Dashboard khai_test {
             'f_pofb',
             'f_uuo1',
             'f_j1la',
-            'f_wimh'
+            'f_wimh',
+            'f_jmgl'
           ]
           disabled: true
         }
@@ -533,6 +628,7 @@ Dashboard khai_test {
           block: [
             'v_s6re',
             'v_52wr',
+            'v_c5p0',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -540,7 +636,8 @@ Dashboard khai_test {
             'f_pofb',
             'f_uuo1',
             'f_m383',
-            'f_wimh'
+            'f_wimh',
+            'f_jmgl'
           ]
           disabled: true
         }
@@ -552,7 +649,8 @@ Dashboard khai_test {
         CustomMapping {
           block: [
             'v_s6re',
-            'v_52wr'
+            'v_52wr',
+            'v_c5p0'
           ]
           disabled: true
         }
@@ -565,7 +663,8 @@ Dashboard khai_test {
           block: [
             'v1',
             'v_s6re',
-            'v_6g2o'
+            'v_6g2o',
+            'v_c5p0'
           ]
           disabled: true
         }
@@ -579,6 +678,7 @@ Dashboard khai_test {
             'v1',
             'v_s6re',
             'v_6g2o',
+            'v_c5p0',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -586,7 +686,45 @@ Dashboard khai_test {
             'f_pofb',
             'f_uuo1',
             'f_m383',
-            'f_j1la'
+            'f_j1la',
+            'f_jmgl'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_c5p0'
+      to: [
+        CustomMapping {
+          block: [
+            'v1',
+            'v_s6re',
+            'v_6g2o',
+            'v_52wr'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_jmgl'
+      to: [
+        CustomMapping {
+          block: [
+            'v1',
+            'v_s6re',
+            'v_6g2o',
+            'v_52wr',
+            'f_ml3q',
+            'f_kmoy',
+            'f_vs3y',
+            'f_z363',
+            'f_pofb',
+            'f_uuo1',
+            'f_m383',
+            'f_j1la',
+            'f_wimh'
           ]
           disabled: true
         }
