@@ -407,7 +407,7 @@ Dashboard khai_test {
           ref: r(khai_ecommerce.revenue)
           format {
             type: 'number'
-            pattern: '#,### [$$]'
+            pattern: '[$$]#,###'
             group_separator: ','
             decimal_separator: '.'
           }
