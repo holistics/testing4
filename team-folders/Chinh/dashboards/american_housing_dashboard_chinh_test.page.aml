@@ -5,7 +5,7 @@ Dashboard american_housing_dashboard_chinh_test {
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
-    height: 1260
+    height: 1420
     grid_size: 20
     auto_expand_vertically: true
     mobile {
@@ -16,16 +16,19 @@ Dashboard american_housing_dashboard_chinh_test {
       layer: 1
     }
     block f_3ye5 {
-      position: pos(20, 20, 300, 80)
+      position: pos(20, 20, 220, 80)
       layer: 2
     }
     block v_s64q {
-      position: pos(20, 820, 1260, 420)
+      position: pos(20, 820, 1260, 580)
       layer: 3
     }
+    block t_0fo0 {
+      position: pos(240, 20, 140, 80)
+      layer: 4
+    }
   }
-
-  theme: H.themes.vanilla
+  theme: H.themes.classic
   block v_t1pe: VizBlock {
     label: 'Map'
     viz: PointMap {
@@ -53,6 +56,7 @@ Dashboard american_housing_dashboard_chinh_test {
       }
       settings {
         color_scale: 'horizontal'
+        point_size: 4
         value_colors {
           style: 'step'
           steps: 2
@@ -79,7 +83,7 @@ Dashboard american_housing_dashboard_chinh_test {
     }
     default {
       operator: 'is'
-      value: []
+      value: '1145000'
     }
   }
   block v_s64q: VizBlock {
@@ -115,6 +119,7 @@ Dashboard american_housing_dashboard_chinh_test {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'custom_divider'
         }
       ]
       settings {
@@ -126,11 +131,39 @@ Dashboard american_housing_dashboard_chinh_test {
             direction: 'asc'
           }
         ]
+        conditional_formats: [
+          ConditionalFormat {
+            key: 'custom_divider'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 'LOW'
+              }
+              text_color: '#328159'
+              background_color: '#B5E3CD'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_divider'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 'HIGH'
+              }
+              text_color: '#BF0E08'
+              background_color: '#FAD2D1'
+            }
+          }
+        ]
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
       }
     }
+  }
+  block t_0fo0: TextBlock {
+    content: @md <div style="background-color: #D70909; padding: 3px; color: white; text-align: center;">HIGH</div>
+<div style="background-color: #18A59E; padding: 3px; color: white;text-align: center;">LOW</div>;;
   }
 }
