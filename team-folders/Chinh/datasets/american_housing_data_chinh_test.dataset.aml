@@ -8,5 +8,11 @@ Dataset american_housing_data_chinh_test {
     zipcode_data_american_housing_data,
   ]
   relationships: [
-  ] 
+  ]
+
+  metric total_price {
+    label: 'Total Price'
+    type: 'number'
+    definition: @aql sum(zipcode_data_american_housing_data.price) ;;
+  }
 }
