@@ -55,7 +55,6 @@ Dashboard american_housing_dashboard_chinh_test {
         }
       }
       settings {
-        color_scale: 'horizontal'
         point_size: 4
         value_colors {
           style: 'step'
