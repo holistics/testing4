@@ -6,6 +6,7 @@ Dataset american_housing_data_chinh_test {
 
   models: [
     zipcode_data_american_housing_data,
+    param_model,
   ]
   relationships: [
   ]
@@ -14,5 +15,17 @@ Dataset american_housing_data_chinh_test {
     label: 'Total Price'
     type: 'number'
     definition: @aql sum(zipcode_data_american_housing_data.price) ;;
+  }
+
+  metric divider {
+    label: 'Dynamic Divider'
+    type: 'number'
+    definition: @aql
+      case(
+        when: total_price is null, then: 'IGNORE',
+        when: total_price >= (param_model.param_slider | first()), then: 'HIGH',
+        else: 'LOW'
+      )
+     ;;
   }
 }

@@ -1,0 +1,136 @@
+Dashboard american_housing_dashboard_chinh_test {
+  title: 'American Housing Dashboard Chinh Test'
+  description: ''
+
+  view: CanvasLayout {
+    label: 'View 1'
+    width: 1300
+    height: 1260
+    grid_size: 20
+    auto_expand_vertically: true
+    mobile {
+      mode: 'auto'
+    }
+    block v_t1pe {
+      position: pos(20, 120, 1260, 680)
+      layer: 1
+    }
+    block f_3ye5 {
+      position: pos(20, 20, 300, 80)
+      layer: 2
+    }
+    block v_s64q {
+      position: pos(20, 820, 1260, 420)
+      layer: 3
+    }
+  }
+
+  theme: H.themes.vanilla
+  block v_t1pe: VizBlock {
+    label: 'Map'
+    viz: PointMap {
+      dataset: american_housing_data_chinh_test
+      lng: VizFieldFull {
+        ref: r(zipcode_data_american_housing_data.longitude)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      lat: VizFieldFull {
+        ref: r(zipcode_data_american_housing_data.latitude)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      value: VizFieldFull {
+        ref: r(american_housing_data_chinh_test.total_price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      settings {
+        color_scale: 'horizontal'
+        value_colors {
+          style: 'step'
+          steps: 2
+          min {
+            color: '#18A59E'
+          }
+          max {
+            color: '#D70909'
+          }
+        }
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block f_3ye5: FilterBlock {
+    label: 'Slider '
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: american_housing_data_chinh_test
+      field: r(param_model.param_slider)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
+  block v_s64q: VizBlock {
+    label: 'Table'
+    viz: DataTable {
+      dataset: american_housing_data_chinh_test
+      fields: [
+        VizFieldFull {
+          ref: r(zipcode_data_american_housing_data.latitude)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(zipcode_data_american_housing_data.longitude)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(american_housing_data_chinh_test.total_price)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'custom_total_price_1'
+        },
+        VizFieldFull {
+          ref: r(american_housing_data_chinh_test.divider)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        pagination_size: 500
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            key: 'custom_total_price_1'
+            direction: 'asc'
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+}

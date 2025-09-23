@@ -26,6 +26,11 @@ Model param_model {
     type: 'number'
   }
 
+  param param_slider {
+    label: 'Slider Parameter'
+    type: 'number'
+  }
+
   owner: 'khai.to@holistics.io'
   query: @sql select 1;;
   models: [
