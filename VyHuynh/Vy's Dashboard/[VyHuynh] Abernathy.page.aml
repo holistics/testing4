@@ -153,7 +153,7 @@ Dashboard vy_huynh_abernathy {
     tab tab_4i2l: CanvasLayout {
       label: 'User Analysis'
       width: 1300
-      height: 980
+      height: 1520
       grid_size: 20
       auto_expand_vertically: true
       mobile {
@@ -165,6 +165,10 @@ Dashboard vy_huynh_abernathy {
       }
       block v_3mef {
         position: pos(20, 440, 1260, 520)
+        layer: 1
+      }
+      block v_059z {
+        position: pos(20, 980, 1260, 520)
         layer: 1
       }
     }
@@ -1236,6 +1240,57 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v_059z: VizBlock {
+    label: 'CountD of Order Id by Continent Name, Gender, Delivery Attempts, and Status'
+    viz: PivotTable {
+      dataset: ecom_dataset_vux
+      rows: [
+        VizFieldFull {
+          ref: r(order_master.status)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_countries.continent_name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'Number Order'
+          ref: r(order_master.order_id)
+          aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'Number User'
+          ref: r(order_master.user_id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -1431,7 +1486,10 @@ Dashboard vy_huynh_abernathy {
       from: 'v_2qyv'
       to: [
         CustomMapping {
-          block: 'v_3mef'
+          block: [
+            'v_3mef',
+            'v_059z'
+          ]
           disabled: true
         }
       ]
@@ -1465,6 +1523,15 @@ Dashboard vy_huynh_abernathy {
     },
     FilterInteraction {
       from: 'v_3mef'
+      to: [
+        CustomMapping {
+          block: 'v_2qyv'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_059z'
       to: [
         CustomMapping {
           block: 'v_2qyv'
