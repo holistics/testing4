@@ -153,7 +153,7 @@ Dashboard vy_huynh_abernathy {
     tab tab_4i2l: CanvasLayout {
       label: 'User Analysis'
       width: 1300
-      height: 800
+      height: 980
       grid_size: 20
       auto_expand_vertically: true
       mobile {
@@ -161,6 +161,10 @@ Dashboard vy_huynh_abernathy {
       }
       block v_jgur {
         position: pos(20, 20, 540, 400)
+        layer: 1
+      }
+      block v_3mef {
+        position: pos(20, 440, 1260, 520)
         layer: 1
       }
     }
@@ -1179,6 +1183,59 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v_3mef: VizBlock {
+    label: 'CountD of Order Id by Continent Name, Gender, Delivery Attempts, and Status'
+    viz: CombinationChart {
+      dataset: ecom_dataset_vux
+      x_axis: VizFieldFull {
+        ref: r(order_master.status)
+        format {
+          type: 'text'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            label: 'Number Order'
+            ref: r(order_master.order_id)
+            aggregation: 'count distinct'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color_palette: 0
+          }
+        }
+        series {
+          field: VizFieldFull {
+            label: 'Number User'
+            ref: r(order_master.user_id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -1371,6 +1428,15 @@ Dashboard vy_huynh_abernathy {
       ]
     },
     FilterInteraction {
+      from: 'v_2qyv'
+      to: [
+        CustomMapping {
+          block: 'v_3mef'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
       from: 'f_zwa4'
       to: [
         CustomMapping {
@@ -1394,6 +1460,15 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: 'v_cii9'
           field: ref('bq_fct_order_items', 'created_at')
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_3mef'
+      to: [
+        CustomMapping {
+          block: 'v_2qyv'
+          disabled: true
         }
       ]
     }
