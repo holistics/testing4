@@ -29,15 +29,10 @@ Dataset american_housing_data_chinh_test {
      ;;
   }
 
-  metric divider_binary {
-    label: 'Dynamic Divider - As Binary Format'
-    type: 'number'
-    definition: @aql
-      case(
-        when: total_price is null, then: -1,
-        when: total_price >= (param_model.param_slider | first()), then: 1,
-        else: 0
-      )
-     ;;
+  dimension divider_legend {
+    model: zipcode_data_american_housing_data
+    label: 'Dynamic Divider Legend'
+    type: 'text'
+    definition: @aql dimensionalize(divider, zipcode_data_american_housing_data.longitude, zipcode_data_american_housing_data.latitude) ;;
   }
 }

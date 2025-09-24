@@ -16,7 +16,7 @@ Dashboard american_housing_dashboard_chinh_test {
       layer: 1
     }
     block f_3ye5 {
-      position: pos(20, 20, 220, 80)
+      position: pos(20, 20, 280, 80)
       layer: 2
     }
     block v_s64q {
@@ -24,7 +24,7 @@ Dashboard american_housing_dashboard_chinh_test {
       layer: 3
     }
     block t_0fo0 {
-      position: pos(240, 20, 140, 80)
+      position: pos(300, 20, 140, 80)
       layer: 4
     }
   }
@@ -54,27 +54,25 @@ Dashboard american_housing_dashboard_chinh_test {
           pattern: 'inherited'
         }
       }
-      tooltips: [
-        VizTooltip {
-          field: VizFieldFull {
-            ref: r(american_housing_data_chinh_test.divider_binary)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
+      legend: VizFieldFull {
+        ref: r(american_housing_data_chinh_test, zipcode_data_american_housing_data.divider_legend)
+        format {
+          type: 'text'
         }
+      }
+      tooltips: [
       ]
       settings {
         point_size: 4
-        value_colors {
-          style: 'step'
-          steps: 2
-          min {
-            color: '#D70909'
-          }
-          max {
+        legend_colors {
+          color: '#FDE725'
+          point {
+            value: 'LOW'
             color: '#18A59E'
+          }
+          point {
+            value: 'HIGH'
+            color: '#D70909'
           }
         }
         aggregate_awareness {
@@ -85,7 +83,7 @@ Dashboard american_housing_dashboard_chinh_test {
     }
   }
   block f_3ye5: FilterBlock {
-    label: 'Slider '
+    label: 'Divider'
     type: 'field'
     source: FieldFilterSource {
       dataset: american_housing_data_chinh_test
@@ -126,12 +124,11 @@ Dashboard american_housing_dashboard_chinh_test {
           uname: 'custom_total_price_1'
         },
         VizFieldFull {
-          ref: r(american_housing_data_chinh_test.divider)
+          ref: r(american_housing_data_chinh_test, zipcode_data_american_housing_data.divider_legend)
           format {
-            type: 'number'
-            pattern: 'inherited'
+            type: 'text'
           }
-          uname: 'custom_divider'
+          uname: 'zipcode_data_american_housing_data_divider_legend'
         }
       ]
       settings {
@@ -140,12 +137,12 @@ Dashboard american_housing_dashboard_chinh_test {
         sorts: [
           SortSetting {
             key: 'custom_total_price_1'
-            direction: 'asc'
+            direction: 'desc'
           }
         ]
         conditional_formats: [
           ConditionalFormat {
-            key: 'custom_divider'
+            key: 'zipcode_data_american_housing_data_divider_legend'
             format: SingleFormat {
               condition {
                 operator: 'is'
@@ -156,7 +153,7 @@ Dashboard american_housing_dashboard_chinh_test {
             }
           },
           ConditionalFormat {
-            key: 'custom_divider'
+            key: 'zipcode_data_american_housing_data_divider_legend'
             format: SingleFormat {
               condition {
                 operator: 'is'
@@ -172,10 +169,6 @@ Dashboard american_housing_dashboard_chinh_test {
           debug_comments: true
         }
         column_styles: [
-          ColumnStyle {
-            key: 'custom_divider'
-            width: 143
-          },
           ColumnStyle {
             key: 'custom_total_price_1'
             width: 109
