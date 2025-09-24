@@ -1080,6 +1080,7 @@ Dashboard vy_huynh_abernathy {
           }
         },
         VizFieldFull {
+          label: 'Product Category'
           ref: r(order_master.delivery_attempts)
           format {
             type: 'number'
@@ -1097,8 +1098,17 @@ Dashboard vy_huynh_abernathy {
       ]
       values: [
         VizFieldFull {
+          label: 'Number Order'
           ref: r(order_master.order_id)
           aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'GMV'
+          ref: r(order_master.gmv)
           format {
             type: 'number'
             pattern: 'inherited'
