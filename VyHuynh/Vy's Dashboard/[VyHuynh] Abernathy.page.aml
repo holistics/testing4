@@ -106,12 +106,13 @@ Dashboard vy_huynh_abernathy {
         layer: 1
       }
       block v_2qyv {
-        position: pos(20, 900, 1160, 520)
+        position: pos(20, 900, 1460, 520)
         layer: 1
       }
       mobile {
         mode: 'auto'
       }
+      width: 1500
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
@@ -152,7 +153,7 @@ Dashboard vy_huynh_abernathy {
     tab tab_4i2l: CanvasLayout {
       label: 'User Analysis'
       width: 1300
-      height: 800
+      height: 1520
       grid_size: 20
       auto_expand_vertically: true
       mobile {
@@ -160,6 +161,14 @@ Dashboard vy_huynh_abernathy {
       }
       block v_jgur {
         position: pos(20, 20, 540, 400)
+        layer: 1
+      }
+      block v_3mef {
+        position: pos(20, 440, 1260, 520)
+        layer: 1
+      }
+      block v_059z {
+        position: pos(20, 980, 1260, 520)
         layer: 1
       }
     }
@@ -1072,19 +1081,23 @@ Dashboard vy_huynh_abernathy {
           format {
             type: 'text'
           }
+          uname: 'ecommerce_countries_continent_name'
         },
         VizFieldFull {
           ref: r(ecommerce_users.gender)
           format {
             type: 'text'
           }
+          uname: 'ecommerce_users_gender'
         },
         VizFieldFull {
+          label: 'Product Category'
           ref: r(order_master.delivery_attempts)
           format {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'order_master_delivery_attempts'
         }
       ]
       columns: [
@@ -1097,8 +1110,17 @@ Dashboard vy_huynh_abernathy {
       ]
       values: [
         VizFieldFull {
+          label: 'Number Order'
           ref: r(order_master.order_id)
           aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'GMV'
+          ref: r(order_master.gmv)
           format {
             type: 'number'
             pattern: 'inherited'
@@ -1113,6 +1135,20 @@ Dashboard vy_huynh_abernathy {
           enabled: true
           debug_comments: true
         }
+        column_styles: [
+          ColumnStyle {
+            key: 'ecommerce_countries_continent_name'
+            width: 117
+          },
+          ColumnStyle {
+            key: 'ecommerce_users_gender'
+            width: 86
+          },
+          ColumnStyle {
+            key: 'order_master_delivery_attempts'
+            width: 116
+          }
+        ]
       }
     }
   }
@@ -1148,6 +1184,110 @@ Dashboard vy_huynh_abernathy {
           AutoDrillthroughSource {
           }
         ]
+      }
+    }
+  }
+  block v_3mef: VizBlock {
+    label: 'CountD of Order Id by Continent Name, Gender, Delivery Attempts, and Status'
+    viz: CombinationChart {
+      dataset: ecom_dataset_vux
+      x_axis: VizFieldFull {
+        ref: r(order_master.status)
+        format {
+          type: 'text'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            label: 'Number Order'
+            ref: r(order_master.order_id)
+            aggregation: 'count distinct'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color_palette: 0
+          }
+        }
+        series {
+          field: VizFieldFull {
+            label: 'Number User'
+            ref: r(order_master.user_id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_059z: VizBlock {
+    label: 'CountD of Order Id by Continent Name, Gender, Delivery Attempts, and Status'
+    viz: PivotTable {
+      dataset: ecom_dataset_vux
+      rows: [
+        VizFieldFull {
+          ref: r(order_master.status)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_countries.continent_name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'Number Order'
+          ref: r(order_master.order_id)
+          aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'Number User'
+          ref: r(order_master.user_id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
       }
     }
   }
@@ -1343,6 +1483,18 @@ Dashboard vy_huynh_abernathy {
       ]
     },
     FilterInteraction {
+      from: 'v_2qyv'
+      to: [
+        CustomMapping {
+          block: [
+            'v_3mef',
+            'v_059z'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
       from: 'f_zwa4'
       to: [
         CustomMapping {
@@ -1366,6 +1518,24 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: 'v_cii9'
           field: ref('bq_fct_order_items', 'created_at')
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_3mef'
+      to: [
+        CustomMapping {
+          block: 'v_2qyv'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_059z'
+      to: [
+        CustomMapping {
+          block: 'v_2qyv'
+          disabled: true
         }
       ]
     }
