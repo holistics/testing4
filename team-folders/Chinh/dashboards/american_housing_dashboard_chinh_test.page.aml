@@ -4,15 +4,15 @@ Dashboard american_housing_dashboard_chinh_test {
 
   view: CanvasLayout {
     label: 'View 1'
-    width: 1300
-    height: 1420
+    width: 1560
+    height: 860
     grid_size: 20
     auto_expand_vertically: true
     mobile {
       mode: 'auto'
     }
     block v_t1pe {
-      position: pos(20, 120, 1260, 680)
+      position: pos(20, 120, 900, 680)
       layer: 1
     }
     block f_3ye5 {
@@ -20,7 +20,7 @@ Dashboard american_housing_dashboard_chinh_test {
       layer: 2
     }
     block v_s64q {
-      position: pos(20, 820, 1260, 580)
+      position: pos(940, 120, 600, 680)
       layer: 3
     }
     block t_0fo0 {
@@ -107,6 +107,7 @@ Dashboard american_housing_dashboard_chinh_test {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'zipcode_data_american_housing_data_latitude'
         },
         VizFieldFull {
           ref: r(zipcode_data_american_housing_data.longitude)
@@ -114,6 +115,7 @@ Dashboard american_housing_dashboard_chinh_test {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'zipcode_data_american_housing_data_longitude'
         },
         VizFieldFull {
           ref: r(american_housing_data_chinh_test.total_price)
@@ -169,6 +171,24 @@ Dashboard american_housing_dashboard_chinh_test {
           enabled: true
           debug_comments: true
         }
+        column_styles: [
+          ColumnStyle {
+            key: 'custom_divider'
+            width: 143
+          },
+          ColumnStyle {
+            key: 'custom_total_price_1'
+            width: 109
+          },
+          ColumnStyle {
+            key: 'zipcode_data_american_housing_data_latitude'
+            width: 95
+          },
+          ColumnStyle {
+            key: 'zipcode_data_american_housing_data_longitude'
+            width: 106
+          }
+        ]
       }
     }
   }
