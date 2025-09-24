@@ -106,12 +106,13 @@ Dashboard vy_huynh_abernathy {
         layer: 1
       }
       block v_2qyv {
-        position: pos(20, 900, 1160, 520)
+        position: pos(20, 900, 1460, 520)
         layer: 1
       }
       mobile {
         mode: 'auto'
       }
+      width: 1500
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
@@ -1072,12 +1073,14 @@ Dashboard vy_huynh_abernathy {
           format {
             type: 'text'
           }
+          uname: 'ecommerce_countries_continent_name'
         },
         VizFieldFull {
           ref: r(ecommerce_users.gender)
           format {
             type: 'text'
           }
+          uname: 'ecommerce_users_gender'
         },
         VizFieldFull {
           label: 'Product Category'
@@ -1086,6 +1089,7 @@ Dashboard vy_huynh_abernathy {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'order_master_delivery_attempts'
         }
       ]
       columns: [
@@ -1123,6 +1127,20 @@ Dashboard vy_huynh_abernathy {
           enabled: true
           debug_comments: true
         }
+        column_styles: [
+          ColumnStyle {
+            key: 'ecommerce_countries_continent_name'
+            width: 117
+          },
+          ColumnStyle {
+            key: 'ecommerce_users_gender'
+            width: 86
+          },
+          ColumnStyle {
+            key: 'order_master_delivery_attempts'
+            width: 116
+          }
+        ]
       }
     }
   }
