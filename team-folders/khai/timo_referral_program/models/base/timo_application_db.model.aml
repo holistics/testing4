@@ -45,7 +45,7 @@ SELECT * FROM (VALUES
     ('USER_004', 'FUND_D', 'FAMILY', false, '2024-04-01 12:00:00'::timestamp),
     ('USER_103', 'FUND_E', 'INVESTMENT', false, '2024-04-03 13:30:00'::timestamp),
     ('USER_115', 'FUND_E', 'INVESTMENT', true, '2024-04-02 10:00:00'::timestamp),
-    ('USER_105', 'FUND_F', 'FRIENDS', true, '2024-05-25 10:00:00'::timestamp),
+    ('USER_105', 'FUND_F', 'FRIENDS', false, '2024-05-25 10:00:00'::timestamp),
     ('USER_006', 'FUND_F', 'FRIENDS', true, '2024-06-01 15:00:00'::timestamp),
     ('USER_116', 'FUND_F', 'FRIENDS', true, '2024-05-20 09:00:00'::timestamp),
     ('USER_007', 'FUND_G', 'FAMILY', true, '2024-07-01 09:00:00'::timestamp),

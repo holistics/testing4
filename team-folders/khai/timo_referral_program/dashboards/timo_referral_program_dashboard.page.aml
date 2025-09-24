@@ -10,7 +10,7 @@ Dashboard timo_referral_program_dashboard {
       dataset: timo_referral_program
       calculation total_invitees {
         label: 'Total Invitees'
-        formula: @aql count(timo_invitees.user_id) | keep_grains(timo_invitees);;
+        formula: @aql count(timo_invitees.user_id) | keep_grains(timo_invitees, timo_fund_info);;
         calc_type: 'measure'
         data_type: 'number'
       }
@@ -95,14 +95,14 @@ Dashboard timo_referral_program_dashboard {
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
-    height: 500
+    height: 560
     grid_size: 20
     auto_expand_vertically: true
     block title {
       position: pos(20, 20, 1260, 60)
     }
     block v_3yn5 {
-      position: pos(20, 100, 1260, 380)
+      position: pos(20, 80, 1260, 460)
       layer: 1
     }
     mobile {
