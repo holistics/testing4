@@ -54,16 +54,27 @@ Dashboard american_housing_dashboard_chinh_test {
           pattern: 'inherited'
         }
       }
+      tooltips: [
+        VizTooltip {
+          field: VizFieldFull {
+            ref: r(american_housing_data_chinh_test.divider_binary)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      ]
       settings {
         point_size: 4
         value_colors {
           style: 'step'
           steps: 2
           min {
-            color: '#18A59E'
+            color: '#D70909'
           }
           max {
-            color: '#D70909'
+            color: '#18A59E'
           }
         }
         aggregate_awareness {
