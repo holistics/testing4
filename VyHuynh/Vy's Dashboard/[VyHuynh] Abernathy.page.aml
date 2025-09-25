@@ -98,11 +98,11 @@ Dashboard vy_huynh_abernathy {
       grid_size: 20
       auto_expand_vertically: true
       block v_ztqi {
-        position: pos(20, 20, 1160, 420)
+        position: pos(20, 20, 1460, 420)
         layer: 1
       }
       block v_856v {
-        position: pos(20, 460, 1160, 420)
+        position: pos(20, 460, 1460, 420)
         layer: 1
       }
       block v_2qyv {
@@ -175,6 +175,7 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 980, 1260, 520)
         layer: 1
       }
+      auto_expand_horizontally: true
     }
   }
 
@@ -599,7 +600,7 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v_ztqi: VizBlock {
-    label: 'Order Created Month, Continent Name, and CountD of User Id'
+    label: 'Order Created Month, Continent Name and 3 more'
     viz: DataTable {
       dataset: demo_ecommerce
       filter {
@@ -629,6 +630,22 @@ Dashboard vy_huynh_abernathy {
             pattern: 'inherited'
           }
           uname: 'count_distinct_user_id_1'
+        },
+        VizFieldFull {
+          ref: r(order_master.order_id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(order_master.price)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: '[$$]#,###'
+          }
         }
       ]
       settings {
