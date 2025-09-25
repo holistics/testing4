@@ -116,7 +116,7 @@ Dashboard vy_huynh_abernathy {
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
-      height: 2940
+      height: 3420
       grid_size: 20
       block v5 {
         position: pos(20, 80, 1160, 500)
