@@ -116,7 +116,7 @@ Dashboard vy_huynh_abernathy {
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
-      height: 3940
+      height: 4440
       grid_size: 20
       block v5 {
         position: pos(20, 80, 1160, 500)
@@ -152,6 +152,10 @@ Dashboard vy_huynh_abernathy {
       }
       block v_tusm {
         position: pos(20, 3420, 1160, 500)
+        layer: 1
+      }
+      block v_j83d {
+        position: pos(20, 3940, 1160, 480)
         layer: 1
       }
       mobile {
@@ -1391,6 +1395,45 @@ Dashboard vy_huynh_abernathy {
       settings {
         row_limit: 5000
         x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_j83d: VizBlock {
+    label: 'Count of Id by Latitude, Longitude, and Neighbourhood'
+    viz: BubbleChart {
+      dataset: demo_ecommerce
+      x_col: VizFieldFull {
+        ref: r(demo_ecommerce.total_orders)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(order_master.gmv)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(order_master.aov)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(map_categories.parent_category)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
         aggregate_awareness {
           enabled: true
           debug_comments: true
