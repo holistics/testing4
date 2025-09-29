@@ -1,0 +1,61 @@
+Dashboard khai_test {
+  title: 'Khai Test'
+  view: CanvasLayout {
+    label: 'View 1'
+    height: 560
+    grid_size: 20
+    block v1 {
+      position: pos(20, 20, 1160, 520)
+      layer: 1
+    }
+  }
+  theme: H.themes.classic
+  block v1: VizBlock {
+    label: ' '
+    viz: LineChart {
+      dataset: khai_ecommerce
+      calculation total_quantity {
+        label: 'Total Quantity'
+        formula: @aql sum(order_items.quantity);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      theme {
+
+      }
+      x_axis: VizFieldFull {
+        ref: ref('khai_date_d', 'date_key')
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: 'total_quantity'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+}

@@ -23,7 +23,7 @@ Dashboard demo_ecommerce_overview_funky {
     }
     default {
       operator: 'is'
-      value: []
+      value: 'Female'
     }
   }
   block age_demographic: FilterBlock {
@@ -775,7 +775,7 @@ display: block;
   view: CanvasLayout {
     label: 'Canvas Layout'
     width: 1220
-    height: 2820
+    height: 2795
     grid_size: 5
     block t2 {
       position: pos(320, 20, 320, 180)
