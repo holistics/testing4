@@ -1,8 +1,10 @@
+const company_dashboard_v_owner = "vincent@holistics.io"
+
 @tag('1️⃣ Trust/Endorsed', '2️⃣ Status/Active')
 Dashboard company_dashboard_v {
   title: '[Demo] Ecommerce Dashboard (2025-05)'
-  owner: 'vincent@holistics.io'
-  description: ''''''
+  owner: company_dashboard_v_owner
+  description: '${company_dashboard_v_owner}'
   block t5: TextBlock {
     content: @md <img src=""/>
 
@@ -1546,7 +1548,7 @@ Uncover trends by comparing current performance against a previous period.
         layer: 9
       }
       block t7 {
-        position: pos(320, 20, 920, 320)
+        position: pos(320, 20, 920, 280)
         layer: 10
       }
       block t9 {
@@ -1600,6 +1602,10 @@ Uncover trends by comparing current performance against a previous period.
       block t35 {
         position: pos(20, 2260, 1220, 380)
         layer: 22
+      }
+      block t_89cm {
+        position: pos(320, 300, 160, 40)
+        layer: 23
       }
       mobile {
         mode: 'auto'
@@ -2406,4 +2412,8 @@ Uncover trends by comparing current performance against a previous period.
       ]
     }
   ]
+  settings {
+    timezone: 'Etc/UTC'
+    cache_duration: 1440
+  }
 }
