@@ -1530,9 +1530,6 @@ Uncover trends by comparing current performance against a previous period.
     </tbody>
   </table> ;;
   }
-  block t_jg7t: TextBlock {
-    content: @md ${company_dashboard_v.owner};;
-  }
   view: TabLayout {
     label: 'View 1'
     tab tab2: CanvasLayout {
