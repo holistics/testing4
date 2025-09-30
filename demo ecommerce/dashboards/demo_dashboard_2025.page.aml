@@ -4,7 +4,7 @@ const company_dashboard_v_owner = "vincent@holistics.io"
 Dashboard company_dashboard_v {
   title: '[Demo] Ecommerce Dashboard (2025-05)'
   owner: company_dashboard_v_owner
-  description: '${company_dashboard_v_owner}'
+  description: 'owner: ${company_dashboard_v_owner}'
   block t5: TextBlock {
     content: @md <img src=""/>
 
