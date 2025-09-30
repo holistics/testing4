@@ -98,11 +98,11 @@ Dashboard vy_huynh_abernathy {
       grid_size: 20
       auto_expand_vertically: true
       block v_ztqi {
-        position: pos(20, 20, 1160, 420)
+        position: pos(20, 20, 1460, 420)
         layer: 1
       }
       block v_856v {
-        position: pos(20, 460, 1160, 420)
+        position: pos(20, 460, 1460, 420)
         layer: 1
       }
       block v_2qyv {
@@ -116,7 +116,7 @@ Dashboard vy_huynh_abernathy {
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
-      height: 2940
+      height: 4440
       grid_size: 20
       block v5 {
         position: pos(20, 80, 1160, 500)
@@ -146,9 +146,22 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 2300, 1160, 580)
         layer: 1
       }
+      block v_dbuh {
+        position: pos(20, 2900, 1160, 500)
+        layer: 1
+      }
+      block v_tusm {
+        position: pos(20, 3420, 1160, 500)
+        layer: 1
+      }
+      block v_j83d {
+        position: pos(20, 3940, 1160, 480)
+        layer: 1
+      }
       mobile {
         mode: 'auto'
       }
+      auto_expand_vertically: true
     }
     tab tab_4i2l: CanvasLayout {
       label: 'User Analysis'
@@ -171,6 +184,7 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 980, 1260, 520)
         layer: 1
       }
+      auto_expand_horizontally: true
     }
   }
 
@@ -595,7 +609,7 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v_ztqi: VizBlock {
-    label: 'Order Created Month, Continent Name, and CountD of User Id'
+    label: 'Order Created Month, Continent Name and 3 more'
     viz: DataTable {
       dataset: demo_ecommerce
       filter {
@@ -625,6 +639,22 @@ Dashboard vy_huynh_abernathy {
             pattern: 'inherited'
           }
           uname: 'count_distinct_user_id_1'
+        },
+        VizFieldFull {
+          ref: r(order_master.order_id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(order_master.price)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: '[$$]#,###'
+          }
         }
       ]
       settings {
@@ -1291,6 +1321,126 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v_dbuh: VizBlock {
+    label: 'GMV - Gross Merchandise Value by Month Order Created At and Continent Name'
+    viz: ColumnChart {
+      dataset: demo_ecommerce
+      filter {
+        field: r(order_master.order_created_at)
+        operator: 'matches'
+        value: '2024'
+      }
+      x_axis: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.gmv)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_tusm: VizBlock {
+    label: 'GMV - Gross Merchandise Value by Continent Name'
+    viz: BarChart {
+      dataset: demo_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.gmv)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_j83d: VizBlock {
+    label: 'Count of Id by Latitude, Longitude, and Neighbourhood'
+    viz: BubbleChart {
+      dataset: demo_ecommerce
+      x_col: VizFieldFull {
+        ref: r(demo_ecommerce.total_orders)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(order_master.gmv)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(order_master.aov)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(map_categories.parent_category)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -1326,6 +1476,8 @@ Dashboard vy_huynh_abernathy {
             'v_856v',
             'v_qctn',
             'v_9rhg',
+            'v_dbuh',
+            'v_tusm',
             'f_zwa4'
           ]
           disabled: true
@@ -1344,6 +1496,8 @@ Dashboard vy_huynh_abernathy {
             'v_856v',
             'v_qctn',
             'v_9rhg',
+            'v_dbuh',
+            'v_tusm',
             'f_zwa4'
           ]
           disabled: true
@@ -1357,7 +1511,9 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v_856v',
             'v_qctn',
-            'v_9rhg'
+            'v_9rhg',
+            'v_dbuh',
+            'v_tusm'
           ]
           disabled: true
         }
@@ -1370,7 +1526,9 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v_856v',
             'v_qctn',
-            'v_9rhg'
+            'v_9rhg',
+            'v_dbuh',
+            'v_tusm'
           ]
           disabled: true
         }
@@ -1382,7 +1540,9 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v_qctn',
-            'v_9rhg'
+            'v_9rhg',
+            'v_dbuh',
+            'v_tusm'
           ]
           disabled: true
         }
@@ -1395,7 +1555,9 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v_856v',
             'v_qctn',
-            'v_9rhg'
+            'v_9rhg',
+            'v_dbuh',
+            'v_tusm'
           ]
           disabled: true
         }
@@ -1408,7 +1570,9 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v_856v',
             'v_qctn',
-            'v_9rhg'
+            'v_9rhg',
+            'v_dbuh',
+            'v_tusm'
           ]
           disabled: true
         }
@@ -1426,7 +1590,9 @@ Dashboard vy_huynh_abernathy {
             'v_hk4u',
             'v_wsww',
             'v_qctn',
-            'v_9rhg'
+            'v_9rhg',
+            'v_dbuh',
+            'v_tusm'
           ]
           disabled: true
         }
@@ -1501,6 +1667,8 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v_hk4u',
             'v_wsww',
+            'v_dbuh',
+            'v_tusm',
             'f1',
             'f2'
           ]
@@ -1535,6 +1703,38 @@ Dashboard vy_huynh_abernathy {
       to: [
         CustomMapping {
           block: 'v_2qyv'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_dbuh'
+      to: [
+        CustomMapping {
+          block: [
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_tusm'
+      to: [
+        CustomMapping {
+          block: [
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v'
+          ]
           disabled: true
         }
       ]
