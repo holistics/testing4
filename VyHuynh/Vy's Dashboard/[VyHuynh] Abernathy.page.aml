@@ -1484,7 +1484,7 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v_qj0m: VizBlock {
-    label: 'Sum of Price by Beds'
+    label: 'Sales by Bed Number'
     viz: LineChart {
       dataset: american_housing_data_chinh_test
       x_axis: VizFieldFull {
@@ -1501,7 +1501,7 @@ Dashboard vy_huynh_abernathy {
             aggregation: 'sum'
             format {
               type: 'number'
-              pattern: 'inherited'
+              pattern: '[$$]#,###'
             }
           }
         }
