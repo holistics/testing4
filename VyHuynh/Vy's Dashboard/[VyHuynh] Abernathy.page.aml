@@ -1484,7 +1484,7 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v_qj0m: VizBlock {
-    label: 'Sales by Bed Number'
+    label: 'Sales by Category ID'
     viz: LineChart {
       dataset: american_housing_data_chinh_test
       x_axis: VizFieldFull {
@@ -1497,6 +1497,7 @@ Dashboard vy_huynh_abernathy {
       y_axis {
         series {
           field: VizFieldFull {
+            label: 'Sales'
             ref: r(zipcode_data_american_housing_data.price)
             aggregation: 'sum'
             format {
