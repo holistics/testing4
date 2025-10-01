@@ -6,7 +6,7 @@ Dashboard vy_huynh_abernathy {
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
       width: 1220
-      height: 3380
+      height: 3800
       grid_size: 20
       block v2 {
         position: pos(20, 820, 260, 140)
@@ -91,6 +91,10 @@ Dashboard vy_huynh_abernathy {
       block v_qj0m {
         position: pos(20, 2960, 1160, 400)
         layer: 11
+      }
+      block v_lpgt {
+        position: pos(20, 3380, 580, 400)
+        layer: 12
       }
       mobile {
         mode: 'auto'
@@ -1517,6 +1521,38 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v_lpgt: VizBlock {
+    label: 'AOV - Average Order Value by Category'
+    viz: PieChart {
+      dataset: demo_ecommerce
+      legend: VizFieldFull {
+        ref: r(map_categories.category)
+        format {
+          type: 'text'
+        }
+      }
+      series {
+        field: VizFieldFull {
+          ref: r(order_master.aov)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+        settings {
+          color_palette: 0
+        }
+      }
+      settings {
+        row_limit: 5000
+        data_label_position: 'none'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -1526,7 +1562,8 @@ Dashboard vy_huynh_abernathy {
             'v8',
             'v_ztqi',
             'v_hk4u',
-            'v_856v'
+            'v_856v',
+            'v_lpgt'
           ]
           disabled: true
         }
@@ -1538,7 +1575,8 @@ Dashboard vy_huynh_abernathy {
         CustomMapping {
           block: [
             'v8',
-            'v_856v'
+            'v_856v',
+            'v_lpgt'
           ]
           disabled: true
         }
@@ -1623,7 +1661,8 @@ Dashboard vy_huynh_abernathy {
             'v_9rhg',
             'v_dbuh',
             'v_tusm',
-            'v_nyr1'
+            'v_nyr1',
+            'v_lpgt'
           ]
           disabled: true
         }
@@ -1639,7 +1678,8 @@ Dashboard vy_huynh_abernathy {
             'v_9rhg',
             'v_dbuh',
             'v_tusm',
-            'v_nyr1'
+            'v_nyr1',
+            'v_lpgt'
           ]
           disabled: true
         }
@@ -1655,7 +1695,8 @@ Dashboard vy_huynh_abernathy {
             'v_9rhg',
             'v_dbuh',
             'v_tusm',
-            'v_nyr1'
+            'v_nyr1',
+            'v_lpgt'
           ]
           disabled: true
         }
@@ -1676,7 +1717,8 @@ Dashboard vy_huynh_abernathy {
             'v_9rhg',
             'v_dbuh',
             'v_tusm',
-            'v_nyr1'
+            'v_nyr1',
+            'v_lpgt'
           ]
           disabled: true
         }
@@ -1710,7 +1752,8 @@ Dashboard vy_huynh_abernathy {
             'v_ztqi',
             'v_hk4u',
             'v_wsww',
-            'v_856v'
+            'v_856v',
+            'v_lpgt'
           ]
           disabled: true
         }
@@ -1726,7 +1769,8 @@ Dashboard vy_huynh_abernathy {
             'v_ztqi',
             'v_hk4u',
             'v_wsww',
-            'v_856v'
+            'v_856v',
+            'v_lpgt'
           ]
           disabled: true
         }
@@ -1802,7 +1846,8 @@ Dashboard vy_huynh_abernathy {
             'v_ztqi',
             'v_hk4u',
             'v_wsww',
-            'v_856v'
+            'v_856v',
+            'v_lpgt'
           ]
           disabled: true
         }
@@ -1818,8 +1863,18 @@ Dashboard vy_huynh_abernathy {
             'v_ztqi',
             'v_hk4u',
             'v_wsww',
-            'v_856v'
+            'v_856v',
+            'v_lpgt'
           ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_j83d'
+      to: [
+        CustomMapping {
+          block: 'v_lpgt'
           disabled: true
         }
       ]
@@ -1834,7 +1889,30 @@ Dashboard vy_huynh_abernathy {
             'v_ztqi',
             'v_hk4u',
             'v_wsww',
-            'v_856v'
+            'v_856v',
+            'v_lpgt'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_lpgt'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v6',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v',
+            'v_qctn',
+            'v_9rhg',
+            'v_dbuh',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1'
           ]
           disabled: true
         }
