@@ -89,7 +89,7 @@ Dashboard vy_huynh_abernathy {
         layer: 4
       }
       block v_qj0m {
-        position: pos(20, 2960, 580, 400)
+        position: pos(20, 2960, 1160, 400)
         layer: 11
       }
       mobile {
