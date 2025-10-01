@@ -6,7 +6,7 @@ Dashboard vy_huynh_abernathy {
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
       width: 1220
-      height: 2960
+      height: 3380
       grid_size: 20
       block v2 {
         position: pos(20, 820, 260, 140)
@@ -87,6 +87,10 @@ Dashboard vy_huynh_abernathy {
       block f_zwa4 {
         position: pos(860, 80, 280, 60)
         layer: 4
+      }
+      block v_qj0m {
+        position: pos(20, 2960, 580, 400)
+        layer: 11
       }
       mobile {
         mode: 'auto'
@@ -1472,6 +1476,39 @@ Dashboard vy_huynh_abernathy {
         show_total: true
         row_limit: 5000
         data_label_position: 'outside'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_qj0m: VizBlock {
+    label: 'Sum of Price by Beds'
+    viz: LineChart {
+      dataset: american_housing_data_chinh_test
+      x_axis: VizFieldFull {
+        ref: r(zipcode_data_american_housing_data.beds)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(zipcode_data_american_housing_data.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
         aggregate_awareness {
           enabled: true
           debug_comments: true
