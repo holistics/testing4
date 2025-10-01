@@ -15,6 +15,13 @@ Dashboard untitled_8 {
           pattern: 'inherited'
         }
       }
+      compare_value: VizPopSettings {
+        field: r(order_master.order_created_at)
+        value: AbsolutePopValue {
+          from: '2025-09-01'
+          to: '2025-09-06'
+        }
+      }
       settings {
         aggregate_awareness {
           enabled: true
