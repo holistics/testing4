@@ -390,7 +390,7 @@ Dashboard vy_huynh_abernathy {
             ref: r(order_master.gmv)
             format {
               type: 'number'
-              pattern: 'inherited'
+              pattern: '#,###'
             }
           }
         }
