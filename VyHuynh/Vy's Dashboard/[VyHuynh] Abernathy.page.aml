@@ -116,7 +116,7 @@ Dashboard vy_huynh_abernathy {
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
-      height: 4440
+      height: 4960
       grid_size: 20
       block v5 {
         position: pos(20, 80, 1160, 500)
@@ -156,6 +156,10 @@ Dashboard vy_huynh_abernathy {
       }
       block v_j83d {
         position: pos(20, 3940, 1160, 480)
+        layer: 1
+      }
+      block v_nyr1 {
+        position: pos(20, 4440, 1160, 500)
         layer: 1
       }
       mobile {
@@ -1441,6 +1445,40 @@ Dashboard vy_huynh_abernathy {
       }
     }
   }
+  block v_nyr1: VizBlock {
+    label: 'GMV - Gross Merchandise Value by Continent Name'
+    viz: PieChart {
+      dataset: demo_ecommerce
+      legend: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
+        }
+      }
+      series {
+        field: VizFieldFull {
+          ref: r(order_master.gmv)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+        settings {
+          color_palette: 0
+        }
+      }
+      settings {
+        display_as_donut: true
+        show_total: true
+        row_limit: 5000
+        data_label_position: 'outside'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -1478,6 +1516,7 @@ Dashboard vy_huynh_abernathy {
             'v_9rhg',
             'v_dbuh',
             'v_tusm',
+            'v_nyr1',
             'f_zwa4'
           ]
           disabled: true
@@ -1498,6 +1537,7 @@ Dashboard vy_huynh_abernathy {
             'v_9rhg',
             'v_dbuh',
             'v_tusm',
+            'v_nyr1',
             'f_zwa4'
           ]
           disabled: true
@@ -1513,7 +1553,8 @@ Dashboard vy_huynh_abernathy {
             'v_qctn',
             'v_9rhg',
             'v_dbuh',
-            'v_tusm'
+            'v_tusm',
+            'v_nyr1'
           ]
           disabled: true
         }
@@ -1528,7 +1569,8 @@ Dashboard vy_huynh_abernathy {
             'v_qctn',
             'v_9rhg',
             'v_dbuh',
-            'v_tusm'
+            'v_tusm',
+            'v_nyr1'
           ]
           disabled: true
         }
@@ -1542,7 +1584,8 @@ Dashboard vy_huynh_abernathy {
             'v_qctn',
             'v_9rhg',
             'v_dbuh',
-            'v_tusm'
+            'v_tusm',
+            'v_nyr1'
           ]
           disabled: true
         }
@@ -1557,7 +1600,8 @@ Dashboard vy_huynh_abernathy {
             'v_qctn',
             'v_9rhg',
             'v_dbuh',
-            'v_tusm'
+            'v_tusm',
+            'v_nyr1'
           ]
           disabled: true
         }
@@ -1572,7 +1616,8 @@ Dashboard vy_huynh_abernathy {
             'v_qctn',
             'v_9rhg',
             'v_dbuh',
-            'v_tusm'
+            'v_tusm',
+            'v_nyr1'
           ]
           disabled: true
         }
@@ -1592,7 +1637,8 @@ Dashboard vy_huynh_abernathy {
             'v_qctn',
             'v_9rhg',
             'v_dbuh',
-            'v_tusm'
+            'v_tusm',
+            'v_nyr1'
           ]
           disabled: true
         }
@@ -1669,6 +1715,7 @@ Dashboard vy_huynh_abernathy {
             'v_wsww',
             'v_dbuh',
             'v_tusm',
+            'v_nyr1',
             'f1',
             'f2'
           ]
@@ -1725,6 +1772,22 @@ Dashboard vy_huynh_abernathy {
     },
     FilterInteraction {
       from: 'v_tusm'
+      to: [
+        CustomMapping {
+          block: [
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_nyr1'
       to: [
         CustomMapping {
           block: [
