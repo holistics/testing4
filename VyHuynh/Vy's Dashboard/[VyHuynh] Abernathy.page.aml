@@ -404,6 +404,7 @@ Dashboard vy_huynh_abernathy {
         }
       }
     }
+    description: 'This is description of the block'
   }
   block t1: TextBlock {
     content: @md <div id="regional-analysis">  <svg width="40" height="40
