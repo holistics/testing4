@@ -27,7 +27,7 @@ Dashboard khai_test {
         layer: 5
       }
       block v_6g2o {
-        position: pos(340, 700, 580, 120)
+        position: pos(360, 700, 580, 120)
         layer: 6
       }
     }
