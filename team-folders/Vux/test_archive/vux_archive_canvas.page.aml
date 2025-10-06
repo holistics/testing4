@@ -1,4 +1,4 @@
-@tag('1️⃣ Trust/Endorsed', 'archive', 'status/archive')
+@tag('1️⃣ Trust/Endorsed', 'Status/Archived')
 Dashboard vux_archive_canvas {
   title: 'Vux Archive Canvas'
   description: ''
