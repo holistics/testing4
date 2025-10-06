@@ -1,0 +1,9 @@
+Tag {
+  name: 'archive'
+  color: '#0000ff'
+}
+
+Tag  {
+  name: 'status/archive'
+  color: '#0000ff'
+}
