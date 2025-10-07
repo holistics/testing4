@@ -5,6 +5,13 @@ Model chinh_dynamic_dim_model {
   data_source_name: 'demodb'
   owner: 'chinh.dm@holistics.io'
 
+  dimension order_item_id {
+    label: 'Order Item Id'
+    type: 'number'
+    hidden: false
+    primary_key: true
+    definition: @sql {{ #SOURCE.order_item_id }};;
+  }
   dimension order_id {
     label: 'Order Id'
     type: 'number'
@@ -34,6 +41,12 @@ Model chinh_dynamic_dim_model {
     type: 'datetime'
     hidden: false
     definition: @sql {{ #SOURCE.order_created_at }};;
+  }
+  dimension order_billing_at {
+    label: 'Order Billing At'
+    type: 'datetime'
+    hidden: false
+    definition: @sql {{ #SOURCE.order_billing_at }};;
   }
   dimension delivery_attempts {
     label: 'Delivery Attempts'
@@ -97,11 +110,13 @@ Model chinh_dynamic_dim_model {
 
   query: @sql
     select 
-      {{#o.id}} as order_id
+      concat({{#oi.order_id}}, '_', {{#oi.product_id}}) as order_item_id
+      , {{#o.id}} as order_id
       , {{ #u.email }} as user_email
       , {{ #u.gender }} 
       , {{#o.status }}
       , {{#o.created_at}} as order_created_at
+      , {{#o.created_at}} + INTERVAL '1 month' as order_billing_at
       , {{#o.delivery_attempts}}
       , {{#o.discount}}
       , {{#oi.quantity}}
@@ -116,7 +131,8 @@ Model chinh_dynamic_dim_model {
     left join {{ #ecommerce_users AS u }} on {{ #o.user_id }} = {{ #u.id }}
     left join {{ #ecommerce_cities AS ci }} on {{ #u.city_id }} = {{ #ci.id }}
     left join {{ #ecommerce_countries AS co }} on {{ #ci.country_code }} = {{ #co.code }}
-    left join {{ #ecommerce_products AS p }} on {{#oi.product_id}} = {{#p.id}};;
+    left join {{ #ecommerce_products AS p }} on {{#oi.product_id}} = {{#p.id}}
+  ;;
 
   models: [
     ecommerce_users,

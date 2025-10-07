@@ -12,7 +12,7 @@ Dashboard chinh_dynamic_dashboard {
       mode: 'auto'
     }
     block v_ufsz {
-      position: pos(20, 120, 1260, 600)
+      position: pos(20, 100, 1260, 600)
       layer: 1
     }
     block f_ahqz {
@@ -26,6 +26,11 @@ Dashboard chinh_dynamic_dashboard {
     label: 'Table'
     viz: DataTable {
       dataset: chinh_dynamic_dataset
+      conditions: [
+        '''chinh_dynamic_dim_model.dim_filter_input == chinh_dynamic_dim_model.order_billing_at | day()
+and
+chinh_dynamic_dim_model.order_created_at | day() >= (chinh_dynamic_dim_model.dim_filter_input - interval(1 month))'''
+      ]
       fields: [
         VizFieldFull {
           ref: r(chinh_dynamic_dim_model.order_id)
@@ -45,6 +50,20 @@ Dashboard chinh_dynamic_dashboard {
           uname: 'datetrunc_day_order_created_at'
         },
         VizFieldFull {
+          ref: r(chinh_dynamic_dim_model.order_billing_at)
+          transformation: 'datetrunc day'
+          format {
+            type: 'date'
+            pattern: 'LLL dd, yyyy'
+          }
+        },
+        VizFieldFull {
+          ref: r(chinh_dynamic_dataset, chinh_dynamic_dim_model.dim_filter_input)
+          format {
+            type: 'date'
+          }
+        },
+        VizFieldFull {
           ref: r(chinh_dynamic_dim_model.quantity)
           format {
             type: 'number'
@@ -59,12 +78,6 @@ Dashboard chinh_dynamic_dashboard {
             pattern: 'inherited'
           }
           uname: 'chinh_dynamic_dim_model_price'
-        },
-        VizFieldFull {
-          ref: r(chinh_dynamic_dataset.beginning_created_date)
-          format {
-            type: 'date'
-          }
         }
       ]
       settings {

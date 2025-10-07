@@ -12,7 +12,16 @@ Dataset chinh_dynamic_dataset {
   metric beginning_created_date {
     label: 'Beginning Date Extracted From Param'
     type: 'date'
-    definition: @aql chinh_dynamic_dim_model.filter_input | first() | min() | keep_grains(chinh_dynamic_dim_model.order_created_at | day()) ;;
+    definition: @aql chinh_dynamic_dim_model.filter_input | first() ;;
+  }
+
+  dimension dim_filter_input {
+    model: chinh_dynamic_dim_model
+    label: 'Dimension Fiter Input'
+    type: 'date'
+    definition: @aql
+      dimensionalize(beginning_created_date, chinh_dynamic_dim_model.order_item_id)
+    ;;
   }
 
   // metric end_created_date {
