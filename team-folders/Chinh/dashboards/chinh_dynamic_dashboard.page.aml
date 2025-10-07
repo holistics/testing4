@@ -24,93 +24,51 @@ Dashboard chinh_dynamic_dashboard {
   theme: H.themes.vanilla
   block v_ufsz: VizBlock {
     label: 'Table'
-    viz: DataTable {
+    viz: LineChart {
       dataset: chinh_dynamic_dataset
       conditions: [
-        '''chinh_dynamic_dim_model.dim_filter_input == chinh_dynamic_dim_model.order_billing_at | day()
-and
-chinh_dynamic_dim_model.order_created_at | day() >= (chinh_dynamic_dim_model.dim_filter_input - interval(1 month))'''
+        'chinh_dynamic_dim_model.order_created_at >= (chinh_dynamic_dim_model.order_billing_at - interval(1 month))'
       ]
-      fields: [
-        VizFieldFull {
-          ref: r(chinh_dynamic_dim_model.order_id)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-          uname: 'chinh_dynamic_dim_model_order_id'
-        },
-        VizFieldFull {
-          ref: r(chinh_dynamic_dim_model.order_created_at)
-          transformation: 'datetrunc day'
-          format {
-            type: 'date'
-            pattern: 'LLL dd, yyyy'
-          }
-          uname: 'datetrunc_day_order_created_at'
-        },
-        VizFieldFull {
-          ref: r(chinh_dynamic_dim_model.order_billing_at)
-          transformation: 'datetrunc day'
-          format {
-            type: 'date'
-            pattern: 'LLL dd, yyyy'
-          }
-        },
-        VizFieldFull {
-          ref: r(chinh_dynamic_dataset, chinh_dynamic_dim_model.dim_filter_input)
-          format {
-            type: 'date'
-          }
-        },
-        VizFieldFull {
-          ref: r(chinh_dynamic_dim_model.quantity)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-          uname: 'chinh_dynamic_dim_model_quantity'
-        },
-        VizFieldFull {
-          ref: r(chinh_dynamic_dim_model.price)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-          uname: 'chinh_dynamic_dim_model_price'
+      x_axis: VizFieldFull {
+        label: 'Billing Date'
+        ref: r(chinh_dynamic_dim_model.order_billing_at)
+        transformation: 'datetrunc day'
+        format {
+          type: 'date'
+          pattern: 'LLL dd, yyyy'
         }
-      ]
-      settings {
-        show_row_number: true
-        sorts: [
-          SortSetting {
-            key: 'datetrunc_day_order_created_at'
-            direction: 'desc'
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(chinh_dynamic_dataset.total_value)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
           }
-        ]
+          settings {
+            color_palette: 0
+          }
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(chinh_dynamic_dataset.running_total_value)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
         row_limit: 5000
+        x_axis_label: 'Billing Date'
+        x_axis_show_null_datetime: false
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
-        column_styles: [
-          ColumnStyle {
-            key: 'chinh_dynamic_dim_model_order_id'
-            width: 113
-          },
-          ColumnStyle {
-            key: 'datetrunc_day_order_created_at'
-            width: 219
-          },
-          ColumnStyle {
-            key: 'chinh_dynamic_dim_model_quantity'
-            width: 100
-          },
-          ColumnStyle {
-            key: 'chinh_dynamic_dim_model_price'
-            width: 82
-          }
-        ]
       }
     }
   }
@@ -119,7 +77,7 @@ chinh_dynamic_dim_model.order_created_at | day() >= (chinh_dynamic_dim_model.dim
     type: 'field'
     source: FieldFilterSource {
       dataset: chinh_dynamic_dataset
-      field: r(chinh_dynamic_dim_model.filter_input)
+      field: r(chinh_dynamic_dim_model.order_billing_at)
     }
     default {
       operator: 'matches'

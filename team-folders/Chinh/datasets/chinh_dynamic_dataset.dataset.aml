@@ -9,19 +9,28 @@ Dataset chinh_dynamic_dataset {
     param_model,
   ]
 
-  metric beginning_created_date {
-    label: 'Beginning Date Extracted From Param'
-    type: 'date'
-    definition: @aql chinh_dynamic_dim_model.filter_input | first() ;;
-  }
-
   dimension dim_filter_input {
     model: chinh_dynamic_dim_model
     label: 'Dimension Fiter Input'
     type: 'date'
     definition: @aql
-      dimensionalize(beginning_created_date, chinh_dynamic_dim_model.order_item_id)
+      coalesce(
+        dimensionalize(chinh_dynamic_dim_model.filter_input | first(), chinh_dynamic_dim_model.order_item_id),
+        chinh_dynamic_dim_model.order_billing_at | day()
+      )
     ;;
+  }
+
+  metric total_value {
+    label: 'Total Value'
+    type: 'number'
+    definition: @aql sum(chinh_dynamic_dim_model.quantity * chinh_dynamic_dim_model.price) ;;
+  }
+
+  metric running_total_value {
+    label: 'Running Total Value'
+    type: 'number'
+    definition: @aql total_value | running_total(chinh_dynamic_dim_model.order_billing_at | day()) ;;
   }
 
   // metric end_created_date {
