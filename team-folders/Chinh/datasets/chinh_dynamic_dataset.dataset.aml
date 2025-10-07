@@ -9,13 +9,12 @@ Dataset chinh_dynamic_dataset {
     param_model,
   ]
 
-  dimension dim_filter_input {
-    model: chinh_dynamic_dim_model
-    label: 'Dimension Fiter Input'
+  metric filter_input {
+    label: 'Fiter Input (Metric)'
     type: 'date'
     definition: @aql
       coalesce(
-        dimensionalize(chinh_dynamic_dim_model.filter_input | first(), chinh_dynamic_dim_model.order_item_id),
+        chinh_dynamic_dim_model.param_filter_input | first(),
         chinh_dynamic_dim_model.order_billing_at | day()
       )
     ;;

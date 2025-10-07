@@ -103,8 +103,8 @@ Model chinh_dynamic_dim_model {
     definition: @sql {{ #SOURCE.country_name }};;
   }
 
-  param filter_input {
-    label: "Param Filter's Input"
+  param param_filter_input {
+    label: "Filter Input (Param)"
     type: 'date'
   }
 
