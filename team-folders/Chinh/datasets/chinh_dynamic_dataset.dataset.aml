@@ -1,0 +1,25 @@
+Dataset chinh_dynamic_dataset {
+  label: 'chinh_dynamic_dataset',
+  description: ''
+  data_source_name: 'demodb'
+  owner: 'chinh.dm@holistics.io'
+
+  models: [
+    chinh_dynamic_dim_model,
+    param_model,
+  ]
+
+  metric beginning_created_date {
+    label: 'Beginning Date Extracted From Param'
+    type: 'date'
+    definition: @aql chinh_dynamic_dim_model.filter_input | first() ;;
+  }
+
+  metric end_created_date {
+    label: 'End Date Extracted From Param'
+    type: 'date'
+    definition: @aql chinh_dynamic_dim_model.filter_input | last() ;;
+  }
+
+  relationships: []
+}
