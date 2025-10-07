@@ -12,13 +12,13 @@ Dataset chinh_dynamic_dataset {
   metric beginning_created_date {
     label: 'Beginning Date Extracted From Param'
     type: 'date'
-    definition: @aql chinh_dynamic_dim_model.filter_input | first() ;;
+    definition: @aql chinh_dynamic_dim_model.filter_input | first() | min() ;;
   }
 
   metric end_created_date {
     label: 'End Date Extracted From Param'
     type: 'date'
-    definition: @aql chinh_dynamic_dim_model.filter_input | last() ;;
+    definition: @aql chinh_dynamic_dim_model.filter_input | last() | max() ;;
   }
 
   relationships: []
