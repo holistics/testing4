@@ -65,12 +65,6 @@ Dashboard chinh_dynamic_dashboard {
           format {
             type: 'date'
           }
-        },
-        VizFieldFull {
-          ref: r(chinh_dynamic_dataset.end_created_date)
-          format {
-            type: 'date'
-          }
         }
       ]
       settings {
