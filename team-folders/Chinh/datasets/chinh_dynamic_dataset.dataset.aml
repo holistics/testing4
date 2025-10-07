@@ -18,7 +18,7 @@ Dataset chinh_dynamic_dataset {
   metric end_created_date {
     label: 'End Date Extracted From Param'
     type: 'date'
-    definition: @aql chinh_dynamic_dim_model.filter_input | last() | max() ;;
+    definition: @aql chinh_dynamic_dim_model.filter_input | first() | max() ;;
   }
 
   relationships: []
