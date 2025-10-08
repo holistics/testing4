@@ -1,6 +1,6 @@
 Dataset khai_ecommerce {
   __engine__: 'aql'
-  label: 'Khai Ecommerce'
+  label: 'Ecommerce (from Khai)'
   description: "This is Dataset for AQL testing"
   data_source_name: "demodb"
   models: [
