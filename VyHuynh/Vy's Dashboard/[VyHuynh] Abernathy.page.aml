@@ -1102,7 +1102,7 @@ Dashboard vy_huynh_abernathy {
         sort {
           field_index: 0
           direction: 'desc'
-          type: 'yaxis'
+          type: 'xaxis'
         }
         x_axis_label: 'Country'
         x_axis_show_null_datetime: false
