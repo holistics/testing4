@@ -1075,12 +1075,6 @@ Dashboard vy_huynh_abernathy {
     viz: ColumnChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
-        ref: r(ecommerce_countries.name)
-        format {
-          type: 'text'
-        }
-      }
-      legend: VizFieldFull {
         ref: r(ecommerce_cities.name)
         format {
           type: 'text'
@@ -1105,6 +1099,11 @@ Dashboard vy_huynh_abernathy {
       }
       settings {
         row_limit: 5000
+        sort {
+          field_index: 0
+          direction: 'desc'
+          type: 'xaxis'
+        }
         x_axis_label: 'Country'
         x_axis_show_null_datetime: false
         aggregate_awareness {
