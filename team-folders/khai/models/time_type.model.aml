@@ -13,11 +13,11 @@ Model time_type {
   owner: 'khai.to@holistics.io'
   query: @sql
     SELECT time_type FROM (VALUES 
-        ('Week'),
-        ('MTD'),
-        ('MTD LY'),
-        ('YTD'),
-        ('YTD LY')
+        ('1. Week'),
+        ('2. MTD'),
+        ('3. MTD LY'),
+        ('4. YTD'),
+        ('5. YTD LY')
     ) AS t(time_type);;
   models: [
   ]
