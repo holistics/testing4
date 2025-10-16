@@ -506,7 +506,9 @@ Dashboard khai_test {
           ref: 'revenue_time_type'
           format {
             type: 'number'
-            pattern: '[$$]#,###0.00'
+            pattern: '[$$]#,###'
+            group_separator: ','
+            decimal_separator: '.'
           }
         },
         VizFieldFull {
