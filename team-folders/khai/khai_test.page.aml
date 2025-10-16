@@ -506,14 +506,14 @@ Dashboard khai_test {
           ref: 'revenue_time_type'
           format {
             type: 'number'
-            pattern: 'inherited'
+            pattern: '[$$]#,###0.00'
           }
         },
         VizFieldFull {
           ref: 'total_orders_time_type'
           format {
             type: 'number'
-            pattern: 'inherited'
+            pattern: '#,###'
           }
         }
       ]
