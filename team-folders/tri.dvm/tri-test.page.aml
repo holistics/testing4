@@ -57,6 +57,10 @@ Dashboard tri_test {
       position: pos(20, 3160, 620, 420)
       layer: 13
     }
+    block v_q36v {
+      position: pos(660, 3160, 620, 420)
+      layer: 14
+    }
     width: 1320
   }
 
@@ -442,6 +446,39 @@ Dashboard tri_test {
           enabled: true
           debug_comments: true
         }
+      }
+    }
+  }
+  block v_q36v: VizBlock {
+    label: 'Day Order Created At and Sum of Quantity'
+    viz: CustomChart {
+      dataset: vux_archive
+      custom_chart_id: 29839
+      field date: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc day'
+        format {
+          type: 'date'
+          pattern: 'LLL dd, yyyy'
+        }
+      }
+      field metric: VizFieldFull {
+        ref: r(order_master.quantity)
+        aggregation: 'sum'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      setting cellGap: 0.08
+      setting cellSize: 16
+      setting seqScheme: 'greens'
+      setting legendTitle: 'Daily Change'
+      setting reverseColors: false
+      setting cellStrokeColor: '#ffffff'
+      setting cellStrokeWidth: 0.75
+      settings {
+        row_limit: 5000
       }
     }
   }
