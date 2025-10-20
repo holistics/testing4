@@ -53,6 +53,10 @@ Dashboard tri_test {
       position: pos(340, 440, 300, 140)
       layer: 12
     }
+    block v_iw11 {
+      position: pos(20, 3160, 620, 420)
+      layer: 13
+    }
     width: 1320
   }
 
@@ -409,6 +413,36 @@ Dashboard tri_test {
       type: 'relative'
       duration: 1
       granularity: 'year'
+    }
+  }
+  block v_iw11: VizBlock {
+    label: 'Total Orders by Status'
+    viz: PieChart {
+      dataset: vux_archive
+      legend: VizFieldFull {
+        ref: r(ecommerce_orders.status)
+        format {
+          type: 'text'
+        }
+      }
+      series {
+        field: VizFieldFull {
+          ref: r(vux_archive.total_orders)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        show_percentage: true
+        data_label_position: 'outside'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
     }
   }
   interactions: [
