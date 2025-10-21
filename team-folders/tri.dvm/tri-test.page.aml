@@ -53,10 +53,6 @@ Dashboard tri_test {
       position: pos(1160, 1060, 400, 300)
       layer: 1
     }
-    block v_gcit {
-      position: pos(1200, 620, 400, 300)
-      layer: 1
-    }
     width: 2220
   }
 
@@ -453,52 +449,6 @@ Dashboard tri_test {
       settings {
         row_limit: 5000
         x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_gcit: VizBlock {
-    label: 'Count of City Name by Country Code and Delivery Attempts'
-    viz: Heatmap {
-      dataset: demo_ecommerce
-      lng: VizFieldFull {
-        ref: r(order_master.delivery_attempts)
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
-      }
-      lat: VizFieldFull {
-        ref: r(ecommerce_cities.country_code)
-        format {
-          type: 'text'
-        }
-      }
-      value: VizFieldFull {
-        ref: r(ecommerce_cities.name)
-        aggregation: 'count'
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
-      }
-      settings {
-        value_colors {
-          min {
-            value: 1718
-            color: '#FDE725'
-          }
-          mid {
-            value: 2761
-          }
-          max {
-            value: 3804
-            color: '#21908D'
-          }
-        }
         aggregate_awareness {
           enabled: true
           debug_comments: true
