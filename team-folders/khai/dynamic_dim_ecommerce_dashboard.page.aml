@@ -1,8 +1,8 @@
 Dashboard dynamic_dim_ecommerce_dashboard {
-  title: 'Dynamic Dim Ecommerce Dashboard'
+  title: "Phuong's test dashboard"
   view: CanvasLayout {
     label: 'View 1'
-    height: 840
+    height: 1100
     grid_size: 20
     block v1 {
       position: pos(20, 140, 540, 420)
@@ -15,6 +15,14 @@ Dashboard dynamic_dim_ecommerce_dashboard {
     block f1 {
       position: pos(20, 20, 300, 100)
       layer: 2
+    }
+    block v_i7uw {
+      position: pos(20, 680, 580, 400)
+      layer: 3
+    }
+    block d_z1xt {
+      position: pos(20, 580, 300, 80)
+      layer: 4
     }
   }
   theme: H.themes.classic
@@ -106,4 +114,69 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       input_type: 'single'
     }
   }
+  block v_i7uw: VizBlock {
+    label: 'New relative_period formula'
+    viz: DataTable {
+      dataset: khai_ecommerce
+      calculation last_period {
+        label: 'Last Period'
+        formula: @aql relative_period(revenue, orders.created_at, -1);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      fields: [
+        VizFieldFull {
+          ref: r(orders.created_at)
+          transformation: 'datetrunc week'
+          format {
+            type: 'date'
+            pattern: 'wwww'
+          }
+          uname: 'datetrunc_week_created_at_1'
+        },
+        VizFieldFull {
+          ref: r(khai_ecommerce.revenue)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: 'last_period'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            key: 'datetrunc_week_created_at_1'
+            direction: 'asc'
+          }
+        ]
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block d_z1xt: DateDrillBlock {
+    label: 'Date Drill'
+  }
+  interactions: [
+    DateDrillInteraction {
+      from: 'd_z1xt'
+      to: [
+        CustomMapping {
+          block: 'v_i7uw'
+          field: ref('orders', 'created_at')
+        }
+      ]
+    }
+  ]
 }
