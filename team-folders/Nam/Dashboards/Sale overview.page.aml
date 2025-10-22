@@ -337,7 +337,7 @@ Dashboard sale_overview {
     }
     default {
       operator: 'matches'
-      value: 'this year'
+      value: 'last month'
     }
   }
   block f2: FilterBlock {

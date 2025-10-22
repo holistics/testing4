@@ -127,7 +127,7 @@ Dashboard vy_huynh_abernathy {
       height: 4960
       grid_size: 20
       block v5 {
-        position: pos(20, 80, 1160, 500)
+        position: pos(580, 80, 600, 500)
         layer: 1
       }
       block t1 {
@@ -169,6 +169,22 @@ Dashboard vy_huynh_abernathy {
       block v_nyr1 {
         position: pos(20, 4440, 1160, 500)
         layer: 1
+      }
+      block t_4ttu {
+        position: pos(20, 100, 380, 160)
+        layer: 1
+      }
+      block t_5y3l {
+        position: pos(40, 120, 60, 40)
+        layer: 2
+      }
+      block t_vb6z {
+        position: pos(80, 120, 300, 60)
+        layer: 3
+      }
+      block f_zwa4 {
+        position: pos(80, 160, 280, 60)
+        layer: 4
       }
       mobile {
         mode: 'auto'
@@ -357,24 +373,14 @@ Dashboard vy_huynh_abernathy {
   }
   block v5: VizBlock {
     label: 'GMV - Gross Merchandise Value by Continent Name'
+    description: 'This is description of the block'
     viz: BarChart {
       dataset: demo_ecommerce
-      filter_groups: [
-        OrFilters {
-          filters: [
-            VizFilter {
-              field: r(order_master.order_created_month)
-              operator: 'matches'
-              value: 'may 2023'
-            },
-            VizFilter {
-              field: r(order_master.order_created_month)
-              operator: 'matches'
-              value: 'april 2023'
-            }
-          ]
-        }
-      ]
+      filter {
+        field: r(order_master.order_created_at)
+        operator: 'matches'
+        value: '2024'
+      }
       legend: VizFieldFull {
         ref: r(ecommerce_countries.continent_name)
         format {
@@ -404,7 +410,6 @@ Dashboard vy_huynh_abernathy {
         }
       }
     }
-    description: 'This is description of the block'
   }
   block t1: TextBlock {
     content: @md <div id="regional-analysis">  <svg width="40" height="40
@@ -1381,11 +1386,11 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v_tusm: VizBlock {
-    label: 'GMV - Gross Merchandise Value by Continent Name'
+    label: 'GMV - Gross Merchandise Value by Country Name'
     viz: BarChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
-        ref: r(ecommerce_countries.continent_name)
+        ref: r(ecommerce_countries.name)
         format {
           type: 'text'
         }
@@ -1796,9 +1801,6 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v_hk4u',
             'v_wsww',
-            'v_dbuh',
-            'v_tusm',
-            'v_nyr1',
             'f1',
             'f2'
           ]
