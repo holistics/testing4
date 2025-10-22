@@ -357,24 +357,14 @@ Dashboard vy_huynh_abernathy {
   }
   block v5: VizBlock {
     label: 'GMV - Gross Merchandise Value by Continent Name'
+    description: 'This is description of the block'
     viz: BarChart {
       dataset: demo_ecommerce
-      filter_groups: [
-        OrFilters {
-          filters: [
-            VizFilter {
-              field: r(order_master.order_created_month)
-              operator: 'matches'
-              value: 'may 2023'
-            },
-            VizFilter {
-              field: r(order_master.order_created_month)
-              operator: 'matches'
-              value: 'april 2023'
-            }
-          ]
-        }
-      ]
+      filter {
+        field: r(order_master.order_created_at)
+        operator: 'matches'
+        value: '2024'
+      }
       legend: VizFieldFull {
         ref: r(ecommerce_countries.continent_name)
         format {
@@ -404,7 +394,6 @@ Dashboard vy_huynh_abernathy {
         }
       }
     }
-    description: 'This is description of the block'
   }
   block t1: TextBlock {
     content: @md <div id="regional-analysis">  <svg width="40" height="40
