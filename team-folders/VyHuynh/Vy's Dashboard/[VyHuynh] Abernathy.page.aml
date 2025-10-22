@@ -170,6 +170,22 @@ Dashboard vy_huynh_abernathy {
         position: pos(20, 4440, 1160, 500)
         layer: 1
       }
+      block t_4ttu {
+        position: pos(20, 100, 380, 160)
+        layer: 1
+      }
+      block t_5y3l {
+        position: pos(40, 120, 60, 40)
+        layer: 2
+      }
+      block t_vb6z {
+        position: pos(80, 120, 300, 60)
+        layer: 3
+      }
+      block f_zwa4 {
+        position: pos(80, 160, 280, 60)
+        layer: 4
+      }
       mobile {
         mode: 'auto'
       }
@@ -1785,9 +1801,6 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v_hk4u',
             'v_wsww',
-            'v_dbuh',
-            'v_tusm',
-            'v_nyr1',
             'f1',
             'f2'
           ]
