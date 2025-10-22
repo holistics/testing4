@@ -1386,11 +1386,11 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v_tusm: VizBlock {
-    label: 'GMV - Gross Merchandise Value by Continent Name'
+    label: 'GMV - Gross Merchandise Value by Country Name'
     viz: BarChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
-        ref: r(ecommerce_countries.continent_name)
+        ref: r(ecommerce_countries.name)
         format {
           type: 'text'
         }
