@@ -111,6 +111,20 @@ Dashboard khai_test {
         layer: 1
       }
     }
+    tab tab_laxz: CanvasLayout {
+      label: 'Untitled'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+      block v_x3vi {
+        position: pos(20, 20, 740, 500)
+        layer: 1
+      }
+    }
   }
   theme: H.themes.classic
   block v1: VizBlock {
@@ -532,6 +546,35 @@ Dashboard khai_test {
       }
     }
   }
+  block v_x3vi: VizBlock {
+    label: 'Full Name and Total Orders'
+    viz: DataTable {
+      dataset: khai_ecommerce
+      fields: [
+        VizFieldFull {
+          ref: r(users.full_name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(orders.total_orders)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v1'
@@ -541,7 +584,8 @@ Dashboard khai_test {
             'v_s6re',
             'v_52wr',
             'v_c5p0',
-            'v_okde'
+            'v_okde',
+            'v_x3vi'
           ]
           disabled: true
         }
@@ -556,6 +600,7 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_okde',
+            'v_x3vi',
             'f_kmoy',
             'f_vs3y',
             'f_z363',
@@ -579,6 +624,7 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_okde',
+            'v_x3vi',
             'f_vs3y',
             'f_z363',
             'f_pofb',
@@ -601,6 +647,7 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_okde',
+            'v_x3vi',
             'f_z363',
             'f_pofb',
             'f_uuo1',
@@ -622,7 +669,8 @@ Dashboard khai_test {
             'v_6g2o',
             'v_52wr',
             'v_c5p0',
-            'v_okde'
+            'v_okde',
+            'v_x3vi'
           ]
           disabled: true
         }
@@ -638,6 +686,7 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_okde',
+            'v_x3vi',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -662,6 +711,7 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_okde',
+            'v_x3vi',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -685,6 +735,7 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_okde',
+            'v_x3vi',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -707,6 +758,7 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_okde',
+            'v_x3vi',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -730,6 +782,7 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_okde',
+            'v_x3vi',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -752,7 +805,8 @@ Dashboard khai_test {
             'v_s6re',
             'v_52wr',
             'v_c5p0',
-            'v_okde'
+            'v_okde',
+            'v_x3vi'
           ]
           disabled: true
         }
@@ -767,7 +821,8 @@ Dashboard khai_test {
             'v_s6re',
             'v_6g2o',
             'v_c5p0',
-            'v_okde'
+            'v_okde',
+            'v_x3vi'
           ]
           disabled: true
         }
@@ -783,6 +838,7 @@ Dashboard khai_test {
             'v_6g2o',
             'v_c5p0',
             'v_okde',
+            'v_x3vi',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -806,7 +862,8 @@ Dashboard khai_test {
             'v_s6re',
             'v_6g2o',
             'v_52wr',
-            'v_okde'
+            'v_okde',
+            'v_x3vi'
           ]
           disabled: true
         }
@@ -822,6 +879,7 @@ Dashboard khai_test {
             'v_6g2o',
             'v_52wr',
             'v_okde',
+            'v_x3vi',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -845,7 +903,24 @@ Dashboard khai_test {
             'v_s6re',
             'v_6g2o',
             'v_52wr',
-            'v_c5p0'
+            'v_c5p0',
+            'v_x3vi'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_x3vi'
+      to: [
+        CustomMapping {
+          block: [
+            'v1',
+            'v_s6re',
+            'v_6g2o',
+            'v_52wr',
+            'v_c5p0',
+            'v_okde'
           ]
           disabled: true
         }
