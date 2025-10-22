@@ -127,7 +127,7 @@ Dashboard vy_huynh_abernathy {
       height: 4960
       grid_size: 20
       block v5 {
-        position: pos(20, 80, 600, 500)
+        position: pos(580, 80, 600, 500)
         layer: 1
       }
       block t1 {
