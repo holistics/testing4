@@ -106,7 +106,7 @@ Dashboard vy_huynh_abernathy {
       grid_size: 20
       auto_expand_vertically: true
       block v_ztqi {
-        position: pos(20, 20, 1460, 420)
+        position: pos(20, 20, 500, 420)
         layer: 1
       }
       block v_856v {
@@ -648,6 +648,7 @@ Dashboard vy_huynh_abernathy {
           format {
             type: 'text'
           }
+          uname: 'ecommerce_countries_continent_name'
         },
         VizFieldFull {
           ref: r(order_master.user_id)
@@ -665,6 +666,7 @@ Dashboard vy_huynh_abernathy {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'count_order_id'
         },
         VizFieldFull {
           ref: r(order_master.price)
@@ -688,6 +690,24 @@ Dashboard vy_huynh_abernathy {
           enabled: true
           debug_comments: true
         }
+        column_styles: [
+          ColumnStyle {
+            key: 'count_distinct_user_id_1'
+            width: 100
+          },
+          ColumnStyle {
+            key: 'order_master_order_created_month_1'
+            width: 215
+          },
+          ColumnStyle {
+            key: 'ecommerce_countries_continent_name'
+            width: 162
+          },
+          ColumnStyle {
+            key: 'count_order_id'
+            width: 89
+          }
+        ]
       }
     }
   }
