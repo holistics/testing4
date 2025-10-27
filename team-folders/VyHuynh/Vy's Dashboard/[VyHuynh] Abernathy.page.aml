@@ -1242,7 +1242,7 @@ Dashboard vy_huynh_abernathy {
     }
     default {
       operator: 'matches'
-      value: '$H_NIL$'
+      value: '27 april 2025 to yesterday'
     }
     settings {
       drillthrough: Drillthrough {
