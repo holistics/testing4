@@ -122,6 +122,7 @@ Dashboard vy_huynh_abernathy {
         mode: 'auto'
       }
       width: 1500
+      default_zoom: 1
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
@@ -631,11 +632,6 @@ Dashboard vy_huynh_abernathy {
     label: 'Order Created Month, Continent Name and 3 more'
     viz: DataTable {
       dataset: demo_ecommerce
-      filter {
-        field: r(order_master.order_created_month)
-        operator: 'matches'
-        value: '2023'
-      }
       fields: [
         VizFieldFull {
           ref: r(order_master.order_created_month)
@@ -693,20 +689,20 @@ Dashboard vy_huynh_abernathy {
         }
         column_styles: [
           ColumnStyle {
-            key: 'count_distinct_user_id_1'
-            width: 100
+            key: 'count_order_id'
+            width: 89
           },
           ColumnStyle {
-            key: 'order_master_order_created_month_1'
-            width: 215
+            key: 'count_distinct_user_id_1'
+            width: 100
           },
           ColumnStyle {
             key: 'ecommerce_countries_continent_name'
             width: 162
           },
           ColumnStyle {
-            key: 'count_order_id'
-            width: 89
+            key: 'order_master_order_created_month_1'
+            width: 215
           }
         ]
       }
@@ -853,11 +849,6 @@ Dashboard vy_huynh_abernathy {
     label: 'Order Created Month, Continent Name, and CountD of User Id'
     viz: DataTable {
       dataset: demo_ecommerce
-      filter {
-        field: r(order_master.order_created_month)
-        operator: 'matches'
-        value: '2023'
-      }
       fields: [
         VizFieldFull {
           ref: r(order_master.order_created_month)
