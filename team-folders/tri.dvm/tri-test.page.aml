@@ -4,7 +4,7 @@ Dashboard tri_test {
 
   view: CanvasLayout {
     label: 'View 1'
-    height: 4340
+    height: 3620
     grid_size: 20
     mobile {
       mode: 'auto'
@@ -34,26 +34,26 @@ Dashboard tri_test {
       layer: 7
     }
     block v4 {
-      position: pos(40, 640, 400, 300)
+      position: pos(40, 380, 400, 300)
       layer: 8
     }
     block f4 {
       position: pos(460, 260, 340, 100)
       layer: 9
     }
-    block v_txfg {
-      position: pos(40, 420, 260, 180)
+    block v_cx59 {
+      position: pos(20, 940, 400, 300)
       layer: 10
     }
-    block f_78ij {
-      position: pos(80, 320, 300, 80)
+    block f_rfyo {
+      position: pos(140, 1380, 300, 100)
       layer: 11
     }
-    block p_io6h {
-      position: pos(340, 440, 300, 140)
-      layer: 12
+    block v_2e00 {
+      position: pos(1160, 1060, 400, 300)
+      layer: 1
     }
-    width: 1320
+    width: 2220
   }
 
   theme: H.themes.classic.extend(
@@ -270,7 +270,7 @@ Dashboard tri_test {
     }
   }
   block v4: VizBlock {
-    label: 'Untitled Report'
+    label: 'XYZ'
     viz: DataTable {
       dataset: ecom_dataset_vux
       calculation metric_0a52a5e {
@@ -345,70 +345,115 @@ Dashboard tri_test {
       value: '$H_NIL$'
     }
   }
-  block v_txfg: VizBlock {
-    label: '  (Prev. 2y)'
-    viz: MetricKpi {
+  block v_cx59: VizBlock {
+    label: 'Total Orders by Country Code'
+    viz: FilledMap {
       dataset: demo_ecommerce
-      calculation metric_c4c4dff {
-        label: 'Untitled Metric'
-        formula: @aql count(order_master.order_id);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation metric_0b33d48 {
-        label: 'Untitled Metric'
-        formula: @aql concat('aaaa', cast(total_orders, 'text'));;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      filter {
-        field: r(order_master.order_created_at)
-        operator: 'matches'
-        value: '2 years ago'
+      location {
+        field: VizFieldFull {
+          ref: r(ecommerce_cities.country_code)
+          format {
+            type: 'text'
+          }
+        }
+        primary_field: true
       }
       value: VizFieldFull {
-        label: ' '
-        ref: 'metric_0b33d48'
+        ref: r(demo_ecommerce.total_orders)
         format {
-          type: 'text'
+          type: 'number'
+          pattern: 'inherited'
         }
       }
-      compare_value: VizPopSettings {
-        field: r(order_master.order_created_at)
-        duration: 2
-        granularity: 'year'
-      }
       settings {
-        display_mode: 'single'
+        value_colors {
+          min {
+            value: 1718
+            color: '#FDE725'
+          }
+          mid {
+            value: 2761
+          }
+          max {
+            value: 3804
+            color: '#21908D'
+          }
+        }
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
-        alignment: 'left'
       }
     }
-    settings {
-      hide_label: true
-    }
   }
-  block f_78ij: FilterBlock {
-    label: 'Order Master Order Created At'
+  block f_rfyo: FilterBlock {
+    label: 'Order Master Status'
     type: 'field'
     source: FieldFilterSource {
       dataset: demo_ecommerce
-      field: r(order_master.order_created_at)
+      field: r(order_master.status)
     }
     default {
-      operator: 'matches'
-      value: '$H_NIL$'
+      operator: 'is'
+      value: []
     }
   }
-  block p_io6h: PopBlock {
-    label: 'Period Comparison'
-    default {
-      type: 'relative'
-      duration: 1
-      granularity: 'year'
+  block v_2e00: VizBlock {
+    label: 'ABC'
+    viz: ColumnChart {
+      dataset: ecom_dataset_vux
+      filter {
+        field: r(order_master.order_created_at)
+        operator: 'matches'
+        value: 'this year'
+      }
+      theme {
+        table {
+          general {
+            borders {
+              outer: true
+              horizontal: true
+            }
+          }
+        }
+      }
+      x_axis: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(order_master.status)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecom_dataset_vux.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            uname: 'custom_total_orders'
+          }
+          settings {
+            color_palette: 0
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
     }
   }
   interactions: [
@@ -416,7 +461,7 @@ Dashboard tri_test {
       from: 'f1'
       to: [
         CustomMapping {
-          block: 'f_78ij'
+          block: 'f_rfyo'
           disabled: true
         }
       ]
@@ -440,20 +485,11 @@ Dashboard tri_test {
       ]
     },
     FilterInteraction {
-      from: 'f_78ij'
+      from: 'f_rfyo'
       to: [
         CustomMapping {
           block: 'f1'
           disabled: true
-        }
-      ]
-    },
-    PopInteraction {
-      from: 'p_io6h'
-      to: [
-        CustomMapping {
-          block: 'v_txfg'
-          field: ref('order_master', 'order_created_at')
         }
       ]
     }

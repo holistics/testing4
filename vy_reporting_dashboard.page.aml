@@ -1,0 +1,21 @@
+Dashboard vy_reporting_dashboard {
+  title: 'Vy - Reporting Dashboard'
+  block title: TextBlock {
+    content: @md # Test dashboard created from reporting;;
+  }
+  interactions: []
+  view: CanvasLayout {
+    label: 'View 1'
+    width: 1300
+    height: 800
+    grid_size: 20
+    auto_expand_vertically: true
+    block title {
+      position: pos(20, 20, 1260, 60)
+    }
+    mobile {
+      mode: 'auto'
+    }
+  }
+  theme: H.themes.vanilla
+}

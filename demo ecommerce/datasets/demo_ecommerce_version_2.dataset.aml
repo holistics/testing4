@@ -350,5 +350,14 @@ Dataset demo_ecommerce_version_2 {
     format: "#,###%"
   }
 
+  metric running_total_orders {
+    label: "Running Total Orders"
+    type: "number"
+    hidden: false
+    description: "Cumulative total of orders over time, aggregated by year to show growth trends."
+    definition: @aql running_total(total_orders, ecommerce_orders.created_at | year());;
+  }
+
+
   owner: 'vincent@holistics.io'
 }
