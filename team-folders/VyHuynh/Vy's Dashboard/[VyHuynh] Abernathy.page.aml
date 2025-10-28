@@ -99,6 +99,7 @@ Dashboard vy_huynh_abernathy {
       mobile {
         mode: 'auto'
       }
+      default_zoom: 1
     }
     tab tab_5auh: CanvasLayout {
       label: 'Raw Data Table'
