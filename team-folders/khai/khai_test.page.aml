@@ -27,7 +27,7 @@ Dashboard khai_test {
         layer: 5
       }
       block v_6g2o {
-        position: pos(340, 700, 580, 120)
+        position: pos(360, 700, 580, 120)
         layer: 6
       }
     }
@@ -95,6 +95,20 @@ Dashboard khai_test {
       block f_jmgl {
         position: pos(60, 40, 300, 80)
         layer: 2
+      }
+    }
+    tab tab_3lk7: CanvasLayout {
+      label: 'finance-type'
+      width: 1000
+      height: 360
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+      block v_okde {
+        position: pos(40, 40, 940, 240)
+        layer: 1
       }
     }
   }
@@ -441,6 +455,83 @@ Dashboard khai_test {
       value: '600000'
     }
   }
+  block v_okde: VizBlock {
+    label: 'Revenue Time Type and Total Orders Time Type by Time Type'
+    viz: PivotTable {
+      dataset: khai_ecommerce
+      calculation revenue_time_type {
+        label: 'Revenue Time Type'
+        formula: @aql case(
+  when: time_type.time_type == "1. Week"
+  , then: revenue | where(khai_date_d.date_key match @(this week))
+  , when: time_type.time_type == "2. MTD"
+  , then: revenue | where(khai_date_d.date_key match @(this month to today))
+  , when: time_type.time_type == "3. MTD LY"
+  , then: revenue | relative_period(khai_date_d.date_key, interval(-1 year)) | where(khai_date_d.date_key match @(this month to today))
+  , when: time_type.time_type == "4. YTD"
+  , then: revenue | where(khai_date_d.date_key match @(this year to today))
+  , when: time_type.time_type == "5. YTD LY"
+  , then: revenue | relative_period(khai_date_d.date_key, interval(-1 year)) | where(khai_date_d.date_key match @(this year to today))
+);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation total_orders_time_type {
+        label: 'Total Orders Time Type'
+        formula: @aql case(
+  when: time_type.time_type == "1. Week"
+  , then: total_orders | where(khai_date_d.date_key match @(this week))
+  , when: time_type.time_type == "2. MTD"
+  , then: total_orders | where(khai_date_d.date_key match @(this month to today))
+  , when: time_type.time_type == "3. MTD LY"
+  , then: total_orders | where(khai_date_d.date_key match @(2025-01-10))
+  , when: time_type.time_type == "4. YTD"
+  , then: total_orders | where(khai_date_d.date_key match @(this year to today))
+  , when: time_type.time_type == "5. YTD LY"
+  , then: total_orders | where(khai_date_d.date_key match @(this year to today)) | relative_period(khai_date_d.date_key, interval(-1 year))
+);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      columns: [
+        VizFieldFull {
+          ref: r(time_type.time_type)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: 'revenue_time_type'
+          format {
+            type: 'number'
+            pattern: '[$$]#,###'
+            group_separator: ','
+            decimal_separator: '.'
+          }
+        },
+        VizFieldFull {
+          ref: 'total_orders_time_type'
+          format {
+            type: 'number'
+            pattern: '#,###'
+          }
+        }
+      ]
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        frozen_columns: 0
+        value_labels_position {
+          placement: 'rows'
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v1'
@@ -449,7 +540,8 @@ Dashboard khai_test {
           block: [
             'v_s6re',
             'v_52wr',
-            'v_c5p0'
+            'v_c5p0',
+            'v_okde'
           ]
           disabled: true
         }
@@ -463,6 +555,7 @@ Dashboard khai_test {
             'v_s6re',
             'v_52wr',
             'v_c5p0',
+            'v_okde',
             'f_kmoy',
             'f_vs3y',
             'f_z363',
@@ -485,6 +578,7 @@ Dashboard khai_test {
             'v_s6re',
             'v_52wr',
             'v_c5p0',
+            'v_okde',
             'f_vs3y',
             'f_z363',
             'f_pofb',
@@ -506,6 +600,7 @@ Dashboard khai_test {
             'v_s6re',
             'v_52wr',
             'v_c5p0',
+            'v_okde',
             'f_z363',
             'f_pofb',
             'f_uuo1',
@@ -526,7 +621,8 @@ Dashboard khai_test {
             'v1',
             'v_6g2o',
             'v_52wr',
-            'v_c5p0'
+            'v_c5p0',
+            'v_okde'
           ]
           disabled: true
         }
@@ -541,6 +637,7 @@ Dashboard khai_test {
             'v_6g2o',
             'v_52wr',
             'v_c5p0',
+            'v_okde',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -564,6 +661,7 @@ Dashboard khai_test {
             'v_6g2o',
             'v_52wr',
             'v_c5p0',
+            'v_okde',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -586,6 +684,7 @@ Dashboard khai_test {
             'v_6g2o',
             'v_52wr',
             'v_c5p0',
+            'v_okde',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -607,6 +706,7 @@ Dashboard khai_test {
             'v_6g2o',
             'v_52wr',
             'v_c5p0',
+            'v_okde',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -629,6 +729,7 @@ Dashboard khai_test {
             'v_s6re',
             'v_52wr',
             'v_c5p0',
+            'v_okde',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -650,7 +751,8 @@ Dashboard khai_test {
           block: [
             'v_s6re',
             'v_52wr',
-            'v_c5p0'
+            'v_c5p0',
+            'v_okde'
           ]
           disabled: true
         }
@@ -664,7 +766,8 @@ Dashboard khai_test {
             'v1',
             'v_s6re',
             'v_6g2o',
-            'v_c5p0'
+            'v_c5p0',
+            'v_okde'
           ]
           disabled: true
         }
@@ -679,6 +782,7 @@ Dashboard khai_test {
             'v_s6re',
             'v_6g2o',
             'v_c5p0',
+            'v_okde',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -701,7 +805,8 @@ Dashboard khai_test {
             'v1',
             'v_s6re',
             'v_6g2o',
-            'v_52wr'
+            'v_52wr',
+            'v_okde'
           ]
           disabled: true
         }
@@ -716,6 +821,7 @@ Dashboard khai_test {
             'v_s6re',
             'v_6g2o',
             'v_52wr',
+            'v_okde',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -725,6 +831,21 @@ Dashboard khai_test {
             'f_m383',
             'f_j1la',
             'f_wimh'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_okde'
+      to: [
+        CustomMapping {
+          block: [
+            'v1',
+            'v_s6re',
+            'v_6g2o',
+            'v_52wr',
+            'v_c5p0'
           ]
           disabled: true
         }
