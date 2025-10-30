@@ -105,5 +105,3 @@ Dataset khai_ecommerce {
      ;;
   }
 }
-
-Dataset extended_khai_ecommnerce = khai_ecommerce.extend({label: 'Test Extended Khai Dset'})
