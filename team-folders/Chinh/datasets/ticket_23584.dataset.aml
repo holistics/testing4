@@ -39,7 +39,7 @@ Dataset ticket_23584 {
   dimension active_category {
     model: chinh_dim_category
     label: 'Active Category'
-    type: 'number'
+    type: 'text'
     definition: @aql
       case(
         when: chinh_dim_category.products_ordered_within_2_years > 0, then: chinh_dim_category.category,
