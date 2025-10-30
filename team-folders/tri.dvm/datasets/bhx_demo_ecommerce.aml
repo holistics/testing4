@@ -10,9 +10,9 @@ Dataset bhx_demo_ecommerce {
     bhx_ecommerce_users,
     bhx_ecommerce_order_items,
     bhx_ecommerce_cities,
-    map_categories,
-    param_model_demo,
-    dim_dates,
+    bhx_map_categories,
+    bhx_param_model_demo,
+    bhx_dim_dates,
     bhx_ecommerce_product_images
   ]
   relationships: [
@@ -23,8 +23,8 @@ Dataset bhx_demo_ecommerce {
     relationship(bhx_ecommerce_order_items.product_id > bhx_ecommerce_products.id, true),
     relationship(bhx_ecommerce_products.id - bhx_ecommerce_product_images.product_id, true),
     relationship(bhx_ecommerce_products.merchant_id > bhx_ecommerce_merchants.id, true),
-    relationship(bhx_ecommerce_products_map_categories, true),
-    relationship(bhx_ecommerce_orders_dim_dates, true),
+    // relationship(bhx_ecommerce_products_map_categories, true),
+    // relationship(bhx_ecommerce_orders_dim_dates, true),
   ]
 
   dimension cohort_month {
