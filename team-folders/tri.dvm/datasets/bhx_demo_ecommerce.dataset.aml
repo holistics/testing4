@@ -1,6 +1,6 @@
 Dataset bhx_demo_ecommerce {
-  label: '[Tri-Demo] Ecommerce Dataset'
-  description: 'Demo Ecommerce Dataset by tridvm'
+  label: '[Tri-Demo] BHX Ecommerce Dataset'
+  description: 'BHX Demo Ecommerce Dataset by tridvm'
   data_source_name: 'demodb'
   models: [
     bhx_ecommerce_products,
