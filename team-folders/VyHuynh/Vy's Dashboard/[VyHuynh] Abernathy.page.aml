@@ -1,6 +1,16 @@
 Dashboard vy_huynh_abernathy {
   title: 'Vy Huynh Abernathy'
-  description: ''
+  description: @md Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et massa vehicula, lobortis tortor bibendum, molestie velit. Morbi iaculis augue et pulvinar tristique. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin lacus arcu, aliquam at elit at, porta suscipit libero. Integer euismod, urna vitae rhoncus tristique, tortor odio condimentum lacus, sit amet accumsan sem eros a sapien. Quisque commodo hendrerit dui, et fermentum nibh consectetur id. Maecenas convallis fringilla cursus. Fusce urna justo, lacinia a ipsum eu, lacinia vehicula dui. Vestibulum sagittis quam est, a posuere lorem suscipit sit amet.
+
+Vestibulum eu egestas odio. Maecenas sed dui ac turpis feugiat blandit et et mauris. Fusce felis ex, dignissim vel ante vitae, mattis facilisis arcu. Integer congue lorem sit amet libero sodales, a condimentum tellus commodo. Mauris eu nisl neque. Nam sagittis, augue quis eleifend euismod, lorem dui vulputate mi, a finibus sapien sapien at enim. Pellentesque accumsan orci pretium tincidunt sodales. Fusce volutpat rhoncus tellus, vel varius est imperdiet sit amet. Praesent ut urna sed turpis semper iaculis. Nam fringilla enim mi, nec tincidunt sem facilisis vel. Suspendisse aliquet mi eget mauris aliquet, eget vulputate risus laoreet. Pellentesque posuere sollicitudin elementum.
+
+Curabitur sit amet elementum nulla, id blandit mi. Vivamus ipsum dui, malesuada ut ultrices in, venenatis vitae nisl. Morbi blandit, sem et ultrices scelerisque, felis metus dapibus ante, non commodo erat erat at sapien. Aliquam lobortis risus eget finibus vehicula. Pellentesque auctor mi nec nunc blandit, nec dignissim eros gravida. Praesent facilisis libero convallis magna sollicitudin, sit amet ultrices felis suscipit. Quisque id sagittis leo, aliquam mattis lectus.
+
+Integer sodales et turpis tristique pulvinar. Quisque viverra magna a nibh sodales, a vehicula leo bibendum. Fusce suscipit diam id nulla blandit, non interdum elit pulvinar. Maecenas ante enim, fringilla at tortor id, fermentum mattis ligula. Donec diam nulla, mollis non sagittis a, tincidunt at dui. Praesent quis magna in magna aliquam dignissim. Cras ultricies scelerisque nisl sit amet consectetur. Quisque vitae semper elit, id tincidunt ante.
+
+Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut ante ex, vulputate at congue sit amet, sagittis nec risus. Donec lacinia aliquet nisi, tincidunt elementum ligula vehicula ut. Aliquam commodo id mauris eu vehicula. Nullam est nisl, tincidunt sed gravida vel, varius quis ante. Nulla facilisi. Proin ultricies dignissim eros, id dapibus lacus pharetra sed.
+
+;;
   view: TabLayout {
     label: 'View 1'
     tab tab2: CanvasLayout {
@@ -99,6 +109,7 @@ Dashboard vy_huynh_abernathy {
       mobile {
         mode: 'auto'
       }
+      default_zoom: 1
     }
     tab tab_5auh: CanvasLayout {
       label: 'Raw Data Table'
@@ -106,7 +117,7 @@ Dashboard vy_huynh_abernathy {
       grid_size: 20
       auto_expand_vertically: true
       block v_ztqi {
-        position: pos(20, 20, 1460, 420)
+        position: pos(20, 20, 500, 420)
         layer: 1
       }
       block v_856v {
@@ -121,13 +132,14 @@ Dashboard vy_huynh_abernathy {
         mode: 'auto'
       }
       width: 1500
+      default_zoom: 1
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
       height: 4960
       grid_size: 20
       block v5 {
-        position: pos(20, 80, 1160, 500)
+        position: pos(580, 80, 600, 500)
         layer: 1
       }
       block t1 {
@@ -169,6 +181,22 @@ Dashboard vy_huynh_abernathy {
       block v_nyr1 {
         position: pos(20, 4440, 1160, 500)
         layer: 1
+      }
+      block t_4ttu {
+        position: pos(20, 100, 380, 160)
+        layer: 1
+      }
+      block t_5y3l {
+        position: pos(40, 120, 60, 40)
+        layer: 2
+      }
+      block t_vb6z {
+        position: pos(80, 120, 300, 60)
+        layer: 3
+      }
+      block f_zwa4 {
+        position: pos(80, 160, 280, 60)
+        layer: 4
       }
       mobile {
         mode: 'auto'
@@ -357,24 +385,14 @@ Dashboard vy_huynh_abernathy {
   }
   block v5: VizBlock {
     label: 'GMV - Gross Merchandise Value by Continent Name'
+    description: 'This is description of the block'
     viz: BarChart {
       dataset: demo_ecommerce
-      filter_groups: [
-        OrFilters {
-          filters: [
-            VizFilter {
-              field: r(order_master.order_created_month)
-              operator: 'matches'
-              value: 'may 2023'
-            },
-            VizFilter {
-              field: r(order_master.order_created_month)
-              operator: 'matches'
-              value: 'april 2023'
-            }
-          ]
-        }
-      ]
+      filter {
+        field: r(order_master.order_created_at)
+        operator: 'matches'
+        value: '2024'
+      }
       legend: VizFieldFull {
         ref: r(ecommerce_countries.continent_name)
         format {
@@ -404,7 +422,6 @@ Dashboard vy_huynh_abernathy {
         }
       }
     }
-    description: 'This is description of the block'
   }
   block t1: TextBlock {
     content: @md <div id="regional-analysis">  <svg width="40" height="40
@@ -625,11 +642,6 @@ Dashboard vy_huynh_abernathy {
     label: 'Order Created Month, Continent Name and 3 more'
     viz: DataTable {
       dataset: demo_ecommerce
-      filter {
-        field: r(order_master.order_created_month)
-        operator: 'matches'
-        value: '2023'
-      }
       fields: [
         VizFieldFull {
           ref: r(order_master.order_created_month)
@@ -643,6 +655,7 @@ Dashboard vy_huynh_abernathy {
           format {
             type: 'text'
           }
+          uname: 'ecommerce_countries_continent_name'
         },
         VizFieldFull {
           ref: r(order_master.user_id)
@@ -660,6 +673,7 @@ Dashboard vy_huynh_abernathy {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'count_order_id'
         },
         VizFieldFull {
           ref: r(order_master.price)
@@ -683,6 +697,24 @@ Dashboard vy_huynh_abernathy {
           enabled: true
           debug_comments: true
         }
+        column_styles: [
+          ColumnStyle {
+            key: 'count_order_id'
+            width: 89
+          },
+          ColumnStyle {
+            key: 'count_distinct_user_id_1'
+            width: 100
+          },
+          ColumnStyle {
+            key: 'ecommerce_countries_continent_name'
+            width: 162
+          },
+          ColumnStyle {
+            key: 'order_master_order_created_month_1'
+            width: 215
+          }
+        ]
       }
     }
   }
@@ -827,11 +859,6 @@ Dashboard vy_huynh_abernathy {
     label: 'Order Created Month, Continent Name, and CountD of User Id'
     viz: DataTable {
       dataset: demo_ecommerce
-      filter {
-        field: r(order_master.order_created_month)
-        operator: 'matches'
-        value: '2023'
-      }
       fields: [
         VizFieldFull {
           ref: r(order_master.order_created_month)
@@ -1217,7 +1244,7 @@ Dashboard vy_huynh_abernathy {
     }
     default {
       operator: 'matches'
-      value: '$H_NIL$'
+      value: '27 april 2025 to yesterday'
     }
     settings {
       drillthrough: Drillthrough {
@@ -1381,11 +1408,11 @@ Dashboard vy_huynh_abernathy {
     }
   }
   block v_tusm: VizBlock {
-    label: 'GMV - Gross Merchandise Value by Continent Name'
+    label: 'GMV - Gross Merchandise Value by Country Name'
     viz: BarChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
-        ref: r(ecommerce_countries.continent_name)
+        ref: r(ecommerce_countries.name)
         format {
           type: 'text'
         }
@@ -1796,9 +1823,6 @@ Dashboard vy_huynh_abernathy {
           block: [
             'v_hk4u',
             'v_wsww',
-            'v_dbuh',
-            'v_tusm',
-            'v_nyr1',
             'f1',
             'f2'
           ]
@@ -1920,4 +1944,8 @@ Dashboard vy_huynh_abernathy {
       ]
     }
   ]
+  settings {
+    timezone: 'Etc/UTC'
+    cache_duration: 1440
+  }
 }
