@@ -1,29 +1,21 @@
 Dashboard vy_tesst {
   title: 'Vy Tesst'
   description: ''
-  block title: TextBlock {
-    content: @md # Your title goes here ;;
-  }
   block v_b765: VizBlock {
     label: 'GMV - Gross Merchandise Value by Month'
-    viz: AreaChart {
-      dataset: demo_ecommerce
+    viz: LineChart {
+      dataset: vy_test_dataset
       x_axis: VizFieldFull {
-        ref: r(ecommerce_orders.created_at)
-        transformation: 'datetrunc month'
+        ref: r(test_data_axis_scale_csv.date)
         format {
           type: 'date'
-          pattern: 'LLL yyyy'
         }
       }
       y_axis {
-        label: 'GMV'
-        settings {
-          show_data_label_by: 'value'
-        }
         series {
           field: VizFieldFull {
-            ref: r(order_master.gmv)
+            ref: r(test_data_axis_scale_csv.sales)
+            aggregation: 'sum'
             format {
               type: 'number'
               pattern: 'inherited'
@@ -32,7 +24,6 @@ Dashboard vy_tesst {
         }
       }
       settings {
-        show_rows_with_no_data: true
         row_limit: 5000
         x_axis_show_null_datetime: false
         aggregate_awareness {
@@ -80,64 +71,19 @@ Dashboard vy_tesst {
       }
     }
   }
-  block v_2qmi: VizBlock {
-    label: 'GMV - Gross Merchandise Value by Month'
-    viz: AreaChart {
-      dataset: demo_ecommerce
-      x_axis: VizFieldFull {
-        ref: r(ecommerce_orders.created_at)
-        transformation: 'datetrunc month'
-        format {
-          type: 'date'
-          pattern: 'LLL yyyy'
-        }
-      }
-      y_axis {
-        label: 'GMV'
-        settings {
-          show_data_label_by: 'value'
-        }
-        series {
-          field: VizFieldFull {
-            ref: r(order_master.gmv)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-        }
-      }
-      settings {
-        show_rows_with_no_data: true
-        row_limit: 5000
-        x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
 
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
-    height: 1900
+    height: 1820
     grid_size: 20
     auto_expand_vertically: true
-    block title {
-      position: pos(20, 20, 1260, 60)
-    }
     block v_b765 {
-      position: pos(20, 100, 1160, 580)
+      position: pos(20, 20, 1160, 580)
       layer: 1
     }
     block v_ux3y {
-      position: pos(20, 700, 1160, 580)
-      layer: 1
-    }
-    block v_2qmi {
-      position: pos(20, 1300, 1160, 580)
+      position: pos(20, 620, 1160, 580)
       layer: 1
     }
     mobile {

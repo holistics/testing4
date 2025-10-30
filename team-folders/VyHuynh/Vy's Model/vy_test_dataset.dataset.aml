@@ -1,0 +1,9 @@
+Dataset vy_test_dataset {
+  label: 'vy_test_dataset',
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    test_data_axis_scale_csv
+  ]
+  relationships: []
+}
