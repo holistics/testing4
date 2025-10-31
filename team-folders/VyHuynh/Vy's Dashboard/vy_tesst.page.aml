@@ -201,8 +201,7 @@ Dashboard vy_tesst {
         CustomMapping {
           block: [
             'v_b765',
-            'v_3p4p',
-            'v_5ria'
+            'v_3p4p'
           ]
           disabled: true
         }
