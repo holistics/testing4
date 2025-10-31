@@ -153,7 +153,7 @@ Dashboard vy_tesst {
         mode: 'auto'
       }
       block v_5ria {
-        position: pos(40, 100, 660, 180)
+        position: pos(40, 100, 540, 220)
         layer: 1
       }
       block f_5fa3 {
@@ -201,7 +201,8 @@ Dashboard vy_tesst {
         CustomMapping {
           block: [
             'v_b765',
-            'v_3p4p'
+            'v_3p4p',
+            'v_5ria'
           ]
           disabled: true
         }
