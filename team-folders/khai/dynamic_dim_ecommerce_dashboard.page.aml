@@ -225,7 +225,7 @@ Dashboard dynamic_dim_ecommerce_dashboard {
     }
   }
   block v_dbfr: VizBlock {
-    label: 'Total Orders by Month Order Created At'
+    label: 'Total Orders, MovAvg of Total Orders, and Reference line of Total Orders by Month Order Created At'
     viz: CombinationChart {
       dataset: demo_ecommerce_internal_training
       x_axis: VizFieldFull {
@@ -248,6 +248,43 @@ Dashboard dynamic_dim_ecommerce_dashboard {
           }
           settings {
             line_style: 'dashed'
+            line_interpolation: 'smooth'
+          }
+        }
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            label: 'MovAvg of Total Orders'
+            ref: r(demo_ecommerce_internal_training.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            analytic: MovingCalculationField {
+              type: 'avg'
+              order: 'row'
+              range {
+                previous: 2
+                next: 0
+              }
+            }
+          }
+          settings {
+            color: '#A50E43'
+            line_style: 'dotted'
+          }
+        }
+        series {
+          field: VizFieldFull {
+            label: 'Reference line of Total Orders'
+            ref: r(demo_ecommerce_internal_training.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            analytic: ReferenceLine {
+              type: 'avg'
+            }
           }
         }
       }
