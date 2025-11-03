@@ -24,6 +24,10 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       position: pos(20, 580, 300, 80)
       layer: 4
     }
+    block v_6whf {
+      position: pos(620, 680, 540, 420)
+      layer: 1
+    }
   }
   theme: H.themes.classic
   block v1: VizBlock {
@@ -167,6 +171,52 @@ Dashboard dynamic_dim_ecommerce_dashboard {
   }
   block d_z1xt: DateDrillBlock {
     label: 'Date Drill'
+  }
+  block v_6whf: VizBlock {
+    label: 'Total orders overtime'
+    viz: ColumnChart {
+      dataset: demo_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(demo_ecommerce.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+        series {
+          field: VizFieldFull {
+            label: 'Trend line of Total Orders'
+            ref: r(demo_ecommerce.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            analytic: RegressionLine {
+              type: 'linear'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
   }
   interactions: [
     DateDrillInteraction {
