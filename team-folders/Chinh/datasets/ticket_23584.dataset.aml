@@ -22,16 +22,15 @@ Dataset ticket_23584 {
     definition: @aql sum(chinh_fact_sales.sales_amount) ;;
   }
 
-  dimension products_ordered_within_2_years {
+  dimension amount_per_product_ordered_within_2_years {
     model: chinh_dim_category
-    label: 'Products (ordered within 2 years)'
+    label: 'Amount per Products (ordered within 2 years)'
     type: 'number'
     definition: @aql
       dimensionalize(
-        chinh_fact_sales
-          | filter(chinh_fact_sales.created_at > @(last 2 years))
-          | count(chinh_dim_product.product_id)
-        , chinh_dim_category.category_id
+        total_amount
+          | where(chinh_fact_sales.created_at > @(last 2 years)),
+        chinh_dim_category.category_id
       )
     ;;
   }
@@ -42,7 +41,9 @@ Dataset ticket_23584 {
     type: 'text'
     definition: @aql
       case(
-        when: chinh_dim_category.products_ordered_within_2_years > 0, then: chinh_dim_category.category,
+        when: chinh_dim_category.amount_per_product_ordered_within_2_years > 0,
+        then: chinh_dim_category.category,
+
         else: null
       )
     ;;

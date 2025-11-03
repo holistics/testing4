@@ -5,7 +5,7 @@ Dashboard chinh_sandbox {
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
-    height: 900
+    height: 800
     grid_size: 20
     auto_expand_vertically: true
     mobile {
@@ -51,6 +51,7 @@ Dashboard chinh_sandbox {
             type: 'number'
             pattern: 'inherited'
           }
+          hidden: true
         },
         VizFieldFull {
           ref: r(ticket_23584.total_amount)
@@ -95,7 +96,7 @@ Dashboard chinh_sandbox {
     }
   }
   block f_nfvl: FilterBlock {
-    label: 'Category'
+    label: 'All Category'
     type: 'field'
     source: FieldFilterSource {
       dataset: ticket_23584
