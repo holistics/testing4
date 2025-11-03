@@ -174,7 +174,7 @@ Dashboard dynamic_dim_ecommerce_dashboard {
   }
   block v_6whf: VizBlock {
     label: 'Total orders overtime'
-    viz: ColumnChart {
+    viz: CombinationChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
         ref: r(order_master.order_created_at)
@@ -186,6 +186,7 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       }
       y_axis {
         series {
+          mark_type: 'column'
           field: VizFieldFull {
             ref: r(demo_ecommerce.total_orders)
             format {
