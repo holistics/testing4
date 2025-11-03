@@ -90,6 +90,53 @@ Dashboard vy_tesst {
       value: []
     }
   }
+  block v_nd61: VizBlock {
+    label: 'Revenue by Sales rep'
+    viz: BarChart {
+      dataset: vy_test_dataset
+      x_axis: VizFieldFull {
+        ref: r(vy_sales_revenue_demo_csv.sales_rep)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            label: 'Revenue (USD)'
+            ref: r(vy_sales_revenue_demo_csv.revenue_usd)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: '#,###0.00,"K"'
+            }
+          }
+        }
+        series {
+          field: VizFieldFull {
+            label: 'Avg revenue'
+            ref: r(vy_sales_revenue_demo_csv.revenue_usd)
+            aggregation: 'avg'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            analytic: ReferenceLine {
+              type: 'avg'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
 
   view: TabLayout {
     label: 'View 1'
@@ -125,6 +172,20 @@ Dashboard vy_tesst {
         layer: 2
       }
     }
+    tab tab_zn8j: CanvasLayout {
+      label: 'Tab 3'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+      block v_nd61 {
+        position: pos(20, 20, 1260, 640)
+        layer: 1
+      }
+    }
   }
 
   theme: H.themes.vanilla
@@ -133,7 +194,10 @@ Dashboard vy_tesst {
       from: 'v_3p4p'
       to: [
         CustomMapping {
-          block: 'v_5ria'
+          block: [
+            'v_5ria',
+            'v_nd61'
+          ]
           disabled: true
         }
       ]
@@ -142,7 +206,10 @@ Dashboard vy_tesst {
       from: 'v_5ria'
       to: [
         CustomMapping {
-          block: 'v_3p4p'
+          block: [
+            'v_3p4p',
+            'v_nd61'
+          ]
           disabled: true
         }
       ]
@@ -151,7 +218,22 @@ Dashboard vy_tesst {
       from: 'f_5fa3'
       to: [
         CustomMapping {
-          block: 'v_3p4p'
+          block: [
+            'v_3p4p',
+            'v_nd61'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_nd61'
+      to: [
+        CustomMapping {
+          block: [
+            'v_3p4p',
+            'v_5ria'
+          ]
           disabled: true
         }
       ]
