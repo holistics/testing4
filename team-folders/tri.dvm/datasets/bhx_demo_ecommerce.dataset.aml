@@ -27,6 +27,14 @@ Dataset bhx_demo_ecommerce {
   // relationship(bhx_ecommerce_orders_dim_dates, true),
   ]
 
+  view {
+    model bhx_ecommerce_orders {  }
+
+    model bhx_ecommerce_users {
+      field id
+    }
+  }
+
   dimension cohort_month {
     model: bhx_ecommerce_users
     label: "Cohort Month"
@@ -362,7 +370,7 @@ Dataset bhx_demo_ecommerce {
     type: "number"
     hidden: false
     description: ""
-    definition: @aql bhx_ecommerce_products.total_total | running_total();;
+    definition: @aql bhx_ecommerce_products.profit | running_total();;
   }
 
 

@@ -62,24 +62,24 @@ Model bhx_ecommerce_products {
     definition: @sql {{ #SOURCE.product_merchant }} ;;
   }
 
-  measure total_products_01 {
-    label: 'Total Cost 01'
+  measure total_cost {
+    label: 'Total cost'
     type: 'number'
-    definition: @sql COALESCE(sum({{ cost }}), 0);;
+    definition: @aql coalesce(sum(bhx_ecommerce_products.cost), 0);;
     format: "[$$]#,###0.0"
   }
 
-  measure total_products_02 {
-     label: 'Total Cost 02'
+  measure total_price {
+     label: 'Total price'
     type: 'number'
-    definition: @sql COALESCE(sum({{ price }}), 0);;
+    definition: @aql coalesce(sum(bhx_ecommerce_products.price), 0);;
     format: "[$$]#,###0.0"
   }
 
-  measure total_total {
-    label: 'Total Total'
+  measure profit {
+    label: 'Profit'
     type: 'number'
-    definition: @sql {{ total_products_01 }} + {{ total_products_02 }};;
+    definition: @aql bhx_ecommerce_products.total_price - bhx_ecommerce_products.total_cost;;
     format: "[$$]#,###0.0"
   }
 }
