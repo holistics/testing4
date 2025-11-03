@@ -239,7 +239,16 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       y_axis {
         series {
           mark_type: 'line'
-          field: r(demo_ecommerce_internal_training.total_orders)
+          field: VizFieldFull {
+            ref: r(demo_ecommerce_internal_training.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            line_style: 'dashed'
+          }
         }
       }
       settings {
