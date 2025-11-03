@@ -1,38 +1,6 @@
 Dashboard vy_tesst {
   title: 'Vy Tesst'
   description: ''
-  block v_b765: VizBlock {
-    label: 'GMV - Gross Merchandise Value by Month'
-    viz: LineChart {
-      dataset: vy_test_dataset
-      x_axis: VizFieldFull {
-        ref: r(test_data_axis_scale_csv.date)
-        format {
-          type: 'date'
-        }
-      }
-      y_axis {
-        series {
-          field: VizFieldFull {
-            ref: r(test_data_axis_scale_csv.sales)
-            aggregation: 'sum'
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-        }
-      }
-      settings {
-        row_limit: 5000
-        x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
   block v_3p4p: VizBlock {
     label: 'GMV - Gross Merchandise Value by Month'
     viz: DataTable {
@@ -128,15 +96,11 @@ Dashboard vy_tesst {
     tab tab1: CanvasLayout {
       label: 'Tab 1'
       width: 1300
-      height: 1820
+      height: 1220
       grid_size: 20
       auto_expand_vertically: true
-      block v_b765 {
-        position: pos(20, 20, 1160, 580)
-        layer: 1
-      }
       block v_3p4p {
-        position: pos(20, 620, 1160, 580)
+        position: pos(20, 20, 1160, 580)
         layer: 1
       }
       mobile {
@@ -166,15 +130,6 @@ Dashboard vy_tesst {
   theme: H.themes.vanilla
   interactions: [
     FilterInteraction {
-      from: 'v_b765'
-      to: [
-        CustomMapping {
-          block: 'v_5ria'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
       from: 'v_3p4p'
       to: [
         CustomMapping {
@@ -187,10 +142,7 @@ Dashboard vy_tesst {
       from: 'v_5ria'
       to: [
         CustomMapping {
-          block: [
-            'v_b765',
-            'v_3p4p'
-          ]
+          block: 'v_3p4p'
           disabled: true
         }
       ]
@@ -199,10 +151,7 @@ Dashboard vy_tesst {
       from: 'f_5fa3'
       to: [
         CustomMapping {
-          block: [
-            'v_b765',
-            'v_3p4p'
-          ]
+          block: 'v_3p4p'
           disabled: true
         }
       ]
