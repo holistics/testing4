@@ -1660,10 +1660,14 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         }
         series {
           field: VizFieldFull {
+            label: 'Untitled Trend line'
             ref: r(order_master.gmv)
             format {
               type: 'number'
               pattern: 'inherited'
+            }
+            analytic: RegressionLine {
+              type: 'linear'
             }
           }
         }
