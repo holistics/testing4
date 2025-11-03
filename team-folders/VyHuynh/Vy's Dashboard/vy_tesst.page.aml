@@ -1,5 +1,5 @@
 Dashboard vy_tesst {
-  title: 'Vy Tesst'
+  title: 'Vy Huynh'
   description: ''
   block v_3p4p: VizBlock {
     label: 'GMV - Gross Merchandise Value by Month'
