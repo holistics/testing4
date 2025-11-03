@@ -23,9 +23,17 @@ Dataset bhx_demo_ecommerce {
     relationship(bhx_ecommerce_order_items.product_id > bhx_ecommerce_products.id, true),
     relationship(bhx_ecommerce_products.id - bhx_ecommerce_product_images.product_id, true),
     relationship(bhx_ecommerce_products.merchant_id > bhx_ecommerce_merchants.id, true),
-    // relationship(bhx_ecommerce_products_map_categories, true),
-    // relationship(bhx_ecommerce_orders_dim_dates, true),
+  // relationship(bhx_ecommerce_products_map_categories, true),
+  // relationship(bhx_ecommerce_orders_dim_dates, true),
   ]
+
+  view {
+    model bhx_ecommerce_orders {  }
+
+    model bhx_ecommerce_users {
+      field id
+    }
+  }
 
   dimension cohort_month {
     model: bhx_ecommerce_users
@@ -142,7 +150,7 @@ Dataset bhx_demo_ecommerce {
     definition: @aql gmv - revenue;;
     format: "[\$\$]#,###0"
   }
-  
+
   metric nmv {
     label: "NMV - Net Merchandise Value (Post-Discount & Fulfillment)"
     type: "number"
@@ -338,7 +346,7 @@ Dataset bhx_demo_ecommerce {
 
       )
      ;;
-     format: "[\$\$]#,###0"
+    format: "[\$\$]#,###0"
   }
 
   metric revenue_commission {
@@ -356,6 +364,13 @@ Dataset bhx_demo_ecommerce {
     hidden: false
     description: "Cumulative total of orders over time, aggregated by year to show growth trends."
     definition: @aql running_total(total_orders, bhx_ecommerce_orders.created_at | year());;
+  }
+  metric abc {
+    label: "abc"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql bhx_ecommerce_products.profit | running_total();;
   }
 
 
