@@ -379,6 +379,30 @@ Dataset bhx_demo_ecommerce {
     description: ""
     definition: @aql bhx_ecommerce_orders.delivered_orders_count - bhx_ecommerce_orders.cancelled_orders_count + 10044;;
   }
+  metric aaa {
+    label: "A"
+    type: "number"
+    description: ""
+    definition: @aql 1;;
+  }
+  metric rt {
+    label: "A"
+    type: "number"
+    description: ""
+    definition: @aql 1;;
+  }
+  metric b {
+    label: "undefined"
+    type: "number"
+    description: ""
+    definition: @aql 11;;
+  }
+  metric ad {
+    label: "1"
+    type: "number"
+    description: ""
+    definition: @aql 1;;
+  }
 
 
   owner: 'tri.dvm@holistics.io'
