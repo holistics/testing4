@@ -1,21 +1,25 @@
-Dashboard khai_cohort_retention {
-  title: 'Cohort Retention (from Khai)'
-
-  view: CanvasLayout {
-    label: 'View 1'
-    height: 560
-    grid_size: 20
-    mobile {
-      mode: 'auto'
-    }
-    block v1 {
-      position: pos(20, 20, 1180, 520)
-      layer: 1
+// This is a library dashboard block. For more details, visit https://docs.holistics.io/docs/canvas-dashboard/guides/build-library-blocks
+@template(
+  title='cohort retention',
+  description='',
+  thumbnail='https://cdn.holistics.io/product/aql-final-aql-cohort-analysis-20240722-148.png',
+  metadata={
+    block_width: 1180
+    block_height: 520
+    func: TemplateFuncMetadata {
+      param time_granularity: StringParamMetadata {
+        input_type: 'select'
+        options: ['month', 'quarter', 'year']
+      }
+      param category_name_param: StringParamMetadata {
+        input_type: 'select'
+        options: ['Gaming', 'Body', 'Audio Gadgets', 'Baking and Cooking', 'Tablet']
+      }
     }
   }
-
-  theme: H.themes.vanilla
-  block v1: VizBlock {
+)
+Func block_cohort_retention(time_granularity:String, category_name_param:String) {
+  VizBlock {
     label: 'Cohort Retention'
     viz: PivotTable {
       dataset: khai_ecommerce
@@ -30,9 +34,9 @@ Dashboard khai_cohort_retention {
         model: users
       }
       calculation months_from_first_orders {
-        label: 'Months From First Orders'
+        label: '${time_granularity} from first orders'
         formula: @aql date_diff(
-  'month',
+  '${time_granularity}',
   users.first_acquired_at,
   orders.created_at
 );;
@@ -49,9 +53,14 @@ Dashboard khai_cohort_retention {
         data_type: 'number'
       }
       filter {
-        field: ref('users', 'first_acquired_at')
+        field: r(khai_ecommerce, users.user_acquired_at)
         operator: 'matches'
         value: 'last year to current year'
+      }
+      filter {
+        field: r(khai_categories.name)
+        operator: 'is'
+        value: ['${category_name_param}']
       }
       theme {
         table {
@@ -66,7 +75,7 @@ Dashboard khai_cohort_retention {
       rows: [
         VizFieldFull {
           ref: ref('users', 'first_acquired_at')
-          transformation: 'datetrunc month'
+          transformation: 'datetrunc ${time_granularity}'
           format {
             type: 'date'
             pattern: 'LLL yyyy'
@@ -95,7 +104,7 @@ Dashboard khai_cohort_retention {
         }
       ]
       settings {
-        show_row_total: true
+        show_row_total: false
         show_column_total: true
         conditional_formats: [
           ConditionalFormat {
