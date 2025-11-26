@@ -12,6 +12,7 @@ Dashboard khai_cohort_retention {
       position: pos(20, 20, 1180, 520)
       layer: 1
     }
+    width: 1240
   }
 
   theme: H.themes.vanilla
