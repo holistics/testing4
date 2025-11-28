@@ -3,19 +3,32 @@ Dashboard chinh_template {
   description: ''
   owner: 'chinh.dm@holistics.io'
 
-  view: CanvasLayout {
+  view: TabLayout {
     label: 'View 1'
-    width: 1300
-    height: 675
-    grid_size: 25
-    auto_expand_vertically: true
-    mobile {
-      mode: 'auto'
+    tab tab1: CanvasLayout {
+      label: 'Tab 1'
+      width: 1300
+      height: 675
+      grid_size: 25
+      auto_expand_vertically: true
+      auto_expand_horizontally: true
+      block v_lm5d {
+        position: pos(25, 125, 1250, 525)
+        layer: 1
+      }
+      mobile {
+        mode: 'auto'
+      }
     }
-    auto_expand_horizontally: true
-    block v_lm5d {
-      position: pos(25, 125, 1250, 525)
-      layer: 1
+    tab tab2: CanvasLayout {
+      label: 'Tab 2'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
     }
   }
 
