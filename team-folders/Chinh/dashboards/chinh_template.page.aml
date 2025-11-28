@@ -1,0 +1,53 @@
+Dashboard chinh_template {
+  title: 'chinh_template'
+  description: ''
+  owner: 'chinh.dm@holistics.io'
+
+  view: CanvasLayout {
+    label: 'View 1'
+    width: 1300
+    height: 675
+    grid_size: 25
+    auto_expand_vertically: true
+    mobile {
+      mode: 'auto'
+    }
+    auto_expand_horizontally: true
+    block v_lm5d {
+      position: pos(25, 125, 1250, 525)
+      layer: 1
+    }
+  }
+
+  theme: H.themes.vanilla
+  block v_lm5d: VizBlock {
+    label: 'Total Value by Month'
+    viz: AreaChart {
+      dataset: chinh_dynamic_dataset
+      x_axis: VizFieldFull {
+        ref: r(chinh_dynamic_dim_model.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: r(chinh_dynamic_dataset.total_value)
+          settings {
+            color_palette: 0
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+}

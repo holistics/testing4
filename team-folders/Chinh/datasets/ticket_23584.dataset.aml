@@ -1,13 +1,21 @@
 Dataset ticket_23584 {
   label: 'ticket_23584'
-  description: ''
+  description: '''
+In the dashboard, which includes a Category filter, only display categories that have had non-zero sales in the last 2 years,
+so users aren't forced to scroll through outdated or irrelevant categories.
+
+"Unused categories" = categories with 0 total sales amount over the past 2 years
+=> 1. Filtering logic: total sales amount over the past 2 years
+=> 2. Roll it up to the Dim Category's grain
+=> 3. Then apply a case when to take the categories' name, Active Category
+'''
   data_source_name: 'demodb'
 
   models: [
     chinh_dim_date,
     chinh_dim_category,
     chinh_dim_product,
-    chinh_fact_sales
+    chinh_fact_sales,
   ]
 
   relationships: [
@@ -19,10 +27,12 @@ Dataset ticket_23584 {
   metric total_amount {
     label: 'Total Amount'
     type: 'number'
-    definition: @aql sum(chinh_fact_sales.sales_amount) ;;
+    definition: @aql
+      coalesce(sum(chinh_fact_sales.sales_amount), 0)
+    ;;
   }
 
-  dimension amount_per_product_ordered_within_2_years {
+  dimension amount_per_product_ordered_within_2_years { // calculated field
     model: chinh_dim_category
     label: 'Amount per Products (ordered within 2 years)'
     type: 'number'
@@ -42,7 +52,7 @@ Dataset ticket_23584 {
     definition: @aql
       case(
         when: chinh_dim_category.amount_per_product_ordered_within_2_years > 0,
-        then: chinh_dim_category.category,
+        then: chinh_dim_category.category, // category name
 
         else: null
       )

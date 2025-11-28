@@ -1,27 +1,94 @@
+@template(
+  title='View Template',
+  description='',
+  thumbnail='',
+  metadata={
+  }
+)
+Func view_template() {
+  TabLayout {
+    label: 'View 1'
+    tab tab1: CanvasLayout {
+      label: 'Tab 1'
+      width: 1300
+      height: 1500
+      grid_size: 20
+      auto_expand_vertically: true
+      block v_0m6g {
+        position: pos(20, 100, 1260, 680)
+        layer: 1
+      }
+      block f_nfvl {
+        position: pos(20, 20, 300, 80)
+        layer: 2
+      }
+      block f_dtbw {
+        position: pos(340, 20, 300, 80)
+        layer: 3
+      }
+      block v_sfkb {
+        position: pos(20, 800, 1260, 2000)
+        layer: 4
+      }
+      mobile {
+        mode: 'auto'
+      }
+    }
+    tab tab2: CanvasLayout {
+      label: 'Tab 2'
+      width: 2000
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+    }
+  }
+}
+
 Dashboard chinh_sandbox {
   title: 'Chinh Sandbox'
   description: ''
 
-  view: CanvasLayout {
+  // view: view_template()
+  view: TabLayout {
     label: 'View 1'
-    width: 1300
-    height: 800
-    grid_size: 20
-    auto_expand_vertically: true
-    mobile {
-      mode: 'auto'
+    tab tab1: CanvasLayout {
+      label: 'Tab 1'
+      width: 1300
+      height: 1500
+      grid_size: 20
+      auto_expand_vertically: true
+      block v_0m6g {
+        position: pos(20, 100, 1260, 680)
+        layer: 1
+      }
+      block f_nfvl {
+        position: pos(20, 20, 300, 80)
+        layer: 2
+      }
+      block f_dtbw {
+        position: pos(340, 20, 300, 80)
+        layer: 3
+      }
+      block v_sfkb {
+        position: pos(20, 800, 1260, 680)
+        layer: 4
+      }
+      mobile {
+        mode: 'auto'
+      }
     }
-    block v_0m6g {
-      position: pos(20, 100, 1260, 680)
-      layer: 1
-    }
-    block f_nfvl {
-      position: pos(20, 20, 300, 80)
-      layer: 2
-    }
-    block f_dtbw {
-      position: pos(340, 20, 300, 80)
-      layer: 3
+    tab tab2: CanvasLayout {
+      label: 'Tab 2'
+      width: 2000
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
     }
   }
 
@@ -119,6 +186,7 @@ Dashboard chinh_sandbox {
       value: []
     }
   }
+  block v_sfkb: block_chinh_test_table()
   interactions: [
     FilterInteraction {
       from: 'f_nfvl'
