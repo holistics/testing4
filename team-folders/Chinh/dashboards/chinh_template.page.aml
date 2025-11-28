@@ -16,6 +16,10 @@ Dashboard chinh_template {
         position: pos(25, 125, 1250, 525)
         layer: 1
       }
+      block t_uu5o {
+        position: pos(25, 25, 425, 50)
+        layer: 2
+      }
       mobile {
         mode: 'auto'
       }
@@ -62,5 +66,8 @@ Dashboard chinh_template {
         }
       }
     }
+  }
+  block t_uu5o: TextBlock {
+    content: @md This is the template dashboard.;;
   }
 }
