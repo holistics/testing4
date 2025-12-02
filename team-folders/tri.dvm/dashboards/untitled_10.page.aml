@@ -21,11 +21,11 @@ Dashboard untitled_10_2 {
       layer: 2
     }
     block v_xr7s {
-      position: pos(352, 66, 220, 20)
+      position: pos(370, 63, 120, 28)
       layer: 3
     }
     block v_uldk {
-      position: pos(660, 120, 620, 420)
+      position: pos(660, 123, 620, 420)
       layer: 1
     }
   }
@@ -45,6 +45,7 @@ Dashboard untitled_10_2 {
           background: #f6f8fa;
           overflow: hidden !important;
           text-align: right;
+          line-height: 28px;
         }
       ;;
 
