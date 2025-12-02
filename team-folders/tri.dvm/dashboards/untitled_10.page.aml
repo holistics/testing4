@@ -21,7 +21,7 @@ Dashboard untitled_10_2 {
       layer: 2
     }
     block v_xr7s {
-      position: pos(370, 63, 120, 28)
+      position: pos(440, 63, 120, 28)
       layer: 3
     }
     block v_uldk {
