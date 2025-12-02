@@ -56,7 +56,7 @@ Dashboard untitled_10_2 {
     viz: DataTable {
       dataset: bhx_demo_ecommerce
       calculation metric_eabb487 {
-        label: 'Untitled Metric'
+        label: '  '
         formula: @aql case(
   when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Orders'
   , then: total_orders
