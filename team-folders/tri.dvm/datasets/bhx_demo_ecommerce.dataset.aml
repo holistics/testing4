@@ -118,12 +118,13 @@ Dataset bhx_demo_ecommerce {
         , else: bhx_ecommerce_countries.name
       ) ;;
   }
-
   metric total_users {
     label: 'Total Users'
     type: 'number'
+    hidden: false
     description: "Total number of users"
     definition: @aql count(bhx_ecommerce_users.id) ;;
+    format: ""
   }
 
   metric total_orders {

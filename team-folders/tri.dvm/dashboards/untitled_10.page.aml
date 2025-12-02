@@ -1,0 +1,137 @@
+Dashboard untitled_10_2 {
+  title: 'untitled_10'
+  description: ''
+  owner: 'tri.dvm@holistics.io'
+
+  view: CanvasLayout {
+    label: 'View 1'
+    width: 1300
+    height: 800
+    grid_size: 20
+    auto_expand_vertically: true
+    mobile {
+      mode: 'auto'
+    }
+    block v_bozo {
+      position: pos(20, 20, 620, 420)
+      layer: 1
+    }
+    block f_6do7 {
+      position: pos(660, 20, 300, 80)
+      layer: 2
+    }
+    block v_xr7s {
+      position: pos(340, 60, 240, 40)
+      layer: 3
+    }
+  }
+
+  theme: H.themes.vanilla.extend(
+    {
+      custom_css: @css 
+        #block-v_xr7s {
+          border:none !important;
+          padding: 0 !important;
+          border-radius: 0;
+          height: 25px;
+        }
+      ;;
+
+
+    }
+  )
+  block v_bozo: VizBlock {
+    label: 'Country Name and Untitled Metric'
+    viz: DataTable {
+      dataset: bhx_demo_ecommerce
+      calculation metric_eabb487 {
+        label: 'Untitled Metric'
+        formula: @aql case(
+  when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Orders'
+  , then: total_orders
+  , when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Users'
+  , then: total_users
+  , else: total_users
+);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      fields: [
+        VizFieldFull {
+          ref: r(bhx_ecommerce_countries.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: 'metric_eabb487'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block f_6do7: FilterBlock {
+    label: 'Countries Dynamic Metric Choice 123'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: bhx_demo_ecommerce
+      field: r(bhx_ecommerce_countries.dynamic_metric_123)
+    }
+    default {
+      operator: 'is'
+      value: 'Total Users'
+    }
+  }
+  block v_xr7s: VizBlock {
+    label: 'custom code'
+    viz: MarkdownViz {
+      dataset: bhx_demo_ecommerce
+      calculation metric_5b51855 {
+        label: 'custom code'
+        formula: @aql case(
+  when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Orders'
+  , then: 'hello'
+  , when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Users'
+  , then: 'hurrrra'
+  , else: 'yeeeeeee'
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      values: [
+        VizFieldFull {
+          ref: 'metric_5b51855'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      content: @md <span>Product</span> ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+      hide_controls: true
+    }
+  }
+}
