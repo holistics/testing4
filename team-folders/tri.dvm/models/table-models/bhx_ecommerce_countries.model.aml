@@ -6,10 +6,10 @@ Model bhx_ecommerce_countries {
   table_name: '"ecommerce"."countries"'
   owner: 'tri.dvm@holistics.io'
 
-  param dynamic_metric_123 {
-    label: 'Dynamic Metric Choice 123'    
+  param dynamic_metric {
+    label: 'Dynamic Metric'    
     type: 'text'                         
-    description: 'What this parameter does' 
+    description: 'Dynamic metric values' 
     allowed_values: ['Total Users', 'Total Orders', 'Total Revenue']
   }
 
