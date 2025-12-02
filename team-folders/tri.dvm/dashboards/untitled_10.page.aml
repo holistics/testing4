@@ -25,7 +25,7 @@ Dashboard untitled_10_2 {
       layer: 3
     }
     block v_uldk {
-      position: pos(20, 480, 620, 420)
+      position: pos(660, 120, 620, 420)
       layer: 1
     }
   }
@@ -118,7 +118,7 @@ Dashboard untitled_10_2 {
   , then: 'Total Orders'
   , when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Users'
   , then: 'Total Users'
-  , else: 'Metric'
+  , else: 'Total Revenue'
 );;
         calc_type: 'measure'
         data_type: 'text'
@@ -132,7 +132,7 @@ Dashboard untitled_10_2 {
           }
         }
       ]
-      content: @md <div><b>{{ rows[0].values.`custom code` }}</b></div>        ;;
+      content: @md <div><b>{{ rows[0].values.`custom code` }}</b></div>         ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -152,14 +152,14 @@ Dashboard untitled_10_2 {
     label: 'Country Name and Untitled Metric copy'
     viz: ColumnChart {
       dataset: bhx_demo_ecommerce
-      calculation dimension_6dfd404 {
-        label: 'custom code'
+      calculation dimension_d61c293 {
+        label: 'Untitled Dimension'
         formula: @aql case(
   when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Orders'
   , then: 'Total Orders'
   , when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Users'
   , then: 'Total Users'
-  , else: 'Metric'
+  , else: 'Total Revenue'
 );;
         calc_type: 'dimension'
         data_type: 'text'
@@ -184,7 +184,7 @@ Dashboard untitled_10_2 {
         }
       }
       legend: VizFieldFull {
-        ref: ref('bhx_ecommerce_countries', 'dimension_6dfd404')
+        ref: ref('bhx_ecommerce_countries', 'dimension_d61c293')
         format {
           type: 'text'
         }
