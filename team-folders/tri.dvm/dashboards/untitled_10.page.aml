@@ -13,16 +13,12 @@ Dashboard untitled_10_2 {
       mode: 'auto'
     }
     block v_bozo {
-      position: pos(20, 20, 620, 420)
+      position: pos(30, 120, 620, 420)
       layer: 1
     }
     block f_6do7 {
-      position: pos(660, 20, 300, 80)
+      position: pos(35, 25, 300, 80)
       layer: 2
-    }
-    block v_xr7s {
-      position: pos(440, 63, 120, 28)
-      layer: 3
     }
     block v_uldk {
       position: pos(660, 120, 620, 420)
@@ -32,52 +28,43 @@ Dashboard untitled_10_2 {
       position: pos(670, 135, 120, 40)
       layer: 3
     }
+    block v_u1in {
+      position: pos(430, 170, 90, 15)
+      layer: 4
+    }
   }
 
   theme: H.themes.vanilla.extend(
     {
       custom_css: @css 
-        #block-v_xr7s {
-          border:none !important;
+        #block-v_u1in {
+          border: none !important;
           padding: 0 !important;
-          border-radius: 0;
-          
-          background: #f6f8fa;
-        }
-
-        #block-v_xr7s .text-content {
-          background: #f6f8fa;
-          overflow: hidden !important;
-          text-align: right;
-          line-height: 28px;
+          border-radius: 0 !important;
+          background: #f6f8fa !important;
         }
 
         #block-v_yybm {
-           border:none !important;
+          border: none !important;
           padding: 0 !important;
-          border-radius: 0;
-          
-          background: #f6f8fa;
-        }
-
-        #block-v_yybm .text-content {
-          
+          border-radius: 0 !important;
         }
       ;;
 
 
     }
   )
+
   block v_bozo: VizBlock {
-    label: 'Country Name and Untitled Metric'
+    label: 'Dynamic metric'
     viz: DataTable {
       dataset: bhx_demo_ecommerce
       calculation metric_eabb487 {
         label: '  '
         formula: @aql case(
-  when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Orders'
+  when: bhx_ecommerce_countries.dynamic_metric | first() == 'Total Orders'
   , then: total_orders
-  , when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Users'
+  , when: bhx_ecommerce_countries.dynamic_metric | first() == 'Total Users'
   , then: total_users
   , else: total_users
 );;
@@ -109,12 +96,14 @@ Dashboard untitled_10_2 {
       }
     }
   }
+
+
   block f_6do7: FilterBlock {
     label: 'Metric Dynamic'
     type: 'field'
     source: FieldFilterSource {
       dataset: bhx_demo_ecommerce
-      field: r(bhx_ecommerce_countries.dynamic_metric_123)
+      field: r(bhx_ecommerce_countries.dynamic_metric)
     }
     default {
       operator: 'is'
@@ -124,57 +113,16 @@ Dashboard untitled_10_2 {
       input_type: 'single'
     }
   }
-  block v_xr7s: VizBlock {
-    label: 'custom code'
-    viz: MarkdownViz {
-      dataset: bhx_demo_ecommerce
-      calculation metric_5b51855 {
-        label: 'custom code'
-        formula: @aql case(
-  when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Orders'
-  , then: 'Total Orders'
-  , when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Users'
-  , then: 'Total Users'
-  , else: 'Total Revenue'
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      values: [
-        VizFieldFull {
-          ref: 'metric_5b51855'
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        }
-      ]
-      content: @md <div><b>{{ rows[0].values.`custom code` }}</b></div>         ;;
-      settings {
-        show_row_total: true
-        show_column_total: true
-        row_limit: 5000
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-    settings {
-      hide_label: true
-      hide_controls: true
-    }
-  }
   block v_uldk: VizBlock {
     label: 'Column chart'
     viz: ColumnChart {
       dataset: bhx_demo_ecommerce
-      calculation dimension_d61c293 {
+      calculation dimension_d2d888f {
         label: 'Untitled Dimension'
         formula: @aql case(
-  when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Orders'
+  when: bhx_ecommerce_countries.dynamic_metric | first() == 'Total Orders'
   , then: 'Total Orders'
-  , when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Users'
+  , when: bhx_ecommerce_countries.dynamic_metric | first() == 'Total Users'
   , then: 'Total Users'
   , else: 'Total Revenue'
 );;
@@ -185,9 +133,9 @@ Dashboard untitled_10_2 {
       calculation metric_eabb487 {
         label: '  '
         formula: @aql case(
-  when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Orders'
+  when: bhx_ecommerce_countries.dynamic_metric | first() == 'Total Orders'
   , then: total_orders
-  , when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Users'
+  , when: bhx_ecommerce_countries.dynamic_metric | first() == 'Total Users'
   , then: total_users
   , else: total_users
 );;
@@ -201,7 +149,7 @@ Dashboard untitled_10_2 {
         }
       }
       legend: VizFieldFull {
-        ref: ref('bhx_ecommerce_countries', 'dimension_d61c293')
+        ref: ref('bhx_ecommerce_countries', 'dimension_d2d888f')
         format {
           type: 'text'
         }
@@ -230,6 +178,7 @@ Dashboard untitled_10_2 {
       }
     }
   }
+  
   block v_yybm: VizBlock {
     label: 'custom code'
     viz: MarkdownViz {
@@ -237,9 +186,9 @@ Dashboard untitled_10_2 {
       calculation metric_5b51855 {
         label: 'custom code'
         formula: @aql case(
-  when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Orders'
+  when: bhx_ecommerce_countries.dynamic_metric | first() == 'Total Orders'
   , then: 'Total Orders'
-  , when: bhx_ecommerce_countries.dynamic_metric_123 | first() == 'Total Users'
+  , when: bhx_ecommerce_countries.dynamic_metric | first() == 'Total Users'
   , then: 'Total Users'
   , else: 'Total Revenue'
 );;
@@ -255,7 +204,7 @@ Dashboard untitled_10_2 {
           }
         }
       ]
-      content: @md <div><b>{{ rows[0].values.`custom code` }}</b></div>          ;;
+      content: @md <div><b>{{ rows[0].values.`custom code` }}</b></div>           ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -269,6 +218,49 @@ Dashboard untitled_10_2 {
     settings {
       hide_label: true
       hide_controls: true
+    }
+  }
+  block v_u1in: VizBlock {
+    label: 'Metric 6 Db 90 Eb'
+    viz: MetricKpi {
+      dataset: bhx_demo_ecommerce
+      calculation metric_6db90eb {
+        label: '    '
+        formula: @aql case(
+  when: bhx_ecommerce_countries.dynamic_metric | first() == 'Total Orders'
+  , then: 'Total Orders'
+  , when: bhx_ecommerce_countries.dynamic_metric | first() == 'Total Users'
+  , then: 'Total Users'
+  , else: 'Total Revenue'
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      value: VizFieldFull {
+        ref: 'metric_6db90eb'
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        label {
+          font_size: 2
+        }
+        alignment: 'left'
+        metric_value {
+          font_size: 12
+        }
+        compare_value {
+          font_size: 8
+        }
+      }
+    }
+    settings {
+      hide_label: true
     }
   }
 }
