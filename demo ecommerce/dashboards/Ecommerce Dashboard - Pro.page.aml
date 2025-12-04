@@ -1774,6 +1774,9 @@ abc;;
       position: pos(280, 700, 860, 260)
       layer: -1
     }
+    mobile {
+      mode: 'auto'
+    }
   }
   settings {
     timezone: 'America/Los_Angeles'

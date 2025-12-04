@@ -1,8 +1,8 @@
 Dashboard dynamic_dim_ecommerce_dashboard {
-  title: 'Dynamic Dim Ecommerce Dashboard'
+  title: "Phuong's test dashboard"
   view: CanvasLayout {
     label: 'View 1'
-    height: 600
+    height: 1620
     grid_size: 20
     block v1 {
       position: pos(20, 140, 540, 420)
@@ -16,10 +16,23 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       position: pos(20, 20, 300, 100)
       layer: 2
     }
-    block t1 {
-      position: pos(360, 20, 60, 60)
+    block v_i7uw {
+      position: pos(20, 680, 580, 400)
       layer: 3
     }
+    block d_z1xt {
+      position: pos(20, 580, 300, 80)
+      layer: 4
+    }
+    block v_6whf {
+      position: pos(620, 680, 540, 420)
+      layer: 1
+    }
+    block v_dbfr {
+      position: pos(20, 1100, 580, 400)
+      layer: 5
+    }
+    width: 1240
   }
   theme: H.themes.classic
   block v1: VizBlock {
@@ -110,81 +123,190 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       input_type: 'single'
     }
   }
-  block t1: TextBlock {
-    content: @md <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bottom-Left Tooltip Attribution</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      background-color: #f5f5f5;
+  block v_i7uw: VizBlock {
+    label: 'New relative_period formula'
+    viz: DataTable {
+      dataset: khai_ecommerce
+      calculation last_period {
+        label: 'Last Period'
+        formula: @aql relative_period(revenue, orders.created_at, -1);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      fields: [
+        VizFieldFull {
+          ref: r(orders.created_at)
+          transformation: 'datetrunc week'
+          format {
+            type: 'date'
+            pattern: 'wwww'
+          }
+          uname: 'datetrunc_week_created_at_1'
+        },
+        VizFieldFull {
+          ref: r(khai_ecommerce.revenue)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: 'last_period'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            key: 'datetrunc_week_created_at_1'
+            direction: 'asc'
+          }
+        ]
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
     }
-
-    .tooltip-container {
-      position: relative;
-      display: inline-block;
-      padding-top: 40px; /* shifts icon downward */
-    }
-
-    .tooltip-container img.icon {
-      height: 10px !important;
-      cursor: help;
-    }
-
-    .tooltip-text {
-      display: none;
-      position: absolute;
-      top: -50%;      
-      left: -100%;          /* align to the left edge */
-      background-color: #002952;
-      color: #fff;
-      padding: 10px;
-      border-radius: 0;
-      width: 250px;
-      font-size: 10px;
-      line-height: 1.4;
-      z-index: 10;
-      text-align: left;
-      white-space: normal;
-      margin-top: 10px; /* spacing below the icon */
-    }
-
-    .tooltip-container:hover .tooltip-text {
-      display: block;
-    }
-
-    .tooltip-text::after {
-      content: "";
-      position: absolute;
-      top: -6px;
-      left: 10px; /* indent arrow from left edge */
-      border-width: 6px;
-      border-style: solid;
-      border-color: transparent transparent #002952 transparent;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="tooltip-container">
-    <img class="icon" src="https://img.icons8.com/?size=100&id=14093&format=png&color=000000" alt="CC BY 4.0" />
-    <div class="tooltip-text">
-      Benchmarks powered by the<br />
-      <em>“Hotel Sustainability Benchmarking Index 2024”</em><br />
-      (Eric Ricaurte & Rehmaashini Jagarajan),<br />
-      Cornell University, CC BY 4.0.<br />
-      Data filtered and visualised by SensorFlow.
-    </div>
-  </div>
-
-</body>
-</html>;;
   }
+  block d_z1xt: DateDrillBlock {
+    label: 'Date Drill'
+  }
+  block v_6whf: VizBlock {
+    label: 'Total orders overtime'
+    viz: CombinationChart {
+      dataset: demo_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          mark_type: 'column'
+          field: VizFieldFull {
+            ref: r(demo_ecommerce.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+        series {
+          field: VizFieldFull {
+            label: 'Trend line of Total Orders'
+            ref: r(demo_ecommerce.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            analytic: RegressionLine {
+              type: 'linear'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_dbfr: VizBlock {
+    label: 'Total Orders, MovAvg of Total Orders, and Reference line of Total Orders by Month Order Created At'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_internal_training
+      x_axis: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            ref: r(demo_ecommerce_internal_training.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            line_style: 'dashed'
+            line_interpolation: 'smooth'
+          }
+        }
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            label: 'MovAvg of Total Orders'
+            ref: r(demo_ecommerce_internal_training.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            analytic: MovingCalculationField {
+              type: 'avg'
+              order: 'row'
+              range {
+                previous: 2
+                next: 0
+              }
+            }
+          }
+          settings {
+            color: '#A50E43'
+            line_style: 'dotted'
+          }
+        }
+        series {
+          field: VizFieldFull {
+            label: 'Reference line of Total Orders'
+            ref: r(demo_ecommerce_internal_training.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            analytic: ReferenceLine {
+              type: 'avg'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  interactions: [
+    DateDrillInteraction {
+      from: 'd_z1xt'
+      to: [
+        CustomMapping {
+          block: 'v_i7uw'
+          field: r(orders.created_at)
+        }
+      ]
+    }
+  ]
 }

@@ -1,6 +1,6 @@
 Dataset khai_ecommerce {
   __engine__: 'aql'
-  label: 'Khai Ecommerce'
+  label: 'Ecommerce (from Khai)'
   description: "This is Dataset for AQL testing"
   data_source_name: "demodb"
   models: [
@@ -13,6 +13,10 @@ Dataset khai_ecommerce {
     cities,
     khai_date_d,
     param_model
+    ,
+    khai_categories
+    ,
+    time_type
   ]
 
   relationships: [
@@ -22,8 +26,10 @@ Dataset khai_ecommerce {
     relationship(users.city_id > cities.id, true),
     relationship(order_items.product_id > products.id, true),
     relationship(products.merchant_id > merchants.id, true),
-    relationship(merchants.city_id > cities.id, false),
+    relationship(merchants.city_id > cities.id, true),
     relationship(orders.created_date > khai_date_d.date_key, true)
+    ,
+    relationship(products.category_id > khai_categories.id, true)
   ]
 
   owner: 'khai.to+demo4@holistics.io'
@@ -33,6 +39,37 @@ Dataset khai_ecommerce {
     label: 'User Acquired At'
     type: 'datetime'
     definition: @aql min(orders.created_at) | dimensionalize(users.id) ;;
+  }
+
+  dimension user_order_frequency {
+    model: users
+    label: 'User Order Frequency'
+    type: 'text'
+    hidden: false
+    definition: @aql 
+      case(
+        when: total_orders < 10, then: '< 10 orders'
+        , when: total_orders > 10 and total_orders < 50, then: 'between 10 and 50 orders'
+        , when: total_orders > 50, then: '> 50 orders'
+        , else: null
+      )
+      | where(orders.created_at matches (param_model.date_param | first()))
+      | dimensionalize(users.id)
+     ;;
+  }
+  dimension country_attribute {
+    label: "Country Attribute"
+    type: "text"
+    description: ""
+    definition: @aql H.current_user.country_attribute;;
+    model: countries
+  }
+  dimension is_country {
+    label: "Is Country"
+    type: "truefalse"
+    description: ""
+    definition: @aql countries.country_attribute == countries.name;;
+    model: countries
   }
 
   metric revenue {
@@ -66,5 +103,6 @@ Dataset khai_ecommerce {
         , then: total_users
       )
      ;;
+    format: "#,###,\"K\""
   }
 }
