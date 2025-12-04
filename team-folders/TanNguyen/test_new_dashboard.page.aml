@@ -1,5 +1,5 @@
 Func my_test_dashboard () {
-  Dashboard test_new_dashboard {
+  Dashboard {
     title: 'test_new_dashboard'
     description: ''
     owner: 'tan.nguyen@holistics.io'
