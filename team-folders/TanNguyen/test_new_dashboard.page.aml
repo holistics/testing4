@@ -1,5 +1,5 @@
 Func my_test_dashboard () {
-  Dashboard {
+  Dashboard abc {
     title: 'test_new_dashboard'
     description: ''
     owner: 'tan.nguyen@holistics.io'
@@ -23,6 +23,8 @@ Func my_test_dashboard () {
 
     theme: H.themes.vanilla
   }
+
+  abc
 }
 
 const my_test_func = my_test_dashboard();
