@@ -98,7 +98,7 @@ Dashboard khai_test {
         position: pos(360, 20, 200, 80)
       }
       block f_1rlj {
-        position: pos(560, 20, 300, 80)
+        position: pos(560, 20, 220, 80)
       }
     }
     tab tab_cqbs: CanvasLayout {
