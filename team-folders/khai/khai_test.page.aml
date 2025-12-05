@@ -397,7 +397,7 @@ Dashboard khai_test {
     }
   }
   block f_wimh: FilterBlock {
-    label: 'Param Model Number Param'
+    label: 'Top N'
     type: 'field'
     source: FieldFilterSource {
       dataset: khai_ecommerce
@@ -405,7 +405,7 @@ Dashboard khai_test {
     }
     default {
       operator: 'is'
-      value: '5'
+      value: '10'
     }
   }
   block v_c5p0: VizBlock {
