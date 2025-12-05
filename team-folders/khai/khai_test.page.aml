@@ -63,19 +63,19 @@ Dashboard khai_test {
     }
     tab tab_uidb: CanvasLayout {
       label: 'dynamic top n'
-      width: 840
-      height: 800
+      width: 780
+      height: 560
       grid_size: 20
       auto_expand_vertically: true
       mobile {
         mode: 'auto'
       }
       block v_52wr {
-        position: pos(80, 120, 740, 580)
+        position: pos(20, 120, 740, 420)
         layer: 1
       }
       block f_wimh {
-        position: pos(80, 20, 300, 80)
+        position: pos(20, 20, 300, 80)
         layer: 2
       }
     }
