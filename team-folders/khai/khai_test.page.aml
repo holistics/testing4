@@ -82,23 +82,26 @@ Dashboard khai_test {
     tab tab_ovke: CanvasLayout {
       label: 'dynamic-pop'
       width: 1300
-      height: 700
+      height: 680
       grid_size: 20
       auto_expand_vertically: true
       mobile {
         mode: 'auto'
       }
       block v_rqnl {
-        position: pos(40, 120, 1240, 540)
+        position: pos(40, 100, 1240, 540)
       }
       block f_oit3 {
-        position: pos(40, 20, 300, 80)
+        position: pos(40, 20, 300, 60)
       }
       block f_th9g {
-        position: pos(360, 20, 200, 80)
+        position: pos(480, 20, 200, 60)
       }
       block f_1rlj {
-        position: pos(560, 20, 220, 80)
+        position: pos(680, 20, 120, 60)
+      }
+      block t_fz4z {
+        position: pos(380, 20, 100, 60)
       }
     }
     tab tab_cqbs: CanvasLayout {
@@ -699,6 +702,9 @@ Dashboard khai_test {
       operator: 'matches'
       value: '2024 to now'
     }
+    settings {
+      hide_label: true
+    }
   }
   block f_th9g: FilterBlock {
     label: 'Previous'
@@ -711,9 +717,13 @@ Dashboard khai_test {
       operator: 'is'
       value: '1'
     }
+    settings {
+      hide_label: true
+      hide_controls: true
+    }
   }
   block f_1rlj: FilterBlock {
-    label: 'Param Model Date Grain'
+    label: 'Year or Month'
     type: 'field'
     source: FieldFilterSource {
       dataset: khai_ecommerce
@@ -724,8 +734,12 @@ Dashboard khai_test {
       value: 'year'
     }
     settings {
-      input_type: 'single'
+      hide_label: true
+      hide_controls: true
     }
+  }
+  block t_fz4z: TextBlock {
+    content: @md #### Previous;;
   }
   interactions: [
     FilterInteraction {
