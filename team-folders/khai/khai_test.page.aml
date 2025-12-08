@@ -724,7 +724,7 @@ Dashboard khai_test {
       dataset: khai_ecommerce
       calculation rank_orders {
         label: 'Rank Orders'
-        formula: @aql rank(
+        formula: @aql dense_rank(
   order: count(orders.id) | desc(),
   partition: (khai_date_d.date_key | year())
 );;
@@ -744,11 +744,10 @@ Dashboard khai_test {
           }
         },
         VizFieldFull {
-          ref: r(users.full_name)
+          ref: r(cities.name)
           format {
             type: 'text'
           }
-          uname: 'users_full_name'
         }
       ]
       values: [
@@ -783,12 +782,6 @@ Dashboard khai_test {
           enabled: true
           debug_comments: true
         }
-        column_styles: [
-          ColumnStyle {
-            key: 'users_full_name'
-            width: 142
-          }
-        ]
       }
     }
   }
@@ -801,7 +794,7 @@ Dashboard khai_test {
     }
     default {
       operator: 'is'
-      value: '10'
+      value: '6'
     }
   }
   block f_irwp: FilterBlock {
