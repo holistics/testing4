@@ -4,7 +4,7 @@ Dashboard khai_test {
     label: 'View 1'
     tab tab1: CanvasLayout {
       label: 'Tab 1'
-      height: 860
+      height: 840
       grid_size: 20
       block v1 {
         position: pos(20, 140, 1140, 540)
@@ -154,6 +154,25 @@ Dashboard khai_test {
       }
       mobile {
         mode: 'auto'
+      }
+    }
+    tab tab_g7f9: CanvasLayout {
+      label: 'dynamic currency'
+      width: 1340
+      height: 680
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+      block v_dn8j {
+        position: pos(300, 20, 1000, 640)
+      }
+      block f_slux {
+        position: pos(20, 20, 240, 80)
+      }
+      block f_408l {
+        position: pos(20, 120, 240, 80)
       }
     }
   }
@@ -809,6 +828,79 @@ Dashboard khai_test {
       value: '2024 to now'
     }
   }
+  block v_dn8j: VizBlock {
+    label: 'GMV (Converted) by Quarter Date Key and Status'
+    viz: ColumnChart {
+      dataset: khai_ecommerce
+      x_axis: VizFieldFull {
+        ref: r(khai_date_d.date_key)
+        transformation: 'datetrunc quarter'
+        format {
+          type: 'date'
+          pattern: 'yyyy Qq'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(orders.status)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        settings {
+          show_data_label_by: 'value'
+          stack_series_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(khai_ecommerce.gmv_converted)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block f_slux: FilterBlock {
+    label: 'Currency'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(param_model.currency)
+    }
+    default {
+      operator: 'is'
+      value: '🇺🇸 USD'
+    }
+    settings {
+      input_type: 'single'
+    }
+  }
+  block f_408l: FilterBlock {
+    label: 'Date'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: khai_ecommerce
+      field: r(khai_date_d.date_key)
+    }
+    default {
+      operator: 'matches'
+      value: '2024 to now'
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v1'
@@ -820,7 +912,8 @@ Dashboard khai_test {
             'v_c5p0',
             'v_okde',
             'v_rqnl',
-            'v_1boj'
+            'v_1boj',
+            'v_dn8j'
           ]
           disabled: true
         }
@@ -837,6 +930,7 @@ Dashboard khai_test {
             'v_okde',
             'v_rqnl',
             'v_1boj',
+            'v_dn8j',
             'f_kmoy',
             'f_vs3y',
             'f_z363',
@@ -850,7 +944,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -867,6 +963,7 @@ Dashboard khai_test {
             'v_okde',
             'v_rqnl',
             'v_1boj',
+            'v_dn8j',
             'f_vs3y',
             'f_z363',
             'f_pofb',
@@ -879,7 +976,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -896,6 +995,7 @@ Dashboard khai_test {
             'v_okde',
             'v_rqnl',
             'v_1boj',
+            'v_dn8j',
             'f_z363',
             'f_pofb',
             'f_uuo1',
@@ -907,7 +1007,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -924,7 +1026,8 @@ Dashboard khai_test {
             'v_c5p0',
             'v_okde',
             'v_rqnl',
-            'v_1boj'
+            'v_1boj',
+            'v_dn8j'
           ]
           disabled: true
         }
@@ -942,6 +1045,7 @@ Dashboard khai_test {
             'v_okde',
             'v_rqnl',
             'v_1boj',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -955,7 +1059,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -973,6 +1079,7 @@ Dashboard khai_test {
             'v_okde',
             'v_rqnl',
             'v_1boj',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -985,7 +1092,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -1003,6 +1112,7 @@ Dashboard khai_test {
             'v_okde',
             'v_rqnl',
             'v_1boj',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -1014,7 +1124,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -1032,6 +1144,7 @@ Dashboard khai_test {
             'v_okde',
             'v_rqnl',
             'v_1boj',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -1045,7 +1158,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -1062,6 +1177,7 @@ Dashboard khai_test {
             'v_okde',
             'v_rqnl',
             'v_1boj',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -1075,7 +1191,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -1091,7 +1209,8 @@ Dashboard khai_test {
             'v_c5p0',
             'v_okde',
             'v_rqnl',
-            'v_1boj'
+            'v_1boj',
+            'v_dn8j'
           ]
           disabled: true
         }
@@ -1108,7 +1227,8 @@ Dashboard khai_test {
             'v_c5p0',
             'v_okde',
             'v_rqnl',
-            'v_1boj'
+            'v_1boj',
+            'v_dn8j'
           ]
           disabled: true
         }
@@ -1126,6 +1246,7 @@ Dashboard khai_test {
             'v_okde',
             'v_rqnl',
             'v_1boj',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -1139,7 +1260,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -1156,7 +1279,8 @@ Dashboard khai_test {
             'v_52wr',
             'v_okde',
             'v_rqnl',
-            'v_1boj'
+            'v_1boj',
+            'v_dn8j'
           ]
           disabled: true
         }
@@ -1174,6 +1298,7 @@ Dashboard khai_test {
             'v_okde',
             'v_rqnl',
             'v_1boj',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -1187,7 +1312,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -1204,7 +1331,8 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_rqnl',
-            'v_1boj'
+            'v_1boj',
+            'v_dn8j'
           ]
           disabled: true
         }
@@ -1221,7 +1349,8 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_okde',
-            'v_1boj'
+            'v_1boj',
+            'v_dn8j'
           ]
           disabled: true
         }
@@ -1239,6 +1368,7 @@ Dashboard khai_test {
             'v_c5p0',
             'v_okde',
             'v_1boj',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -1252,7 +1382,9 @@ Dashboard khai_test {
             'f_th9g',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -1270,6 +1402,7 @@ Dashboard khai_test {
             'v_c5p0',
             'v_okde',
             'v_1boj',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -1283,7 +1416,9 @@ Dashboard khai_test {
             'f_oit3',
             'f_1rlj',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -1301,6 +1436,7 @@ Dashboard khai_test {
             'v_c5p0',
             'v_okde',
             'v_1boj',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -1314,7 +1450,9 @@ Dashboard khai_test {
             'f_oit3',
             'f_th9g',
             'f_jccu',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -1331,7 +1469,8 @@ Dashboard khai_test {
             'v_52wr',
             'v_c5p0',
             'v_okde',
-            'v_rqnl'
+            'v_rqnl',
+            'v_dn8j'
           ]
           disabled: true
         }
@@ -1349,6 +1488,7 @@ Dashboard khai_test {
             'v_c5p0',
             'v_okde',
             'v_rqnl',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -1362,7 +1502,9 @@ Dashboard khai_test {
             'f_oit3',
             'f_th9g',
             'f_1rlj',
-            'f_irwp'
+            'f_irwp',
+            'f_slux',
+            'f_408l'
           ]
           disabled: true
         }
@@ -1380,6 +1522,7 @@ Dashboard khai_test {
             'v_c5p0',
             'v_okde',
             'v_rqnl',
+            'v_dn8j',
             'f_ml3q',
             'f_kmoy',
             'f_vs3y',
@@ -1393,7 +1536,95 @@ Dashboard khai_test {
             'f_oit3',
             'f_th9g',
             'f_1rlj',
-            'f_jccu'
+            'f_jccu',
+            'f_slux',
+            'f_408l'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_dn8j'
+      to: [
+        CustomMapping {
+          block: [
+            'v1',
+            'v_s6re',
+            'v_6g2o',
+            'v_52wr',
+            'v_c5p0',
+            'v_okde',
+            'v_rqnl',
+            'v_1boj'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_slux'
+      to: [
+        CustomMapping {
+          block: [
+            'v1',
+            'v_s6re',
+            'v_6g2o',
+            'v_52wr',
+            'v_c5p0',
+            'v_okde',
+            'v_rqnl',
+            'v_1boj',
+            'f_ml3q',
+            'f_kmoy',
+            'f_vs3y',
+            'f_z363',
+            'f_pofb',
+            'f_uuo1',
+            'f_m383',
+            'f_j1la',
+            'f_wimh',
+            'f_jmgl',
+            'f_oit3',
+            'f_th9g',
+            'f_1rlj',
+            'f_jccu',
+            'f_irwp',
+            'f_408l'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_408l'
+      to: [
+        CustomMapping {
+          block: [
+            'v1',
+            'v_s6re',
+            'v_6g2o',
+            'v_52wr',
+            'v_c5p0',
+            'v_okde',
+            'v_rqnl',
+            'v_1boj',
+            'f_ml3q',
+            'f_kmoy',
+            'f_vs3y',
+            'f_z363',
+            'f_pofb',
+            'f_uuo1',
+            'f_m383',
+            'f_j1la',
+            'f_wimh',
+            'f_jmgl',
+            'f_oit3',
+            'f_th9g',
+            'f_1rlj',
+            'f_jccu',
+            'f_irwp',
+            'f_slux'
           ]
           disabled: true
         }
