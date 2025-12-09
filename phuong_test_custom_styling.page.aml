@@ -60,5 +60,5 @@ Dashboard phuong_test_custom_styling {
       mode: 'auto'
     }
   }
-  theme: H.themes.vanilla
+  theme: fashion
 }
