@@ -103,5 +103,6 @@ Dataset khai_ecommerce {
         , then: total_users
       )
      ;;
+    format: "#,###,\"K\""
   }
 }

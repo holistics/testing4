@@ -27,13 +27,14 @@ Dataset bhx_demo_ecommerce {
   // relationship(bhx_ecommerce_orders_dim_dates, true),
   ]
 
-  view {
-    model bhx_ecommerce_orders {  }
+  // view {
+  //   model bhx_ecommerce_orders {
+  //   }
 
-    model bhx_ecommerce_users {
-      field id
-    }
-  }
+  //   model bhx_ecommerce_users {
+  //     field id
+  //   }
+  // }
 
   dimension cohort_month {
     model: bhx_ecommerce_users
@@ -117,12 +118,13 @@ Dataset bhx_demo_ecommerce {
         , else: bhx_ecommerce_countries.name
       ) ;;
   }
-
   metric total_users {
     label: 'Total Users'
     type: 'number'
+    hidden: false
     description: "Total number of users"
     definition: @aql count(bhx_ecommerce_users.id) ;;
+    format: ""
   }
 
   metric total_orders {
@@ -371,6 +373,36 @@ Dataset bhx_demo_ecommerce {
     hidden: false
     description: ""
     definition: @aql bhx_ecommerce_products.profit | running_total();;
+  }
+  metric avxb {
+    label: "Avxb"
+    type: "number"
+    description: ""
+    definition: @aql bhx_ecommerce_orders.delivered_orders_count - bhx_ecommerce_orders.cancelled_orders_count + 10044;;
+  }
+  metric aaa {
+    label: "A"
+    type: "number"
+    description: ""
+    definition: @aql 1;;
+  }
+  metric rt {
+    label: "A"
+    type: "number"
+    description: ""
+    definition: @aql 1;;
+  }
+  metric b {
+    label: "undefined"
+    type: "number"
+    description: ""
+    definition: @aql 11;;
+  }
+  metric ad {
+    label: "1"
+    type: "number"
+    description: ""
+    definition: @aql 1;;
   }
 
 
