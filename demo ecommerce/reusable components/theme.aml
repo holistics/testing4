@@ -106,7 +106,7 @@ PageTheme fashion {
   custom_css: @css
     /* Change heatmap cell background color */
     .dac-retention-heatmap-cell {
-      background-color: #f0f0f0 !important;
+      background-color: #FFA500 !important;
     }
   ;;
   background {
