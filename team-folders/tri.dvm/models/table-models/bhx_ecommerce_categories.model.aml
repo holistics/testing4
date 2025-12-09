@@ -27,6 +27,7 @@ Model bhx_ecommerce_categories {
     definition: @sql concat({{ name }},'','Hi') ;;
   }
 
+
   dimension parent_id {
     label: 'Parent Id'
     type: 'number'
