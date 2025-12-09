@@ -6,10 +6,10 @@ Dataset chinh_23949_dataset {
     chinh_23949
   ]
   relationships: []
-
   dimension is_user_converted {
     label: "Is User Converted"
     type: "number"
+    hidden: false
     description: ""
     definition: @aql dimensionalize(
   count_if(chinh_23949.order_id is not null)
