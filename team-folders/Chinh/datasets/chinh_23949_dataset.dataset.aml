@@ -1,0 +1,28 @@
+Dataset chinh_23949_dataset {
+  label: 'chinh_23949_dataset'
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    chinh_23949
+  ]
+  relationships: []
+  dimension is_user_converted {
+    label: "Is User Converted"
+    type: "number"
+    description: ""
+    definition: @aql dimensionalize(
+  count_if(chinh_23949.order_id is not null)
+  , chinh_23949.user_agent_id
+);;
+    model: chinh_23949
+  }
+  metric conversion_rate {
+    label: "Conversion Rate"
+    type: "number"
+    description: ""
+    definition: @aql safe_divide(
+  count_distinct(chinh_23949.user_agent_id) | where(chinh_23949.is_user_converted == 1),
+  count_distinct(chinh_23949.user_agent_id)
+);;
+  }
+}

@@ -1,0 +1,75 @@
+Model chinh_23949 {
+  type: 'query'
+  label: 'Chinh 23949'
+  description: ''
+  data_source_name: 'demodb'
+  dimension user_agent_id {
+    label: 'User Agent Id'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.user_agent_id }};;
+  }
+  dimension event_name {
+    label: 'Event Name'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.event_name }};;
+  }
+  dimension order_id {
+    label: 'Order Id'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.order_id }};;
+  }
+
+  owner: 'chinh.dm@holistics.io'
+  query: @sql
+    WITH raw_table AS (
+      -- USER 1001 (Converter - Used Recs)
+      SELECT 'u_1001' AS user_agent_id, 'view_homepage' AS event_name, NULL AS order_id UNION ALL
+      SELECT 'u_1001', 'view_outfit_recommendation', NULL UNION ALL
+      SELECT 'u_1001', 'add_to_cart', NULL UNION ALL
+      SELECT 'u_1001', 'purchase', 'ord_5501' UNION ALL
+
+      -- USER 1002 (Non-Converter - Browse Only)
+      SELECT 'u_1002', 'view_homepage', NULL UNION ALL
+      SELECT 'u_1002', 'search_items', NULL UNION ALL
+
+      -- USER 1003 (Converter - Used Recs)
+      SELECT 'u_1003', 'view_outfit_recommendation', NULL UNION ALL
+      SELECT 'u_1003', 'add_to_cart', NULL UNION ALL
+      SELECT 'u_1003', 'purchase', 'ord_5502' UNION ALL
+
+      -- USER 1004 (Converter - Direct Purchase, NO Recs) -> Excluded from Denominator (User Pool)
+      SELECT 'u_1004', 'view_homepage', NULL UNION ALL
+      SELECT 'u_1004', 'view_product', NULL UNION ALL
+      SELECT 'u_1004', 'purchase', 'ord_5503' UNION ALL
+
+      -- USER 1005 (Non-Converter - High Intent, Used Recs) -> Included in Denominator, Excluded from Numerator (Order Count)
+      SELECT 'u_1005', 'complete_style_quiz', NULL UNION ALL
+      SELECT 'u_1005', 'view_outfit_recommendation', NULL UNION ALL
+      SELECT 'u_1005', 'add_to_cart', NULL UNION ALL
+
+      -- USER 1006 (Converter - Used Recs)
+      SELECT 'u_1006', 'view_outfit_recommendation', NULL UNION ALL
+      SELECT 'u_1006', 'purchase', 'ord_5504' UNION ALL
+
+      -- USER 1007 (Non-Converter - High Intent, Used Recs)
+      SELECT 'u_1007', 'view_outfit_recommendation', NULL UNION ALL
+      SELECT 'u_1007', 'view_product', NULL UNION ALL
+
+      -- USER 1008 (Converter - Used Recs for a second time)
+      SELECT 'u_1008', 'view_product', NULL UNION ALL
+      SELECT 'u_1008', 'view_outfit_recommendation', NULL UNION ALL
+      SELECT 'u_1008', 'purchase', 'ord_5505' UNION ALL
+
+      -- USER 1009 (Non-Converter - Did NOT use Recs)
+      SELECT 'u_1009', 'view_category_shoes', NULL UNION ALL
+      SELECT 'u_1009', 'view_product', NULL UNION ALL
+      SELECT 'u_1009', 'add_to_cart', NULL
+    )
+    SELECT * FROM raw_table
+  ;;
+  models: [
+  ]
+}
