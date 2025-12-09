@@ -2,7 +2,7 @@ Dashboard dynamic_dim_ecommerce_dashboard {
   title: "Phuong's test dashboard"
   view: CanvasLayout {
     label: 'View 1'
-    height: 1620
+    height: 1980
     grid_size: 20
     block v1 {
       position: pos(20, 140, 540, 420)
@@ -30,6 +30,14 @@ Dashboard dynamic_dim_ecommerce_dashboard {
     }
     block v_dbfr {
       position: pos(20, 1100, 580, 400)
+      layer: 5
+    }
+    block v_x9r9 {
+      position: pos(620, 1120, 580, 400)
+      layer: 5
+    }
+    block v_7k7m {
+      position: pos(20, 1520, 580, 400)
       layer: 5
     }
     width: 1240
@@ -285,6 +293,133 @@ Dashboard dynamic_dim_ecommerce_dashboard {
             analytic: ReferenceLine {
               type: 'avg'
             }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_x9r9: VizBlock {
+    label: 'Total Orders and PoT Total Orders by Month Order Created At and Status'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_internal_training
+      x_axis: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(order_master.status)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          mark_type: 'column'
+          field: VizFieldFull {
+            ref: r(demo_ecommerce_internal_training.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      y_axis {
+        settings {
+          alignment: 'right'
+        }
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            label: 'PoT Total Orders'
+            ref: r(demo_ecommerce_internal_training.total_orders)
+            format {
+              type: 'number'
+              pattern: '#,###%'
+            }
+            analytic: PercentOfTotalField {
+              of_all: 'grand_total'
+            }
+          }
+          settings {
+            line_style: 'dashed'
+            point {
+              value: 'cancelled'
+              line_style: 'dashed'
+            }
+            point {
+              value: 'delivered'
+              line_style: 'dashed'
+            }
+            point {
+              value: 'refunded'
+              line_style: 'dashed'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_7k7m: VizBlock {
+    label: 'Total Orders and Total Orders (prev. 1y) by Month Order Created At'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_internal_training
+      x_axis: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          mark_type: 'column'
+          field: VizFieldFull {
+            ref: r(demo_ecommerce_internal_training.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            label: 'Total Orders (prev. 1y)'
+            ref: r(demo_ecommerce_internal_training.total_orders)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+            analytic: PeriodOverPeriodComparison {
+              time_dimension: r(order_master.order_created_at)
+              display: 'value'
+              comparison_period: 'relative to previous 1 year'
+            }
+          }
+          settings {
+            line_style: 'dashed'
           }
         }
       }
