@@ -6,6 +6,7 @@ Dataset chinh_23949_dataset {
     chinh_23949
   ]
   relationships: []
+
   dimension is_user_converted {
     label: "Is User Converted"
     type: "number"
@@ -16,13 +17,37 @@ Dataset chinh_23949_dataset {
 );;
     model: chinh_23949
   }
+
   metric conversion_rate {
     label: "Conversion Rate"
     type: "number"
+    hidden: false
     description: ""
     definition: @aql safe_divide(
-  count_distinct(chinh_23949.user_agent_id) | where(chinh_23949.is_user_converted == 1),
+  coalesce(count_distinct(chinh_23949.user_agent_id) | where(chinh_23949.is_user_converted == 1), 0),
   count_distinct(chinh_23949.user_agent_id)
 );;
+  }
+
+  metric list_user_id {
+    label: "List User Id"
+    type: "json"
+    description: ""
+    definition: @aql unique(chinh_23949.user_agent_id);;
+  }
+
+  metric nominator {
+    label: "Nominator"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql coalesce(count_distinct(chinh_23949.user_agent_id) | where(chinh_23949.is_user_converted == 1), 0);;
+  }
+
+  metric denominator {
+    label: "Denominator"
+    type: "number"
+    description: ""
+    definition: @aql count_distinct(chinh_23949.user_agent_id);;
   }
 }
