@@ -443,7 +443,7 @@ Dashboard dynamic_dim_ecommerce_dashboard {
   }
   block v_6gfd: VizBlock {
     label: 'Continent Name and dynamic metric'
-    viz: DataTable {
+    viz: ColumnChart {
       dataset: demo_ecommerce
       calculation metric_faf1b2b {
         label: 'dynamic metric'
@@ -461,24 +461,32 @@ Dashboard dynamic_dim_ecommerce_dashboard {
         calc_type: 'measure'
         data_type: 'number'
       }
-      fields: [
-        VizFieldFull {
-          ref: r(ecommerce_countries.continent_name)
-          format {
-            type: 'text'
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: 'metric_faf1b2b'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
           }
-        },
-        VizFieldFull {
-          ref: 'metric_faf1b2b'
-          format {
-            type: 'number'
-            pattern: 'inherited'
+          settings {
+            color_palette: 0
           }
         }
-      ]
+      }
       settings {
-        show_row_number: true
         row_limit: 5000
+        x_axis_show_null_datetime: false
         aggregate_awareness {
           enabled: true
           debug_comments: true
