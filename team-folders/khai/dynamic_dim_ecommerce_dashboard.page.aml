@@ -48,6 +48,10 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       position: pos(1200, 20, 300, 100)
       layer: 1
     }
+    block v_mq0d {
+      position: pos(1200, 580, 600, 400)
+      layer: 6
+    }
     width: 1860
   }
   theme: H.themes.classic
@@ -129,7 +133,7 @@ Dashboard dynamic_dim_ecommerce_dashboard {
     type: 'field'
     source: FieldFilterSource {
       dataset: demo_ecommerce
-      field: ref('param_model_nam', 'dim_selections')
+      field: r(param_model_nam.dim_selections)
     }
     default {
       operator: 'is'
@@ -446,20 +450,36 @@ Dashboard dynamic_dim_ecommerce_dashboard {
     viz: DataTable {
       dataset: demo_ecommerce
       calculation metric_faf1b2b {
-        label: 'dynamic metric'
-        formula: @aql case(
-  when: 'pot' in param_model_nam.metric_selections
-  , then: percent_of_total
+        label: 'dynamic metric - text'
+        formula: @aql 
+case(
+   when: 'pot' in param_model_nam.metric_selections,
+   then: concat(
+     cast(round(percent_of_total * 100, 1), 'text'),
+     '%'
+   ),
 
-  , when: 'total orders' in param_model_nam.metric_selections
-  , then: total_orders
+   when: 'total orders' in param_model_nam.metric_selections,
+   then: concat(
+     '',
+     cast(round(total_orders, 0), 'text')
+   ),
 
-  , when: 'aov' in param_model_nam.metric_selections
-  , then: order_master.aov
+   when: 'aov' in param_model_nam.metric_selections,
+   then: concat(
+     '$',
+     cast(round(order_master.aov, 0), 'text')
+   ),
 
-);;
+   when: 'revenue' in param_model_nam.metric_selections,
+   then: concat(
+     '$',
+     cast(round(order_master.revenue, 0), 'text')
+   ),
+ )
+;;
         calc_type: 'measure'
-        data_type: 'number'
+        data_type: 'text'
       }
       fields: [
         VizFieldFull {
@@ -471,8 +491,7 @@ Dashboard dynamic_dim_ecommerce_dashboard {
         VizFieldFull {
           ref: 'metric_faf1b2b'
           format {
-            type: 'number'
-            pattern: 'inherited'
+            type: 'text'
           }
         }
       ]
@@ -501,12 +520,68 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       input_type: 'single'
     }
   }
+  block v_mq0d: VizBlock {
+    label: 'Continent Name and dynamic metric copy'
+    viz: DataTable {
+      dataset: demo_ecommerce
+      calculation metric_faf1b2b {
+        label: 'dynamic metric - raw'
+        formula: @aql 
+case(
+   when: 'pot' in param_model_nam.metric_selections,
+   then: percent_of_total
+   ,
+
+   when: 'total orders' in param_model_nam.metric_selections,
+   then: total_orders
+   ,
+
+   when: 'aov' in param_model_nam.metric_selections,
+   then: order_master.aov
+   ,
+
+   when: 'revenue' in param_model_nam.metric_selections,
+   then: order_master.revenue
+   ,
+ )
+;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_countries.continent_name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: 'metric_faf1b2b'
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'f1'
       to: [
         CustomMapping {
-          block: 'f_59es'
+          block: [
+            'v_6gfd',
+            'v_mq0d',
+            'f_59es'
+          ]
           disabled: true
         }
       ]
