@@ -29,22 +29,26 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       layer: 1
     }
     block v_dbfr {
-      position: pos(20, 1100, 580, 400)
+      position: pos(20, 1140, 580, 400)
       layer: 5
     }
     block v_x9r9 {
-      position: pos(620, 1120, 580, 400)
+      position: pos(640, 1140, 580, 400)
       layer: 5
     }
     block v_7k7m {
-      position: pos(20, 1520, 580, 400)
+      position: pos(20, 1560, 580, 400)
       layer: 5
     }
     block v_6gfd {
-      position: pos(620, 1540, 600, 400)
+      position: pos(1200, 140, 600, 400)
       layer: 6
     }
-    width: 1240
+    block f_59es {
+      position: pos(1200, 20, 300, 100)
+      layer: 1
+    }
+    width: 1860
   }
   theme: H.themes.classic
   block v1: VizBlock {
@@ -457,11 +461,6 @@ Dashboard dynamic_dim_ecommerce_dashboard {
         calc_type: 'measure'
         data_type: 'number'
       }
-      filter {
-        field: r(param_model_nam.metric_selections)
-        operator: 'is'
-        value: 'aov'
-      }
       fields: [
         VizFieldFull {
           ref: r(ecommerce_countries.continent_name)
@@ -487,7 +486,45 @@ Dashboard dynamic_dim_ecommerce_dashboard {
       }
     }
   }
+  block f_59es: FilterBlock {
+    label: 'Dynamic metric'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: r(param_model_nam.metric_selections)
+    }
+    default {
+      operator: 'is'
+      value: 'Country Names'
+    }
+    settings {
+      input_type: 'single'
+    }
+  }
   interactions: [
+    FilterInteraction {
+      from: 'f1'
+      to: [
+        CustomMapping {
+          block: 'f_59es'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_59es'
+      to: [
+        CustomMapping {
+          block: [
+            'v1',
+            'v2',
+            'v_6whf',
+            'f1'
+          ]
+          disabled: true
+        }
+      ]
+    },
     DateDrillInteraction {
       from: 'd_z1xt'
       to: [
