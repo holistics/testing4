@@ -3,6 +3,7 @@ Dashboard phuong_test_custom_styling {
   owner: 'phuong.nl@holistics.io'
   block v_mc9l: VizBlock {
     label: 'Active Users Count by Month Cohort Month, Cohort Size, and Relative Month Disp'
+    
     viz: RetentionHeatmap {
       dataset: demo_ecommerce
       filter {
