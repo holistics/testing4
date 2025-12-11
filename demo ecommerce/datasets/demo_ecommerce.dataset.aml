@@ -309,13 +309,13 @@ pre_aggregates: {
         , when: 'total orders' in param_model_nam.metric_selections
         , then: total_orders
 
-        , when: 'pot' in param_model_nam.metric_selections,
+        , when: 'pot' in param_model_nam.metric_selections
         , then: percent_of_total
 
-        , when: 'aov' in param_model_nam.metric_selections,
+        , when: 'aov' in param_model_nam.metric_selections
         , then: order_master.aov
 
-        , when: 'revenue' in param_model_nam.metric_selections,
+        , when: 'revenue' in param_model_nam.metric_selections
         , then: order_master.revenue
       )
      ;;
