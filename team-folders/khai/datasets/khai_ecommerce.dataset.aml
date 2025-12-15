@@ -105,4 +105,28 @@ Dataset khai_ecommerce {
      ;;
     format: "#,###,\"K\""
   }
+
+  metric gmv {
+    label: "GMV (Gross Merchandise Value)"
+    type: "number"
+    hidden: false
+    description: "GMV - Gross Merchandise Value: Total value of all orders before discount."
+    definition: @aql order_items | sum(order_items.quantity * products.price);;
+    format: "[\$\$]#,###0"
+  }
+
+  metric gmv_converted {
+    label: 'GMV (Converted)'
+    type: 'number'
+    definition: @aql case(
+      when: '🇺🇸 USD' in param_model.currency, then: gmv * 1,
+      when: '🇲🇾 MYR' in param_model.currency, then: gmv * 4.47,
+      when: '🇸🇬 SGD' in param_model.currency, then: gmv * 1.35,
+      when: '🇹🇭 THB' in param_model.currency, then: gmv * 35.5,
+      when: '🇻🇳 VND' in param_model.currency, then: gmv * 25450,
+      when: '🇦🇺 AUD' in param_model.currency, then: gmv * 1.57
+    ) ;;
+    format: "#,###0"
+  }
+
 }
