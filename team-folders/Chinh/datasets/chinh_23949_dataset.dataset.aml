@@ -5,16 +5,22 @@ Dataset chinh_23949_dataset {
   models: [
     chinh_23949
   ]
-  relationships: []
+
+  relationships: [
+    relationship(chinh_23949.user_agent_id - chinh_23949.user_agent_id, false)
+  ]
+
   dimension is_user_converted {
     label: "Is User Converted"
     type: "number"
     hidden: false
     description: ""
-    definition: @aql dimensionalize(
-  count_if(chinh_23949.order_id is not null)
-  , chinh_23949.user_agent_id
-);;
+    definition: @aql
+      dimensionalize(
+        count_if(chinh_23949.order_id is not null)
+        , chinh_23949.user_agent_id
+      )
+    ;;
     model: chinh_23949
   }
 
@@ -23,10 +29,15 @@ Dataset chinh_23949_dataset {
     type: "number"
     hidden: false
     description: ""
-    definition: @aql safe_divide(
-  coalesce(count_distinct(chinh_23949.user_agent_id) | where(chinh_23949.is_user_converted == 1), 0),
-  count_distinct(chinh_23949.user_agent_id)
-);;
+    definition: @aql
+      safe_divide(
+        coalesce(
+          count_distinct(chinh_23949.user_agent_id) | where(chinh_23949.is_user_converted == 1)
+          , 0
+        )
+        , count_distinct(chinh_23949.user_agent_id)
+      )
+    ;;
   }
 
   metric list_user_id {
@@ -49,5 +60,14 @@ Dataset chinh_23949_dataset {
     type: "number"
     description: ""
     definition: @aql count_distinct(chinh_23949.user_agent_id);;
+  }
+  metric old_conversion_rate {
+    label: "Old Conversion Rate"
+    type: "number"
+    description: ""
+    definition: @aql safe_divide(
+  count_distinct(chinh_23949.order_id) * 1.0,
+  count_distinct(chinh_23949.user_agent_id)
+);;
   }
 }

@@ -6,9 +6,10 @@ Model chinh_23949 {
   dimension user_agent_id {
     label: 'User Agent Id'
     type: 'text'
+    description: ""
     hidden: false
-    primary_key: true
     definition: @sql {{ #SOURCE.user_agent_id }};;
+    primary_key: true
   }
   dimension event_name {
     label: 'Event Name'
