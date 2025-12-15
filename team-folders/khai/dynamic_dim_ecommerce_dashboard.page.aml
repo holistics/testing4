@@ -601,14 +601,6 @@ case(
           pattern: 'inherited'
         }
       }
-      group_col: VizFieldFull {
-        ref: r(order_master.order_created_at)
-        transformation: 'datetrunc year'
-        format {
-          type: 'date'
-          pattern: 'yyyy'
-        }
-      }
       settings {
         row_limit: 5000
         aggregate_awareness {
