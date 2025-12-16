@@ -1,0 +1,9 @@
+Dataset thong_test_pii {
+  label: 'thong_test_pii',
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    test_pii_users
+  ]
+  relationships: []
+}
