@@ -1,0 +1,29 @@
+const pii = 
+if (H.current_user.pii_access == false) {
+  1
+} else {
+  'email'
+}
+
+Model test_pii_users {
+  type: 'query'
+  label: 'Test Users'
+  description: ''
+  data_source_name: 'demodb'
+
+  dimension email {
+    label: 'Email'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.email }};;
+  }
+  
+
+  owner: 'thong.do@holistics.io'
+  query: @sql select ${pii} as email from ecommerce.users;;
+  models: [
+  ]
+}
+
+
+
