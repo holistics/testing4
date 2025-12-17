@@ -1,5 +1,5 @@
 const pii =
-if (H.current_user.pii_access != true) {
+if (H.current_user.pii_access == false) {
   '\'redacted\''
 } else {
   'email'
