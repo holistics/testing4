@@ -1,6 +1,6 @@
 const pii =
 if (H.current_user.pii_access == false) {
-  '\'redacted\''
+  '\'(redacted)\''
 } else {
   'email'
 }
