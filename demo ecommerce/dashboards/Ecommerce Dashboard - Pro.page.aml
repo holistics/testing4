@@ -1627,7 +1627,7 @@ abc;;
       position: pos(1320, 20, 180, 50)
     }
     block hd2 {
-      position: pos(40, 20, 640, 60)
+      position: pos(40, 20, 780, 60)
     }
     block hd3 {
       position: pos(0, 0, 1540, 200)
