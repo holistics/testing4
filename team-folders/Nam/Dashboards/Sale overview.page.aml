@@ -337,7 +337,7 @@ Dashboard sale_overview {
     }
     default {
       operator: 'matches'
-      value: 'last month'
+      value: '$H_NIL$'
     }
   }
   block f2: FilterBlock {
