@@ -137,5 +137,11 @@ Dataset khai_ecommerce {
     ) ;;
     format: "#,###0"
   }
-
+  metric revenue_per_active_customers {
+    label: "Revenue Per Active Customers"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql revenue / total_users;;
+  }
 }

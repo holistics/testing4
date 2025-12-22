@@ -5,12 +5,6 @@ Dashboard sales_manager_ecommerce_dashboard {
     label: 'Revenue, Total Users, and Revenue Per Active Customers by Country Name'
     viz: PivotTable {
       dataset: khai_ecommerce
-      calculation revenue_per_active_customers {
-        label: 'Revenue Per Active Customers'
-        formula: @aql revenue / total_users;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
       rows: [
         VizFieldFull {
           label: 'Country Name'
@@ -36,7 +30,7 @@ Dashboard sales_manager_ecommerce_dashboard {
           }
         },
         VizFieldFull {
-          ref: 'revenue_per_active_customers'
+          ref: r(khai_ecommerce.revenue_per_active_customers)
           format {
             type: 'number'
             pattern: '[$$]#,###0.00'
