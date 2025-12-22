@@ -609,8 +609,15 @@ Dashboard test_sale_overview {
     }
   }
   block p1: PopBlock {
-    label: 'Compare To'
+  label: 'Compare To'
+  default {
+    type: 'relative'
+    duration: 1
+    granularity: 'month'
+    show_growth_rate: true
   }
+}
+
   block v131: VizBlock {
     label: 'Daily GMV vs. 7-day Moving Average'
     viz: CombinationChart {
