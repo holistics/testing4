@@ -612,13 +612,12 @@ Dashboard sale_overview {
       input_type: 'single'
     }
   }
-  block p1: PopBlock {
+  block p1: FilterBlock {
     label: 'Compare To'
+    type: 'field'
     default {
-      type: 'relative'
-      duration: 3
-      granularity: 'month'
-      show_growth_rate: true
+      operator: 'matches'
+      value: '$H_NIL$'
     }
   }
   block v131: VizBlock {
