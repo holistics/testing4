@@ -330,14 +330,14 @@ Dashboard sale_overview {
   }
   block f1: FilterBlock {
     label: 'Date Filter'
-    type: 'date'
+    type: 'field'
     source: FieldFilterSource {
       dataset: demo_ecommerce
       field: ref('order_master', 'order_created_at')
     }
     default {
       operator: 'matches'
-      value: '$H_NIL$'
+      value: 'last month'
     }
   }
   block f2: FilterBlock {
@@ -612,12 +612,13 @@ Dashboard sale_overview {
       input_type: 'single'
     }
   }
-  block p1: FilterBlock {
+  block p1: PopBlock {
     label: 'Compare To'
-    type: 'field'
     default {
-      operator: 'matches'
-      value: '$H_NIL$'
+      type: 'relative'
+      duration: 3
+      granularity: 'month'
+      show_growth_rate: true
     }
   }
   block v131: VizBlock {
