@@ -335,10 +335,6 @@ Dashboard test_sale_overview {
       dataset: demo_ecommerce
       field: ref('order_master', 'order_created_at')
     }
-    default {
-      operator: 'matches'
-      value: 'last month'
-    }
   }
   block f2: FilterBlock {
     label: 'Product Category'
