@@ -2,25 +2,25 @@ Dashboard repro_pop_relative {
   title: '[Repro] PoP Relative'
 
   block v1: VizBlock {
-    label: 'GMV by Day'
-    viz: LineChart {
-      dataset: demo_ecommerce
-      x_axis: VizFieldFull {
-        ref: ref('order_master', 'order_created_at')
-        transformation: 'datetrunc day'
-        format { type: 'date' }
-      }
-      y_axis {
-        series {
-          field: VizFieldFull {
-            ref: ref('order_master', 'gmv')
-            aggregation: 'sum'
-            format { type: 'number' }
-          }
+  label: 'GMV by Day'
+  viz: LineChart {
+    dataset: demo_ecommerce
+    x_axis: VizFieldFull {
+      ref: ref('order_master', 'order_created_at')
+      transformation: 'datetrunc day'
+      format { type: 'date' }
+    }
+    y_axis {
+      series {
+        field: VizFieldFull {
+          ref: ref('order_master', 'gmv')
+          format { type: 'number' }
         }
       }
     }
   }
+}
+
 
   block p1: PopBlock {
     label: 'Compare To'
