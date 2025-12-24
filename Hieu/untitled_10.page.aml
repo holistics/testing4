@@ -1,0 +1,74 @@
+Dashboard untitled_10_2 {
+  title: 'untitled_10'
+  description: ''
+  owner: 'hieu.nht@holistics.io'
+  block title: TextBlock {
+    content: @md # Your title goes here ;;
+  }
+  block v_eq1j: VizBlock {
+    label: 'fff'
+    viz: DataTable {
+      dataset: hieu_haha_meme
+      fields: [
+        VizFieldFull {
+          label: 'order id'
+          ref: r(orderskk.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'user id'
+          ref: r(users_kk.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block f_zmt0: FilterBlock {
+    label: 'Users Id'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: hieu_haha_meme
+      field: r(users_kk.id)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
+
+  view: CanvasLayout {
+    label: 'View 1'
+    width: 1300
+    height: 810
+    grid_size: 20
+    auto_expand_vertically: true
+    block title {
+      position: pos(20, 20, 1260, 60)
+    }
+    block v_eq1j {
+      position: pos(140, 260, 620, 420)
+    }
+    block f_zmt0 {
+      position: pos(200, 160, 300, 80)
+    }
+    mobile {
+      mode: 'auto'
+    }
+  }
+
+  theme: H.themes.vanilla
+}
