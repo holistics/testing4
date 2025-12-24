@@ -235,22 +235,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
       auto_expand_horizontally: true
     }
-    tab tab_lyhw: CanvasLayout {
-      label: 'Untitled'
-      width: 1300
-      height: 800
-      grid_size: 20
-      auto_expand_vertically: true
-      mobile {
-        mode: 'auto'
-      }
-      block f_3fj4 {
-        position: pos(20, 20, 300, 80)
-        layer: 1
-      }
-    }
   }
-
   theme: H.themes.vanilla
   block v2: VizBlock {
     label: 'This month Revenue'
@@ -574,10 +559,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block t9: H.blocks.line(
-    2,
-    '#8F99A3'
-  )
+  block t9: H.blocks.line(2, '#8F99A3')
   block v8: VizBlock {
     label: 'GMV - Gross Merchandise Value by Month'
     viz: AreaChart {
@@ -1620,18 +1602,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block f_3fj4: FilterBlock {
-    label: 'Order Master Order Id'
-    type: 'field'
-    source: FieldFilterSource {
-      dataset: ecom_dataset_vux
-      field: r(order_master.order_id)
-    }
-    default {
-      operator: 'is'
-      value: []
-    }
-  }
   block v_5zcz: VizBlock {
     label: 'GMV - Gross Merchandise Value by Month'
     viz: CombinationChart {
@@ -2006,11 +1976,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v4',
             'v_nehb'
           ]
-          field: r(vyht_ecommerce_orders_1.created_at)
+          field: ref('vyht_ecommerce_orders_1', 'created_at')
         },
         CustomMapping {
           block: 'v_cii9'
-          field: r(bq_fct_order_items.created_at)
+          field: ref('bq_fct_order_items', 'created_at')
         }
       ]
     },
@@ -2113,19 +2083,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_j83d',
             'v_nyr1',
             'v_5dpt'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_3fj4'
-      to: [
-        CustomMapping {
-          block: [
-            'v_2qyv',
-            'v_3mef',
-            'v_059z'
           ]
           disabled: true
         }
