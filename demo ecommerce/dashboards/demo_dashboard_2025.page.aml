@@ -1,8 +1,18 @@
+const company_dashboard_v_owner = "vincent@holistics.io"
+
 @tag('1️⃣ Trust/Endorsed', '2️⃣ Status/Active')
 Dashboard company_dashboard_v {
   title: '[Demo] Ecommerce Dashboard (2025-05)'
-  owner: 'vincent@holistics.io'
-  description: '### Testing Dashboard description'
+  owner: company_dashboard_v_owner
+  description: '''
+    <div style="display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-left: 3px solid #2563eb; border-radius: 6px; font-family: system-ui, -apple-system, sans-serif;">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="opacity: 0.6;">
+        <path d="M8 8a3 3 0 100-6 3 3 0 000 6zM2 14c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span style="color: #64748b; font-size: 13px; font-weight: 500;">owner:</span>
+      <a href="mailto:vincent@holistics.io" style="color: #2563eb; font-size: 13px; font-weight: 600; text-decoration: none;">${company_dashboard_v_owner}</a>
+    </div>
+  '''
   block t5: TextBlock {
     content: @md <img src=""/>
 
@@ -80,8 +90,12 @@ Dashboard company_dashboard_v {
     label: 'All-Time Orders'
     viz: MetricKpi {
       dataset: demo_ecommerce_version_2
+      theme {
+
+      }
       value: VizFieldFull {
-        ref: 'total_orders'
+        label: 'All-Time Orders'
+        ref: r(ecommerce_orders.total_orders_count)
         format {
           type: 'number'
           pattern: 'inherited'
@@ -170,12 +184,43 @@ Dashboard company_dashboard_v {
       }
     }
   }
+  block v28: VizBlock {
+    label: 'AOV'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_2
+      theme {
+
+      }
+      value: VizFieldFull {
+        label: 'Average Order Value'
+        ref: 'aov'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      settings {
+        display_mode: 'single'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
   block v29: VizBlock {
     label: ' KPI Overview'
     viz: MetricSheet {
       dataset: demo_ecommerce_version_2
+      theme {
+
+      }
       date_field: VizFieldFull {
-        ref: r(dim_dates.date_key)
+        ref: ref('dim_dates', 'date_key')
         transformation: 'datetrunc month'
         format {
           type: 'date'
@@ -192,7 +237,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.total_orders)
+            ref: 'total_orders'
             format {
               type: 'number'
               pattern: 'inherited'
@@ -201,7 +246,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.total_cancelled_orders)
+            ref: 'total_cancelled_orders'
             format {
               type: 'number'
               pattern: 'inherited'
@@ -210,7 +255,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.total_refunded_orders)
+            ref: 'total_refunded_orders'
             format {
               type: 'number'
               pattern: 'inherited'
@@ -219,7 +264,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.total_delivered_orders)
+            ref: 'total_delivered_orders'
             format {
               type: 'number'
               pattern: 'inherited'
@@ -235,7 +280,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.nmv)
+            ref: 'nmv'
             format {
               type: 'number'
               pattern: 'inherited'
@@ -244,7 +289,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.gmv)
+            ref: 'gmv'
             format {
               type: 'number'
               pattern: 'inherited'
@@ -253,7 +298,7 @@ Dashboard company_dashboard_v {
         },
         MetricSeries {
           field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.aov)
+            ref: 'aov'
             format {
               type: 'number'
               pattern: 'inherited'
@@ -345,7 +390,7 @@ It brings together a consolidated view of:
 
       }
       legend: VizFieldFull {
-        ref: r(ecommerce_countries.name)
+        ref: ref('ecommerce_countries', 'name')
         format {
           type: 'text'
         }
@@ -358,7 +403,7 @@ It brings together a consolidated view of:
         }
         series {
           field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.gmv)
+            ref: 'gmv'
             format {
               type: 'number'
               pattern: 'inherited'
@@ -369,17 +414,6 @@ It brings together a consolidated view of:
           }
         }
       }
-      tooltips: [
-        VizTooltip {
-          field: VizFieldFull {
-            ref: r(demo_ecommerce_version_2.total_users)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-        }
-      ]
       settings {
         row_limit: 5000
         legend_label: 'right'
@@ -1117,51 +1151,6 @@ Use the **[Drill Down]** or **[View Underlying Data]** features to explore break
       }
     }
   }
-  block v57: VizBlock {
-    label: 'Any Metrics by Product Category'
-    viz: BarChart {
-      dataset: demo_ecommerce_version_2
-      theme {
-
-      }
-      x_axis: VizFieldFull {
-        ref: ref('map_categories', 'parent_category')
-        format {
-          type: 'text'
-        }
-      }
-      legend: VizFieldFull {
-        ref: ref('map_categories', 'category')
-        format {
-          type: 'text'
-        }
-      }
-      y_axis {
-        settings {
-          show_data_label_by: 'value'
-          stack_series_by: 'value'
-        }
-        series {
-          field: VizFieldFull {
-            ref: 'dynamic_metric_currency'
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-        }
-      }
-      settings {
-        row_limit: 5000
-        legend_label: 'hidden'
-        x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
   block v58: VizBlock {
     label: 'Cohort Report by Product'
     viz: RetentionHeatmap {
@@ -1347,13 +1336,164 @@ Uncover trends by comparing current performance against a previous period.
 - **Asia-Pacific** shows strong engagement and scale, ideal for volume-based growth.
 - These patterns validate our positioning in established ecommerce markets, while highlighting opportunities to increase monetization in high-volume regions like Asia.;;
   }
-  block t36: TextBlock {
-    content: @md | Metric          | Name                                           | Description                                                                                                                                     |
-|-----------------|--------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| GMV             | ${demo_ecommerce_version_2.metric.gmv.name}           | ${demo_ecommerce_version_2.metric.gmv.description}                                                                                                     |
-| Total Discount  | ${demo_ecommerce_version_2.metric.total_discount.name} | ${demo_ecommerce_version_2.metric.total_discount.description}                                                                                          |
-| NMV             | ${demo_ecommerce_version_2.metric.nmv.name}           | ${demo_ecommerce_version_2.metric.nmv.description}                                                                                                     |
-| Revenue         | ${demo_ecommerce_version_2.metric.revenue.name}       | ${demo_ecommerce_version_2.metric.revenue.description}                                                                                                 |;;
+  block t_3qfv: TextBlock {
+    content: @md
+  <style>
+    table.metric-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-size: 12px;
+    }
+    .metric-table th, .metric-table td {
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+    .metric-table th {
+      background-color: #f9fafb;
+      font-weight: 600;
+    }
+    .metric-table tr:nth-child(even) td {
+      background-color: #fdfdfd;
+    }
+    .metric-key {
+      font-family: monospace;
+      color: #2563eb;
+      font-weight: 600;
+    }
+    .metric-name {
+      font-weight: 600;
+      color: #111827;
+    }
+    .metric-description {
+      color: #374151;
+    }
+  </style>
+
+  <h2>📊 Metrics Catalog</h2>
+  <table class="metric-table">
+    <thead>
+      <tr>
+        <th>Metric Key</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="metric-key">aov</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.aov.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.aov.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">cancelled_value</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.cancelled_value.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.cancelled_value.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">cancelled_value_ratio</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.cancelled_value_ratio.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.cancelled_value_ratio.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">delivered_value</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.delivered_value.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.delivered_value.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">dynamic_metric</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.dynamic_metric.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.dynamic_metric.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">dynamic_metric_currency</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.dynamic_metric_currency.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.dynamic_metric_currency.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">gmv</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.gmv.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.gmv.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">nmv</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.nmv.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.nmv.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">percent_of_total</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.percent_of_total.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.percent_of_total.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">refunded_value</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.refunded_value.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.refunded_value.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">retention</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.retention.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.retention.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">revenue</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.revenue.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.revenue.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">revenue_commission</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.revenue_commission.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.revenue_commission.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">total_buyers</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.total_buyers.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.total_buyers.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">total_cancelled_orders</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.total_cancelled_orders.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.total_cancelled_orders.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">total_delivered_orders</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.total_delivered_orders.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.total_delivered_orders.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">total_discount</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.total_discount.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.total_discount.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">total_orders</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.total_orders.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.total_orders.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">total_orders_across_all</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.total_orders_across_all.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.total_orders_across_all.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">total_refunded_orders</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.total_refunded_orders.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.total_refunded_orders.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">total_repeated_buyers</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.total_repeated_buyers.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.total_repeated_buyers.description}</td>
+      </tr>
+      <tr>
+        <td class="metric-key">total_users</td>
+        <td class="metric-name">${demo_ecommerce_version_2.metric.total_users.__meta__.name}</td>
+        <td class="metric-description">${demo_ecommerce_version_2.metric.total_users.description}</td>
+      </tr>
+    </tbody>
+  </table> ;;
   }
   view: TabLayout {
     label: 'View 1'
@@ -1371,7 +1511,7 @@ Uncover trends by comparing current performance against a previous period.
         layer: 9
       }
       block t7 {
-        position: pos(320, 20, 920, 320)
+        position: pos(320, 20, 920, 280)
         layer: 10
       }
       block t9 {
@@ -1387,24 +1527,28 @@ Uncover trends by comparing current performance against a previous period.
         layer: 19
       }
       block v20 {
-        position: pos(940, 640, 300, 120)
+        position: pos(1020, 640, 220, 120)
         layer: 1
       }
       block v21 {
-        position: pos(340, 640, 300, 120)
+        position: pos(500, 640, 220, 120)
         layer: 1
       }
       block v22 {
-        position: pos(20, 640, 300, 120)
+        position: pos(20, 640, 200, 120)
         layer: 2
       }
       block v25 {
-        position: pos(660, 640, 260, 120)
+        position: pos(740, 640, 260, 120)
         layer: 1
       }
       block v27 {
         position: pos(20, 2660, 1220, 480)
         layer: 6
+      }
+      block v28 {
+        position: pos(240, 640, 240, 120)
+        layer: 7
       }
       block v29 {
         position: pos(20, 1120, 1220, 440)
@@ -1422,6 +1566,10 @@ Uncover trends by comparing current performance against a previous period.
         position: pos(20, 2260, 1220, 380)
         layer: 22
       }
+      block t_89cm {
+        position: pos(320, 300, 160, 40)
+        layer: 23
+      }
       mobile {
         mode: 'auto'
       }
@@ -1429,7 +1577,7 @@ Uncover trends by comparing current performance against a previous period.
     tab tab1: CanvasLayout {
       label: 'Users'
       width: 1480
-      height: 2640
+      height: 1900
       grid_size: 20
       block f1 {
         position: pos(620, 880, 300, 80)
@@ -1472,7 +1620,7 @@ Uncover trends by comparing current performance against a previous period.
         layer: 3
       }
       block v43 {
-        position: pos(640, 180, 640, 580)
+        position: pos(640, 180, 840, 580)
         layer: 1
       }
     }
@@ -1509,10 +1657,6 @@ Uncover trends by comparing current performance against a previous period.
         position: pos(40, 1760, 1100, 580)
         layer: 13
       }
-      block v57 {
-        position: pos(360, 540, 800, 340)
-        layer: 3
-      }
       block v58 {
         position: pos(40, 1280, 1100, 460)
         layer: 6
@@ -1528,7 +1672,7 @@ Uncover trends by comparing current performance against a previous period.
     tab tab6: CanvasLayout {
       label: 'Finance'
       width: 1320
-      height: 2200
+      height: 1880
       grid_size: 20
       block f3 {
         position: pos(660, 200, 300, 100)
@@ -1586,16 +1730,33 @@ Uncover trends by comparing current performance against a previous period.
         position: pos(20, 1560, 880, 300)
         layer: 12
       }
-      block t36 {
-        position: pos(20, 1880, 1200, 300)
-        layer: 18
-      }
       mobile {
         mode: 'auto'
       }
     }
+    tab tab_5wmu: CanvasLayout {
+      label: 'Dictionary'
+      width: 1300
+      height: 900
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+      block metric {
+        position: pos(40, 60, 1220, 740)
+        layer: 1
+      }
+      block t_3qfv {
+        position: pos(40, 20, 1240, 780)
+        layer: 1
+      }
+      block t_jg7t {
+        position: pos(20, 820, 360, 60)
+        layer: 2
+      }
+    }
   }
-  theme: H.themes.classic
   interactions: [
     FilterInteraction {
       from: 'f2'
@@ -1624,24 +1785,27 @@ Uncover trends by comparing current performance against a previous period.
       ]
     },
     FilterInteraction {
-      from: 'v52a'
+      from: 'v58'
       to: [
         CustomMapping {
           block: [
-            'v57',
-            'v58'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v53a'
-      to: [
-        CustomMapping {
-          block: [
-            'v57',
-            'v58'
+            'v20',
+            'v21',
+            'v22',
+            'v25',
+            'v27',
+            'v28',
+            'v29',
+            'v30',
+            'v31',
+            'v34',
+            'v37',
+            'v43',
+            'v44',
+            'v52a',
+            'v53a',
+            'v52',
+            'v53'
           ]
           disabled: true
         }
@@ -1652,6 +1816,24 @@ Uncover trends by comparing current performance against a previous period.
       to: [
         CustomMapping {
           block: [
+            'v20',
+            'v21',
+            'v22',
+            'v25',
+            'v27',
+            'v28',
+            'v29',
+            'v30',
+            'v31',
+            'v34',
+            'v37',
+            'v43',
+            'v44',
+            'v52a',
+            'v53a',
+            'v52',
+            'v53',
+            'v58',
             'f2',
             'f4',
             'f11',
@@ -1699,14 +1881,14 @@ Uncover trends by comparing current performance against a previous period.
       ]
     },
     FilterInteraction {
-      from: 'f9'
+      from: 'f3'
       to: [
         CustomMapping {
-          block: 'v58'
-          field: r(demo_ecommerce_version_2, ecommerce_users.cohort_month)
-        },
-        CustomMapping {
-          block: 'v57'
+          block: [
+            'v53a',
+            'v52a',
+            'v53'
+          ]
           field: r(ecommerce_orders.created_at)
         }
       ]
