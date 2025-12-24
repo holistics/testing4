@@ -73,7 +73,6 @@ Dashboard untitled_10_2 {
       ]
       settings {
         show_row_number: true
-        show_row_with_no_data: true
         row_limit: 5000
         aggregate_awareness {
           enabled: true
@@ -95,7 +94,7 @@ Dashboard untitled_10_2 {
       position: pos(480, 220, 620, 420)
     }
     block v_tf0o {
-      position: pos(40, 200, 380, 420)
+      position: pos(40, 240, 380, 420)
     }
     mobile {
       mode: 'auto'
