@@ -19,6 +19,13 @@ Dashboard untitled_10_2 {
           }
         },
         VizFieldFull {
+          ref: r(orderskk.tenant_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
           label: 'user id'
           ref: r(users_kk.id)
           format {
@@ -37,19 +44,42 @@ Dashboard untitled_10_2 {
       }
     }
   }
-  block f_zmt0: FilterBlock {
-    label: 'Users Id'
-    type: 'field'
-    source: FieldFilterSource {
+  block v_tf0o: VizBlock {
+    label: 'fdf'
+    viz: DataTable {
       dataset: hieu_haha_meme
-      field: r(users_kk.id)
-    }
-    default {
-      operator: 'is'
-      value: []
+      fields: [
+        VizFieldFull {
+          ref: r(users_kk.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(users_kk.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(users_kk.tenant_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
     }
   }
-
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
@@ -60,15 +90,14 @@ Dashboard untitled_10_2 {
       position: pos(20, 20, 1260, 60)
     }
     block v_eq1j {
-      position: pos(140, 260, 620, 420)
+      position: pos(480, 220, 620, 420)
     }
-    block f_zmt0 {
-      position: pos(200, 160, 300, 80)
+    block v_tf0o {
+      position: pos(40, 200, 380, 420)
     }
     mobile {
       mode: 'auto'
     }
   }
-
   theme: H.themes.vanilla
 }
