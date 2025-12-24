@@ -81,6 +81,18 @@ Dashboard untitled_10_2 {
       }
     }
   }
+  block f_ahde: FilterBlock {
+    label: 'Orders tenant_id'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: hieu_haha_meme
+      field: r(users_kk.tenant_id)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
@@ -95,6 +107,9 @@ Dashboard untitled_10_2 {
     }
     block v_tf0o {
       position: pos(40, 240, 380, 420)
+    }
+    block f_ahde {
+      position: pos(60, 120, 300, 60)
     }
     mobile {
       mode: 'auto'
