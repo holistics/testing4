@@ -36,6 +36,7 @@ Dashboard untitled_10_2 {
       ]
       settings {
         show_row_number: true
+        show_row_with_no_data: true
         row_limit: 5000
         aggregate_awareness {
           enabled: true
@@ -72,6 +73,7 @@ Dashboard untitled_10_2 {
       ]
       settings {
         show_row_number: true
+        show_row_with_no_data: true
         row_limit: 5000
         aggregate_awareness {
           enabled: true
