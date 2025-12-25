@@ -1,0 +1,12 @@
+Dataset hieu_haha_meme {
+  label: 'hieu_haha_meme'
+  description: ''
+  data_source_name: 'movies_lens'
+  models: [
+    orderskk,
+    users_kk
+  ]
+  relationships: [
+    relationship(orderskk.user_id > users_kk.id, true)
+  ]
+}
