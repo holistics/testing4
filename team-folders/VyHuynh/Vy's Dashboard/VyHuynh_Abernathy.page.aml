@@ -134,7 +134,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 1
       }
       block v_8r0h {
-        position: pos(560, 20, 500, 420)
+        position: pos(560, 20, 340, 420)
+        layer: 1
+      }
+      block v_wiw0 {
+        position: pos(940, 20, 340, 420)
         layer: 1
       }
       mobile {
@@ -1734,6 +1738,29 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
+  block v_wiw0: VizBlock {
+    label: 'Order Created Month, Continent Name and 3 more copy copy'
+    viz: DataTable {
+      dataset: vy_test_dataset
+      fields: [
+        VizFieldFull {
+          ref: r(test_data_axis_scale_csv.sales)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 3
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -1745,8 +1772,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_hk4u',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_8r0h'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -1778,31 +1804,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_tusm',
             'v_nyr1',
             'v_5dpt',
-            'f_zwa4'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f2'
-      to: [
-        CustomMapping {
-          block: [
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww',
-            'v_856v',
-            'v_qctn',
-            'v_9rhg',
-            'v_dbuh',
-            'v_tusm',
-            'v_nyr1',
-            'v_5zcz',
-            'v_5dpt',
-            'v_8r0h',
-            'f1',
             'f_zwa4'
           ]
           disabled: true
@@ -1950,8 +1951,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_8r0h'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -1969,8 +1969,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_8r0h'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -2045,8 +2044,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_8r0h'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -2064,8 +2062,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_8r0h'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -2092,8 +2089,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_8r0h'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -2116,8 +2112,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_tusm',
             'v_j83d',
             'v_nyr1',
-            'v_5dpt',
-            'v_8r0h'
+            'v_5dpt'
           ]
           disabled: true
         }
@@ -2152,25 +2147,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_8r0h'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_8r0h'
-      to: [
-        CustomMapping {
-          block: [
-            'v_qctn',
-            'v_9rhg',
-            'v_dbuh',
-            'v_tusm',
-            'v_nyr1',
-            'v_lpgt',
-            'v_5dpt'
+            'v_5zcz'
           ]
           disabled: true
         }
