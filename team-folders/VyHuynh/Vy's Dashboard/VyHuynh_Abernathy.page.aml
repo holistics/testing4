@@ -16,18 +16,18 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
       width: 1220
-      height: 4400
+      height: 4220
       grid_size: 20
       block v2 {
-        position: pos(20, 820, 260, 140)
+        position: pos(20, 640, 260, 140)
         layer: 2
       }
       block v3 {
-        position: pos(20, 2180, 1160, 460)
+        position: pos(20, 2000, 1160, 460)
         layer: 3
       }
       block v4 {
-        position: pos(300, 820, 260, 140)
+        position: pos(300, 640, 260, 140)
         layer: 2
       }
       block t3 {
@@ -67,19 +67,19 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 9
       }
       block v8 {
-        position: pos(20, 980, 1160, 580)
+        position: pos(20, 800, 1160, 580)
         layer: 1
       }
       block v_711g {
-        position: pos(20, 220, 540, 360)
+        position: pos(20, 220, 640, 400)
         layer: 1
       }
       block v_nehb {
-        position: pos(20, 2660, 1160, 460)
+        position: pos(20, 2480, 1160, 460)
         layer: 1
       }
       block v_cii9 {
-        position: pos(20, 3140, 1160, 400)
+        position: pos(20, 2960, 1160, 400)
         layer: 10
       }
       block t_4ttu {
@@ -99,15 +99,15 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 4
       }
       block v_qj0m {
-        position: pos(20, 3560, 1160, 400)
+        position: pos(20, 3380, 1160, 400)
         layer: 11
       }
       block v_lpgt {
-        position: pos(20, 3980, 580, 400)
+        position: pos(20, 3800, 580, 400)
         layer: 12
       }
       block v_5zcz {
-        position: pos(20, 1580, 1160, 580)
+        position: pos(20, 1400, 1160, 580)
         layer: 1
       }
       mobile {
