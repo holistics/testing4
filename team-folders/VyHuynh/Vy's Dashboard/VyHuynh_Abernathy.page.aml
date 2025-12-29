@@ -624,7 +624,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
   }
   block v_711g: VizBlock {
     label: 'Number of Order by Country Name and City Name'
-    viz: ColumnChart {
+    viz: LineChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
         ref: r(order_master.order_created_month)
