@@ -19,7 +19,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       height: 4220
       grid_size: 20
       block v2 {
-        position: pos(20, 640, 260, 140)
+        position: pos(920, 460, 260, 140)
         layer: 2
       }
       block v3 {
@@ -27,7 +27,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 3
       }
       block v4 {
-        position: pos(300, 640, 260, 140)
+        position: pos(920, 620, 260, 140)
         layer: 2
       }
       block t3 {
