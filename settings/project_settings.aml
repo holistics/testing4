@@ -1,0 +1,9 @@
+ProjectSettings project_settings {
+
+  // DEFAULT WRITE SCHEMA FOR ALL DB
+  // Only to define the default schema. Users can still change schema when importing.
+  data_import {
+    default_write_schema: 'pokemon'
+  }
+
+}
