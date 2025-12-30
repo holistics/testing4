@@ -3,7 +3,7 @@ ProjectSettings project_settings {
   data_import {
     // DEFAULT WRITE SCHEMA FOR ALL DB
     // Only to define the default option. Users can still change schema when importing.
-    default_write_schema: 'pokemon'
+    default_write_schema: 'public_persisted'
   }
 
 }
