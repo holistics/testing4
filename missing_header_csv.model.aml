@@ -1,0 +1,41 @@
+Model missing_header_csv {
+  type: 'table'
+  label: 'Missing header csv'
+  description: ''
+  data_source_name: 'movies_lens'
+  dimension field_1 {
+    label: 'Field 1'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.field_1 }};;
+  }
+  dimension field_2 {
+    label: 'Field 2'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.field_2 }};;
+  }
+  dimension field_3 {
+    label: 'Field 3'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.field_3 }};;
+  }
+
+  import_source: ImportSource {
+    type: 'csv'
+    original_file_name: 'missing_header.csv'
+    uploaded_at: '2025-10-28 07:47:10'
+    hash: '3351dcc08006754a6b30c069c56a9e555fc5a3c7ce9a67b902433dc3344d2bfd'
+    column_configs: [
+      H.imports.column_config("field_1", "field_1", "text"),
+      H.imports.column_config("field_2", "field_2", "text"),
+      H.imports.column_config("field_3", "field_3", "text")
+    ]
+  }
+  owner: 'uyen.nm@holistics.io'
+  table_name: '"public"."holistics_missing_heade_f416d_202510280747"'
+}
