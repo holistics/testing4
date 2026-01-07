@@ -93,10 +93,40 @@ Dashboard untitled_10_2 {
       value: []
     }
   }
+  block v_7s1v: VizBlock {
+    label: 'Total Orders'
+    viz: DataTable {
+      dataset: vux_archive
+      fields: [
+        VizFieldFull {
+          ref: r(vux_archive.total_orders)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_orders.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
-    height: 810
+    height: 1100
     grid_size: 20
     auto_expand_vertically: true
     block title {
@@ -110,6 +140,10 @@ Dashboard untitled_10_2 {
     }
     block f_ahde {
       position: pos(60, 120, 300, 60)
+    }
+    block v_7s1v {
+      position: pos(440, 660, 620, 420)
+      layer: 1
     }
     mobile {
       mode: 'auto'
