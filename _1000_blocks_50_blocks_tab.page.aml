@@ -364,12 +364,1452 @@ Dashboard _1000_blocks_50_blocks_tab {
       }
     }
   }
+  block v_w6bi: VizBlock {
+    label: 'product table copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.merchant_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.price)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_qedz: VizBlock {
+    label: 'product pivot copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_9quf: VizBlock {
+    label: 'product metric copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        aggregation: 'sum'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_pxgn: VizBlock {
+    label: 'product area copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_928e: VizBlock {
+    label: 'Sum of Price by Month Created At and Cost copy'
+    viz: LineChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_smlw: VizBlock {
+    label: 'Sum of Price by Month Created At copy'
+    viz: ColumnChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_jog2: VizBlock {
+    label: 'Sum of Price by Month Created At copy'
+    viz: BarChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ibay: VizBlock {
+    label: 'Count of Merchant Id by Product ID and Category Id copy'
+    viz: PointMap {
+      dataset: demo_ecommerce_version_base
+      lng: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      lat: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      value: VizFieldFull {
+        ref: r(ecommerce_products.merchant_id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      settings {
+        default_view {
+          zoom_level: 5
+          center {
+            lat: 71.1111062496851
+            lng: 18.83056640625
+          }
+        }
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_2tzq: VizBlock {
+    label: 'Sum of Price by Product Name copy'
+    viz: ConversionFunnel {
+      dataset: demo_ecommerce_version_base
+      breakdown_by: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.price)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_5w0d: VizBlock {
+    label: 'Product ID and Sum of Price copy'
+    viz: CustomChart {
+      dataset: demo_ecommerce_version_base
+      custom_chart_id: 25612
+      field id_field: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      field metric_field: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        aggregation: 'sum'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      setting num_buckets: 10
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_iye9: VizBlock {
+    label: 'product table copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.merchant_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.price)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ttx0: VizBlock {
+    label: 'product pivot copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ukyv: VizBlock {
+    label: 'product metric copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        aggregation: 'sum'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_0u5o: VizBlock {
+    label: 'product area copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_v5tz: VizBlock {
+    label: 'Sum of Price by Month Created At and Cost copy'
+    viz: LineChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_q46e: VizBlock {
+    label: 'Sum of Price by Month Created At copy'
+    viz: ColumnChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_wd9r: VizBlock {
+    label: 'Sum of Price by Month Created At copy'
+    viz: BarChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_6yn7: VizBlock {
+    label: 'Count of Merchant Id by Product ID and Category Id copy'
+    viz: PointMap {
+      dataset: demo_ecommerce_version_base
+      lng: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      lat: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      value: VizFieldFull {
+        ref: r(ecommerce_products.merchant_id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      settings {
+        default_view {
+          zoom_level: 5
+          center {
+            lat: 71.1111062496851
+            lng: 18.83056640625
+          }
+        }
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ei5b: VizBlock {
+    label: 'Sum of Price by Product Name copy'
+    viz: ConversionFunnel {
+      dataset: demo_ecommerce_version_base
+      breakdown_by: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.price)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_847d: VizBlock {
+    label: 'Product ID and Sum of Price copy'
+    viz: CustomChart {
+      dataset: demo_ecommerce_version_base
+      custom_chart_id: 25612
+      field id_field: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      field metric_field: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        aggregation: 'sum'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      setting num_buckets: 10
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_r03h: VizBlock {
+    label: 'product table copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.merchant_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.price)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_jg94: VizBlock {
+    label: 'product pivot copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_lcer: VizBlock {
+    label: 'product metric copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        aggregation: 'sum'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_26gn: VizBlock {
+    label: 'product area copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_e0u5: VizBlock {
+    label: 'Sum of Price by Month Created At and Cost copy'
+    viz: LineChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_mseg: VizBlock {
+    label: 'Sum of Price by Month Created At copy'
+    viz: ColumnChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1qil: VizBlock {
+    label: 'Sum of Price by Month Created At copy'
+    viz: BarChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ss91: VizBlock {
+    label: 'Count of Merchant Id by Product ID and Category Id copy'
+    viz: PointMap {
+      dataset: demo_ecommerce_version_base
+      lng: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      lat: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      value: VizFieldFull {
+        ref: r(ecommerce_products.merchant_id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      settings {
+        default_view {
+          zoom_level: 5
+          center {
+            lat: 71.1111062496851
+            lng: 18.83056640625
+          }
+        }
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_cn6p: VizBlock {
+    label: 'Sum of Price by Product Name copy'
+    viz: ConversionFunnel {
+      dataset: demo_ecommerce_version_base
+      breakdown_by: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.price)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_4kxs: VizBlock {
+    label: 'Product ID and Sum of Price copy'
+    viz: CustomChart {
+      dataset: demo_ecommerce_version_base
+      custom_chart_id: 25612
+      field id_field: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      field metric_field: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        aggregation: 'sum'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      setting num_buckets: 10
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_vywg: VizBlock {
+    label: 'product table copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.merchant_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.price)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_l23d: VizBlock {
+    label: 'product pivot copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_i2mk: VizBlock {
+    label: 'product metric copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        aggregation: 'sum'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_j3tw: VizBlock {
+    label: 'product area copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_fvdw: VizBlock {
+    label: 'Sum of Price by Month Created At and Cost copy'
+    viz: LineChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_y7p1: VizBlock {
+    label: 'Sum of Price by Month Created At copy'
+    viz: ColumnChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_s2mf: VizBlock {
+    label: 'Sum of Price by Month Created At copy'
+    viz: BarChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.price)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1fur: VizBlock {
+    label: 'Count of Merchant Id by Product ID and Category Id copy'
+    viz: PointMap {
+      dataset: demo_ecommerce_version_base
+      lng: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      lat: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      value: VizFieldFull {
+        ref: r(ecommerce_products.merchant_id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      settings {
+        default_view {
+          zoom_level: 5
+          center {
+            lat: 71.1111062496851
+            lng: 18.83056640625
+          }
+        }
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_t98u: VizBlock {
+    label: 'Sum of Price by Product Name copy'
+    viz: ConversionFunnel {
+      dataset: demo_ecommerce_version_base
+      breakdown_by: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.price)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_4gmr: VizBlock {
+    label: 'Product ID and Sum of Price copy'
+    viz: CustomChart {
+      dataset: demo_ecommerce_version_base
+      custom_chart_id: 25612
+      field id_field: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      field metric_field: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        aggregation: 'sum'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      setting num_buckets: 10
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   view: TabLayout {
     label: 'View 1'
     tab view_1: CanvasLayout {
       label: 'Tab 1'
       width: 1300
-      height: 1540
+      height: 7300
       grid_size: 20
       auto_expand_vertically: true
       block title {
@@ -415,6 +1855,166 @@ Dashboard _1000_blocks_50_blocks_tab {
         position: pos(660, 1100, 620, 420)
         layer: 1
       }
+      block v_0u5o {
+        position: pos(420, 3300, 400, 260)
+        layer: 1
+      }
+      block v_1fur {
+        position: pos(840, 6460, 420, 380)
+        layer: 1
+      }
+      block v_1qil {
+        position: pos(420, 5020, 400, 380)
+        layer: 1
+      }
+      block v_26gn {
+        position: pos(420, 4740, 400, 260)
+        layer: 1
+      }
+      block v_2tzq {
+        position: pos(20, 2540, 620, 420)
+        layer: 1
+      }
+      block v_4gmr {
+        position: pos(660, 6860, 620, 420)
+        layer: 1
+      }
+      block v_4kxs {
+        position: pos(660, 5420, 620, 420)
+        layer: 1
+      }
+      block v_5w0d {
+        position: pos(660, 2540, 620, 420)
+        layer: 1
+      }
+      block v_6yn7 {
+        position: pos(840, 3580, 420, 380)
+        layer: 1
+      }
+      block v_847d {
+        position: pos(660, 3980, 620, 420)
+        layer: 1
+      }
+      block v_928e {
+        position: pos(840, 1860, 420, 260)
+        layer: 1
+      }
+      block v_9quf {
+        position: pos(20, 1860, 380, 260)
+        layer: 1
+      }
+      block v_cn6p {
+        position: pos(20, 5420, 620, 420)
+        layer: 1
+      }
+      block v_e0u5 {
+        position: pos(840, 4740, 420, 260)
+        layer: 1
+      }
+      block v_ei5b {
+        position: pos(20, 3980, 620, 420)
+        layer: 1
+      }
+      block v_fvdw {
+        position: pos(840, 6180, 420, 260)
+        layer: 1
+      }
+      block v_i2mk {
+        position: pos(20, 6180, 380, 260)
+        layer: 1
+      }
+      block v_ibay {
+        position: pos(840, 2140, 420, 380)
+        layer: 1
+      }
+      block v_iye9 {
+        position: pos(20, 2980, 580, 280)
+        layer: 1
+      }
+      block v_j3tw {
+        position: pos(420, 6180, 400, 260)
+        layer: 1
+      }
+      block v_jg94 {
+        position: pos(680, 4420, 600, 280)
+        layer: 1
+      }
+      block v_jog2 {
+        position: pos(420, 2140, 400, 380)
+        layer: 1
+      }
+      block v_l23d {
+        position: pos(680, 5860, 600, 280)
+        layer: 1
+      }
+      block v_lcer {
+        position: pos(20, 4740, 380, 260)
+        layer: 1
+      }
+      block v_mseg {
+        position: pos(20, 5020, 380, 380)
+        layer: 1
+      }
+      block v_pxgn {
+        position: pos(420, 1860, 400, 260)
+        layer: 1
+      }
+      block v_q46e {
+        position: pos(20, 3580, 380, 380)
+        layer: 1
+      }
+      block v_qedz {
+        position: pos(680, 1540, 600, 280)
+        layer: 1
+      }
+      block v_r03h {
+        position: pos(20, 4420, 580, 280)
+        layer: 1
+      }
+      block v_s2mf {
+        position: pos(420, 6460, 400, 380)
+        layer: 1
+      }
+      block v_smlw {
+        position: pos(20, 2140, 380, 380)
+        layer: 1
+      }
+      block v_ss91 {
+        position: pos(840, 5020, 420, 380)
+        layer: 1
+      }
+      block v_t98u {
+        position: pos(20, 6860, 620, 420)
+        layer: 1
+      }
+      block v_ttx0 {
+        position: pos(680, 2980, 600, 280)
+        layer: 1
+      }
+      block v_ukyv {
+        position: pos(20, 3300, 380, 260)
+        layer: 1
+      }
+      block v_v5tz {
+        position: pos(840, 3300, 420, 260)
+        layer: 1
+      }
+      block v_vywg {
+        position: pos(20, 5860, 580, 280)
+        layer: 1
+      }
+      block v_w6bi {
+        position: pos(20, 1540, 580, 280)
+        layer: 1
+      }
+      block v_wd9r {
+        position: pos(420, 3580, 400, 380)
+        layer: 1
+      }
+      block v_y7p1 {
+        position: pos(20, 6460, 380, 380)
+        layer: 1
+      }
       mobile {
         mode: 'auto'
       }
@@ -431,4 +2031,5 @@ Dashboard _1000_blocks_50_blocks_tab {
     }
   }
   theme: H.themes.vanilla
+  interactions: []
 }
