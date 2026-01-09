@@ -1,0 +1,7648 @@
+Dashboard _200_blocks_copy {
+  title: '200 blocks (copy)'
+  owner: 'toan.lt@holistics.io'
+  block title: TextBlock {
+    content: @md # Your title goes here ;;
+  }
+  block v_q0al: VizBlock {
+    label: 'Product ID, Category Id, and Product Name'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ck4p: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_98x6: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_2o6e: VizBlock {
+    label: 'Count of Product ID by Month Created At'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_tgid: VizBlock {
+    label: 'Count of Product ID by Month Created At'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_mtzx: VizBlock {
+    label: 'Month Created At, Price and 2 more'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_5hcc: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_wx6q: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_znce: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_pbwm: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_douw: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_pr7g: VizBlock {
+    label: 'Month Created At, Price and 2 more copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_3n1t: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_o37x: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_cuag: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_4ncb: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_iy1i: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_pe9p: VizBlock {
+    label: 'Month Created At, Price and 2 more copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_nhd5: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_9drn: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1t6v: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_uxlh: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_azj4: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_uoeh: VizBlock {
+    label: 'Month Created At, Price and 2 more copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block t_viuu: TextBlock {
+    content: @md # Your title goes here ;;
+  }
+  block v_zvll: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_zr4h: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_myuq: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_e2pc: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_qs5f: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_5cjq: VizBlock {
+    label: 'Month Created At, Price and 2 more copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_9l7q: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_xh9r: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_4cl7: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_v7h2: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_7ag2: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_0vrb: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_o7x7: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_aibs: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_l34a: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_wwee: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ix7u: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_fk5j: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_3c2h: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_lzno: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_x73k: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_qxis: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ojah: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_d6wb: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block t_vlgv: TextBlock {
+    content: @md # Your title goes here ;;
+  }
+  block v_nzzg: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_5874: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_6tz8: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_anmh: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_cfzw: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_nddg: VizBlock {
+    label: 'Month Created At, Price and 2 more copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_5dt8: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_3alt: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_it4i: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_a46b: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_tvvg: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_aez4: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_emu4: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_vu65: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_q5ak: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_irav: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_v7mr: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_jmdo: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1b4s: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_fnqm: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_9dna: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_hstg: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_bw3s: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_z6kr: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block t_6txr: TextBlock {
+    content: @md # Your title goes here ;;
+  }
+  block v_g3pm: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_tobz: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_j7h2: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_342h: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_mjpe: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_fhr7: VizBlock {
+    label: 'Month Created At, Price and 2 more copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_0vq6: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_q69w: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_4j78: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_98x9: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_2jn7: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_y9ho: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1g1h: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ng6l: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_b2nt: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_ihof: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_aijt: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ksug: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_qjow: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1smq: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_lw9n: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_0b9u: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_hgle: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_533n: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block t_tsc1: TextBlock {
+    content: @md # Your title goes here ;;
+  }
+  block v_ei7u: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_8dfp: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_sh4j: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_ugli: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_sj35: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_i3c0: VizBlock {
+    label: 'Month Created At, Price and 2 more copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_z60o: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_cqrn: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_jyq5: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_xdas: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_rw3l: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_2xcw: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_powk: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_j3cz: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ygw4: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_s1kt: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_g5op: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ruhh: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_o3x1: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_0vh7: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_kl5w: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_fkrc: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_xzny: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ojr0: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block t_a4po: TextBlock {
+    content: @md # Your title goes here ;;
+  }
+  block v_saba: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_w2jm: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_047a: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_bpxx: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_i6jl: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_65c2: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_8d1o: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_smtg: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_aoim: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_n6h1: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1wmy: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_8lll: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_lzgf: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_vf81: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_176c: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_fqgz: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_sfiz: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_dxlp: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_cxuk: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_fzbm: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_r0nr: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_qmgk: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_7emb: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_w74x: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block t_e2bz: TextBlock {
+    content: @md # Your title goes here ;;
+  }
+  block v_zgtv: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_y002: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_q19p: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_3wej: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_tnwc: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_q408: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_fv0u: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_nhty: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ksma: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_fj2s: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_wgbd: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_f3lm: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_0ee9: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_g7gm: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_j6qg: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_p644: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_5l4v: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_g0re: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_wl43: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_n5o5: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_b4zp: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_ezrr: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_7zl3: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_9cjb: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block t_qnry: TextBlock {
+    content: @md # Your title goes here ;;
+  }
+  block v_3cx0: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_lnxr: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1hfx: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_pl8w: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_un0f: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_cgez: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_yys2: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_wz4x: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_t3dp: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_kw09: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_a1m9: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_4bkq: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_4zr8: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_oar9: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_7hr1: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_zpz0: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ohu6: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ix2x: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1i6v: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy copy copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_base
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_pd4v: VizBlock {
+    label: 'Count of Product ID by Month Created At and Product Name copy copy copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_base
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_g2iy: VizBlock {
+    label: 'Count of Product ID compared with Count of Created At copy copy copy'
+    viz: MetricKpi {
+      dataset: demo_ecommerce_version_base
+      value: VizFieldFull {
+        ref: r(ecommerce_products.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        aggregation: 'count'
+        format {
+          type: 'number'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_o4gs: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_gkrm: VizBlock {
+    label: 'Count of Product ID by Month Created At copy copy copy'
+    viz: CombinationChart {
+      dataset: demo_ecommerce_version_base
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_0r6t: VizBlock {
+    label: 'Month Created At, Price and 2 more copy copy copy'
+    viz: BubbleChart {
+      dataset: demo_ecommerce_version_base
+      x_col: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_products.price)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      z_col: VizFieldFull {
+        ref: r(ecommerce_products.category_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_products.name)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  interactions: []
+  view: CanvasLayout {
+    label: 'View 1'
+    width: 1300
+    height: 16700
+    grid_size: 20
+    auto_expand_vertically: true
+    block title {
+      position: pos(20, 20, 1260, 60)
+    }
+    block t_6txr {
+      position: pos(20, 6280, 1260, 60)
+    }
+    block t_a4po {
+      position: pos(20, 10440, 1260, 60)
+    }
+    block t_e2bz {
+      position: pos(20, 12520, 1260, 60)
+    }
+    block t_qnry {
+      position: pos(20, 14620, 1260, 60)
+    }
+    block t_tsc1 {
+      position: pos(20, 8360, 1260, 60)
+    }
+    block t_viuu {
+      position: pos(20, 2100, 1260, 60)
+    }
+    block t_vlgv {
+      position: pos(20, 4180, 1260, 60)
+    }
+    block v_047a {
+      position: pos(820, 10500, 280, 220)
+    }
+    block v_0b9u {
+      position: pos(20, 8100, 380, 240)
+    }
+    block v_0ee9 {
+      position: pos(20, 13600, 380, 220)
+    }
+    block v_0r6t {
+      position: pos(820, 16440, 440, 240)
+    }
+    block v_0vh7 {
+      position: pos(420, 9940, 380, 220)
+    }
+    block v_0vq6 {
+      position: pos(20, 6840, 380, 220)
+    }
+    block v_0vrb {
+      position: pos(820, 2900, 440, 240)
+    }
+    block v_176c {
+      position: pos(820, 11520, 280, 220)
+    }
+    block v_1b4s {
+      position: pos(20, 5760, 380, 220)
+    }
+    block v_1g1h {
+      position: pos(20, 7360, 380, 220)
+    }
+    block v_1hfx {
+      position: pos(820, 14680, 280, 220)
+    }
+    block v_1i6v {
+      position: pos(20, 16200, 380, 220)
+    }
+    block v_1smq {
+      position: pos(420, 7860, 380, 220)
+    }
+    block v_1t6v {
+      position: pos(820, 1600, 280, 220)
+    }
+    block v_1wmy {
+      position: pos(420, 11240, 380, 240)
+    }
+    block v_2jn7 {
+      position: pos(420, 7080, 380, 240)
+    }
+    block v_2o6e {
+      position: pos(20, 320, 380, 240)
+    }
+    block v_2xcw {
+      position: pos(820, 9160, 440, 240)
+    }
+    block v_342h {
+      position: pos(20, 6580, 380, 240)
+    }
+    block v_3alt {
+      position: pos(420, 4740, 380, 220)
+    }
+    block v_3c2h {
+      position: pos(20, 3680, 380, 220)
+    }
+    block v_3cx0 {
+      position: pos(20, 14680, 380, 220)
+    }
+    block v_3n1t {
+      position: pos(20, 1100, 380, 220)
+    }
+    block v_3wej {
+      position: pos(20, 12820, 380, 240)
+    }
+    block v_4bkq {
+      position: pos(820, 15420, 440, 240)
+    }
+    block v_4cl7 {
+      position: pos(820, 2660, 280, 220)
+    }
+    block v_4j78 {
+      position: pos(820, 6840, 280, 220)
+    }
+    block v_4ncb {
+      position: pos(20, 1340, 380, 240)
+    }
+    block v_4zr8 {
+      position: pos(20, 15700, 380, 220)
+    }
+    block v_533n {
+      position: pos(820, 8100, 440, 240)
+    }
+    block v_5874 {
+      position: pos(420, 4240, 380, 220)
+    }
+    block v_5cjq {
+      position: pos(820, 2400, 440, 240)
+    }
+    block v_5dt8 {
+      position: pos(20, 4740, 380, 220)
+    }
+    block v_5hcc {
+      position: pos(20, 580, 380, 220)
+    }
+    block v_5l4v {
+      position: pos(420, 13840, 380, 240)
+    }
+    block v_65c2 {
+      position: pos(820, 10740, 440, 240)
+    }
+    block v_6tz8 {
+      position: pos(820, 4240, 280, 220)
+    }
+    block v_7ag2 {
+      position: pos(420, 2900, 380, 240)
+    }
+    block v_7emb {
+      position: pos(420, 12260, 380, 240)
+    }
+    block v_7hr1 {
+      position: pos(820, 15700, 280, 220)
+    }
+    block v_7zl3 {
+      position: pos(420, 14340, 380, 240)
+    }
+    block v_8d1o {
+      position: pos(20, 11000, 380, 220)
+    }
+    block v_8dfp {
+      position: pos(420, 8420, 380, 220)
+    }
+    block v_8lll {
+      position: pos(820, 11240, 440, 240)
+    }
+    block v_98x6 {
+      position: pos(820, 80, 280, 220)
+    }
+    block v_98x9 {
+      position: pos(20, 7080, 380, 240)
+    }
+    block v_9cjb {
+      position: pos(820, 14340, 440, 240)
+    }
+    block v_9dna {
+      position: pos(820, 5760, 280, 220)
+    }
+    block v_9drn {
+      position: pos(420, 1600, 380, 220)
+    }
+    block v_9l7q {
+      position: pos(20, 2660, 380, 220)
+    }
+    block v_a1m9 {
+      position: pos(420, 15420, 380, 240)
+    }
+    block v_a46b {
+      position: pos(20, 4980, 380, 240)
+    }
+    block v_aez4 {
+      position: pos(820, 4980, 440, 240)
+    }
+    block v_aibs {
+      position: pos(420, 3180, 380, 220)
+    }
+    block v_aijt {
+      position: pos(420, 7600, 380, 240)
+    }
+    block v_anmh {
+      position: pos(20, 4480, 380, 240)
+    }
+    block v_aoim {
+      position: pos(820, 11000, 280, 220)
+    }
+    block v_azj4 {
+      position: pos(420, 1840, 380, 240)
+    }
+    block v_b2nt {
+      position: pos(820, 7360, 280, 220)
+    }
+    block v_b4zp {
+      position: pos(820, 14100, 280, 220)
+    }
+    block v_bpxx {
+      position: pos(20, 10740, 380, 240)
+    }
+    block v_bw3s {
+      position: pos(420, 6000, 380, 240)
+    }
+    block v_cfzw {
+      position: pos(420, 4480, 380, 240)
+    }
+    block v_cgez {
+      position: pos(820, 14920, 440, 240)
+    }
+    block v_ck4p {
+      position: pos(420, 80, 380, 220)
+    }
+    block v_cqrn {
+      position: pos(420, 8920, 380, 220)
+    }
+    block v_cuag {
+      position: pos(820, 1100, 280, 220)
+    }
+    block v_cxuk {
+      position: pos(20, 12020, 380, 220)
+    }
+    block v_d6wb {
+      position: pos(820, 3920, 440, 240)
+    }
+    block v_douw {
+      position: pos(420, 820, 380, 240)
+    }
+    block v_dxlp {
+      position: pos(820, 11760, 440, 240)
+    }
+    block v_e2pc {
+      position: pos(20, 2400, 380, 240)
+    }
+    block v_ei7u {
+      position: pos(20, 8420, 380, 220)
+    }
+    block v_emu4 {
+      position: pos(20, 5260, 380, 220)
+    }
+    block v_ezrr {
+      position: pos(20, 14340, 380, 240)
+    }
+    block v_f3lm {
+      position: pos(820, 13320, 440, 240)
+    }
+    block v_fhr7 {
+      position: pos(820, 6580, 440, 240)
+    }
+    block v_fj2s {
+      position: pos(20, 13320, 380, 240)
+    }
+    block v_fk5j {
+      position: pos(820, 3420, 440, 240)
+    }
+    block v_fkrc {
+      position: pos(20, 10180, 380, 240)
+    }
+    block v_fnqm {
+      position: pos(420, 5760, 380, 220)
+    }
+    block v_fqgz {
+      position: pos(20, 11760, 380, 240)
+    }
+    block v_fv0u {
+      position: pos(20, 13080, 380, 220)
+    }
+    block v_fzbm {
+      position: pos(420, 12020, 380, 220)
+    }
+    block v_g0re {
+      position: pos(820, 13840, 440, 240)
+    }
+    block v_g2iy {
+      position: pos(820, 16200, 280, 220)
+    }
+    block v_g3pm {
+      position: pos(20, 6340, 380, 220)
+    }
+    block v_g5op {
+      position: pos(420, 9680, 380, 240)
+    }
+    block v_g7gm {
+      position: pos(420, 13600, 380, 220)
+    }
+    block v_gkrm {
+      position: pos(420, 16440, 380, 240)
+    }
+    block v_hgle {
+      position: pos(420, 8100, 380, 240)
+    }
+    block v_hstg {
+      position: pos(20, 6000, 380, 240)
+    }
+    block v_i3c0 {
+      position: pos(820, 8660, 440, 240)
+    }
+    block v_i6jl {
+      position: pos(420, 10740, 380, 240)
+    }
+    block v_ihof {
+      position: pos(20, 7600, 380, 240)
+    }
+    block v_irav {
+      position: pos(20, 5500, 380, 240)
+    }
+    block v_it4i {
+      position: pos(820, 4740, 280, 220)
+    }
+    block v_ix2x {
+      position: pos(820, 15940, 440, 240)
+    }
+    block v_ix7u {
+      position: pos(420, 3420, 380, 240)
+    }
+    block v_iy1i {
+      position: pos(420, 1340, 380, 240)
+    }
+    block v_j3cz {
+      position: pos(420, 9440, 380, 220)
+    }
+    block v_j6qg {
+      position: pos(820, 13600, 280, 220)
+    }
+    block v_j7h2 {
+      position: pos(820, 6340, 280, 220)
+    }
+    block v_jmdo {
+      position: pos(820, 5500, 440, 240)
+    }
+    block v_jyq5 {
+      position: pos(820, 8920, 280, 220)
+    }
+    block v_kl5w {
+      position: pos(820, 9940, 280, 220)
+    }
+    block v_ksma {
+      position: pos(820, 13080, 280, 220)
+    }
+    block v_ksug {
+      position: pos(820, 7600, 440, 240)
+    }
+    block v_kw09 {
+      position: pos(20, 15420, 380, 240)
+    }
+    block v_l34a {
+      position: pos(820, 3180, 280, 220)
+    }
+    block v_lnxr {
+      position: pos(420, 14680, 380, 220)
+    }
+    block v_lw9n {
+      position: pos(820, 7860, 280, 220)
+    }
+    block v_lzgf {
+      position: pos(20, 11520, 380, 220)
+    }
+    block v_lzno {
+      position: pos(420, 3680, 380, 220)
+    }
+    block v_mjpe {
+      position: pos(420, 6580, 380, 240)
+    }
+    block v_mtzx {
+      position: pos(820, 320, 440, 240)
+    }
+    block v_myuq {
+      position: pos(820, 2160, 280, 220)
+    }
+    block v_n5o5 {
+      position: pos(420, 14100, 380, 220)
+    }
+    block v_n6h1 {
+      position: pos(20, 11240, 380, 240)
+    }
+    block v_nddg {
+      position: pos(820, 4480, 440, 240)
+    }
+    block v_ng6l {
+      position: pos(420, 7360, 380, 220)
+    }
+    block v_nhd5 {
+      position: pos(20, 1600, 380, 220)
+    }
+    block v_nhty {
+      position: pos(420, 13080, 380, 220)
+    }
+    block v_nzzg {
+      position: pos(20, 4240, 380, 220)
+    }
+    block v_o37x {
+      position: pos(420, 1100, 380, 220)
+    }
+    block v_o3x1 {
+      position: pos(20, 9940, 380, 220)
+    }
+    block v_o4gs {
+      position: pos(20, 16440, 380, 240)
+    }
+    block v_o7x7 {
+      position: pos(20, 3180, 380, 220)
+    }
+    block v_oar9 {
+      position: pos(420, 15700, 380, 220)
+    }
+    block v_ohu6 {
+      position: pos(420, 15940, 380, 240)
+    }
+    block v_ojah {
+      position: pos(420, 3920, 380, 240)
+    }
+    block v_ojr0 {
+      position: pos(820, 10180, 440, 240)
+    }
+    block v_p644 {
+      position: pos(20, 13840, 380, 240)
+    }
+    block v_pbwm {
+      position: pos(20, 820, 380, 240)
+    }
+    block v_pd4v {
+      position: pos(420, 16200, 380, 220)
+    }
+    block v_pe9p {
+      position: pos(820, 1340, 440, 240)
+    }
+    block v_pl8w {
+      position: pos(20, 14920, 380, 240)
+    }
+    block v_powk {
+      position: pos(20, 9440, 380, 220)
+    }
+    block v_pr7g {
+      position: pos(820, 820, 440, 240)
+    }
+    block v_q0al {
+      position: pos(20, 80, 380, 220)
+    }
+    block v_q19p {
+      position: pos(820, 12580, 280, 220)
+    }
+    block v_q408 {
+      position: pos(820, 12820, 440, 240)
+    }
+    block v_q5ak {
+      position: pos(820, 5260, 280, 220)
+    }
+    block v_q69w {
+      position: pos(420, 6840, 380, 220)
+    }
+    block v_qjow {
+      position: pos(20, 7860, 380, 220)
+    }
+    block v_qmgk {
+      position: pos(20, 12260, 380, 240)
+    }
+    block v_qs5f {
+      position: pos(420, 2400, 380, 240)
+    }
+    block v_qxis {
+      position: pos(20, 3920, 380, 240)
+    }
+    block v_r0nr {
+      position: pos(820, 12020, 280, 220)
+    }
+    block v_ruhh {
+      position: pos(820, 9680, 440, 240)
+    }
+    block v_rw3l {
+      position: pos(420, 9160, 380, 240)
+    }
+    block v_s1kt {
+      position: pos(20, 9680, 380, 240)
+    }
+    block v_saba {
+      position: pos(20, 10500, 380, 220)
+    }
+    block v_sfiz {
+      position: pos(420, 11760, 380, 240)
+    }
+    block v_sh4j {
+      position: pos(820, 8420, 280, 220)
+    }
+    block v_sj35 {
+      position: pos(420, 8660, 380, 240)
+    }
+    block v_smtg {
+      position: pos(420, 11000, 380, 220)
+    }
+    block v_t3dp {
+      position: pos(820, 15180, 280, 220)
+    }
+    block v_tgid {
+      position: pos(420, 320, 380, 240)
+    }
+    block v_tnwc {
+      position: pos(420, 12820, 380, 240)
+    }
+    block v_tobz {
+      position: pos(420, 6340, 380, 220)
+    }
+    block v_tvvg {
+      position: pos(420, 4980, 380, 240)
+    }
+    block v_ugli {
+      position: pos(20, 8660, 380, 240)
+    }
+    block v_un0f {
+      position: pos(420, 14920, 380, 240)
+    }
+    block v_uoeh {
+      position: pos(820, 1840, 440, 240)
+    }
+    block v_uxlh {
+      position: pos(20, 1840, 380, 240)
+    }
+    block v_v7h2 {
+      position: pos(20, 2900, 380, 240)
+    }
+    block v_v7mr {
+      position: pos(420, 5500, 380, 240)
+    }
+    block v_vf81 {
+      position: pos(420, 11520, 380, 220)
+    }
+    block v_vu65 {
+      position: pos(420, 5260, 380, 220)
+    }
+    block v_w2jm {
+      position: pos(420, 10500, 380, 220)
+    }
+    block v_w74x {
+      position: pos(820, 12260, 440, 240)
+    }
+    block v_wgbd {
+      position: pos(420, 13320, 380, 240)
+    }
+    block v_wl43 {
+      position: pos(20, 14100, 380, 220)
+    }
+    block v_wwee {
+      position: pos(20, 3420, 380, 240)
+    }
+    block v_wx6q {
+      position: pos(420, 580, 380, 220)
+    }
+    block v_wz4x {
+      position: pos(420, 15180, 380, 220)
+    }
+    block v_x73k {
+      position: pos(820, 3680, 280, 220)
+    }
+    block v_xdas {
+      position: pos(20, 9160, 380, 240)
+    }
+    block v_xh9r {
+      position: pos(420, 2660, 380, 220)
+    }
+    block v_xzny {
+      position: pos(420, 10180, 380, 240)
+    }
+    block v_y002 {
+      position: pos(420, 12580, 380, 220)
+    }
+    block v_y9ho {
+      position: pos(820, 7080, 440, 240)
+    }
+    block v_ygw4 {
+      position: pos(820, 9440, 280, 220)
+    }
+    block v_yys2 {
+      position: pos(20, 15180, 380, 220)
+    }
+    block v_z60o {
+      position: pos(20, 8920, 380, 220)
+    }
+    block v_z6kr {
+      position: pos(820, 6000, 440, 240)
+    }
+    block v_zgtv {
+      position: pos(20, 12580, 380, 220)
+    }
+    block v_znce {
+      position: pos(820, 580, 280, 220)
+    }
+    block v_zpz0 {
+      position: pos(20, 15940, 380, 240)
+    }
+    block v_zr4h {
+      position: pos(420, 2160, 380, 220)
+    }
+    block v_zvll {
+      position: pos(20, 2160, 380, 220)
+    }
+    mobile {
+      mode: 'auto'
+    }
+  }
+  theme: H.themes.vanilla
+}
