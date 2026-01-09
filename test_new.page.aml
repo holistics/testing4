@@ -38,7 +38,7 @@ Dashboard test_new {
       position: pos(20, 20, 1260, 60)
     }
     block v_c3vu {
-      position: pos(350, 370, 620, 420)
+      position: pos(220, 140, 620, 420)
     }
     mobile {
       mode: 'auto'
