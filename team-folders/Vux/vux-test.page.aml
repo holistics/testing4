@@ -44,7 +44,7 @@ Dashboard vux_test {
     }
   }
   block v_no1k: VizBlock {
-    label: 'Revenue Percentage by Status copy'
+    label: 'Revenue by Continent'
     viz: ColumnChart {
       dataset: ecom_dataset_vux
       calculation revenue_percentage {
@@ -63,10 +63,10 @@ Dashboard vux_test {
       y_axis {
         series {
           field: VizFieldFull {
-            ref: 'revenue_percentage'
+            ref: r(order_master.revenue)
             format {
               type: 'number'
-              pattern: '#,###%'
+              pattern: 'inherited'
             }
           }
           settings {
@@ -86,18 +86,6 @@ Dashboard vux_test {
             point {
               value: 'Oceania'
               color: '#4F127B'
-            }
-            point {
-              value: 'cancelled'
-              color: '#000004'
-            }
-            point {
-              value: 'delivered'
-              color: '#FBFDBF'
-            }
-            point {
-              value: 'refunded'
-              color: '#FB8761'
             }
           }
         }
@@ -129,18 +117,15 @@ Dashboard vux_test {
     label: 'View 1'
     tab view_1: CanvasLayout {
       label: 'Tab 1'
-      width: 1300
-      height: 880
+      width: 640
+      height: 600
       grid_size: 20
       auto_expand_vertically: true
-      block title {
-        position: pos(20, 20, 1260, 60)
-      }
       block v_a79o {
-        position: pos(20, 200, 600, 460)
+        position: pos(20, 120, 600, 460)
       }
       block f_order_master_order_created_at {
-        position: pos(20, 100, 300, 80)
+        position: pos(20, 20, 300, 80)
       }
       mobile {
         mode: 'auto'
@@ -156,10 +141,10 @@ Dashboard vux_test {
         mode: 'auto'
       }
       block v_no1k {
-        position: pos(120, 110, 600, 460)
+        position: pos(120, 120, 600, 460)
       }
       block f_order_master_order_created_at {
-        position: pos(40, 20, 300, 80)
+        position: pos(20, 20, 300, 80)
       }
     }
   }
