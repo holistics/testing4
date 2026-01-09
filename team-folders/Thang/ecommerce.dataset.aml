@@ -1,0 +1,12 @@
+Dataset ecommerce {
+  label: 'ecommerce'
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    ecommerce_orders2,
+    ecommerce_users2
+  ]
+  relationships: [
+    relationship(ecommerce_orders2.user_id > ecommerce_users2.id, true)
+  ]
+}
