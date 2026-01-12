@@ -6,13 +6,13 @@ Dashboard ecommerce_dashboard_thang {
     content: @md # Your title goes here ;;
   }
   block v_noyg: VizBlock {
-    label: 'Order created in Nov 2022'
+    label: 'Order created in Dec 2022'
     viz: DataTable {
       dataset: ecommerce
       filter {
         field: r(ecommerce_orders2.created_at)
         operator: 'matches'
-        value: 'nov 2022'
+        value: 'dec 2022'
       }
       fields: [
         VizFieldFull {
@@ -44,11 +44,72 @@ Dashboard ecommerce_dashboard_thang {
       }
     }
   }
+  block v_xita: VizBlock {
+    label: 'Number of orders place by each user'
+    viz: DataTable {
+      dataset: ecommerce
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_users2.full_name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_orders2.all_orders_count)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_e07d: VizBlock {
+    label: 'Identify users with highest or lowest order counts'
+    viz: DataTable {
+      dataset: ecommerce
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_users2.full_name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_orders2.all_orders_count)
+          format {
+            type: 'text'
+          }
+          uname: 'custom_all_orders_count_1'
+        }
+      ]
+      settings {
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            key: 'custom_all_orders_count_1'
+            direction: 'desc'
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
 
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
-    height: 800
+    height: 1420
     grid_size: 20
     auto_expand_vertically: true
     block title {
@@ -58,10 +119,38 @@ Dashboard ecommerce_dashboard_thang {
       position: pos(20, 100, 620, 420)
       layer: 1
     }
+    block v_xita {
+      position: pos(660, 100, 620, 420)
+      layer: 2
+    }
+    block v_e07d {
+      position: pos(20, 540, 620, 420)
+      layer: 3
+    }
     mobile {
       mode: 'auto'
     }
   }
 
   theme: H.themes.vanilla
+  interactions: [
+    FilterInteraction {
+      from: 'v_noyg'
+      to: [
+        CustomMapping {
+          block: 'v_xita'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_xita'
+      to: [
+        CustomMapping {
+          block: 'v_noyg'
+          disabled: true
+        }
+      ]
+    }
+  ]
 }
