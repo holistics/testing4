@@ -256,6 +256,7 @@ pre_aggregates: {
     hidden: false
     description: ""
     definition: @aql count(ecommerce_orders.id);;
+    format: "#,###"
   }
   metric total_orders_across_all {
     label: "Total Orders Across All"
@@ -270,6 +271,7 @@ pre_aggregates: {
     hidden: false
     description: ""
     definition: @aql total_orders * 1.0 / total_orders_across_all;;
+    format: "#,###0.0\%"	
   }
   // metric abc {
   //   label: "Abc"
@@ -301,14 +303,24 @@ pre_aggregates: {
         when: 'total users' in param_model_nam.metric_selections
         , then: ecommerce_users.total_users
 
+        , when: 'total products' in param_model_nam.metric_selections
+        , then: ecommerce_products.total_products
+
         , when: 'total orders' in param_model_nam.metric_selections
         , then: total_orders
 
-        , when: 'total products' in param_model_nam.metric_selections
-        , then: ecommerce_products.total_products
+        , when: 'pot' in param_model_nam.metric_selections
+        , then: percent_of_total
+
+        , when: 'aov' in param_model_nam.metric_selections
+        , then: order_master.aov
+
+        , when: 'revenue' in param_model_nam.metric_selections
+        , then: order_master.revenue
       )
      ;;
   }
+
 
   dimension breakdown_dim {
       label: 'Dynamic Breakdown Dimension'

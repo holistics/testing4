@@ -103,6 +103,12 @@ PageTheme ticketing_concert_theme {
 }
 
 PageTheme fashion {
+  custom_css: @css
+    /* Change heatmap cell background color */
+    .dac-retention-heatmap-cell {
+      background-color: #FFA500 !important;
+    }
+  ;;
   background {
     bg_color: "#FFE8D1"  // Light pink
     bg_image: ""  // You'd need to replace this with an actual image URL
