@@ -83,4 +83,12 @@ end;;
 
   owner: 'thang.lk@holistics.io'
   table_name: '"ecommerce"."users"'
+  measure measure_19910d8 {
+    label: "Count of Users Id"
+    type: "number"
+    description: ""
+    hidden: false
+    definition: @aql count(ecommerce_users2.id);;
+    aggregation_type: "custom"
+  }
 }
