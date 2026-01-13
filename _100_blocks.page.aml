@@ -2635,255 +2635,2535 @@ Dashboard _100_blocks {
       }
     }
   }
-  interactions: []
-  view: CanvasLayout {
+  block v_kzso: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_2
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_lflt: VizBlock {
+    label: 'Sum of Price by Month Created At and Product Name copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_2
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.price)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_y4yr: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_2
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_csdn: VizBlock {
+    label: 'Sum of Price by Month Created At copy'
+    viz: PieChart {
+      dataset: demo_ecommerce_version_2
+      legend: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      series {
+        field: VizFieldFull {
+          ref: r(ecommerce_products.price)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        data_label_position: 'none'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_z4lf: VizBlock {
+    label: 'Product ID, Category Id, and Product Name copy'
+    viz: DataTable {
+      dataset: demo_ecommerce_version_2
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_products.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.category_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_pbxf: VizBlock {
+    label: 'Sum of Price by Month Created At and Product Name copy'
+    viz: PivotTable {
+      dataset: demo_ecommerce_version_2
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_products.created_at)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(ecommerce_products.name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          ref: r(ecommerce_products.price)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_6n9e: VizBlock {
+    label: 'Count of Product ID by Month Created At copy'
+    viz: AreaChart {
+      dataset: demo_ecommerce_version_2
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_products.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_c0cm: VizBlock {
+    label: 'Sum of Price by Month Created At copy'
+    viz: PieChart {
+      dataset: demo_ecommerce_version_2
+      legend: VizFieldFull {
+        ref: r(ecommerce_products.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      series {
+        field: VizFieldFull {
+          ref: r(ecommerce_products.price)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        data_label_position: 'none'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  interactions: [
+    FilterInteraction {
+      from: 'v_v9dc'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_7j3i'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_awd7'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_agmb'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_x6i1'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_lk0i'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_z1ve'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_y8yc'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_38cd'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_pf3t'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ubv3'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_zflm'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_176l'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_r4p9'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_9mev'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_5985'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_thb7'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ii0g'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_t2rh'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_q6zk'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_owk6'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_n7je'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_sady'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_vff8'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_y400'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_jytt'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_u99a'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_03oq'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_88bi'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_op5u'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_7jdm'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_buhd'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_87ug'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_qz7i'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_c9ph'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_fhjk'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_f6pq'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_0eir'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_fyt5'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ai43'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ofhd'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_nm6r'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_gdh1'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_pv0m'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_xf8e'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_t27l'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_mom6'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_a506'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_x9tt'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_1yil'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_gfiq'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_3a5z'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_3mw4'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_tsf1'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_9c4r'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_4v9n'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_yp9h'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_9dbv'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_o11o'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_8fc5'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_qu3y'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_grj8'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_5v87'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_stz5'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_y2yp'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_7cyg'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_aahf'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_pzwx'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ntca'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_8ujj'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_7rbh'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_0itv'
+      to: [
+        CustomMapping {
+          block: [
+            'v_kzso',
+            'v_lflt',
+            'v_y4yr',
+            'v_csdn',
+            'v_z4lf',
+            'v_pbxf',
+            'v_6n9e',
+            'v_c0cm'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_kzso'
+      to: [
+        CustomMapping {
+          block: [
+            'v_v9dc',
+            'v_7j3i',
+            'v_awd7',
+            'v_agmb',
+            'v_x6i1',
+            'v_lk0i',
+            'v_z1ve',
+            'v_y8yc',
+            'v_38cd',
+            'v_pf3t',
+            'v_ubv3',
+            'v_zflm',
+            'v_176l',
+            'v_r4p9',
+            'v_9mev',
+            'v_5985',
+            'v_thb7',
+            'v_ii0g',
+            'v_t2rh',
+            'v_q6zk',
+            'v_owk6',
+            'v_n7je',
+            'v_sady',
+            'v_vff8',
+            'v_y400',
+            'v_jytt',
+            'v_u99a',
+            'v_03oq',
+            'v_88bi',
+            'v_op5u',
+            'v_7jdm',
+            'v_buhd',
+            'v_87ug',
+            'v_qz7i',
+            'v_c9ph',
+            'v_fhjk',
+            'v_f6pq',
+            'v_0eir',
+            'v_fyt5',
+            'v_ai43',
+            'v_ofhd',
+            'v_nm6r',
+            'v_gdh1',
+            'v_pv0m',
+            'v_xf8e',
+            'v_t27l',
+            'v_mom6',
+            'v_a506',
+            'v_x9tt',
+            'v_1yil',
+            'v_gfiq',
+            'v_3a5z',
+            'v_3mw4',
+            'v_tsf1',
+            'v_9c4r',
+            'v_4v9n',
+            'v_yp9h',
+            'v_9dbv',
+            'v_o11o',
+            'v_8fc5',
+            'v_qu3y',
+            'v_grj8',
+            'v_5v87',
+            'v_stz5',
+            'v_y2yp',
+            'v_7cyg',
+            'v_aahf',
+            'v_pzwx',
+            'v_ntca',
+            'v_8ujj',
+            'v_7rbh',
+            'v_0itv'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_lflt'
+      to: [
+        CustomMapping {
+          block: [
+            'v_v9dc',
+            'v_7j3i',
+            'v_awd7',
+            'v_agmb',
+            'v_x6i1',
+            'v_lk0i',
+            'v_z1ve',
+            'v_y8yc',
+            'v_38cd',
+            'v_pf3t',
+            'v_ubv3',
+            'v_zflm',
+            'v_176l',
+            'v_r4p9',
+            'v_9mev',
+            'v_5985',
+            'v_thb7',
+            'v_ii0g',
+            'v_t2rh',
+            'v_q6zk',
+            'v_owk6',
+            'v_n7je',
+            'v_sady',
+            'v_vff8',
+            'v_y400',
+            'v_jytt',
+            'v_u99a',
+            'v_03oq',
+            'v_88bi',
+            'v_op5u',
+            'v_7jdm',
+            'v_buhd',
+            'v_87ug',
+            'v_qz7i',
+            'v_c9ph',
+            'v_fhjk',
+            'v_f6pq',
+            'v_0eir',
+            'v_fyt5',
+            'v_ai43',
+            'v_ofhd',
+            'v_nm6r',
+            'v_gdh1',
+            'v_pv0m',
+            'v_xf8e',
+            'v_t27l',
+            'v_mom6',
+            'v_a506',
+            'v_x9tt',
+            'v_1yil',
+            'v_gfiq',
+            'v_3a5z',
+            'v_3mw4',
+            'v_tsf1',
+            'v_9c4r',
+            'v_4v9n',
+            'v_yp9h',
+            'v_9dbv',
+            'v_o11o',
+            'v_8fc5',
+            'v_qu3y',
+            'v_grj8',
+            'v_5v87',
+            'v_stz5',
+            'v_y2yp',
+            'v_7cyg',
+            'v_aahf',
+            'v_pzwx',
+            'v_ntca',
+            'v_8ujj',
+            'v_7rbh',
+            'v_0itv'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_y4yr'
+      to: [
+        CustomMapping {
+          block: [
+            'v_v9dc',
+            'v_7j3i',
+            'v_awd7',
+            'v_agmb',
+            'v_x6i1',
+            'v_lk0i',
+            'v_z1ve',
+            'v_y8yc',
+            'v_38cd',
+            'v_pf3t',
+            'v_ubv3',
+            'v_zflm',
+            'v_176l',
+            'v_r4p9',
+            'v_9mev',
+            'v_5985',
+            'v_thb7',
+            'v_ii0g',
+            'v_t2rh',
+            'v_q6zk',
+            'v_owk6',
+            'v_n7je',
+            'v_sady',
+            'v_vff8',
+            'v_y400',
+            'v_jytt',
+            'v_u99a',
+            'v_03oq',
+            'v_88bi',
+            'v_op5u',
+            'v_7jdm',
+            'v_buhd',
+            'v_87ug',
+            'v_qz7i',
+            'v_c9ph',
+            'v_fhjk',
+            'v_f6pq',
+            'v_0eir',
+            'v_fyt5',
+            'v_ai43',
+            'v_ofhd',
+            'v_nm6r',
+            'v_gdh1',
+            'v_pv0m',
+            'v_xf8e',
+            'v_t27l',
+            'v_mom6',
+            'v_a506',
+            'v_x9tt',
+            'v_1yil',
+            'v_gfiq',
+            'v_3a5z',
+            'v_3mw4',
+            'v_tsf1',
+            'v_9c4r',
+            'v_4v9n',
+            'v_yp9h',
+            'v_9dbv',
+            'v_o11o',
+            'v_8fc5',
+            'v_qu3y',
+            'v_grj8',
+            'v_5v87',
+            'v_stz5',
+            'v_y2yp',
+            'v_7cyg',
+            'v_aahf',
+            'v_pzwx',
+            'v_ntca',
+            'v_8ujj',
+            'v_7rbh',
+            'v_0itv'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_csdn'
+      to: [
+        CustomMapping {
+          block: [
+            'v_v9dc',
+            'v_7j3i',
+            'v_awd7',
+            'v_agmb',
+            'v_x6i1',
+            'v_lk0i',
+            'v_z1ve',
+            'v_y8yc',
+            'v_38cd',
+            'v_pf3t',
+            'v_ubv3',
+            'v_zflm',
+            'v_176l',
+            'v_r4p9',
+            'v_9mev',
+            'v_5985',
+            'v_thb7',
+            'v_ii0g',
+            'v_t2rh',
+            'v_q6zk',
+            'v_owk6',
+            'v_n7je',
+            'v_sady',
+            'v_vff8',
+            'v_y400',
+            'v_jytt',
+            'v_u99a',
+            'v_03oq',
+            'v_88bi',
+            'v_op5u',
+            'v_7jdm',
+            'v_buhd',
+            'v_87ug',
+            'v_qz7i',
+            'v_c9ph',
+            'v_fhjk',
+            'v_f6pq',
+            'v_0eir',
+            'v_fyt5',
+            'v_ai43',
+            'v_ofhd',
+            'v_nm6r',
+            'v_gdh1',
+            'v_pv0m',
+            'v_xf8e',
+            'v_t27l',
+            'v_mom6',
+            'v_a506',
+            'v_x9tt',
+            'v_1yil',
+            'v_gfiq',
+            'v_3a5z',
+            'v_3mw4',
+            'v_tsf1',
+            'v_9c4r',
+            'v_4v9n',
+            'v_yp9h',
+            'v_9dbv',
+            'v_o11o',
+            'v_8fc5',
+            'v_qu3y',
+            'v_grj8',
+            'v_5v87',
+            'v_stz5',
+            'v_y2yp',
+            'v_7cyg',
+            'v_aahf',
+            'v_pzwx',
+            'v_ntca',
+            'v_8ujj',
+            'v_7rbh',
+            'v_0itv'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_z4lf'
+      to: [
+        CustomMapping {
+          block: [
+            'v_v9dc',
+            'v_7j3i',
+            'v_awd7',
+            'v_agmb',
+            'v_x6i1',
+            'v_lk0i',
+            'v_z1ve',
+            'v_y8yc',
+            'v_38cd',
+            'v_pf3t',
+            'v_ubv3',
+            'v_zflm',
+            'v_176l',
+            'v_r4p9',
+            'v_9mev',
+            'v_5985',
+            'v_thb7',
+            'v_ii0g',
+            'v_t2rh',
+            'v_q6zk',
+            'v_owk6',
+            'v_n7je',
+            'v_sady',
+            'v_vff8',
+            'v_y400',
+            'v_jytt',
+            'v_u99a',
+            'v_03oq',
+            'v_88bi',
+            'v_op5u',
+            'v_7jdm',
+            'v_buhd',
+            'v_87ug',
+            'v_qz7i',
+            'v_c9ph',
+            'v_fhjk',
+            'v_f6pq',
+            'v_0eir',
+            'v_fyt5',
+            'v_ai43',
+            'v_ofhd',
+            'v_nm6r',
+            'v_gdh1',
+            'v_pv0m',
+            'v_xf8e',
+            'v_t27l',
+            'v_mom6',
+            'v_a506',
+            'v_x9tt',
+            'v_1yil',
+            'v_gfiq',
+            'v_3a5z',
+            'v_3mw4',
+            'v_tsf1',
+            'v_9c4r',
+            'v_4v9n',
+            'v_yp9h',
+            'v_9dbv',
+            'v_o11o',
+            'v_8fc5',
+            'v_qu3y',
+            'v_grj8',
+            'v_5v87',
+            'v_stz5',
+            'v_y2yp',
+            'v_7cyg',
+            'v_aahf',
+            'v_pzwx',
+            'v_ntca',
+            'v_8ujj',
+            'v_7rbh',
+            'v_0itv'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_pbxf'
+      to: [
+        CustomMapping {
+          block: [
+            'v_v9dc',
+            'v_7j3i',
+            'v_awd7',
+            'v_agmb',
+            'v_x6i1',
+            'v_lk0i',
+            'v_z1ve',
+            'v_y8yc',
+            'v_38cd',
+            'v_pf3t',
+            'v_ubv3',
+            'v_zflm',
+            'v_176l',
+            'v_r4p9',
+            'v_9mev',
+            'v_5985',
+            'v_thb7',
+            'v_ii0g',
+            'v_t2rh',
+            'v_q6zk',
+            'v_owk6',
+            'v_n7je',
+            'v_sady',
+            'v_vff8',
+            'v_y400',
+            'v_jytt',
+            'v_u99a',
+            'v_03oq',
+            'v_88bi',
+            'v_op5u',
+            'v_7jdm',
+            'v_buhd',
+            'v_87ug',
+            'v_qz7i',
+            'v_c9ph',
+            'v_fhjk',
+            'v_f6pq',
+            'v_0eir',
+            'v_fyt5',
+            'v_ai43',
+            'v_ofhd',
+            'v_nm6r',
+            'v_gdh1',
+            'v_pv0m',
+            'v_xf8e',
+            'v_t27l',
+            'v_mom6',
+            'v_a506',
+            'v_x9tt',
+            'v_1yil',
+            'v_gfiq',
+            'v_3a5z',
+            'v_3mw4',
+            'v_tsf1',
+            'v_9c4r',
+            'v_4v9n',
+            'v_yp9h',
+            'v_9dbv',
+            'v_o11o',
+            'v_8fc5',
+            'v_qu3y',
+            'v_grj8',
+            'v_5v87',
+            'v_stz5',
+            'v_y2yp',
+            'v_7cyg',
+            'v_aahf',
+            'v_pzwx',
+            'v_ntca',
+            'v_8ujj',
+            'v_7rbh',
+            'v_0itv'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_6n9e'
+      to: [
+        CustomMapping {
+          block: [
+            'v_v9dc',
+            'v_7j3i',
+            'v_awd7',
+            'v_agmb',
+            'v_x6i1',
+            'v_lk0i',
+            'v_z1ve',
+            'v_y8yc',
+            'v_38cd',
+            'v_pf3t',
+            'v_ubv3',
+            'v_zflm',
+            'v_176l',
+            'v_r4p9',
+            'v_9mev',
+            'v_5985',
+            'v_thb7',
+            'v_ii0g',
+            'v_t2rh',
+            'v_q6zk',
+            'v_owk6',
+            'v_n7je',
+            'v_sady',
+            'v_vff8',
+            'v_y400',
+            'v_jytt',
+            'v_u99a',
+            'v_03oq',
+            'v_88bi',
+            'v_op5u',
+            'v_7jdm',
+            'v_buhd',
+            'v_87ug',
+            'v_qz7i',
+            'v_c9ph',
+            'v_fhjk',
+            'v_f6pq',
+            'v_0eir',
+            'v_fyt5',
+            'v_ai43',
+            'v_ofhd',
+            'v_nm6r',
+            'v_gdh1',
+            'v_pv0m',
+            'v_xf8e',
+            'v_t27l',
+            'v_mom6',
+            'v_a506',
+            'v_x9tt',
+            'v_1yil',
+            'v_gfiq',
+            'v_3a5z',
+            'v_3mw4',
+            'v_tsf1',
+            'v_9c4r',
+            'v_4v9n',
+            'v_yp9h',
+            'v_9dbv',
+            'v_o11o',
+            'v_8fc5',
+            'v_qu3y',
+            'v_grj8',
+            'v_5v87',
+            'v_stz5',
+            'v_y2yp',
+            'v_7cyg',
+            'v_aahf',
+            'v_pzwx',
+            'v_ntca',
+            'v_8ujj',
+            'v_7rbh',
+            'v_0itv'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_c0cm'
+      to: [
+        CustomMapping {
+          block: [
+            'v_v9dc',
+            'v_7j3i',
+            'v_awd7',
+            'v_agmb',
+            'v_x6i1',
+            'v_lk0i',
+            'v_z1ve',
+            'v_y8yc',
+            'v_38cd',
+            'v_pf3t',
+            'v_ubv3',
+            'v_zflm',
+            'v_176l',
+            'v_r4p9',
+            'v_9mev',
+            'v_5985',
+            'v_thb7',
+            'v_ii0g',
+            'v_t2rh',
+            'v_q6zk',
+            'v_owk6',
+            'v_n7je',
+            'v_sady',
+            'v_vff8',
+            'v_y400',
+            'v_jytt',
+            'v_u99a',
+            'v_03oq',
+            'v_88bi',
+            'v_op5u',
+            'v_7jdm',
+            'v_buhd',
+            'v_87ug',
+            'v_qz7i',
+            'v_c9ph',
+            'v_fhjk',
+            'v_f6pq',
+            'v_0eir',
+            'v_fyt5',
+            'v_ai43',
+            'v_ofhd',
+            'v_nm6r',
+            'v_gdh1',
+            'v_pv0m',
+            'v_xf8e',
+            'v_t27l',
+            'v_mom6',
+            'v_a506',
+            'v_x9tt',
+            'v_1yil',
+            'v_gfiq',
+            'v_3a5z',
+            'v_3mw4',
+            'v_tsf1',
+            'v_9c4r',
+            'v_4v9n',
+            'v_yp9h',
+            'v_9dbv',
+            'v_o11o',
+            'v_8fc5',
+            'v_qu3y',
+            'v_grj8',
+            'v_5v87',
+            'v_stz5',
+            'v_y2yp',
+            'v_7cyg',
+            'v_aahf',
+            'v_pzwx',
+            'v_ntca',
+            'v_8ujj',
+            'v_7rbh',
+            'v_0itv'
+          ]
+          disabled: true
+        }
+      ]
+    }
+  ]
+  view: TabLayout {
     label: 'View 1'
-    width: 1300
-    height: 14000
-    grid_size: 20
-    auto_expand_vertically: true
-    block title {
-      position: pos(20, 20, 1260, 60)
-    }
-    block t_66xu {
-      position: pos(20, 9120, 1260, 60)
-    }
-    block t_72af {
-      position: pos(20, 3060, 1260, 60)
-    }
-    block t_im27 {
-      position: pos(20, 4580, 1260, 60)
-    }
-    block t_mhcb {
-      position: pos(20, 10640, 1260, 60)
-    }
-    block t_o42p {
-      position: pos(20, 1540, 1260, 60)
-    }
-    block t_xtje {
-      position: pos(20, 7600, 1260, 60)
-    }
-    block t_zrms {
-      position: pos(20, 6080, 1260, 60)
-    }
-    block v_03oq {
-      position: pos(620, 4960, 600, 380)
-    }
-    block v_0eir {
-      position: pos(780, 6860, 500, 300)
-    }
-    block v_0itv {
-      position: pos(40, 13600, 600, 380)
-    }
-    block v_176l {
-      position: pos(20, 2320, 500, 300)
-    }
-    block v_1yil {
-      position: pos(780, 9180, 500, 300)
-    }
-    block v_38cd {
-      position: pos(20, 1600, 500, 300)
-    }
-    block v_3a5z {
-      position: pos(620, 9500, 600, 380)
-    }
-    block v_3mw4 {
-      position: pos(20, 9900, 500, 300)
-    }
-    block v_4v9n {
-      position: pos(660, 12200, 600, 380)
-    }
-    block v_5985 {
-      position: pos(620, 2640, 600, 380)
-    }
-    block v_5v87 {
-      position: pos(20, 11740, 500, 380)
-    }
-    block v_7cyg {
-      position: pos(200, 12160, 500, 300)
-    }
-    block v_7j3i {
-      position: pos(780, 80, 500, 300)
-    }
-    block v_7jdm {
-      position: pos(20, 5680, 500, 380)
-    }
-    block v_7rbh {
-      position: pos(380, 11260, 500, 380)
-    }
-    block v_87ug {
-      position: pos(20, 6140, 500, 300)
-    }
-    block v_88bi {
-      position: pos(20, 5360, 500, 300)
-    }
-    block v_8fc5 {
-      position: pos(620, 11020, 600, 380)
-    }
-    block v_8ujj {
-      position: pos(200, 13280, 500, 300)
-    }
-    block v_9c4r {
-      position: pos(20, 10220, 500, 380)
-    }
-    block v_9dbv {
-      position: pos(780, 10700, 500, 300)
-    }
-    block v_9mev {
-      position: pos(20, 2640, 500, 380)
-    }
-    block v_a506 {
-      position: pos(620, 8700, 600, 380)
-    }
-    block v_aahf {
-      position: pos(580, 12880, 500, 380)
-    }
-    block v_agmb {
-      position: pos(620, 400, 600, 380)
-    }
-    block v_ai43 {
-      position: pos(620, 7180, 600, 380)
-    }
-    block v_awd7 {
-      position: pos(20, 400, 500, 380)
-    }
-    block v_buhd {
-      position: pos(620, 5680, 600, 380)
-    }
-    block v_c9ph {
-      position: pos(20, 6460, 500, 380)
-    }
-    block v_f6pq {
-      position: pos(20, 6860, 500, 300)
-    }
-    block v_fhjk {
-      position: pos(620, 6460, 600, 380)
-    }
-    block v_fyt5 {
-      position: pos(20, 7180, 500, 380)
-    }
-    block v_gdh1 {
-      position: pos(20, 7980, 500, 380)
-    }
-    block v_gfiq {
-      position: pos(20, 9500, 500, 380)
-    }
-    block v_grj8 {
-      position: pos(780, 11420, 500, 300)
-    }
-    block v_ii0g {
-      position: pos(780, 3120, 500, 300)
-    }
-    block v_jytt {
-      position: pos(780, 4640, 500, 300)
-    }
-    block v_lk0i {
-      position: pos(780, 800, 500, 300)
-    }
-    block v_mom6 {
-      position: pos(20, 8700, 500, 380)
-    }
-    block v_n7je {
-      position: pos(780, 3840, 500, 300)
-    }
-    block v_nm6r {
-      position: pos(780, 7660, 500, 300)
-    }
-    block v_ntca {
-      position: pos(-20, 12920, 500, 300)
-    }
-    block v_o11o {
-      position: pos(20, 11020, 500, 380)
-    }
-    block v_ofhd {
-      position: pos(20, 7660, 500, 300)
-    }
-    block v_op5u {
-      position: pos(780, 5360, 500, 300)
-    }
-    block v_owk6 {
-      position: pos(20, 3840, 500, 300)
-    }
-    block v_pf3t {
-      position: pos(780, 1600, 500, 300)
-    }
-    block v_pv0m {
-      position: pos(620, 7980, 600, 380)
-    }
-    block v_pzwx {
-      position: pos(40, 12480, 600, 380)
-    }
-    block v_q6zk {
-      position: pos(620, 3440, 600, 380)
-    }
-    block v_qu3y {
-      position: pos(20, 11420, 500, 300)
-    }
-    block v_qz7i {
-      position: pos(780, 6140, 500, 300)
-    }
-    block v_r4p9 {
-      position: pos(780, 2320, 500, 300)
-    }
-    block v_sady {
-      position: pos(20, 4160, 500, 380)
-    }
-    block v_stz5 {
-      position: pos(620, 11740, 600, 380)
-    }
-    block v_t27l {
-      position: pos(780, 8380, 500, 300)
-    }
-    block v_t2rh {
-      position: pos(20, 3440, 500, 380)
-    }
-    block v_thb7 {
-      position: pos(20, 3120, 500, 300)
-    }
-    block v_tsf1 {
-      position: pos(780, 9900, 500, 300)
-    }
-    block v_u99a {
-      position: pos(20, 4960, 500, 380)
-    }
-    block v_ubv3 {
-      position: pos(20, 1920, 500, 380)
-    }
-    block v_v9dc {
-      position: pos(20, 80, 500, 300)
-    }
-    block v_vff8 {
-      position: pos(620, 4160, 600, 380)
-    }
-    block v_x6i1 {
-      position: pos(20, 800, 500, 300)
-    }
-    block v_x9tt {
-      position: pos(20, 9180, 500, 300)
-    }
-    block v_xf8e {
-      position: pos(20, 8380, 500, 300)
-    }
-    block v_y2yp {
-      position: pos(720, 10220, 500, 300)
-    }
-    block v_y400 {
-      position: pos(20, 4640, 500, 300)
-    }
-    block v_y8yc {
-      position: pos(620, 1120, 600, 380)
-    }
-    block v_yp9h {
-      position: pos(20, 10700, 500, 300)
-    }
-    block v_z1ve {
-      position: pos(20, 1120, 500, 380)
-    }
-    block v_zflm {
-      position: pos(620, 1920, 600, 380)
-    }
-    mobile {
-      mode: 'auto'
+    tab view_1: CanvasLayout {
+      label: 'Tab 1'
+      width: 1300
+      height: 14000
+      grid_size: 20
+      auto_expand_vertically: true
+      block title {
+        position: pos(20, 20, 1260, 60)
+      }
+      block t_66xu {
+        position: pos(20, 9120, 1260, 60)
+      }
+      block t_72af {
+        position: pos(20, 3060, 1260, 60)
+      }
+      block t_im27 {
+        position: pos(20, 4580, 1260, 60)
+      }
+      block t_mhcb {
+        position: pos(20, 10640, 1260, 60)
+      }
+      block t_o42p {
+        position: pos(20, 1540, 1260, 60)
+      }
+      block t_xtje {
+        position: pos(20, 7600, 1260, 60)
+      }
+      block t_zrms {
+        position: pos(20, 6080, 1260, 60)
+      }
+      block v_03oq {
+        position: pos(620, 4960, 600, 380)
+      }
+      block v_0eir {
+        position: pos(780, 6860, 500, 300)
+      }
+      block v_0itv {
+        position: pos(40, 13600, 600, 380)
+      }
+      block v_176l {
+        position: pos(20, 2320, 500, 300)
+      }
+      block v_1yil {
+        position: pos(780, 9180, 500, 300)
+      }
+      block v_38cd {
+        position: pos(20, 1600, 500, 300)
+      }
+      block v_3a5z {
+        position: pos(620, 9500, 600, 380)
+      }
+      block v_3mw4 {
+        position: pos(20, 9900, 500, 300)
+      }
+      block v_4v9n {
+        position: pos(660, 12200, 600, 380)
+      }
+      block v_5985 {
+        position: pos(620, 2640, 600, 380)
+      }
+      block v_5v87 {
+        position: pos(20, 11740, 500, 380)
+      }
+      block v_7cyg {
+        position: pos(200, 12160, 500, 300)
+      }
+      block v_7j3i {
+        position: pos(780, 80, 500, 300)
+      }
+      block v_7jdm {
+        position: pos(20, 5680, 500, 380)
+      }
+      block v_7rbh {
+        position: pos(380, 11260, 500, 380)
+      }
+      block v_87ug {
+        position: pos(20, 6140, 500, 300)
+      }
+      block v_88bi {
+        position: pos(20, 5360, 500, 300)
+      }
+      block v_8fc5 {
+        position: pos(620, 11020, 600, 380)
+      }
+      block v_8ujj {
+        position: pos(200, 13280, 500, 300)
+      }
+      block v_9c4r {
+        position: pos(20, 10220, 500, 380)
+      }
+      block v_9dbv {
+        position: pos(780, 10700, 500, 300)
+      }
+      block v_9mev {
+        position: pos(20, 2640, 500, 380)
+      }
+      block v_a506 {
+        position: pos(620, 8700, 600, 380)
+      }
+      block v_aahf {
+        position: pos(580, 12880, 500, 380)
+      }
+      block v_agmb {
+        position: pos(620, 400, 600, 380)
+      }
+      block v_ai43 {
+        position: pos(620, 7180, 600, 380)
+      }
+      block v_awd7 {
+        position: pos(20, 400, 500, 380)
+      }
+      block v_buhd {
+        position: pos(620, 5680, 600, 380)
+      }
+      block v_c9ph {
+        position: pos(20, 6460, 500, 380)
+      }
+      block v_f6pq {
+        position: pos(20, 6860, 500, 300)
+      }
+      block v_fhjk {
+        position: pos(620, 6460, 600, 380)
+      }
+      block v_fyt5 {
+        position: pos(20, 7180, 500, 380)
+      }
+      block v_gdh1 {
+        position: pos(20, 7980, 500, 380)
+      }
+      block v_gfiq {
+        position: pos(20, 9500, 500, 380)
+      }
+      block v_grj8 {
+        position: pos(780, 11420, 500, 300)
+      }
+      block v_ii0g {
+        position: pos(780, 3120, 500, 300)
+      }
+      block v_jytt {
+        position: pos(780, 4640, 500, 300)
+      }
+      block v_lk0i {
+        position: pos(780, 800, 500, 300)
+      }
+      block v_mom6 {
+        position: pos(20, 8700, 500, 380)
+      }
+      block v_n7je {
+        position: pos(780, 3840, 500, 300)
+      }
+      block v_nm6r {
+        position: pos(780, 7660, 500, 300)
+      }
+      block v_ntca {
+        position: pos(-20, 12920, 500, 300)
+      }
+      block v_o11o {
+        position: pos(20, 11020, 500, 380)
+      }
+      block v_ofhd {
+        position: pos(20, 7660, 500, 300)
+      }
+      block v_op5u {
+        position: pos(780, 5360, 500, 300)
+      }
+      block v_owk6 {
+        position: pos(20, 3840, 500, 300)
+      }
+      block v_pf3t {
+        position: pos(780, 1600, 500, 300)
+      }
+      block v_pv0m {
+        position: pos(620, 7980, 600, 380)
+      }
+      block v_pzwx {
+        position: pos(40, 12480, 600, 380)
+      }
+      block v_q6zk {
+        position: pos(620, 3440, 600, 380)
+      }
+      block v_qu3y {
+        position: pos(20, 11420, 500, 300)
+      }
+      block v_qz7i {
+        position: pos(780, 6140, 500, 300)
+      }
+      block v_r4p9 {
+        position: pos(780, 2320, 500, 300)
+      }
+      block v_sady {
+        position: pos(20, 4160, 500, 380)
+      }
+      block v_stz5 {
+        position: pos(620, 11740, 600, 380)
+      }
+      block v_t27l {
+        position: pos(780, 8380, 500, 300)
+      }
+      block v_t2rh {
+        position: pos(20, 3440, 500, 380)
+      }
+      block v_thb7 {
+        position: pos(20, 3120, 500, 300)
+      }
+      block v_tsf1 {
+        position: pos(780, 9900, 500, 300)
+      }
+      block v_u99a {
+        position: pos(20, 4960, 500, 380)
+      }
+      block v_ubv3 {
+        position: pos(20, 1920, 500, 380)
+      }
+      block v_v9dc {
+        position: pos(20, 80, 500, 300)
+      }
+      block v_vff8 {
+        position: pos(620, 4160, 600, 380)
+      }
+      block v_x6i1 {
+        position: pos(20, 800, 500, 300)
+      }
+      block v_x9tt {
+        position: pos(20, 9180, 500, 300)
+      }
+      block v_xf8e {
+        position: pos(20, 8380, 500, 300)
+      }
+      block v_y2yp {
+        position: pos(720, 10220, 500, 300)
+      }
+      block v_y400 {
+        position: pos(20, 4640, 500, 300)
+      }
+      block v_y8yc {
+        position: pos(620, 1120, 600, 380)
+      }
+      block v_yp9h {
+        position: pos(20, 10700, 500, 300)
+      }
+      block v_z1ve {
+        position: pos(20, 1120, 500, 380)
+      }
+      block v_zflm {
+        position: pos(620, 1920, 600, 380)
+      }
+      mobile {
+        mode: 'auto'
+      }
+    }
+    tab tab_7c06: CanvasLayout {
+      label: 'Tab 2'
+      width: 1300
+      height: 1800
+      grid_size: 20
+      auto_expand_vertically: true
+      block v_6n9e {
+        position: pos(40, 840, 500, 380)
+      }
+      block v_c0cm {
+        position: pos(680, 840, 600, 380)
+      }
+      block v_csdn {
+        position: pos(660, 420, 600, 380)
+      }
+      block v_kzso {
+        position: pos(30, 90, 500, 300)
+      }
+      block v_lflt {
+        position: pos(790, 90, 500, 300)
+      }
+      block v_pbxf {
+        position: pos(80, 1260, 500, 300)
+      }
+      block v_y4yr {
+        position: pos(40, 420, 500, 380)
+      }
+      block v_z4lf {
+        position: pos(460, 80, 500, 300)
+      }
+      mobile {
+        mode: 'auto'
+      }
     }
   }
   theme: H.themes.vanilla
