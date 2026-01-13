@@ -17,4 +17,45 @@ Dataset ecommerce {
     definition: @aql ecommerce_orders2.completed_orders_count
  / ecommerce_users2.total_users;;
   }
+  metric high_value_users {
+    label: "High value users"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql ecommerce_orders2
+| group(ecommerce_users2.id)
+| filter(
+    count(ecommerce_orders2.id)
+    | where(ecommerce_orders2.status == 'delivered')
+    >= 20
+  )
+| count();;
+    format: ""
+  }
+  metric medium_value_user {
+    label: "Medium Value User"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql ecommerce_orders2
+| filter(ecommerce_orders2.status == 'delivered')
+| group(ecommerce_users2.id)
+| filter(count(ecommerce_orders2.id) >= 5 and count(ecommerce_orders2.id) <= 19)
+| count()
+;;
+  }
+  metric low_value_user {
+    label: "Low Value User"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql ecommerce_orders2
+| group(ecommerce_users2.id)
+| filter(
+    count(ecommerce_orders2.id)
+    | where(ecommerce_orders2.status == 'delivered')
+    <= 2
+  )
+| count();;
+  }
 }

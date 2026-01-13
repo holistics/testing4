@@ -71,97 +71,10 @@ Dashboard ecommerce_dashboard_thang {
       }
     }
   }
-  block v_e07d: VizBlock {
-    label: 'Identify users with highest or lowest order counts'
-    viz: DataTable {
-      dataset: ecommerce
-      fields: [
-        VizFieldFull {
-          ref: r(ecommerce_users2.full_name)
-          format {
-            type: 'text'
-          }
-        },
-        VizFieldFull {
-          ref: r(ecommerce_orders2.all_orders_count)
-          format {
-            type: 'text'
-          }
-          uname: 'custom_all_orders_count_1'
-        }
-      ]
-      settings {
-        show_row_number: true
-        sorts: [
-          SortSetting {
-            key: 'custom_all_orders_count_1'
-            direction: 'desc'
-          }
-        ]
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
   block v_up3p: VizBlock {
     label: 'Top customer by successful orders'
     viz: DataTable {
       dataset: ecommerce
-      fields: [
-        VizFieldFull {
-          ref: r(ecommerce_users2.full_name)
-          format {
-            type: 'text'
-          }
-        },
-        VizFieldFull {
-          ref: r(ecommerce_users2.email)
-          format {
-            type: 'text'
-          }
-        },
-        VizFieldFull {
-          ref: r(ecommerce_orders2.completed_orders_count)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-          uname: 'custom_completed_orders_count_1'
-        },
-        VizFieldFull {
-          ref: r(ecommerce_orders2.all_orders_count)
-          format {
-            type: 'text'
-          }
-        }
-      ]
-      settings {
-        show_row_number: true
-        sorts: [
-          SortSetting {
-            key: 'custom_completed_orders_count_1'
-            direction: 'desc'
-          }
-        ]
-        row_limit: 5000
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_8mz4: VizBlock {
-    label: 'High-value → retention, loyalty, perks'
-    viz: DataTable {
-      dataset: ecommerce
-      filter {
-        field: r(ecommerce_orders2.completed_orders_count)
-        operator: 'greater_than'
-        value: '5'
-      }
       fields: [
         VizFieldFull {
           ref: r(ecommerce_users2.full_name)
@@ -308,7 +221,8 @@ Dashboard ecommerce_dashboard_thang {
     }
   }
   block v_5iy6: VizBlock {
-    label: 'Completed orders by Age group'
+    label: 'Which Age Groups Complete More Orders?'
+    description: 'Each dot represents an age group'
     viz: ScatterChart {
       dataset: ecommerce
       x_col: VizFieldFull {
@@ -333,29 +247,6 @@ Dashboard ecommerce_dashboard_thang {
       }
       settings {
         row_limit: 5000
-      }
-    }
-  }
-  block v_kfvd: VizBlock {
-    label: 'Delivered Orders'
-    viz: DataTable {
-      dataset: ecommerce
-      fields: [
-        VizFieldFull {
-          ref: r(ecommerce_orders2.completed_orders_count)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        }
-      ]
-      settings {
-        show_row_number: true
-        row_limit: 5000
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
       }
     }
   }
@@ -406,61 +297,141 @@ Dashboard ecommerce_dashboard_thang {
       hide_label: true
     }
   }
+  block v_ch4j: VizBlock {
+    label: 'High value users'
+    viz: DataTable {
+      dataset: ecommerce
+      filter {
+        field: r(ecommerce_orders2.completed_orders_count)
+        operator: 'greater_than'
+        value: '20'
+      }
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_users2.full_name)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_orders2.completed_orders_count)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'custom_completed_orders_count_1'
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_k1c5: VizBlock {
+    label: 'Low Value User, Medium Value User, and High value users'
+    viz: PieChart {
+      dataset: ecommerce
+      series {
+        field: VizFieldFull {
+          ref: r(ecommerce.low_value_user)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+        settings {
+          color_palette: 0
+        }
+      }
+      series {
+        field: VizFieldFull {
+          ref: r(ecommerce.medium_value_user)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+        settings {
+          color_palette: 0
+        }
+      }
+      series {
+        field: VizFieldFull {
+          ref: r(ecommerce.high_value_users)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+        settings {
+          color_palette: 0
+        }
+      }
+      settings {
+        data_label_position: 'none'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
 
   view: TabLayout {
     label: 'View 1'
     tab view_1: CanvasLayout {
       label: 'Tab 1'
       width: 1300
-      height: 2500
+      height: 3360
       grid_size: 20
       auto_expand_vertically: true
       block title {
         position: pos(20, 20, 1260, 60)
       }
       block v_noyg {
-        position: pos(20, 100, 620, 420)
+        position: pos(660, 1140, 620, 420)
         layer: 1
       }
       block v_xita {
-        position: pos(660, 100, 620, 420)
+        position: pos(660, 260, 620, 420)
         layer: 2
       }
-      block v_e07d {
-        position: pos(20, 540, 620, 420)
-        layer: 3
-      }
       block v_up3p {
-        position: pos(660, 540, 620, 420)
+        position: pos(660, 700, 620, 420)
         layer: 4
       }
-      block v_8mz4 {
-        position: pos(20, 980, 620, 420)
-        layer: 5
-      }
       block v_o1kl {
-        position: pos(660, 980, 620, 420)
+        position: pos(600, 2040, 620, 420)
         layer: 6
       }
       block v_vs63 {
-        position: pos(20, 1420, 620, 420)
+        position: pos(20, 2920, 620, 420)
         layer: 7
       }
       block v_5iy6 {
-        position: pos(660, 1420, 620, 420)
+        position: pos(20, 260, 620, 420)
         layer: 8
       }
-      block v_kfvd {
-        position: pos(20, 1860, 620, 420)
-        layer: 9
-      }
       block v_inr6 {
-        position: pos(660, 1860, 620, 420)
+        position: pos(20, 80, 620, 160)
         layer: 10
       }
       block v_570z {
-        position: pos(20, 2300, 260, 180)
+        position: pos(660, 80, 600, 160)
         layer: 11
+      }
+      block v_ch4j {
+        position: pos(20, 700, 620, 420)
+        layer: 6
+      }
+      block v_k1c5 {
+        position: pos(20, 1140, 620, 420)
+        layer: 12
       }
       mobile {
         mode: 'auto'
@@ -485,10 +456,11 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_e07d',
-            'v_8mz4',
-            'v_5iy6',
-            'v_inr6'
+            'v_xita',
+            'v_up3p',
+            'v_o1kl',
+            'v_570z',
+            'v_ch4j'
           ]
           disabled: true
         }
@@ -499,25 +471,11 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_e07d',
-            'v_8mz4',
-            'v_5iy6',
-            'v_inr6'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_e07d'
-      to: [
-        CustomMapping {
-          block: [
             'v_noyg',
-            'v_xita',
-            'v_8mz4',
-            'v_5iy6',
-            'v_inr6'
+            'v_up3p',
+            'v_o1kl',
+            'v_570z',
+            'v_ch4j'
           ]
           disabled: true
         }
@@ -528,25 +486,11 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_8mz4',
-            'v_5iy6',
-            'v_inr6'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_8mz4'
-      to: [
-        CustomMapping {
-          block: [
             'v_noyg',
             'v_xita',
-            'v_e07d',
-            'v_up3p',
-            'v_5iy6',
-            'v_inr6'
+            'v_o1kl',
+            'v_570z',
+            'v_ch4j'
           ]
           disabled: true
         }
@@ -557,8 +501,11 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_5iy6',
-            'v_inr6'
+            'v_noyg',
+            'v_xita',
+            'v_up3p',
+            'v_570z',
+            'v_ch4j'
           ]
           disabled: true
         }
@@ -568,24 +515,7 @@ Dashboard ecommerce_dashboard_thang {
       from: 'v_5iy6'
       to: [
         CustomMapping {
-          block: [
-            'v_noyg',
-            'v_xita',
-            'v_e07d',
-            'v_up3p',
-            'v_8mz4',
-            'v_o1kl',
-            'v_inr6'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_kfvd'
-      to: [
-        CustomMapping {
-          block: 'v_inr6'
+          block: 'v_570z'
           disabled: true
         }
       ]
@@ -594,15 +524,38 @@ Dashboard ecommerce_dashboard_thang {
       from: 'v_inr6'
       to: [
         CustomMapping {
+          block: 'v_570z'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_570z'
+      to: [
+        CustomMapping {
           block: [
             'v_noyg',
             'v_xita',
-            'v_e07d',
             'v_up3p',
-            'v_8mz4',
             'v_o1kl',
             'v_5iy6',
-            'v_kfvd'
+            'v_inr6',
+            'v_ch4j'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ch4j'
+      to: [
+        CustomMapping {
+          block: [
+            'v_noyg',
+            'v_xita',
+            'v_up3p',
+            'v_o1kl',
+            'v_570z'
           ]
           disabled: true
         }
