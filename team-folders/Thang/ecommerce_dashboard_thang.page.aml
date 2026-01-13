@@ -1,9 +1,9 @@
 Dashboard ecommerce_dashboard_thang {
-  title: 'Ecommerce Dashboard Thang'
+  title: 'Ecommerce. Customer Order Behavior Overview.  Thang'
   description: ''
   owner: 'thang.lk@holistics.io'
   block title: TextBlock {
-    content: @md # Your title goes here ;;
+    content: @md Customer Order Behavior Overview;;
   }
   block v_noyg: VizBlock {
     label: 'Order created in Dec 2022'
@@ -334,46 +334,48 @@ Dashboard ecommerce_dashboard_thang {
   }
   block v_k1c5: VizBlock {
     label: 'Low Value User, Medium Value User, and High value users'
-    viz: PieChart {
+    viz: BarChart {
       dataset: ecommerce
-      series {
-        field: VizFieldFull {
-          ref: r(ecommerce.low_value_user)
-          format {
-            type: 'number'
-            pattern: 'inherited'
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce.low_value_user)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color_palette: 0
           }
         }
-        settings {
-          color_palette: 0
-        }
-      }
-      series {
-        field: VizFieldFull {
-          ref: r(ecommerce.medium_value_user)
-          format {
-            type: 'number'
-            pattern: 'inherited'
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce.medium_value_user)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color_palette: 0
           }
         }
-        settings {
-          color_palette: 0
-        }
-      }
-      series {
-        field: VizFieldFull {
-          ref: r(ecommerce.high_value_users)
-          format {
-            type: 'number'
-            pattern: 'inherited'
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce.high_value_users)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
           }
-        }
-        settings {
-          color_palette: 0
+          settings {
+            color_palette: 0
+          }
         }
       }
       settings {
-        data_label_position: 'none'
+        x_axis_show_null_datetime: false
         aggregate_awareness {
           enabled: true
           debug_comments: true
@@ -398,7 +400,7 @@ Dashboard ecommerce_dashboard_thang {
         layer: 1
       }
       block v_xita {
-        position: pos(660, 260, 620, 420)
+        position: pos(20, 1140, 620, 420)
         layer: 2
       }
       block v_up3p {
@@ -406,7 +408,7 @@ Dashboard ecommerce_dashboard_thang {
         layer: 4
       }
       block v_o1kl {
-        position: pos(600, 2040, 620, 420)
+        position: pos(20, 1580, 620, 420)
         layer: 6
       }
       block v_vs63 {
@@ -422,7 +424,7 @@ Dashboard ecommerce_dashboard_thang {
         layer: 10
       }
       block v_570z {
-        position: pos(660, 80, 600, 160)
+        position: pos(660, 80, 620, 160)
         layer: 11
       }
       block v_ch4j {
@@ -430,19 +432,9 @@ Dashboard ecommerce_dashboard_thang {
         layer: 6
       }
       block v_k1c5 {
-        position: pos(20, 1140, 620, 420)
+        position: pos(660, 260, 620, 420)
         layer: 12
       }
-      mobile {
-        mode: 'auto'
-      }
-    }
-    tab tab_an5j: CanvasLayout {
-      label: 'Tab 2'
-      width: 1300
-      height: 800
-      grid_size: 20
-      auto_expand_vertically: true
       mobile {
         mode: 'auto'
       }
