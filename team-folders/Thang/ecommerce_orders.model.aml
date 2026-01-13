@@ -50,7 +50,7 @@ Model ecommerce_orders2 {
     aggregation_type: "custom"
   }
   measure completed_orders_count {
-    label: "Completed Orders Count"
+    label: "Delivered Orders Count"
     type: "number"
     description: ""
     hidden: false

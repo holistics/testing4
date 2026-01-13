@@ -307,6 +307,35 @@ Dashboard ecommerce_dashboard_thang {
       }
     }
   }
+  block v_5iy6: VizBlock {
+    label: 'Completed orders by Age group'
+    viz: ScatterChart {
+      dataset: ecommerce
+      x_col: VizFieldFull {
+        ref: r(ecommerce_orders2.completed_orders_count)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(ecommerce_users2.measure_19910d8)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(ecommerce_users2.age_group)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+      }
+    }
+  }
 
   view: TabLayout {
     label: 'View 1'
@@ -347,6 +376,10 @@ Dashboard ecommerce_dashboard_thang {
         position: pos(20, 1420, 620, 420)
         layer: 7
       }
+      block v_5iy6 {
+        position: pos(660, 1420, 620, 420)
+        layer: 8
+      }
       mobile {
         mode: 'auto'
       }
@@ -370,8 +403,9 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_e07d',
-            'v_8mz4'
+            'v_xita',
+            'v_up3p',
+            'v_o1kl'
           ]
           disabled: true
         }
@@ -382,8 +416,9 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_e07d',
-            'v_8mz4'
+            'v_noyg',
+            'v_up3p',
+            'v_o1kl'
           ]
           disabled: true
         }
@@ -394,9 +429,8 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_noyg',
-            'v_xita',
-            'v_8mz4'
+            'v_up3p',
+            'v_o1kl'
           ]
           disabled: true
         }
@@ -406,7 +440,12 @@ Dashboard ecommerce_dashboard_thang {
       from: 'v_up3p'
       to: [
         CustomMapping {
-          block: 'v_8mz4'
+          block: [
+            'v_noyg',
+            'v_xita',
+            'v_e07d',
+            'v_o1kl'
+          ]
           disabled: true
         }
       ]
@@ -415,11 +454,21 @@ Dashboard ecommerce_dashboard_thang {
       from: 'v_8mz4'
       to: [
         CustomMapping {
+          block: 'v_o1kl'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_o1kl'
+      to: [
+        CustomMapping {
           block: [
             'v_noyg',
             'v_xita',
             'v_e07d',
-            'v_up3p'
+            'v_up3p',
+            'v_8mz4'
           ]
           disabled: true
         }

@@ -9,18 +9,4 @@ Dataset ecommerce {
   relationships: [
     relationship(ecommerce_orders2.user_id > ecommerce_users2.id, true)
   ]
-  metric metric_cccbdfd {
-    label: "Count Users"
-    type: "number"
-    hidden: false
-    description: ""
-    definition: @aql ecommerce_users2 | count(1);;
-  }
-  metric metric_0f4e065 {
-    label: "Count Users"
-    type: "number"
-    hidden: false
-    description: ""
-    definition: @aql ecommerce_users2 | count(1);;
-  }
 }
