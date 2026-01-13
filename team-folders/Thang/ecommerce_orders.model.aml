@@ -49,4 +49,14 @@ Model ecommerce_orders2 {
     definition: @sql count({{id}});;
     aggregation_type: "custom"
   }
+  measure completed_orders_count {
+    label: "Completed Orders Count"
+    type: "number"
+    description: ""
+    hidden: false
+    definition: @sql CASE 
+  WHEN {{ status }} = 'delivered' THEN {{ id }}
+END;;
+    aggregation_type: "count"
+  }
 }
