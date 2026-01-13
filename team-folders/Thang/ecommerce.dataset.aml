@@ -9,4 +9,12 @@ Dataset ecommerce {
   relationships: [
     relationship(ecommerce_orders2.user_id > ecommerce_users2.id, true)
   ]
+  metric avg_delivered_orders_per_user {
+    label: "Avg Delivered Orders Per User"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql ecommerce_orders2.completed_orders_count
+ / ecommerce_users2.total_users;;
+  }
 }

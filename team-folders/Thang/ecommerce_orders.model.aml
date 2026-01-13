@@ -43,14 +43,15 @@ Model ecommerce_orders2 {
   owner: 'thang.lk@holistics.io'
   table_name: '"ecommerce"."orders"'
   measure all_orders_count {
-    label: "All Orders Count"
+    label: "All Orders"
     type: "text"
     description: "Total Orders"
+    hidden: false
     definition: @sql count({{id}});;
     aggregation_type: "custom"
   }
   measure completed_orders_count {
-    label: "Delivered Orders Count"
+    label: "Delivered Orders"
     type: "number"
     description: ""
     hidden: false
