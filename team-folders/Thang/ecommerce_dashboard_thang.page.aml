@@ -333,7 +333,7 @@ Dashboard ecommerce_dashboard_thang {
     }
   }
   block v_k1c5: VizBlock {
-    label: 'Low Value User, Medium Value User, and High value users'
+    label: 'User Segmentation by Order'
     viz: BarChart {
       dataset: ecommerce
       y_axis {
