@@ -43,21 +43,17 @@ Model ecommerce_orders2 {
   owner: 'thang.lk@holistics.io'
   table_name: '"ecommerce"."orders"'
   measure all_orders_count {
-    label: "All Orders"
+    label: "All Orders Count"
     type: "text"
     description: "Total Orders"
-    hidden: false
     definition: @sql count({{id}});;
     aggregation_type: "custom"
   }
-  measure completed_orders_count {
-    label: "Delivered Orders"
-    type: "number"
+  measure delivered_orders_count {
+    label: "Delivered Orders Count"
+    type: "text"
     description: ""
-    hidden: false
-    definition: @sql CASE 
-  WHEN {{ status }} = 'delivered' THEN {{ id }}
-END;;
-    aggregation_type: "count"
+    definition: @sql COUNT(CASE WHEN {{ status }} = 'delivered' THEN {{ id }} ELSE NULL END);;
+    aggregation_type: "custom"
   }
 }
