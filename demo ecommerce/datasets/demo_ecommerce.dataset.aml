@@ -291,7 +291,7 @@ pre_aggregates: {
     label: "Running Total"
     type: "number"
     hidden: false
-    description: ""
+    description: "Calculates the cumulative sum of total orders over time, grouped by year based on the ecommerce_orders.created_at field."
     definition: @aql running_total(total_orders, ecommerce_orders.created_at | year());;
   }
 
