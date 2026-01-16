@@ -50,6 +50,21 @@ pre_aggregates: {
   ]
 
   // view {
+  //   model order_master{}
+  // }
+
+  // view{
+  //   model ecommerce_users {
+  //     field users_signed_up_count
+  //     field total_users
+  //     group segmentation {
+  //       field age_group
+  //       field gender
+  //     }
+
+  // }
+
+  // view {
   //   model ecommerce_users {
   //     field users_signed_up_count
   //     field total_users
@@ -261,14 +276,14 @@ pre_aggregates: {
     label: "Total Orders Across All"
     type: "number"
     hidden: false
-    description: ""
+    description: "Total number of orders placed across all records, without any filtering or grouping applied. This metric provides a single aggregated count of all orders in the dataset."
     definition: @aql count(ecommerce_orders.id) | of_all(ecommerce_orders);;
   }
   metric percent_of_total {
     label: "Percent Of Total"
     type: "number"
     hidden: false
-    description: ""
+    description: "the percentage of total orders for the current group or filter context, relative to the total number of orders across all records. This metric shows each group's contribution to the overall total orders."
     definition: @aql total_orders * 1.0 / total_orders_across_all;;
   }
   // metric abc {
@@ -289,7 +304,7 @@ pre_aggregates: {
     label: "Running Total"
     type: "number"
     hidden: false
-    description: ""
+    description: "Displays the cumulative total number of orders up to each year, based on the order creation date. This metric helps track how total orders accumulate over time, providing insight into growth trends year by year."
     definition: @aql running_total(total_orders, ecommerce_orders.created_at | year());;
   }
 
