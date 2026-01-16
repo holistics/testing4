@@ -254,7 +254,7 @@ pre_aggregates: {
     label: "Total Orders"
     type: "number"
     hidden: false
-    description: "Counts the total number of orders by calculating the number of records in the ecommerce_orders table"
+    description: "Total number of order after `01-2025`"
     definition: @aql count(ecommerce_orders.id);;
     format: "#,###"
   }
