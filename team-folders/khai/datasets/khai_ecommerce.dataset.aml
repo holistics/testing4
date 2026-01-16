@@ -20,25 +20,19 @@ Dataset khai_ecommerce {
   ]
 
   relationships: [
-    relationship(orders.user_id > users.id, true, 'one_to_many'),
-    relationship(order_items.order_id > orders.id, true, 'one_to_many'),
-    relationship(cities.country_code > countries.code, true, 'one_to_many'),
-    relationship(users.city_id > cities.id, true, 'one_to_many'),
-    relationship(order_items.product_id > products.id, true, 'one_to_many'),
-    relationship(products.merchant_id > merchants.id, true, 'one_to_many'),
-    relationship(merchants.city_id > cities.id, true, 'one_to_many'),
-    relationship(orders.created_date > khai_date_d.date_key, true, 'one_to_many')
+    relationship(orders.user_id > users.id, true),
+    relationship(order_items.order_id > orders.id, true),
+    relationship(cities.country_code > countries.code, true),
+    relationship(users.city_id > cities.id, true),
+    relationship(order_items.product_id > products.id, true),
+    relationship(products.merchant_id > merchants.id, true),
+    relationship(merchants.city_id > cities.id, true),
+    relationship(orders.created_date > khai_date_d.date_key, true)
     ,
-    relationship(products.category_id > khai_categories.id, true, 'one_to_many')
+    relationship(products.category_id > khai_categories.id, true)
   ]
 
   owner: 'khai.to+demo4@holistics.io'
-
-  // permission vendor_access {
-  //   field: r(countries.name)
-  //   operator: 'matches_user_attribute'
-  //   value: 'country_attribute' // user attribute
-  // }
 
   dimension user_acquired_at {
     model: users
@@ -82,21 +76,18 @@ Dataset khai_ecommerce {
     label: 'Revenue'
     type: 'number'
     definition: @aql sum(order_items, order_items.quantity * products.price) ;;
-    format: "[\$\$]#,###"
   }
 
   metric total_orders {
     label: 'Total Orders'
     type: 'number'
     definition: @aql count(orders.id) ;;
-    format: "#,###"
   }
 
   metric total_users {
     label: 'Total Users'
     type: 'number'
     definition: @aql count(users.id) ;;
-    format: "#,###"
   }
 
   metric dynamic_metric {
@@ -112,36 +103,5 @@ Dataset khai_ecommerce {
         , then: total_users
       )
      ;;
-    format: "#,###,\"K\""
-  }
-
-  metric gmv {
-    label: "GMV (Gross Merchandise Value)"
-    type: "number"
-    hidden: false
-    description: "GMV - Gross Merchandise Value: Total value of all orders before discount."
-    definition: @aql order_items | sum(order_items.quantity * products.price);;
-    format: "[\$\$]#,###0"
-  }
-
-  metric gmv_converted {
-    label: 'GMV (Converted)'
-    type: 'number'
-    definition: @aql case(
-      when: '🇺🇸 USD' in param_model.currency, then: gmv * 1,
-      when: '🇲🇾 MYR' in param_model.currency, then: gmv * 4.47,
-      when: '🇸🇬 SGD' in param_model.currency, then: gmv * 1.35,
-      when: '🇹🇭 THB' in param_model.currency, then: gmv * 35.5,
-      when: '🇻🇳 VND' in param_model.currency, then: gmv * 25450,
-      when: '🇦🇺 AUD' in param_model.currency, then: gmv * 1.57
-    ) ;;
-    format: "#,###0"
-  }
-  metric revenue_per_active_customers {
-    label: "Revenue Per Active Customers"
-    type: "number"
-    hidden: false
-    description: ""
-    definition: @aql revenue / total_users;;
   }
 }

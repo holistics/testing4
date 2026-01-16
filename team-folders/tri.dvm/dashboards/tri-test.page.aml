@@ -50,11 +50,7 @@ Dashboard tri_test {
       layer: 11
     }
     block v_2e00 {
-      position: pos(1380, 700, 400, 300)
-      layer: 1
-    }
-    block v_7q0t {
-      position: pos(1400, 400, 400, 300)
+      position: pos(1160, 1060, 400, 300)
       layer: 1
     }
     width: 2220
@@ -69,99 +65,7 @@ Dashboard tri_test {
      #block-v1 {
       display:none;
      }
-    
-.highcharts-root {
-  --color-primary: rgba(237,154,100,1);
-  --color-secondary: rgba(237,154,100,0.7);
-  --color-dark: rgba(237,154,100,0.5);
-}
-
-
-.highcharts-root .highcharts-column-series:nth-child(6n + 1) path.highcharts-point {
-	fill: var(--color-primary);
-}
-
-.highcharts-root .highcharts-column-series:nth-child(6n + 3) path.highcharts-point {
-	fill: var(--color-secondary);
-}
-
-.highcharts-root .highcharts-column-series:nth-child(6n + 5) path.highcharts-point {
-	fill: var(--color-dark);
-}
-
-
-
-
-
-
-
-.highcharts-root .highcharts-series:nth-child(6n + 1 of .highcharts-line-series) path.highcharts-graph {
-	stroke: var(--color-primary);
-}
-
-
-.highcharts-root .highcharts-series:nth-child(6n + 3 of .highcharts-line-series) path.highcharts-graph {
-	stroke: var(--color-secondary);
-}
-
-.highcharts-root .highcharts-series:nth-child(6n + 5 of .highcharts-line-series) path.highcharts-graph {
-	stroke: var(--color-dark);
-}
-
-
-
-.highcharts-root .highcharts-series-group :nth-child(3n + 1 of .highcharts-markers) path {
-  fill: var(--color-primary);
-}
-
-.highcharts-root .highcharts-series-group :nth-child(3n + 2 of .highcharts-markers) path {
-  fill: var(--color-secondary);
-}
-
-.highcharts-root .highcharts-series-group :nth-child(3n + 3 of .highcharts-markers) path {
-  fill: var(--color-dark);
-}
-
-
-
-
-
-
-
-
-
-.highcharts-legend :nth-child(3n + 1 of .highcharts-legend-item.highcharts-column-series) .highcharts-point {
-	fill: var(--color-primary);
-}
-
-.highcharts-legend :nth-child(3n + 2 of .highcharts-legend-item.highcharts-column-series) .highcharts-point {
-	fill: var(--color-secondary);
-}
-
-
-.highcharts-legend :nth-child(3n + 3 of .highcharts-legend-item.highcharts-column-series) .highcharts-point {
-	fill: var(--color-dark);
-}
-
-
-
-
-
-.highcharts-legend :nth-child(3n + 1 of .highcharts-legend-item.highcharts-line-series) .highcharts-graph {
-	stroke: var(--color-primary);
-}
-
-.highcharts-legend :nth-child(3n + 2 of .highcharts-legend-item.highcharts-line-series) .highcharts-graph {
-	stroke: var(--color-secondary) !important;
-}
-
-.highcharts-legend :nth-child(3n + 3 of .highcharts-legend-item.highcharts-line-series) .highcharts-graph {
-	stroke: var(--color-dark);
-}    
- 
-
     ;;
-
     }
   )
   block v1: VizBlock {
@@ -367,7 +271,7 @@ Dashboard tri_test {
   }
   block v4: VizBlock {
     label: 'XYZ'
-    viz: ColumnChart {
+    viz: DataTable {
       dataset: ecom_dataset_vux
       calculation metric_0a52a5e {
         label: 'is_office_hour'
@@ -375,40 +279,57 @@ Dashboard tri_test {
         calc_type: 'measure'
         data_type: 'truefalse'
       }
-      x_axis: VizFieldFull {
-        ref: r(order_master.status)
-        format {
-          type: 'text'
-        }
+      theme {
+
       }
-      y_axis {
-        series {
-          field: VizFieldFull {
-            ref: r(ecom_dataset_vux.total_orders)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-            uname: 'custom_total_orders'
+      fields: [
+        VizFieldFull {
+          ref: r(ecom_dataset_vux.total_orders)
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
-          settings {
-            color_palette: 0
+          uname: 'custom_total_orders'
+        },
+        VizFieldFull {
+          ref: r(order_master.order_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
+        },
+        VizFieldFull {
+          ref: 'metric_0a52a5e'
+          hidden: true
         }
-        series {
-          field: 'metric_0a52a5e'
-          settings {
-            color_palette: 0
-          }
-        }
-      }
+      ]
       settings {
+        show_row_number: true
+        conditional_formats: [
+          ConditionalFormat {
+            key: 'custom_total_orders'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 102
+              }
+              text_color: '#328159'
+              background_color: '#B5E3CD'
+              apply_to_row: true
+            }
+          }
+        ]
         row_limit: 5000
-        x_axis_show_null_datetime: false
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
+        column_styles: [
+          ColumnStyle {
+            key: '_holistics_row_number_'
+            width: 198
+          }
+        ]
       }
     }
   }
@@ -479,92 +400,6 @@ Dashboard tri_test {
   }
   block v_2e00: VizBlock {
     label: 'ABC'
-    viz: LineChart {
-      dataset: ecom_dataset_vux
-      filter {
-        field: r(order_master.order_created_at)
-        operator: 'matches'
-        value: 'this year'
-      }
-      theme {
-        table {
-          general {
-            borders {
-              outer: true
-              horizontal: true
-            }
-          }
-        }
-      }
-      x_axis: VizFieldFull {
-        ref: r(order_master.order_created_at)
-        transformation: 'datetrunc month'
-        format {
-          type: 'date'
-          pattern: 'LLL yyyy'
-        }
-      }
-      legend: VizFieldFull {
-        ref: r(order_master.status)
-        format {
-          type: 'text'
-        }
-      }
-      y_axis {
-        series {
-          field: VizFieldFull {
-            ref: r(ecom_dataset_vux.total_orders)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-            uname: 'custom_total_orders'
-          }
-          settings {
-            color_palette: 0
-          }
-        }
-        series {
-          field: VizFieldFull {
-            label: 'Untitled Trend line'
-            ref: r(ecom_dataset_vux.total_orders)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-            analytic: RegressionLine {
-              type: 'linear'
-            }
-          }
-          settings {
-            line_style: 'dashed'
-            point {
-              value: 'cancelled'
-              line_style: 'dashed'
-            }
-            point {
-              value: 'delivered'
-              line_style: 'dashed'
-            }
-            point {
-              value: 'refunded'
-              line_style: 'dashed'
-            }
-          }
-        }
-      }
-      settings {
-        row_limit: 5000
-        x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_7q0t: VizBlock {
-    label: 'ABC'
     viz: ColumnChart {
       dataset: ecom_dataset_vux
       filter {
@@ -608,19 +443,6 @@ Dashboard tri_test {
           }
           settings {
             color_palette: 0
-          }
-        }
-        series {
-          field: VizFieldFull {
-            label: 'Untitled Trend line'
-            ref: r(ecom_dataset_vux.total_orders)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-            analytic: RegressionLine {
-              type: 'linear'
-            }
           }
         }
       }

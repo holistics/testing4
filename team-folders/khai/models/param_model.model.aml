@@ -31,18 +31,6 @@ Model param_model {
     type: 'number'
   }
 
-  param date_grain {
-    label: 'Date Grain'
-    type: 'text'
-    allowed_values: ['month', 'year']
-  }
-
-  param currency {
-    label: 'Display Currency'
-    type: 'text'
-    allowed_values: ['🇺🇸 USD', '🇲🇾 MYR', '🇸🇬 SGD', '🇹🇭 THB', '🇻🇳 VND', '🇦🇺 AUD']
-  }
-
   owner: 'khai.to@holistics.io'
   query: @sql select 1;;
   models: [
