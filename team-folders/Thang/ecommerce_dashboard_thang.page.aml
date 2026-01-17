@@ -383,76 +383,151 @@ Dashboard ecommerce_dashboard_thang {
       }
     }
   }
+  block v_1fcq: VizBlock {
+    label: 'Sign Up Date and Last Name'
+    viz: DataTable {
+      dataset: ecommerce
+      fields: [
+        VizFieldFull {
+          ref: r(ecommerce_users2.sign_up_date)
+          format {
+            type: 'date'
+          }
+        },
+        VizFieldFull {
+          ref: r(ecommerce_users2.last_name)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block f_orders_status: FilterBlock {
+    label: 'Orders Status'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: ecommerce
+      field: r(ecommerce_orders2.status)
+    }
+    default {
+      operator: 'is'
+      value: 'delivered'
+    }
+    settings {
+      drillthrough: Drillthrough {
+        enabled: true
+        sources: [
+          CustomDrillthroughSource {
+            sources: [
+              '_0_ecommerce_dashboard_30'
+            ]
+          }
+        ]
+      }
+    }
+  }
+  block p_period_comparison: PopBlock {
+    label: 'Period Comparison'
+    default {
+      type: 'relative'
+      duration: 1
+      granularity: 'year'
+    }
+  }
+  block d_date_drill: DateDrillBlock {
+    label: 'Date Drill'
+  }
 
   view: TabLayout {
     label: 'View 1'
     tab view_1: CanvasLayout {
       label: 'Tab 1'
       width: 1300
-      height: 3360
+      height: 3580
       grid_size: 20
       auto_expand_vertically: true
       block title {
         position: pos(20, 20, 1260, 60)
       }
       block v_noyg {
-        position: pos(660, 1140, 620, 420)
+        position: pos(660, 1360, 620, 420)
         layer: 1
       }
       block v_xita {
-        position: pos(20, 1140, 620, 420)
+        position: pos(20, 1360, 620, 420)
         layer: 2
       }
       block v_up3p {
-        position: pos(660, 700, 620, 420)
+        position: pos(660, 920, 620, 420)
         layer: 4
       }
       block v_o1kl {
-        position: pos(20, 1580, 620, 420)
+        position: pos(20, 1800, 620, 420)
         layer: 6
       }
       block v_vs63 {
-        position: pos(20, 2920, 620, 420)
+        position: pos(20, 3140, 620, 420)
         layer: 7
       }
       block v_5iy6 {
-        position: pos(20, 260, 620, 420)
+        position: pos(20, 480, 620, 420)
         layer: 8
       }
       block v_inr6 {
-        position: pos(20, 80, 620, 160)
+        position: pos(20, 190, 620, 160)
         layer: 10
       }
       block v_570z {
-        position: pos(660, 80, 620, 160)
+        position: pos(660, 190, 620, 160)
         layer: 11
       }
       block v_ch4j {
-        position: pos(20, 700, 620, 420)
+        position: pos(20, 920, 620, 420)
         layer: 6
       }
       block v_k1c5 {
-        position: pos(660, 260, 620, 420)
+        position: pos(660, 480, 620, 420)
         layer: 12
+      }
+      block v_1fcq {
+        position: pos(660, 1800, 620, 420)
+        layer: 13
+      }
+      block f_orders_status {
+        position: pos(40, 100, 300, 80)
+        layer: 12
+      }
+      block p_period_comparison {
+        position: pos(400, 80, 300, 80)
+        layer: 12
+      }
+      block d_date_drill {
+        position: pos(740, 80, 300, 80)
+        layer: 11
       }
       mobile {
         mode: 'auto'
       }
     }
   }
-
-  theme: H.themes.vanilla
   interactions: [
     FilterInteraction {
       from: 'v_noyg'
       to: [
         CustomMapping {
           block: [
-            'v_xita',
-            'v_up3p',
-            'v_o1kl',
-            'v_570z',
-            'v_ch4j'
+            'v_5iy6',
+            'v_inr6',
+            'v_k1c5'
           ]
           disabled: true
         }
@@ -463,11 +538,9 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_noyg',
-            'v_up3p',
-            'v_o1kl',
-            'v_570z',
-            'v_ch4j'
+            'v_5iy6',
+            'v_inr6',
+            'v_k1c5'
           ]
           disabled: true
         }
@@ -478,11 +551,9 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_noyg',
-            'v_xita',
-            'v_o1kl',
-            'v_570z',
-            'v_ch4j'
+            'v_5iy6',
+            'v_inr6',
+            'v_k1c5'
           ]
           disabled: true
         }
@@ -493,11 +564,9 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_noyg',
-            'v_xita',
-            'v_up3p',
-            'v_570z',
-            'v_ch4j'
+            'v_5iy6',
+            'v_inr6',
+            'v_k1c5'
           ]
           disabled: true
         }
@@ -507,7 +576,15 @@ Dashboard ecommerce_dashboard_thang {
       from: 'v_5iy6'
       to: [
         CustomMapping {
-          block: 'v_570z'
+          block: [
+            'v_noyg',
+            'v_xita',
+            'v_up3p',
+            'v_o1kl',
+            'v_inr6',
+            'v_ch4j',
+            'v_k1c5'
+          ]
           disabled: true
         }
       ]
@@ -516,7 +593,15 @@ Dashboard ecommerce_dashboard_thang {
       from: 'v_inr6'
       to: [
         CustomMapping {
-          block: 'v_570z'
+          block: [
+            'v_noyg',
+            'v_xita',
+            'v_up3p',
+            'v_o1kl',
+            'v_5iy6',
+            'v_ch4j',
+            'v_k1c5'
+          ]
           disabled: true
         }
       ]
@@ -525,15 +610,7 @@ Dashboard ecommerce_dashboard_thang {
       from: 'v_570z'
       to: [
         CustomMapping {
-          block: [
-            'v_noyg',
-            'v_xita',
-            'v_up3p',
-            'v_o1kl',
-            'v_5iy6',
-            'v_inr6',
-            'v_ch4j'
-          ]
+          block: 'v_k1c5'
           disabled: true
         }
       ]
@@ -543,15 +620,67 @@ Dashboard ecommerce_dashboard_thang {
       to: [
         CustomMapping {
           block: [
-            'v_noyg',
-            'v_xita',
-            'v_up3p',
-            'v_o1kl',
-            'v_570z'
+            'v_5iy6',
+            'v_inr6',
+            'v_k1c5'
           ]
           disabled: true
         }
       ]
+    },
+    FilterInteraction {
+      from: 'v_k1c5'
+      to: [
+        CustomMapping {
+          block: [
+            'v_noyg',
+            'v_xita',
+            'v_up3p',
+            'v_o1kl',
+            'v_5iy6',
+            'v_inr6',
+            'v_570z',
+            'v_ch4j'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    PopInteraction {
+      from: 'p_period_comparison'
+      to: [
+        CustomMapping {
+          block: [
+            'v_noyg',
+            'v_xita',
+            'v_up3p',
+            'v_o1kl',
+            'v_inr6',
+            'v_570z',
+            'v_ch4j',
+            'v_k1c5'
+          ]
+          field: r(ecommerce_orders2.created_at)
+        },
+        CustomMapping {
+          block: 'v_1fcq'
+          field: r(ecommerce_users2.sign_up_date)
+        }
+      ]
+    },
+    DateDrillInteraction {
+      from: 'd_date_drill'
+      to: [
+        CustomMapping {
+          block: 'v_noyg'
+          field: r(ecommerce_orders2.created_at)
+        },
+        CustomMapping {
+          block: 'v_1fcq'
+          field: r(ecommerce_users2.sign_up_date)
+        }
+      ]
     }
   ]
+  theme: H.themes.classic
 }

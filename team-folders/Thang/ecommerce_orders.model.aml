@@ -53,6 +53,7 @@ Model ecommerce_orders2 {
     label: "Delivered Orders Count"
     type: "text"
     description: ""
+    hidden: false
     definition: @sql COUNT(CASE WHEN {{ status }} = 'delivered' THEN {{ id }} ELSE NULL END);;
     aggregation_type: "custom"
   }

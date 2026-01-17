@@ -58,4 +58,12 @@ Dataset ecommerce {
   )
 | count();;
   }
+  dimension dimension_0df1960 {
+    label: "Concat field"
+    type: "text"
+    hidden: false
+    description: ""
+    definition: @aql concat(cast(ecommerce_orders2.id, 'text'), " ", ecommerce_orders2.status);;
+    model: ecommerce_orders2
+  }
 }
