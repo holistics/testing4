@@ -404,30 +404,30 @@ Dashboard ecommerce_dashboard_thang {
     tab view_1: CanvasLayout {
       label: 'Tab 1'
       width: 1300
-      height: 3580
+      height: 3470
       grid_size: 20
       auto_expand_vertically: true
       block title {
         position: pos(20, 20, 1260, 60)
       }
       block v_noyg {
-        position: pos(660, 1360, 620, 420)
+        position: pos(660, 1250, 620, 420)
         layer: 1
       }
       block v_xita {
-        position: pos(20, 1360, 620, 420)
+        position: pos(20, 1250, 620, 420)
         layer: 2
       }
       block v_up3p {
-        position: pos(660, 920, 620, 420)
+        position: pos(660, 810, 620, 420)
         layer: 4
       }
       block v_o1kl {
-        position: pos(20, 1800, 620, 420)
+        position: pos(20, 1690, 620, 420)
         layer: 6
       }
       block v_5iy6 {
-        position: pos(20, 480, 620, 420)
+        position: pos(20, 370, 620, 420)
         layer: 8
       }
       block v_inr6 {
@@ -439,15 +439,15 @@ Dashboard ecommerce_dashboard_thang {
         layer: 11
       }
       block v_ch4j {
-        position: pos(20, 920, 620, 420)
+        position: pos(20, 810, 620, 420)
         layer: 6
       }
       block v_k1c5 {
-        position: pos(660, 480, 620, 420)
+        position: pos(660, 370, 620, 420)
         layer: 12
       }
       block v_1fcq {
-        position: pos(660, 1800, 620, 420)
+        position: pos(660, 1690, 620, 420)
         layer: 13
       }
       block f_orders_status {
