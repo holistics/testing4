@@ -60,6 +60,7 @@ Dashboard untitled_10_2 {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'users_kk_id_1'
         },
         VizFieldFull {
           ref: r(users_kk.name)
@@ -78,6 +79,12 @@ Dashboard untitled_10_2 {
       settings {
         show_row_number: true
         show_row_with_no_data: true
+        sorts: [
+          SortSetting {
+            key: 'users_kk_id_1'
+            direction: 'asc'
+          }
+        ]
         row_limit: 5000
         aggregate_awareness {
           enabled: true
