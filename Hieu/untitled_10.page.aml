@@ -51,7 +51,6 @@ Dashboard untitled_10_2 {
     viz: DataTable {
       dataset: hieu_haha_meme
       theme {
-
       }
       fields: [
         VizFieldFull {
@@ -128,5 +127,15 @@ Dashboard untitled_10_2 {
     }
   }
   theme: H.themes.vanilla
-  interactions: []
+  interactions: [
+    FilterInteraction {
+      from: 'f_ahde'
+      to: [
+        CustomMapping {
+          block: 'v_tf0o'
+          field: ref('users_kk', 'tenant_id')
+        }
+      ]
+    }
+  ]
 }
