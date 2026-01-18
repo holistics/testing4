@@ -117,7 +117,7 @@ Dashboard untitled_10_2 {
     }
     settings {
       drillthrough: Drillthrough {
-        enabled: true
+        enabled: false
         sources: [
           AutoDrillthroughSource {
           }
