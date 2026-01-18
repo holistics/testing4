@@ -26,9 +26,12 @@ Model users_kk {
   query: @sql
     select 1 as id, 'hieu' as NAME, 1 as tenant_id
     union
-    select 2 as id, 'haha' as NAME, 1 as tenant_id
+    select 2 as id, 'hieu2' as NAME, 1 as tenant_id
     UNION
-    select 3 as id, 'meme' as NAME, 2 as tenant_id;;
+    select 3 as id, 'hieu3' as NAME, 2 as tenant_id
+    union 
+    select 4 as id, 'hieu4' as NAME, 2 as tenant_id;
+    ;;
   models: [
   ]
 }
