@@ -24,13 +24,13 @@ Model users_kk {
 
   owner: 'hieu.nht@holistics.io'
   query: @sql
-    select 1 as id, 'hieu' as NAME, 1 as tenant_id
-    union
-    select 2 as id, 'hieu2' as NAME, 1 as tenant_id
-    UNION
-    select 3 as id, 'hieu3' as NAME, 2 as tenant_id
-    union 
-    select 4 as id, 'hieu4' as NAME, 2 as tenant_id;
+    SELECT 1 AS id, 'hieu'  AS name, 1 AS tenant_id
+    UNION ALL
+    SELECT 2 AS id, 'hieu2' AS name, 1 AS tenant_id
+    UNION ALL
+    SELECT 3 AS id, 'hieu3' AS name, 2 AS tenant_id
+    UNION ALL
+    SELECT 4 AS id, 'hieu4' AS name, 2 AS tenant_id
     ;;
   models: [
   ]
