@@ -10,7 +10,6 @@ Dashboard untitled_10_2 {
     viz: DataTable {
       dataset: hieu_haha_meme
       theme {
-
       }
       fields: [
         VizFieldFull {
@@ -60,7 +59,6 @@ Dashboard untitled_10_2 {
     viz: DataTable {
       dataset: hieu_haha_meme
       theme {
-
       }
       fields: [
         VizFieldFull {
@@ -99,7 +97,7 @@ Dashboard untitled_10_2 {
     type: 'field'
     source: FieldFilterSource {
       dataset: hieu_haha_meme
-      field: r(users_kk.tenant_id)
+      field: r(orderskk.tenant_id)
     }
     default {
       operator: 'is'
@@ -129,4 +127,5 @@ Dashboard untitled_10_2 {
     }
   }
   theme: H.themes.vanilla
+  interactions: []
 }
