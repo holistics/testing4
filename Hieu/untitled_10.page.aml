@@ -113,7 +113,16 @@ Dashboard untitled_10_2 {
     }
     default {
       operator: 'is'
-      value: []
+      value: '1'
+    }
+    settings {
+      drillthrough: Drillthrough {
+        enabled: true
+        sources: [
+          AutoDrillthroughSource {
+          }
+        ]
+      }
     }
   }
   view: CanvasLayout {
