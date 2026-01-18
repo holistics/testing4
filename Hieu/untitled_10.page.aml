@@ -51,7 +51,6 @@ Dashboard untitled_10_2 {
     viz: DataTable {
       dataset: hieu_haha_meme
       theme {
-
       }
       fields: [
         VizFieldFull {
@@ -60,6 +59,7 @@ Dashboard untitled_10_2 {
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'users_kk_id_1'
         },
         VizFieldFull {
           ref: r(users_kk.name)
@@ -78,6 +78,12 @@ Dashboard untitled_10_2 {
       settings {
         show_row_number: true
         show_row_with_no_data: true
+        sorts: [
+          SortSetting {
+            key: 'users_kk_id_1'
+            direction: 'asc'
+          }
+        ]
         row_limit: 5000
         aggregate_awareness {
           enabled: true
@@ -121,5 +127,15 @@ Dashboard untitled_10_2 {
     }
   }
   theme: H.themes.vanilla
-  interactions: []
+  interactions: [
+    FilterInteraction {
+      from: 'f_ahde'
+      to: [
+        CustomMapping {
+          block: 'v_tf0o'
+          field: ref('users_kk', 'tenant_id')
+        }
+      ]
+    }
+  ]
 }
