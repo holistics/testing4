@@ -6,10 +6,11 @@ Dashboard untitled_10_2 {
     content: @md # Your title goes here ;;
   }
   block v_eq1j: VizBlock {
-    label: 'orders - ussers'
+    label: 'raw orders '
     viz: DataTable {
       dataset: hieu_haha_meme
       theme {
+
       }
       fields: [
         VizFieldFull {
@@ -33,14 +34,6 @@ Dashboard untitled_10_2 {
             type: 'number'
             pattern: 'inherited'
           }
-        },
-        VizFieldFull {
-          label: 'user id'
-          ref: r(users_kk.id)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
         }
       ]
       settings {
@@ -55,7 +48,7 @@ Dashboard untitled_10_2 {
     }
   }
   block v_tf0o: VizBlock {
-    label: 'users'
+    label: 'raw users'
     viz: DataTable {
       dataset: hieu_haha_meme
       theme {
@@ -114,7 +107,7 @@ Dashboard untitled_10_2 {
       position: pos(20, 20, 1260, 60)
     }
     block v_eq1j {
-      position: pos(480, 220, 620, 420)
+      position: pos(460, 240, 620, 420)
     }
     block v_tf0o {
       position: pos(40, 240, 380, 420)
