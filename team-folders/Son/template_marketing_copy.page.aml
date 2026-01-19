@@ -1,5 +1,5 @@
 Dashboard template_marketing_copy {
-  title: 'Template Marketing Dashboard'
+  title: 'Template Marketing Dashboard 1'
   description: '# some description'
   view: CanvasLayout {
     label: 'View 1'
