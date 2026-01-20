@@ -109,7 +109,7 @@ Dashboard untitled_10_2 {
     type: 'field'
     source: FieldFilterSource {
       dataset: hieu_haha_meme
-      field: r(tenants.id)
+      field: r(orderskk.param_tenant_id)
     }
     default {
       operator: 'is'
@@ -425,7 +425,7 @@ Dashboard untitled_10_2 {
       to: [
         CustomMapping {
           block: 'v_tf0o'
-          field: ref('users_kk', 'tenant_id')
+          field: r(users_kk.tenant_id)
         },
         CustomMapping {
           block: 'f_tenants_id'
@@ -436,14 +436,6 @@ Dashboard untitled_10_2 {
     FilterInteraction {
       from: 'f_tenants_id'
       to: [
-        CustomMapping {
-          block: 'v_eq1j'
-          field: ref('orderskk', 'tenant_id')
-        },
-        CustomMapping {
-          block: 'v_tf0o'
-          field: ref('users_kk', 'tenant_id')
-        },
         CustomMapping {
           block: 'f_ahde'
           disabled: true
