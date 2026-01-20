@@ -275,6 +275,57 @@ Dashboard untitled_10_2 {
       }
     }
   }
+  block v_62fh: VizBlock {
+    label: 'Total Orders Count and PoP Comparison of Orders Total Orders... by Month Created At'
+    viz: LineChart {
+      dataset: simple_dataset
+      calculation metric_77e4577 {
+        label: 'PoP Comparison of Orders Total Orders Count'
+        formula: @aql ecommerce_orders.total_orders_count | relative_period(ecommerce_orders.created_at, interval(-1 month));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      theme {
+
+      }
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_orders.created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(ecommerce_orders.total_orders_count)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+        series {
+          field: VizFieldFull {
+            ref: 'metric_77e4577'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
@@ -305,6 +356,10 @@ Dashboard untitled_10_2 {
     block v_zf66 {
       position: pos(20, 1120, 620, 420)
       layer: 1
+    }
+    block v_62fh {
+      position: pos(660, 1120, 620, 420)
+      layer: 2
     }
     mobile {
       mode: 'auto'
