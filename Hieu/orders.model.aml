@@ -38,7 +38,7 @@ Model orderskk {
     )
     select *
     from haha
-    where  tenant_id = {{ param_tenant_id }}
+    where  	{% filter(param_tenant_id) %} tenant_id {% end %}
     ;;
   models: [
   ]
