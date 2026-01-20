@@ -104,6 +104,18 @@ Dashboard untitled_10_2 {
       value: []
     }
   }
+  block f_orders_param_tenant_id: FilterBlock {
+    label: 'Orders param tenant_id'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: hieu_haha_meme
+      field: r(orderskk.param_tenant_id)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
@@ -122,6 +134,9 @@ Dashboard untitled_10_2 {
     block f_ahde {
       position: pos(60, 120, 300, 60)
     }
+    block f_orders_param_tenant_id {
+      position: pos(400, 100, 300, 80)
+    }
     mobile {
       mode: 'auto'
     }
@@ -133,7 +148,20 @@ Dashboard untitled_10_2 {
       to: [
         CustomMapping {
           block: 'v_tf0o'
-          field: ref('users_kk', 'tenant_id')
+          field: r(users_kk.tenant_id)
+        },
+        CustomMapping {
+          block: 'f_orders_param_tenant_id'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_orders_param_tenant_id'
+      to: [
+        CustomMapping {
+          block: 'f_ahde'
+          disabled: true
         }
       ]
     }
