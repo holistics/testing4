@@ -431,7 +431,7 @@ Dashboard ecommerce_dashboard_thang {
         layer: 8
       }
       block v_inr6 {
-        position: pos(20, 200, 620, 160)
+        position: pos(20, 190, 620, 160)
         layer: 10
       }
       block v_570z {

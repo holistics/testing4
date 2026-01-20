@@ -5,8 +5,6 @@ Dataset hieu_haha_meme {
   models: [
     orderskk,
     users_kk
-    ,
-    tenants
   ]
   relationships: [
     relationship(orderskk.user_id > users_kk.id, true)

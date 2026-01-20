@@ -6,11 +6,9 @@ Dashboard untitled_10_2 {
     content: @md # Your title goes here ;;
   }
   block v_eq1j: VizBlock {
-    label: 'raw orders '
+    label: 'fff'
     viz: DataTable {
       dataset: hieu_haha_meme
-      theme {
-      }
       fields: [
         VizFieldFull {
           label: 'order id'
@@ -21,14 +19,15 @@ Dashboard untitled_10_2 {
           }
         },
         VizFieldFull {
-          ref: r(orderskk.user_id)
+          ref: r(orderskk.tenant_id)
           format {
             type: 'number'
             pattern: 'inherited'
           }
         },
         VizFieldFull {
-          ref: r(orderskk.tenant_id)
+          label: 'user id'
+          ref: r(users_kk.id)
           format {
             type: 'number'
             pattern: 'inherited'
@@ -47,11 +46,9 @@ Dashboard untitled_10_2 {
     }
   }
   block v_tf0o: VizBlock {
-    label: 'raw users'
+    label: 'fdf'
     viz: DataTable {
       dataset: hieu_haha_meme
-      theme {
-      }
       fields: [
         VizFieldFull {
           ref: r(users_kk.id)
@@ -59,7 +56,6 @@ Dashboard untitled_10_2 {
             type: 'number'
             pattern: 'inherited'
           }
-          uname: 'users_kk_id_1'
         },
         VizFieldFull {
           ref: r(users_kk.name)
@@ -77,13 +73,6 @@ Dashboard untitled_10_2 {
       ]
       settings {
         show_row_number: true
-        show_row_with_no_data: true
-        sorts: [
-          SortSetting {
-            key: 'users_kk_id_1'
-            direction: 'asc'
-          }
-        ]
         row_limit: 5000
         aggregate_awareness {
           enabled: true
@@ -97,31 +86,40 @@ Dashboard untitled_10_2 {
     type: 'field'
     source: FieldFilterSource {
       dataset: hieu_haha_meme
-      field: r(orderskk.tenant_id)
+      field: r(users_kk.tenant_id)
     }
     default {
       operator: 'is'
       value: []
     }
   }
-  block f_tenants_id: FilterBlock {
-    label: 'Tenants Id'
-    type: 'field'
-    source: FieldFilterSource {
-      dataset: hieu_haha_meme
-      field: r(tenants.id)
-    }
-    default {
-      operator: 'is'
-      value: '1'
-    }
-    settings {
-      drillthrough: Drillthrough {
-        enabled: false
-        sources: [
-          AutoDrillthroughSource {
+  block v_7s1v: VizBlock {
+    label: 'Total Orders'
+    viz: DataTable {
+      dataset: vux_archive
+      fields: [
+        VizFieldFull {
+          ref: r(vux_archive.total_orders)
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
-        ]
+        },
+        VizFieldFull {
+          ref: r(ecommerce_orders.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
       }
     }
   }
@@ -135,7 +133,7 @@ Dashboard untitled_10_2 {
       position: pos(20, 20, 1260, 60)
     }
     block v_eq1j {
-      position: pos(460, 240, 620, 420)
+      position: pos(480, 220, 620, 420)
     }
     block v_tf0o {
       position: pos(40, 240, 380, 420)
@@ -143,44 +141,13 @@ Dashboard untitled_10_2 {
     block f_ahde {
       position: pos(60, 120, 300, 60)
     }
-    block f_tenants_id {
-      position: pos(400, 120, 300, 80)
+    block v_7s1v {
+      position: pos(440, 660, 620, 420)
+      layer: 1
     }
     mobile {
       mode: 'auto'
     }
   }
   theme: H.themes.vanilla
-  interactions: [
-    FilterInteraction {
-      from: 'f_ahde'
-      to: [
-        CustomMapping {
-          block: 'v_tf0o'
-          field: ref('users_kk', 'tenant_id')
-        },
-        CustomMapping {
-          block: 'f_tenants_id'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_tenants_id'
-      to: [
-        CustomMapping {
-          block: 'v_eq1j'
-          field: ref('orderskk', 'tenant_id')
-        },
-        CustomMapping {
-          block: 'v_tf0o'
-          field: ref('users_kk', 'tenant_id')
-        },
-        CustomMapping {
-          block: 'f_ahde'
-          disabled: true
-        }
-      ]
-    }
-  ]
 }
