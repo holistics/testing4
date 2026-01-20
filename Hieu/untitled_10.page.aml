@@ -336,7 +336,6 @@ Dashboard untitled_10_2 {
         data_type: 'number'
       }
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(ecommerce_orders.created_at)
@@ -379,7 +378,7 @@ Dashboard untitled_10_2 {
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
-    height: 1580
+    height: 2020
     grid_size: 20
     auto_expand_vertically: true
     block title {
