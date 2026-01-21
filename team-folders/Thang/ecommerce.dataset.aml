@@ -1,7 +1,7 @@
 Dataset ecommerce {
   label: 'ecommerce'
   description: ''
-  data_source_name: 'demodb'
+  data_source_name: 'movies_lens'
   models: [
     ecommerce_orders2,
     ecommerce_users2

@@ -1,13 +1,7 @@
 Dashboard ecommerce_cua_minh {
   title: 'Ecommerce Dashboard'
   description: ''''''
-  theme: H.themes.classic.extend(
-    {
-      canvas {
-
-      }
-    }
-  )
+  theme: H.themes.midnight
   block css: TextBlock {
     content: @md <style>
     @import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap')
@@ -140,11 +134,10 @@ Dashboard ecommerce_cua_minh {
     viz: CombinationChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
-        ref: ref('order_master', 'order_created_at')
-        transformation: 'datetrunc month'
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc hour'
         format {
-          type: 'date'
-          pattern: 'LLL yyyy'
+          type: 'datetime'
         }
       }
       y_axis {
@@ -152,7 +145,7 @@ Dashboard ecommerce_cua_minh {
           mark_type: 'column'
           field: VizFieldFull {
             label: 'Net Merchandise Value'
-            ref: ref('order_master', 'nmv')
+            ref: r(order_master.nmv)
             format {
               type: 'number'
               pattern: '[$$]#,###0.00,"K"'
@@ -174,7 +167,7 @@ Dashboard ecommerce_cua_minh {
           mark_type: 'line'
           field: VizFieldFull {
             label: 'Growth Rate'
-            ref: ref('order_master', 'cancelled_order_ratio')
+            ref: r(order_master.cancelled_order_ratio)
             format {
               type: 'number'
               pattern: '#,###%'
@@ -201,14 +194,15 @@ Dashboard ecommerce_cua_minh {
     viz: BarChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
-        ref: ref('order_master', 'order_created_at')
-        transformation: 'datetrunc quarter'
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
         format {
           type: 'date'
+          pattern: 'LLL yyyy'
         }
       }
       legend: VizFieldFull {
-        ref: ref('map_categories', 'parent_category')
+        ref: r(map_categories.parent_category)
         format {
           type: 'text'
         }
@@ -220,7 +214,7 @@ Dashboard ecommerce_cua_minh {
         }
         series {
           field: VizFieldFull {
-            ref: ref('order_master', 'aov')
+            ref: r(order_master.aov)
             format {
               type: 'number'
               pattern: 'inherited'
@@ -289,14 +283,15 @@ Dashboard ecommerce_cua_minh {
     viz: CombinationChart {
       dataset: demo_ecommerce
       x_axis: VizFieldFull {
-        ref: ref('ecommerce_users', 'sign_up_date')
-        transformation: 'datetrunc month'
+        ref: r(ecommerce_users.sign_up_date)
+        transformation: 'datetrunc year'
         format {
           type: 'date'
+          pattern: 'yyyy'
         }
       }
       legend: VizFieldFull {
-        ref: ref('ecommerce_countries', 'continent_name')
+        ref: r(ecommerce_countries.continent_name)
         format {
           type: 'text'
         }
@@ -308,7 +303,7 @@ Dashboard ecommerce_cua_minh {
         series {
           mark_type: 'column'
           field: VizFieldFull {
-            ref: ref('ecommerce_users', 'users_signed_up_count')
+            ref: r(ecommerce_users.users_signed_up_count)
             format {
               type: 'number'
               pattern: 'inherited'
@@ -457,7 +452,7 @@ Dashboard ecommerce_cua_minh {
       to: [
         CustomMapping {
           block: 'v5'
-          field: ref('order_master', 'order_created_at')
+          field: r(order_master.order_created_at)
         }
       ]
     },
@@ -473,14 +468,14 @@ Dashboard ecommerce_cua_minh {
             'v7',
             'v6'
           ]
-          field: ref('order_master', 'order_created_at')
+          field: r(order_master.order_created_at)
         },
         CustomMapping {
           block: [
             'v10',
             'v4'
           ]
-          field: ref('ecommerce_users', 'sign_up_date')
+          field: r(ecommerce_users.sign_up_date)
         }
       ]
     }
@@ -491,46 +486,46 @@ Dashboard ecommerce_cua_minh {
     width: 1530
     height: 1060
     block css {
-      position: pos(20, 490, 290, 550)
+      position: pos(20, 560, 290, 550)
     }
     block t1 {
-      position: pos(20, 30, 290, 90)
+      position: pos(20, 100, 290, 90)
     }
     block v1 {
-      position: pos(330, 30, 300, 140)
+      position: pos(330, 100, 300, 140)
     }
     block v2 {
-      position: pos(650, 30, 290, 150)
+      position: pos(650, 100, 290, 150)
     }
     block v3 {
-      position: pos(960, 30, 280, 150)
+      position: pos(960, 100, 280, 150)
     }
     block v4 {
-      position: pos(1260, 30, 250, 150)
+      position: pos(1260, 100, 250, 150)
     }
     block v5 {
-      position: pos(330, 190, 1180, 270)
+      position: pos(330, 260, 1180, 270)
     }
     block v7 {
-      position: pos(330, 470, 580, 290)
+      position: pos(330, 540, 580, 290)
     }
     block f1 {
-      position: pos(20, 130, 290, 100)
+      position: pos(20, 200, 290, 100)
     }
     block f2 {
-      position: pos(20, 370, 290, 100)
+      position: pos(20, 440, 290, 100)
     }
     block f3 {
-      position: pos(20, 250, 290, 100)
+      position: pos(20, 320, 290, 100)
     }
     block v10 {
-      position: pos(330, 770, 580, 270)
+      position: pos(330, 840, 580, 270)
     }
     block v6 {
-      position: pos(920, 470, 590, 570)
+      position: pos(920, 540, 590, 570)
     }
     block d1 {
-      position: pos(1330, 210, 160, 90)
+      position: pos(1330, 280, 160, 90)
     }
     mobile {
       mode: 'none'

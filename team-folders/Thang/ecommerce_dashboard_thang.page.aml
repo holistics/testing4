@@ -177,6 +177,11 @@ Dashboard ecommerce_dashboard_thang {
     description: 'Each dot represents an age group'
     viz: ScatterChart {
       dataset: ecommerce
+      filter {
+        field: r(ecommerce_users2.age_group)
+        operator: 'is'
+        value: '3. From 30 to 39'
+      }
       x_col: VizFieldFull {
         ref: r(ecommerce_orders2.delivered_orders_count)
         format {
@@ -398,6 +403,54 @@ Dashboard ecommerce_dashboard_thang {
   block d_date_drill: DateDrillBlock {
     label: 'Date Drill'
   }
+  block f_orders_id: FilterBlock {
+    label: 'Orders Id'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: ecommerce
+      field: r(ecommerce_orders2.id)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+    settings {
+      drillthrough: Drillthrough {
+        enabled: true
+        sources: [
+          AutoDrillthroughSource {
+          }
+        ]
+      }
+    }
+  }
+  block f_users_gender: FilterBlock {
+    label: 'Users Gender'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: ecommerce
+      field: r(ecommerce_users2.gender)
+    }
+    default {
+      operator: 'is'
+      value: 'm'
+    }
+    settings {
+      input_type: 'multiple'
+    }
+  }
+  block f_orders_status_bnp2: FilterBlock {
+    label: 'Orders Status'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: ecommerce
+      field: r(ecommerce_orders2.status)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
 
   view: TabLayout {
     label: 'View 1'
@@ -411,56 +464,68 @@ Dashboard ecommerce_dashboard_thang {
         position: pos(20, 20, 1260, 60)
       }
       block v_noyg {
-        position: pos(660, 1250, 620, 420)
+        position: pos(660, 1360, 620, 420)
         layer: 1
       }
       block v_xita {
-        position: pos(20, 1250, 620, 420)
+        position: pos(20, 1360, 620, 420)
         layer: 2
       }
       block v_up3p {
-        position: pos(660, 810, 620, 420)
+        position: pos(660, 920, 620, 420)
         layer: 4
       }
       block v_o1kl {
-        position: pos(20, 1690, 620, 420)
+        position: pos(20, 1800, 620, 420)
         layer: 6
       }
       block v_5iy6 {
-        position: pos(20, 370, 620, 420)
+        position: pos(20, 480, 620, 420)
         layer: 8
       }
       block v_inr6 {
-        position: pos(20, 190, 620, 160)
+        position: pos(20, 310, 620, 160)
         layer: 10
       }
       block v_570z {
-        position: pos(660, 190, 620, 160)
+        position: pos(660, 300, 620, 160)
         layer: 11
       }
       block v_ch4j {
-        position: pos(20, 810, 620, 420)
+        position: pos(20, 920, 620, 420)
         layer: 6
       }
       block v_k1c5 {
-        position: pos(660, 370, 620, 420)
+        position: pos(660, 480, 620, 420)
         layer: 12
       }
       block v_1fcq {
-        position: pos(660, 1690, 620, 420)
+        position: pos(660, 1800, 620, 420)
         layer: 13
       }
       block f_orders_status {
-        position: pos(40, 100, 300, 80)
+        position: pos(40, 210, 300, 80)
         layer: 12
       }
       block p_period_comparison {
-        position: pos(400, 80, 300, 80)
+        position: pos(400, 190, 300, 80)
         layer: 12
       }
       block d_date_drill {
-        position: pos(740, 80, 300, 80)
+        position: pos(740, 190, 300, 80)
         layer: 11
+      }
+      block f_orders_id {
+        position: pos(1060, 190, 300, 80)
+        layer: 12
+      }
+      block f_users_gender {
+        position: pos(600, 100, 300, 80)
+        layer: 12
+      }
+      block f_orders_status_bnp2 {
+        position: pos(410, 660, 300, 80)
+        layer: 12
       }
       mobile {
         mode: 'auto'
@@ -589,6 +654,58 @@ Dashboard ecommerce_dashboard_thang {
             'v_inr6',
             'v_570z',
             'v_ch4j'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_orders_status'
+      to: [
+        CustomMapping {
+          block: [
+            'f_orders_id',
+            'f_users_gender',
+            'f_orders_status_bnp2'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_orders_id'
+      to: [
+        CustomMapping {
+          block: [
+            'f_orders_status',
+            'f_users_gender',
+            'f_orders_status_bnp2'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_users_gender'
+      to: [
+        CustomMapping {
+          block: [
+            'f_orders_status',
+            'f_orders_id',
+            'f_orders_status_bnp2'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_orders_status_bnp2'
+      to: [
+        CustomMapping {
+          block: [
+            'f_orders_status',
+            'f_orders_id',
+            'f_users_gender'
           ]
           disabled: true
         }

@@ -134,7 +134,7 @@ Dashboard embed_demo_landing_page_2 {
             pattern: 'inherited'
           }
         }
-        
+
       ]
       settings {
         show_row_number: true
@@ -261,52 +261,23 @@ ecommerce_users.sign_up_date
         calc_type: 'measure'
         data_type: 'number'
       }
-      x_axis: VizFieldFull {
-        ref: ref('ecommerce_users', 'sign_up_date')
-        transformation: 'datetrunc quarter'
-        format {
-          type: 'date'
-        }
-      }
-      y_axis {
-        series {
-          mark_type: 'column'
-          field {
-            ref: ref('ecommerce_users', 'total_users')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-          settings {
-            color: '#005A32FF'
-          }
-        }
-      }
-      y_axis {
-        settings {
-          alignment: 'right'
-        }
-        series {
-          mark_type: 'line'
-          field {
-            ref: 'f_3f16a1c'
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-          settings {
-            color: '#41ab5d'
-            line_interpolation: 'smooth'
-          }
-        }
+      filter {
+        field: r(order_master.last_order_value)
+        operator: 'is'
+        value: '1'
       }
       settings {
+        x_axis_show_null_datetime: true
         pop {
-          field: ref('ecommerce_users', 'sign_up_date')
-          duration: 3
-          granularity: 'month'
+          field: r(ecommerce_users.sign_up_date)
+          value: RelativePopValue {
+            duration: 3
+            granularity: 'month'
+          }
+        }
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
         }
       }
     }
@@ -425,7 +396,7 @@ ecommerce_users.sign_up_date
     type: 'field'
     source: FieldFilterSource {
       dataset: demo_ecommerce
-      field: ref('ecommerce_products', 'name')
+      field: r(ecommerce_products.name)
     }
     default {
       operator: 'is'
@@ -433,7 +404,7 @@ ecommerce_users.sign_up_date
     }
     settings {
       drillthrough: Drillthrough {
-        enabled: true
+        enabled: false
         sources: [
           AutoDrillthroughSource {
           }
@@ -570,10 +541,22 @@ ecommerce_users.sign_up_date
       granularity: 'year'
     }
   }
+  block f_order_master_last_order_value: FilterBlock {
+    label: 'Order Master Last Order Value'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: r(order_master.last_order_value)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1420
-    height: 1530
+    height: 1520
     block f1 {
       position: pos(-320, 10, 300, 80)
     }
@@ -587,22 +570,22 @@ ecommerce_users.sign_up_date
       position: pos(-20, 100, 1480, 20)
     }
     block t2 {
-      position: pos(750, 340, 650, 40)
+      position: pos(750, 330, 650, 40)
     }
     block t5 {
       position: pos(30, 10, 170, 90)
     }
     block t9 {
-      position: pos(40, 340, 650, 40)
+      position: pos(40, 330, 650, 40)
     }
     block v1 {
       position: pos(360, 20, 360, 60)
     }
     block v2 {
-      position: pos(750, 780, 650, 240)
+      position: pos(750, 770, 650, 240)
     }
     block v3 {
-      position: pos(40, 780, 650, 240)
+      position: pos(40, 770, 650, 240)
     }
     block v4 {
       position: pos(40, 140, 240, 140)
@@ -617,7 +600,7 @@ ecommerce_users.sign_up_date
       position: pos(1160, 140, 240, 140)
     }
     block v8 {
-      position: pos(40, 390, 650, 370)
+      position: pos(40, 380, 650, 370)
     }
     block t10 {
       position: pos(300, 120, 10, 180)
@@ -633,24 +616,24 @@ ecommerce_users.sign_up_date
       position: pos(1140, 120, 10, 180)
     }
     block t14 {
-      position: pos(20, 320, 690, 720)
+      position: pos(20, 310, 690, 720)
       layer: -2
     }
     block t15 {
-      position: pos(730, 320, 690, 720)
+      position: pos(730, 310, 690, 720)
       layer: -2
     }
     block v11 {
-      position: pos(750, 390, 650, 370)
+      position: pos(750, 380, 650, 370)
     }
     block v12 {
       position: pos(320, 140, 240, 140)
     }
     block v13 {
-      position: pos(730, 1050, 680, 450)
+      position: pos(730, 1040, 680, 450)
     }
     block v14 {
-      position: pos(10, 1050, 700, 450)
+      position: pos(10, 1040, 700, 450)
     }
     block box1 {
       position: pos(20, 120, 1400, 180)
@@ -660,18 +643,45 @@ ecommerce_users.sign_up_date
       position: pos(230, 30, 10, 40)
     }
     block d1 {
-      position: pos(520, 330, 170, 100)
+      position: pos(520, 320, 170, 100)
     }
     block p1 {
-      position: pos(1190, 330, 210, 80)
+      position: pos(1190, 320, 210, 80)
+    }
+    block f_order_master_last_order_value {
+      position: pos(400, 580, 300, 80)
     }
   }
   interactions: [
     FilterInteraction {
+      from: 'f1'
+      to: [
+        CustomMapping {
+          block: 'f_order_master_last_order_value'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
       from: 'f3'
       to: [
         CustomMapping {
-          block: 'f1'
+          block: [
+            'f1',
+            'f_order_master_last_order_value'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_order_master_last_order_value'
+      to: [
+        CustomMapping {
+          block: [
+            'f1',
+            'f3'
+          ]
           disabled: true
         }
       ]
@@ -686,7 +696,7 @@ ecommerce_users.sign_up_date
             'v8',
             'v12'
           ]
-          field: ref('ecommerce_users', 'sign_up_date')
+          field: r(ecommerce_users.sign_up_date)
         },
         CustomMapping {
           block: [
@@ -694,11 +704,11 @@ ecommerce_users.sign_up_date
             'v6',
             'v7'
           ]
-          field: ref('order_master', 'order_created_at')
+          field: r(order_master.order_created_at)
         },
         CustomMapping {
           block: 'v11'
-          field: ref('dim_dates', 'date_key')
+          field: r(dim_dates.date_key)
         }
       ]
     },
@@ -707,11 +717,11 @@ ecommerce_users.sign_up_date
       to: [
         CustomMapping {
           block: 'v8'
-          field: ref('ecommerce_users', 'sign_up_date')
+          field: r(ecommerce_users.sign_up_date)
         },
         CustomMapping {
           block: 'v11'
-          field: ref('dim_dates', 'date_key')
+          field: r(dim_dates.date_key)
         }
       ]
     },
@@ -720,11 +730,11 @@ ecommerce_users.sign_up_date
       to: [
         CustomMapping {
           block: 'v11'
-          field: ref('dim_dates', 'date_key')
+          field: r(dim_dates.date_key)
         },
         CustomMapping {
           block: 'v8'
-          field: ref('ecommerce_users', 'sign_up_date')
+          field: r(ecommerce_users.sign_up_date)
         }
       ]
     }
