@@ -342,6 +342,18 @@ Dashboard untitled_10_2 {
       }
     }
   }
+  block f_orders_tenant_id: FilterBlock {
+    label: 'Orders tenant_id'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: hieu_haha_meme
+      field: r(orderskk.tenant_id)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
@@ -375,10 +387,23 @@ Dashboard untitled_10_2 {
       position: pos(20, 1560, 620, 420)
       layer: 3
     }
+    block f_orders_tenant_id {
+      position: pos(40, 140, 300, 80)
+    }
     mobile {
       mode: 'auto'
     }
   }
   theme: H.themes.vanilla
-  interactions: []
+  interactions: [
+    FilterInteraction {
+      from: 'f_orders_tenant_id'
+      to: [
+        CustomMapping {
+          block: 'v_tf0o'
+          field: ref('users_kk', 'tenant_id')
+        }
+      ]
+    }
+  ]
 }
