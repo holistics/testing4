@@ -34,11 +34,11 @@ Dataset khai_ecommerce {
 
   owner: 'khai.to+demo4@holistics.io'
 
-  // permission vendor_access {
-  //   field: r(countries.name)
-  //   operator: 'matches_user_attribute'
-  //   value: 'country_attribute' // user attribute
-  // }
+  permission vendor_access {
+    field: r(countries.name)
+    operator: 'matches_user_attribute'
+    value: 'country_attribute' // user attribute
+  }
 
   dimension user_acquired_at {
     model: users
@@ -70,7 +70,7 @@ Dataset khai_ecommerce {
     definition: @aql H.current_user.country_attribute;;
     model: countries
   }
-  dimension is_country {
+  dimension is_country_ {
     label: "Is Country"
     type: "truefalse"
     description: ""

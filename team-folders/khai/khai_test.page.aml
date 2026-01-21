@@ -374,7 +374,7 @@ Dashboard khai_test {
     type: 'field'
     source: FieldFilterSource {
       dataset: khai_ecommerce
-      field: r(khai_ecommerce, countries.is_country)
+      field: r(khai_ecommerce, countries.is_country_)
     }
     default {
       operator: 'is'
