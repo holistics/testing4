@@ -71,22 +71,22 @@ Dashboard tri_test {
      }
     
 .highcharts-root {
-  --color-primary: rgba(237,154,100,1);
-  --color-secondary: rgba(237,154,100,0.7);
-  --color-dark: rgba(237,154,100,0.5);
+  --series-1: rgba(237,154,100,1);
+  --series-2: rgba(237,154,100,0.7);
+  --series-3: rgba(237,154,100,0.5);
 }
 
 
 .highcharts-root .highcharts-column-series:nth-child(6n + 1) path.highcharts-point {
-	fill: var(--color-primary);
+	fill: var(--series-1);
 }
 
 .highcharts-root .highcharts-column-series:nth-child(6n + 3) path.highcharts-point {
-	fill: var(--color-secondary);
+	fill: var(--series-2);
 }
 
 .highcharts-root .highcharts-column-series:nth-child(6n + 5) path.highcharts-point {
-	fill: var(--color-dark);
+	fill: var(--series-3);
 }
 
 
@@ -96,30 +96,30 @@ Dashboard tri_test {
 
 
 .highcharts-root .highcharts-series:nth-child(6n + 1 of .highcharts-line-series) path.highcharts-graph {
-	stroke: var(--color-primary);
+	stroke: var(--series-1);
 }
 
 
 .highcharts-root .highcharts-series:nth-child(6n + 3 of .highcharts-line-series) path.highcharts-graph {
-	stroke: var(--color-secondary);
+	stroke: var(--series-2);
 }
 
 .highcharts-root .highcharts-series:nth-child(6n + 5 of .highcharts-line-series) path.highcharts-graph {
-	stroke: var(--color-dark);
+	stroke: var(--series-3);
 }
 
 
 
 .highcharts-root .highcharts-series-group :nth-child(3n + 1 of .highcharts-markers) path {
-  fill: var(--color-primary);
+  fill: var(--series-1);
 }
 
 .highcharts-root .highcharts-series-group :nth-child(3n + 2 of .highcharts-markers) path {
-  fill: var(--color-secondary);
+  fill: var(--series-2);
 }
 
 .highcharts-root .highcharts-series-group :nth-child(3n + 3 of .highcharts-markers) path {
-  fill: var(--color-dark);
+  fill: var(--series-3);
 }
 
 
@@ -131,16 +131,16 @@ Dashboard tri_test {
 
 
 .highcharts-legend :nth-child(3n + 1 of .highcharts-legend-item.highcharts-column-series) .highcharts-point {
-	fill: var(--color-primary);
+	fill: var(--series-1);
 }
 
 .highcharts-legend :nth-child(3n + 2 of .highcharts-legend-item.highcharts-column-series) .highcharts-point {
-	fill: var(--color-secondary);
+	fill: var(--series-2);
 }
 
 
 .highcharts-legend :nth-child(3n + 3 of .highcharts-legend-item.highcharts-column-series) .highcharts-point {
-	fill: var(--color-dark);
+	fill: var(--series-3);
 }
 
 
@@ -148,15 +148,15 @@ Dashboard tri_test {
 
 
 .highcharts-legend :nth-child(3n + 1 of .highcharts-legend-item.highcharts-line-series) .highcharts-graph {
-	stroke: var(--color-primary);
+	stroke: var(--series-1);
 }
 
 .highcharts-legend :nth-child(3n + 2 of .highcharts-legend-item.highcharts-line-series) .highcharts-graph {
-	stroke: var(--color-secondary) !important;
+	stroke: var(--series-2) !important;
 }
 
 .highcharts-legend :nth-child(3n + 3 of .highcharts-legend-item.highcharts-line-series) .highcharts-graph {
-	stroke: var(--color-dark);
+	stroke: var(--series-3);
 }    
  
 

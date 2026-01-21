@@ -26,7 +26,7 @@ Model bhx_ecommerce_users {
     label: 'Email User'
     type: 'text'
     definition: @aql concat(
-      'mailto:', bhx_ecommerce_users.email
+      'mailto:', ecommerce_users.email
     );;
   }
 
@@ -48,7 +48,7 @@ Model bhx_ecommerce_users {
     label: 'linkedin_search'
     type: 'text'
     definition: @aql concat(
-      'https://www.linkedin.com/search/results/all/?keywords=',bhx_ecommerce_countries.full_name
+      'https://www.linkedin.com/search/results/all/?keywords=',ecommerce_users.full_name
     );;
   }
 
@@ -86,7 +86,7 @@ Model bhx_ecommerce_users {
       case (
         when: 
           in(1, H.current_user.pii_access),
-        then: bhx_ecommerce_users.email,
+        then: ecommerce_users.email,
         else: '(redacted)'
       );;
   }
@@ -177,7 +177,7 @@ end;;
   measure total_users_aql {
     label: "Total Users (AQL)"
     type: "number"
-    definition: @aql count(bhx_ecommerce_users.id);;
+    definition: @aql count(ecommerce_users.id);;
     hidden: false
   }
 

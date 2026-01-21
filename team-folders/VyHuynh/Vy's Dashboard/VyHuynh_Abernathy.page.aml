@@ -16,18 +16,18 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
       width: 1220
-      height: 4060
+      height: 4400
       grid_size: 20
       block v2 {
-        position: pos(680, 220, 500, 140)
+        position: pos(20, 820, 260, 140)
         layer: 2
       }
       block v3 {
-        position: pos(20, 1840, 1160, 460)
+        position: pos(20, 2180, 1160, 460)
         layer: 3
       }
       block v4 {
-        position: pos(680, 380, 500, 140)
+        position: pos(300, 820, 260, 140)
         layer: 2
       }
       block t3 {
@@ -67,19 +67,19 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 9
       }
       block v8 {
-        position: pos(20, 640, 1160, 580)
+        position: pos(20, 980, 1160, 580)
         layer: 1
       }
       block v_711g {
-        position: pos(20, 220, 640, 400)
+        position: pos(20, 220, 1160, 580)
         layer: 1
       }
       block v_nehb {
-        position: pos(20, 2320, 1160, 460)
+        position: pos(20, 2660, 1160, 460)
         layer: 1
       }
       block v_cii9 {
-        position: pos(20, 2800, 1160, 400)
+        position: pos(20, 3140, 1160, 400)
         layer: 10
       }
       block t_4ttu {
@@ -99,20 +99,16 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 4
       }
       block v_qj0m {
-        position: pos(20, 3220, 1160, 400)
+        position: pos(20, 3560, 1160, 400)
         layer: 11
       }
       block v_lpgt {
-        position: pos(20, 3640, 580, 400)
+        position: pos(20, 3980, 580, 400)
         layer: 12
       }
       block v_5zcz {
-        position: pos(20, 1240, 1160, 580)
+        position: pos(20, 1580, 1160, 580)
         layer: 1
-      }
-      block v_wgqb {
-        position: pos(620, 3640, 560, 400)
-        layer: 12
       }
       mobile {
         mode: 'auto'
@@ -135,14 +131,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
       block v_2qyv {
         position: pos(20, 900, 1460, 520)
-        layer: 1
-      }
-      block v_8r0h {
-        position: pos(560, 20, 340, 420)
-        layer: 1
-      }
-      block v_wiw0 {
-        position: pos(940, 20, 340, 420)
         layer: 1
       }
       mobile {
@@ -247,7 +235,22 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
       auto_expand_horizontally: true
     }
+    tab tab_lyhw: CanvasLayout {
+      label: 'Untitled'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+      block f_3fj4 {
+        position: pos(20, 20, 300, 80)
+        layer: 1
+      }
+    }
   }
+
   theme: H.themes.vanilla
   block v2: VizBlock {
     label: 'This month Revenue'
@@ -571,7 +574,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block t9: H.blocks.line(2, '#8F99A3')
+  block t9: H.blocks.line(
+    2,
+    '#8F99A3'
+  )
   block v8: VizBlock {
     label: 'GMV - Gross Merchandise Value by Month'
     viz: AreaChart {
@@ -627,12 +633,9 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
   }
   block v_711g: VizBlock {
-    label: 'Number Order over time'
-    viz: LineChart {
+    label: 'Number of Order by Country Name and City Name'
+    viz: ColumnChart {
       dataset: demo_ecommerce
-      theme {
-
-      }
       x_axis: VizFieldFull {
         ref: r(order_master.order_created_month)
         transformation: 'datetrunc month'
@@ -1281,7 +1284,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
     default {
       operator: 'matches'
-      value: '$H_NIL$'
+      value: '27 april 2025 to yesterday'
     }
     settings {
       drillthrough: Drillthrough {
@@ -1587,39 +1590,46 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
   }
   block v_lpgt: VizBlock {
     label: 'AOV - Average Order Value by Category'
-    viz: ColumnChart {
+    viz: PieChart {
       dataset: demo_ecommerce
-      theme {
-
-      }
       legend: VizFieldFull {
         ref: r(map_categories.category)
         format {
           type: 'text'
         }
       }
-      y_axis {
-        series {
-          field: VizFieldFull {
-            ref: r(order_master.aov)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+      series {
+        field: VizFieldFull {
+          ref: r(order_master.aov)
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
-          settings {
-            color_palette: 0
-          }
+        }
+        settings {
+          color_palette: 0
         }
       }
       settings {
         row_limit: 5000
-        x_axis_show_null_datetime: false
+        data_label_position: 'none'
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
       }
+    }
+  }
+  block f_3fj4: FilterBlock {
+    label: 'Order Master Order Id'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: ecom_dataset_vux
+      field: r(order_master.order_id)
+    }
+    default {
+      operator: 'is'
+      value: []
     }
   }
   block v_5zcz: VizBlock {
@@ -1727,101 +1737,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_8r0h: VizBlock {
-    label: 'Order Created Month, Continent Name and 3 more copy'
-    viz: DataTable {
-      dataset: vy_test_dataset
-      fields: [
-        VizFieldFull {
-          ref: r(test_data_axis_scale_csv.sales)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        }
-      ]
-      settings {
-        show_row_number: true
-        row_limit: 10
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_wiw0: VizBlock {
-    label: 'Order Created Month, Continent Name and 3 more copy copy'
-    viz: DataTable {
-      dataset: vy_test_dataset
-      fields: [
-        VizFieldFull {
-          ref: r(test_data_axis_scale_csv.sales)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        }
-      ]
-      settings {
-        show_row_number: true
-        row_limit: 3
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_wgqb: VizBlock {
-    label: 'Number Order over time copy'
-    viz: LineChart {
-      dataset: demo_ecommerce
-      theme {
-
-      }
-      x_axis: VizFieldFull {
-        ref: r(order_master.order_created_month)
-        transformation: 'datetrunc month'
-        format {
-          type: 'date'
-          pattern: 'LLL yyyy'
-        }
-      }
-      legend: VizFieldFull {
-        ref: r(ecommerce_countries.continent_name)
-        format {
-          type: 'text'
-        }
-      }
-      y_axis {
-        label: 'Total Order'
-        settings {
-          show_data_label_by: 'value'
-          stack_series_by: 'value'
-        }
-        series {
-          field: VizFieldFull {
-            ref: r(order_master.order_id)
-            aggregation: 'count distinct'
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-        }
-      }
-      settings {
-        row_limit: 5000
-        x_axis_label: 'Country'
-        x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
   interactions: [
     FilterInteraction {
       from: 'v5'
@@ -1865,6 +1780,30 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_tusm',
             'v_nyr1',
             'v_5dpt',
+            'f_zwa4'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f2'
+      to: [
+        CustomMapping {
+          block: [
+            'v8',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v',
+            'v_qctn',
+            'v_9rhg',
+            'v_dbuh',
+            'v_tusm',
+            'v_nyr1',
+            'v_5zcz',
+            'v_5dpt',
+            'f1',
             'f_zwa4'
           ]
           disabled: true
@@ -1976,8 +1915,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_lpgt',
             'v_5zcz',
-            'v_5dpt',
-            'v_wgqb'
+            'v_5dpt'
           ]
           disabled: true
         }
@@ -2013,8 +1951,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_wgqb'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -2032,8 +1969,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_wgqb'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -2070,11 +2006,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v4',
             'v_nehb'
           ]
-          field: ref('vyht_ecommerce_orders_1', 'created_at')
+          field: r(vyht_ecommerce_orders_1.created_at)
         },
         CustomMapping {
           block: 'v_cii9'
-          field: ref('bq_fct_order_items', 'created_at')
+          field: r(bq_fct_order_items.created_at)
         }
       ]
     },
@@ -2108,8 +2044,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_wgqb'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -2127,8 +2062,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_wgqb'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -2155,8 +2089,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_wgqb'
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -2180,6 +2113,19 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_j83d',
             'v_nyr1',
             'v_5dpt'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_3fj4'
+      to: [
+        CustomMapping {
+          block: [
+            'v_2qyv',
+            'v_3mef',
+            'v_059z'
           ]
           disabled: true
         }
@@ -2214,25 +2160,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_wsww',
             'v_856v',
             'v_lpgt',
-            'v_5zcz',
-            'v_wgqb'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_wgqb'
-      to: [
-        CustomMapping {
-          block: [
-            'v_856v',
-            'v_qctn',
-            'v_9rhg',
-            'v_dbuh',
-            'v_tusm',
-            'v_nyr1',
-            'v_5dpt'
+            'v_5zcz'
           ]
           disabled: true
         }
