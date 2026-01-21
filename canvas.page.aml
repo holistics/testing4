@@ -1,3 +1,4 @@
+@tag('Status/Archived')
 Dashboard canvas {
   title: 'canvas'
   owner: 'toan.lt@holistics.io'
