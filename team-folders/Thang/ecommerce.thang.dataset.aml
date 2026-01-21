@@ -1,5 +1,5 @@
 Dataset ecommerce {
-  label: 'ecommerce'
+  label: 'ecommerce2'
   description: ''
   data_source_name: 'movies_lens'
   models: [
