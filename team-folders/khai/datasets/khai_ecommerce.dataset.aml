@@ -70,7 +70,7 @@ Dataset khai_ecommerce {
     definition: @aql H.current_user.country_attribute;;
     model: countries
   }
-  dimension is_country_ {
+  dimension is_country {
     label: "Is Country"
     type: "truefalse"
     description: ""

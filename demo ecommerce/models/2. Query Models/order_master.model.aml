@@ -384,3 +384,5 @@ Model order_master {
     ]
   }
 }
+
+order_master.dim_selector

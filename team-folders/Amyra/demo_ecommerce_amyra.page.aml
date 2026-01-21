@@ -174,12 +174,12 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
     viz: PieChart {
       dataset: demo_ecommerce
       filter {
-        field: r(order_master.order_created_at)
+        field: ref('order_master', 'order_created_at')
         operator: 'matches'
         value: '2023'
       }
       legend: VizFieldFull {
-        ref: r(map_categories.parent_category)
+        ref: ref('map_categories', 'parent_category')
         format {
           type: 'text'
         }
@@ -187,7 +187,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       series {
         field: VizFieldFull {
           label: ' '
-          ref: r(order_master.gmv)
+          ref: ref('order_master', 'gmv')
           format {
             type: 'number'
             pattern: '[$$]#,###'
