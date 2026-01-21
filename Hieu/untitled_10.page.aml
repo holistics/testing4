@@ -10,10 +10,11 @@ Dashboard untitled_10_2 {
     viz: DataTable {
       dataset: hieu_haha_meme
       theme {
+
       }
       fields: [
         VizFieldFull {
-          label: 'order id'
+          label: 'Id'
           ref: r(orderskk.id)
           format {
             type: 'number'
