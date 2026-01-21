@@ -1,4 +1,4 @@
-Model vyht_ecommerce_orders {
+Model ecommerce_orders3 {
   type: 'table'
   label: 'Orders'
   description: ''
@@ -40,6 +40,6 @@ Model vyht_ecommerce_orders {
     definition: @sql {{ #SOURCE.delivery_attempts }};;
   }
 
-  owner: 'vy.ht@holistics.io'
+  owner: 'thang.lk@holistics.io'
   table_name: '"ecommerce"."orders"'
 }
