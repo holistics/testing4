@@ -7,7 +7,7 @@ Dashboard khai_test {
       height: 820
       grid_size: 20
       block v1 {
-        position: pos(20, 120, 1140, 540)
+        position: pos(20, 160, 1140, 500)
         layer: 1
       }
       block f_ml3q {
