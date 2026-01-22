@@ -4,10 +4,10 @@ Dashboard khai_test {
     label: 'View 1'
     tab tab1: CanvasLayout {
       label: 'Tab 1'
-      height: 840
+      height: 820
       grid_size: 20
       block v1 {
-        position: pos(20, 140, 1140, 540)
+        position: pos(20, 120, 1140, 540)
         layer: 1
       }
       block f_ml3q {
@@ -23,11 +23,11 @@ Dashboard khai_test {
         layer: 4
       }
       block f_j1la {
-        position: pos(20, 720, 300, 80)
+        position: pos(20, 700, 300, 80)
         layer: 5
       }
       block v_6g2o {
-        position: pos(360, 700, 580, 120)
+        position: pos(360, 680, 580, 120)
         layer: 6
       }
     }
