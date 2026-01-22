@@ -1,4 +1,4 @@
-Dataset ecommerce767 {
+Dataset ecommerce {
   label: 'ecommerce2'
   description: ''
   data_source_name: 'movies_lens'
@@ -63,7 +63,7 @@ Dataset ecommerce767 {
     type: "text"
     hidden: false
     description: ""
-    definition: @aql concat(cast(ecommerce_orders2.id, 'text'), " ", ecommerce_orders2.status);;
+    definition: @aql concat(cast(ecommerce_orders2.i9d, 'text'), " ", ecommerce_orders2.status);;
     model: ecommerce_orders2
   }
 }
