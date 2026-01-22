@@ -1,4 +1,4 @@
-Dataset ecommerce {
+Dataset ecommerce767 {
   label: 'ecommerce2'
   description: ''
   data_source_name: 'movies_lens'
