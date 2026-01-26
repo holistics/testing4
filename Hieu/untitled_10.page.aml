@@ -13,7 +13,7 @@ Dashboard untitled_10_2 {
       }
       fields: [
         VizFieldFull {
-          label: 'order id'
+          label: 'Id'
           ref: r(orderskk.id)
           format {
             type: 'number'
@@ -89,39 +89,6 @@ Dashboard untitled_10_2 {
           enabled: true
           debug_comments: true
         }
-      }
-    }
-  }
-  block f_ahde: FilterBlock {
-    label: 'Orders tenant_id'
-    type: 'field'
-    source: FieldFilterSource {
-      dataset: hieu_haha_meme
-      field: r(orderskk.tenant_id)
-    }
-    default {
-      operator: 'is'
-      value: []
-    }
-  }
-  block f_tenants_id: FilterBlock {
-    label: 'Tenants Id'
-    type: 'field'
-    source: FieldFilterSource {
-      dataset: hieu_haha_meme
-      field: r(orderskk.param_tenant_id)
-    }
-    default {
-      operator: 'is'
-      value: '1'
-    }
-    settings {
-      drillthrough: Drillthrough {
-        enabled: false
-        sources: [
-          AutoDrillthroughSource {
-          }
-        ]
       }
     }
   }
@@ -375,6 +342,18 @@ Dashboard untitled_10_2 {
       }
     }
   }
+  block f_orders_tenant_id: FilterBlock {
+    label: 'Orders tenant_id'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: hieu_haha_meme
+      field: r(orderskk.tenant_id)
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
@@ -389,12 +368,6 @@ Dashboard untitled_10_2 {
     }
     block v_tf0o {
       position: pos(40, 240, 380, 420)
-    }
-    block f_ahde {
-      position: pos(60, 120, 300, 60)
-    }
-    block f_tenants_id {
-      position: pos(400, 120, 300, 80)
     }
     block v_2lji {
       position: pos(40, 680, 620, 420)
@@ -414,6 +387,9 @@ Dashboard untitled_10_2 {
       position: pos(20, 1560, 620, 420)
       layer: 3
     }
+    block f_orders_tenant_id {
+      position: pos(40, 140, 300, 80)
+    }
     mobile {
       mode: 'auto'
     }
@@ -421,24 +397,11 @@ Dashboard untitled_10_2 {
   theme: H.themes.vanilla
   interactions: [
     FilterInteraction {
-      from: 'f_ahde'
+      from: 'f_orders_tenant_id'
       to: [
         CustomMapping {
           block: 'v_tf0o'
-          field: r(users_kk.tenant_id)
-        },
-        CustomMapping {
-          block: 'f_tenants_id'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_tenants_id'
-      to: [
-        CustomMapping {
-          block: 'f_ahde'
-          disabled: true
+          field: ref('users_kk', 'tenant_id')
         }
       ]
     }
