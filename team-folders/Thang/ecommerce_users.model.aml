@@ -21,6 +21,12 @@ Model ecommerce_users2 {
     hidden: false
     definition: @sql {{ #SOURCE.sign_up_at }};;
   }
+    dimension sign_up_at2 {
+    label: 'Sign Up At'
+    type: 'datetime'
+    hidden: false
+    definition: @sql {{ #SOURCE.sign_up_at }};;
+  }
   dimension first_name {
     label: 'First Name'
     type: 'text'
