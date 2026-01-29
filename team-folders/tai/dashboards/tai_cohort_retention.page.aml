@@ -13,10 +13,10 @@ Dashboard tai_cohort_retention {
       layer: 1
     }
     block v_grip {
-      position: pos(40, 640, 300, 520)
+      position: pos(40, 640, 280, 520)
     }
     block v_xt6f {
-      position: pos(340, 640, 1520, 520)
+      position: pos(320, 640, 1520, 520)
     }
     width: 2220
   }
@@ -140,6 +140,12 @@ Dashboard tai_cohort_retention {
   }
   block v_grip: VizBlock {
     label: 'Cohort Retention copy'
+    theme {
+      border {
+        border_width: 0
+      }
+      padding: 0
+    }
     viz: PivotTable {
       dataset: khai_ecommerce
       calculation first_acquired_at {
@@ -254,11 +260,11 @@ Dashboard tai_cohort_retention {
         column_styles: [
           ColumnStyle {
             key: 'custom_total_users_retention'
-            width: 62
+            width: 91
           },
           ColumnStyle {
             key: 'custom_total_users'
-            width: 91
+            width: 84
           }
         ]
       }
@@ -269,6 +275,12 @@ Dashboard tai_cohort_retention {
   }
   block v_xt6f: VizBlock {
     label: 'Cohort Retention copy copy'
+    theme {
+      border {
+        border_width: 0
+      }
+      padding: 0
+    }
     viz: PivotTable {
       dataset: khai_ecommerce
       calculation first_acquired_at {
