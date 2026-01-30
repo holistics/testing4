@@ -2,7 +2,7 @@
 // use demo
 
 Dashboard demo_ecommerce_dashboard_amyra_copy {
-  title: 'Ecommerce Dashboard - Amyra'
+  title: 'Ecommerce Dashboard - THANG'
 
   block hd1: TextBlock {
     content: @md 
