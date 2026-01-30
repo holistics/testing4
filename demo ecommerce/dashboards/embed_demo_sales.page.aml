@@ -248,43 +248,6 @@ Dashboard embed_demo_landing_page_2 {
       hide_label: true
     }
   }
-  block v8: VizBlock {
-    label: 'User Growth'
-    viz: CombinationChart {
-      dataset: demo_ecommerce
-      calculation f_3f16a1c {
-        label: 'Running Total'
-        formula: @aql          running_total!(
-ecommerce_users.id | count() ,
-ecommerce_users.sign_up_date
-);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      filter {
-        field: r(order_master.last_order_value)
-        operator: 'is'
-        value: '1'
-      }
-      settings {
-        x_axis_show_null_datetime: true
-        pop {
-          field: r(ecommerce_users.sign_up_date)
-          value: RelativePopValue {
-            duration: 3
-            granularity: 'month'
-          }
-        }
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-    settings {
-      hide_label: true
-    }
-  }
   block f2: FilterBlock {
     label: 'Date Range'
     type: 'date'
@@ -440,16 +403,6 @@ ecommerce_users.sign_up_date
   block t13: TextBlock {
     content: @md <div class="h-full border-l-2"/>;;
   }
-  block t14: TextBlock {
-    content: @md &nbsp; ;;
-    theme {
-      border {
-        border_width: 2
-        border_radius: 10
-        border_color: '#e8e8e8'
-      }
-    }
-  }
   block t15: TextBlock {
     content: @md &nbsp; ;;
     theme {
@@ -599,9 +552,6 @@ ecommerce_users.sign_up_date
     block v7 {
       position: pos(1160, 140, 240, 140)
     }
-    block v8 {
-      position: pos(40, 380, 650, 370)
-    }
     block t10 {
       position: pos(300, 120, 10, 180)
     }
@@ -614,10 +564,6 @@ ecommerce_users.sign_up_date
     }
     block t13 {
       position: pos(1140, 120, 10, 180)
-    }
-    block t14 {
-      position: pos(20, 310, 690, 720)
-      layer: -2
     }
     block t15 {
       position: pos(730, 310, 690, 720)
@@ -683,58 +629,6 @@ ecommerce_users.sign_up_date
             'f3'
           ]
           disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f2'
-      to: [
-        CustomMapping {
-          block: [
-            'v3',
-            'v4',
-            'v8',
-            'v12'
-          ]
-          field: r(ecommerce_users.sign_up_date)
-        },
-        CustomMapping {
-          block: [
-            'v5',
-            'v6',
-            'v7'
-          ]
-          field: r(order_master.order_created_at)
-        },
-        CustomMapping {
-          block: 'v11'
-          field: r(dim_dates.date_key)
-        }
-      ]
-    },
-    DateDrillInteraction {
-      from: 'd1'
-      to: [
-        CustomMapping {
-          block: 'v8'
-          field: r(ecommerce_users.sign_up_date)
-        },
-        CustomMapping {
-          block: 'v11'
-          field: r(dim_dates.date_key)
-        }
-      ]
-    },
-    PopInteraction {
-      from: 'p1'
-      to: [
-        CustomMapping {
-          block: 'v11'
-          field: r(dim_dates.date_key)
-        },
-        CustomMapping {
-          block: 'v8'
-          field: r(ecommerce_users.sign_up_date)
         }
       ]
     }
