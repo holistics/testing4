@@ -147,7 +147,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       //   data_type: 'number'
       // }
       filter {
-        field: ref('order_master2', 'order_created_at')
+        field: ref('order_master', 'order_created_at')
         operator: 'matches'
         value: '2023'
       }
@@ -464,74 +464,6 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       hide_label: true
       hide_controls: true
     }
-  }
-  block v12: VizBlock {
-    label: 'Daily GMV vs. 7-day Moving Average'
-    viz: CombinationChart {
-      dataset: demo_ecommerce
-      filter {
-        field: ref('order_master2', 'order_created_at')
-        operator: 'matches'
-        value: '2023'
-      }
-      x_axis: VizFieldFull {
-        ref: ref('order_master', 'order_created_at')
-        transformation: 'datetrunc day'
-        format {
-          type: 'date'
-          pattern: 'LLL dd, yyyy'
-        }
-      }
-      y_axis {
-        series {
-          mark_type: 'line'
-          field: VizFieldFull {
-            ref: ref('order_master', 'gmv')
-            format {
-              type: 'number'
-              pattern: '#,###'
-            }
-          }
-          settings {
-            color: '#D1EDEC'
-            line_interpolation: 'smooth'
-          }
-        }
-        series {
-          mark_type: 'line'
-          field: VizFieldFull {
-            label: '7-day MovAvg of GMV'
-            ref: ref('order_master', 'gmv')
-            format {
-              type: 'number'
-              pattern: '#,###'
-            }
-            analytic: MovingCalculationField {
-              type: 'avg'
-              order: 'row'
-              range {
-                previous: 7
-                next: 0
-              }
-              null_if_not_enough_values: true
-            }
-          }
-          settings {
-            color: '#18A59E'
-            line_interpolation: 'smooth'
-          }
-        }
-      }
-      settings {
-        legend_label: 'right'
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-    description: @md # Description
-abc;;
   }
   block f1: FilterBlock {
     label: 'Country'
@@ -1206,10 +1138,6 @@ abc;;
     }
     block v10 {
       position: pos(80, 600, 320, 140)
-    }
-    block v12 {
-      position: pos(480, 440, 1000, 300)
-      layer: -1
     }
     block f1 {
       position: pos(80, 3020, 260, 40)
