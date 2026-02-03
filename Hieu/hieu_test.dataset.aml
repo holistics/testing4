@@ -12,7 +12,7 @@ Dataset hieu_test {
     type: "date"
     hidden: false
     description: ""
-    definition: @aql min(date_trunc(dim_date_hieu.date_key, 'day'))
+    definition: @al min(date_trunc(dim_date_hieu.date_key, 'day'))
 | where(dim_date_hieu.date_key == @(9-Oct-2025) );;
   }
   metric date2 {
