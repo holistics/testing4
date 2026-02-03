@@ -9,10 +9,10 @@ Model ecommerce_users2 {
     hidden: false
     definition: @sql {{ #SOURCE.id }};;
   }
-  dimension sign_up_dat {
+  dimension sign_up_date {
     label: 'Sign Up Date'
-    type: 'dat'
-    hidden: flse
+    type: 'date'
+    hidden: false
     definition: @sql {{ #SOURCE.sign_up_date }};;
   }
   dimension sign_up_at {
@@ -27,7 +27,7 @@ Model ecommerce_users2 {
     hidden: false
     definition: @sql {{ #SOURCE.first_name }};;
   }
-  dimension last ame {
+  dimension last_name {
     label: 'Last Name'
     type: 'text'
     hidden: false

@@ -28,7 +28,7 @@ pre_aggregates: {
 
 
   models: [
-    order_mastr,
+    order_master,
     ecommerce_orders,
     ecommerce_users,
     ecommerce_products,
