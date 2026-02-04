@@ -1617,7 +1617,6 @@ abc;;
         data_type: 'number'
       }
       theme {
-
       }
       value: VizFieldFull {
         ref: r(order_master.order_id)
@@ -1638,7 +1637,6 @@ abc;;
     }
     settings {
       hide_label: true
-      hide_controls: true
     }
   }
   view: TabLayout {
