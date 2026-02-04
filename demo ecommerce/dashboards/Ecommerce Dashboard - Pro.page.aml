@@ -1606,39 +1606,6 @@ abc;;
       hide_label: true
     }
   }
-  block v_u4b9: VizBlock {
-    label: 'count of order id'
-    viz: MetricKpi {
-      dataset: demo_ecommerce
-      calculation f_d80427a {
-        label: 'Target Users'
-        formula: @aml ecommerce_users.users_signed_up_count * 1.38;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      theme {
-      }
-      value: VizFieldFull {
-        ref: r(order_master.order_id)
-        aggregation: 'count'
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
-      }
-      settings {
-        display_mode: 'progress'
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-        alignment: 'left'
-      }
-    }
-    settings {
-      hide_label: true
-    }
-  }
   view: TabLayout {
     label: 'View 1'
     tab view_1: CanvasLayout {
@@ -1796,19 +1763,6 @@ abc;;
       }
       block v2_dup_dup {
         position: pos(440, 2200, 380, 500)
-      }
-      mobile {
-        mode: 'auto'
-      }
-    }
-    tab tab_g4sl: CanvasLayout {
-      label: 'Tab 2'
-      width: 1300
-      height: 800
-      grid_size: 20
-      auto_expand_vertically: true
-      block v_u4b9 {
-        position: pos(500, 350, 320, 140)
       }
       mobile {
         mode: 'auto'
