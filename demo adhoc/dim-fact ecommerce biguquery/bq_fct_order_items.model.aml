@@ -94,11 +94,13 @@ Model bq_fct_order_items {
     type: "number"
     description: ""
     hidden: false
-    definition: @sql 
-      COALESCE(
-      MAX(
-        (SELECT x FROM UNNEST(APPROX_QUANTILES(CAST({{ all_conversations }} AS INT64), 2)) AS x LIMIT 1 OFFSET 1)
-      ), 0)
+definition: @sql 
+    /* We use SUM to tell Holistics this is a numeric measure for the Total row */
+    SUM(
+      CAST(
+        (SELECT x FROM UNNEST(APPROX_QUANTILES({{ #SOURCE.all_conversations_monthly_cumulative }}, 2)) AS x LIMIT 1 OFFSET 1)
+      AS INT64)
+    )
   ;;
     aggregation_type: "custom"
   }
