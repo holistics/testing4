@@ -76,7 +76,7 @@ Model bq_fct_order_items {
     label: 'Value'
     type: 'number'
     hidden: false
-    definition: @sql {{ #SOURCE.value }};;
+    definition: @sql CAST({{ #SOURCE.value }} AS INTEGER);;
     description: 'Price * Quantity'
   }
   dimension discount_value {
@@ -89,7 +89,7 @@ Model bq_fct_order_items {
 
   owner: 'triet.lq@holistics.io'
   table_name: '`demo_ecommerce`.`fct_order_items`'
-  measure measure_c746fac {
+  measure test_median {
     label: "Median of Order Items Value"
     type: "number"
     description: ""
