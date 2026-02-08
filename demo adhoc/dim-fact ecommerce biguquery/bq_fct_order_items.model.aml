@@ -94,7 +94,10 @@ Model bq_fct_order_items {
     type: "number"
     description: ""
     hidden: false
-    definition: @sql (SELECT x FROM UNNEST(APPROX_QUANTILES({{ all_conversations }}, 2)) AS x LIMIT 1 OFFSET 1) ;;
-    aggregation_type: "custom"
+    definition: @sql 
+      CAST(
+      (SELECT x FROM UNNEST(APPROX_QUANTILES(CAST({{ all_conversations }} AS INT64), 2)) AS x LIMIT 1 OFFSET 1)
+      AS INT64) ;;    
+      aggregation_type: "custom"
   }
 }
