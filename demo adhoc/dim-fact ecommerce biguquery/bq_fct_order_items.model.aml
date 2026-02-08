@@ -95,11 +95,10 @@ Model bq_fct_order_items {
     description: ""
     hidden: false
 definition: @sql 
-    /* We use SUM to tell Holistics this is a numeric measure for the Total row */
     SUM(
       CAST(
         (SELECT x FROM UNNEST(APPROX_QUANTILES({{ #SOURCE.all_conversations_monthly_cumulative }}, 2)) AS x LIMIT 1 OFFSET 1)
-      AS INT64)
+      AS FLOAT64) -- Cast to FLOAT64 here to match Holistics' dummy row
     )
   ;;
     aggregation_type: "custom"
