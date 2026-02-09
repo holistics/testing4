@@ -148,7 +148,7 @@ Model order_master {
     label: 'Final Item Value'
     type: 'number'
     hidden: false
-    definition: @sql {{ #SOURCE.price }} * (1 - {{ #SOURCE.discount }}) ;;
+    definition: @sql CAST({{ #SOURCE.price }} * (1 - {{ #SOURCE.discount }}) AS NUMERIC) ;;
   }
   dimension order_is_delivered {
     label: 'Order Is Delivered'
