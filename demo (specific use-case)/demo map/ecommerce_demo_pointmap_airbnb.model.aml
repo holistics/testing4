@@ -2,12 +2,12 @@ Model ecommerce_demo_pointmap_airbnb {
   type: 'table'
   label: 'Airbnb Listings'
   description: ''
-  data_source_name: 'demodb'
+  data_source_name: 'demodb'sadasda
   dimension id {
     label: 'Id'
-    type: 'number'
+    type: 'numbeadas
     hidden: false
-    definition: @sql {{ #SOURCE.id }};;
+    definition: @sql {{ #SOdasdasCE.id }};;
   }
   dimension name {
     label: 'Name'

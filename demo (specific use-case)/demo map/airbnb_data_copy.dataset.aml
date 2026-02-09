@@ -1,4 +1,4 @@
-Dataset airbnb_data {
+Dataset airbnb_data_copy {
   label: 'Airbnb Data'
   description: ''
   data_source_name: 'emodb'
