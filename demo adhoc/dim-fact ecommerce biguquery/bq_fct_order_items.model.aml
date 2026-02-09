@@ -95,12 +95,12 @@ Model bq_fct_order_items {
     description: ""
     hidden: false
 definition: @sql 
-    SUM(
-      CAST(
-        (SELECT x FROM UNNEST(APPROX_QUANTILES({{ #SOURCE.test_median }}, 2)) AS x LIMIT 1 OFFSET 1)
-      AS FLOAT64) -- Cast to FLOAT64 here to match Holistics' dummy row
-    )
-  ;;
+      AVG(DISTINCT 
+        CAST(
+          PERCENTILE_CONT({{ #SOURCE.value }}, 0.5) OVER() 
+        AS FLOAT64)
+      ) 
+    ;;
     aggregation_type: "custom"
   }
 }
