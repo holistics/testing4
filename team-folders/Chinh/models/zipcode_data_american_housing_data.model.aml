@@ -9,6 +9,7 @@ Model zipcode_data_american_housing_data {
   dimension zip_code {
     label: 'Zip Code'
     type: 'number'
+    description: 'revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue_revenue'
     hidden: false
     definition: @sql {{ #SOURCE.zip_code }};;
   }

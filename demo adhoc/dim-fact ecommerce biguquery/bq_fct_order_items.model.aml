@@ -89,4 +89,12 @@ Model bq_fct_order_items {
 
   owner: 'triet.lq@holistics.io'
   table_name: '`demo_ecommerce`.`fct_order_items`'
+  measure measure_c746fac {
+    label: "Median of Order Items Value"
+    type: "number"
+    description: ""
+    hidden: false
+    definition: @aql median(bq_fct_order_items.value);;
+    aggregation_type: "custom"
+  }
 }
