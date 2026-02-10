@@ -1,5 +1,5 @@
 Dashboard _0_ecommerce_dashboard_30 {
-  title: '0. Ecommerce Dashboard 3.0'
+  title: '0. Ecommerce Dashboard 3. 0'
   block date: FilterBlock {
     label: 'Date'
     type: 'field'
