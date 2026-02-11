@@ -2086,15 +2086,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       ]
     },
     FilterInteraction {
-      from: 'v_3mef'
-      to: [
-        CustomMapping {
-          block: 'v_059z'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
       from: 'v_059z'
       to: [
         CustomMapping {
