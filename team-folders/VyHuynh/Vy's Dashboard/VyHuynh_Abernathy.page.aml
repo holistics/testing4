@@ -1163,9 +1163,12 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
   }
   block v_3mef: VizBlock {
-    label: 'CountD of Order Id by Continent Name, Gender, Delivery Attempts, and Status'
+    label: 'Chart 1'
     viz: CombinationChart {
       dataset: ecom_dataset_vux
+      theme {
+
+      }
       x_axis: VizFieldFull {
         ref: r(order_master.status)
         format {
@@ -1216,9 +1219,12 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
   }
   block v_059z: VizBlock {
-    label: 'CountD of Order Id by Continent Name, Gender, Delivery Attempts, and Status'
+    label: 'Table 2'
     viz: PivotTable {
       dataset: ecom_dataset_vux
+      theme {
+
+      }
       rows: [
         VizFieldFull {
           ref: r(order_master.status)
@@ -1592,7 +1598,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
   }
   block v_ck6w: VizBlock {
-    label: 'Table 3'
+    label: 'Table 1'
     viz: PivotTable {
       dataset: ecom_dataset_vux
       theme {
