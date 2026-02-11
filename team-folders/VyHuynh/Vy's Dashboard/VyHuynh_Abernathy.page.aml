@@ -129,10 +129,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         position: pos(20, 460, 940, 420)
         layer: 1
       }
-      block v_2qyv {
-        position: pos(20, 900, 1460, 520)
-        layer: 1
-      }
       mobile {
         mode: 'auto'
       }
@@ -214,24 +210,24 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
     tab tab_4i2l: CanvasLayout {
       label: 'User Analysis'
-      width: 1300
-      height: 1520
+      width: 1500
+      height: 2020
       grid_size: 20
       auto_expand_vertically: true
       mobile {
         mode: 'auto'
       }
-      block v_jgur {
-        position: pos(20, 20, 540, 400)
-        layer: 1
-      }
       block v_3mef {
-        position: pos(20, 440, 1260, 520)
+        position: pos(20, 580, 1260, 520)
         layer: 1
       }
       block v_059z {
-        position: pos(20, 980, 1260, 520)
+        position: pos(20, 1120, 1260, 520)
         layer: 1
+      }
+      block v_ck6w {
+        position: pos(20, 20, 1460, 520)
+        layer: 2
       }
       auto_expand_horizontally: true
     }
@@ -665,7 +661,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: DataTable {
       dataset: demo_ecommerce
       theme {
-
       }
       fields: [
         VizFieldFull {
@@ -885,7 +880,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: DataTable {
       dataset: demo_ecommerce
       theme {
-
       }
       fields: [
         VizFieldFull {
@@ -920,41 +914,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           }
         ]
         row_limit: 5000
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_jgur: VizBlock {
-    label: 'Funnel Sign up - Make order'
-    viz: FunnelChart {
-      dataset: demo_bigquery_ecommerce
-      series {
-        field: VizFieldFull {
-          label: 'Sign up'
-          ref: r(bq_dim_users.sign_up_date)
-          aggregation: 'count'
-          format {
-            type: 'number'
-          }
-        }
-      }
-      series {
-        field: VizFieldFull {
-          label: 'Make order'
-          ref: r(demo_bigquery_ecommerce.count_users)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        }
-      }
-      settings {
-        row_limit: 5000
-        show_percentage: true
-        data_label_position: 'inside'
         aggregate_awareness {
           enabled: true
           debug_comments: true
@@ -1165,90 +1124,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           enabled: true
           debug_comments: true
         }
-      }
-    }
-  }
-  block v_2qyv: VizBlock {
-    label: 'Table 3'
-    viz: PivotTable {
-      dataset: ecom_dataset_vux
-      theme {
-
-      }
-      rows: [
-        VizFieldFull {
-          ref: r(ecommerce_countries.continent_name)
-          format {
-            type: 'text'
-          }
-          uname: 'ecommerce_countries_continent_name'
-        },
-        VizFieldFull {
-          ref: r(ecommerce_users.gender)
-          format {
-            type: 'text'
-          }
-          uname: 'ecommerce_users_gender'
-        },
-        VizFieldFull {
-          label: 'Product Category'
-          ref: r(order_master.delivery_attempts)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-          uname: 'order_master_delivery_attempts'
-        }
-      ]
-      columns: [
-        VizFieldFull {
-          ref: r(order_master.status)
-          format {
-            type: 'text'
-          }
-        }
-      ]
-      values: [
-        VizFieldFull {
-          label: 'Number Order'
-          ref: r(order_master.order_id)
-          aggregation: 'count distinct'
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        },
-        VizFieldFull {
-          label: 'GMV'
-          ref: r(order_master.gmv)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        }
-      ]
-      settings {
-        show_row_total: true
-        show_column_total: true
-        row_limit: 5000
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-        column_styles: [
-          ColumnStyle {
-            key: 'ecommerce_users_gender'
-            width: 86
-          },
-          ColumnStyle {
-            key: 'order_master_delivery_attempts'
-            width: 116
-          },
-          ColumnStyle {
-            key: 'ecommerce_countries_continent_name'
-            width: 117
-          }
-        ]
       }
     }
   }
@@ -1713,6 +1588,90 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           enabled: true
           debug_comments: true
         }
+      }
+    }
+  }
+  block v_ck6w: VizBlock {
+    label: 'Table 3'
+    viz: PivotTable {
+      dataset: ecom_dataset_vux
+      theme {
+
+      }
+      rows: [
+        VizFieldFull {
+          ref: r(ecommerce_countries.continent_name)
+          format {
+            type: 'text'
+          }
+          uname: 'ecommerce_countries_continent_name'
+        },
+        VizFieldFull {
+          ref: r(ecommerce_users.gender)
+          format {
+            type: 'text'
+          }
+          uname: 'ecommerce_users_gender'
+        },
+        VizFieldFull {
+          label: 'Product Category'
+          ref: r(order_master.delivery_attempts)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'order_master_delivery_attempts'
+        }
+      ]
+      columns: [
+        VizFieldFull {
+          ref: r(order_master.status)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'Number Order'
+          ref: r(order_master.order_id)
+          aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'GMV'
+          ref: r(order_master.gmv)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_total: true
+        show_column_total: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        column_styles: [
+          ColumnStyle {
+            key: 'ecommerce_users_gender'
+            width: 86
+          },
+          ColumnStyle {
+            key: 'order_master_delivery_attempts'
+            width: 116
+          },
+          ColumnStyle {
+            key: 'ecommerce_countries_continent_name'
+            width: 117
+          }
+        ]
       }
     }
   }
