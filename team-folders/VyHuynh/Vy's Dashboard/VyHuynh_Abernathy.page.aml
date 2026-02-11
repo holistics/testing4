@@ -1163,7 +1163,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
   }
   block v_3mef: VizBlock {
-    label: 'Chart 2'
+    label: 'Chart 3'
     viz: CombinationChart {
       dataset: ecom_dataset_vux
       theme {
