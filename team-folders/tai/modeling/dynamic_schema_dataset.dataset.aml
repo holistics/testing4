@@ -1,7 +1,7 @@
 Dataset dynamic_schema_dataset {
   label: 'Dynamic Schema Dataset'
   description: ''
-  data_source_name: 'demodb'
+  data_source_name: dynamic_db
   models: [
     dynamic_schema_ecommerce_orders
   ]
