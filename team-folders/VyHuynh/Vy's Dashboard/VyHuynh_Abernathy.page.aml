@@ -2148,6 +2148,19 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           disabled: true
         }
       ]
+    },
+    FilterInteraction {
+      from: 'f_countries_continent_name'
+      to: [
+        CustomMapping {
+          block: [
+            'v_059z',
+            'v_3mef',
+            'v_ck6w'
+          ]
+          field: ref('ecommerce_countries', 'continent_name')
+        }
+      ]
     }
   ]
   settings {
