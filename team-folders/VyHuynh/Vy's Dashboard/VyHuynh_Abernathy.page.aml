@@ -218,15 +218,15 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         mode: 'auto'
       }
       block v_3mef {
-        position: pos(20, 580, 1260, 520)
+        position: pos(20, 500, 1240, 280)
         layer: 1
       }
       block v_059z {
-        position: pos(20, 1120, 1260, 520)
+        position: pos(20, 800, 1240, 520)
         layer: 1
       }
       block v_ck6w {
-        position: pos(20, 20, 1460, 520)
+        position: pos(20, 20, 1460, 460)
         layer: 2
       }
       auto_expand_horizontally: true
@@ -1596,7 +1596,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: PivotTable {
       dataset: ecom_dataset_vux
       theme {
-
       }
       rows: [
         VizFieldFull {
