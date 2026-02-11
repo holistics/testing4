@@ -218,15 +218,19 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         mode: 'auto'
       }
       block v_3mef {
-        position: pos(20, 760, 1240, 280)
+        position: pos(20, 860, 1240, 280)
         layer: 1
       }
       block v_059z {
-        position: pos(20, 500, 1240, 240)
+        position: pos(20, 600, 1240, 240)
         layer: 1
       }
       block v_ck6w {
-        position: pos(20, 20, 1460, 460)
+        position: pos(20, 120, 1460, 460)
+        layer: 2
+      }
+      block f_countries_continent_name {
+        position: pos(20, 20, 300, 80)
         layer: 2
       }
       auto_expand_horizontally: true
@@ -1676,6 +1680,18 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           }
         ]
       }
+    }
+  }
+  block f_countries_continent_name: FilterBlock {
+    label: 'Countries Continent Name'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: demo_ecommerce
+      field: r(ecommerce_countries.continent_name)
+    }
+    default {
+      operator: 'is'
+      value: []
     }
   }
   interactions: [
