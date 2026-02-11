@@ -110,10 +110,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         position: pos(20, 1400, 1160, 580)
         layer: 1
       }
-      block v_t1td {
-        position: pos(620, 3800, 580, 400)
-        layer: 13
-      }
       mobile {
         mode: 'auto'
       }
@@ -1765,41 +1761,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_t1td: VizBlock {
-    label: 'Float64'
-    viz: PivotTable {
-      dataset: demo_bigquery_ecommerce
-      rows: [
-        VizFieldFull {
-          ref: r(bq_fct_order_items.created_date)
-          transformation: 'datetrunc month'
-          format {
-            type: 'date'
-            pattern: 'LLL yyyy'
-          }
-        }
-      ]
-      values: [
-        VizFieldFull {
-          ref: r(bq_fct_order_items.value)
-          aggregation: 'median'
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        }
-      ]
-      settings {
-        show_row_total: true
-        show_column_total: true
-        row_limit: 5000
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
   interactions: [
     FilterInteraction {
       from: 'v2'
@@ -2120,7 +2081,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         },
         CustomMapping {
           block: 'v_cii9'
-          field: r(bq_fct_order_items.created_at)
+          field: ref('bq_fct_order_items', 'created_at')
         }
       ]
     },
@@ -2285,24 +2246,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: 'v_8r0h'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_jgur'
-      to: [
-        CustomMapping {
-          block: 'v_t1td'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_t1td'
-      to: [
-        CustomMapping {
-          block: 'v_jgur'
           disabled: true
         }
       ]
