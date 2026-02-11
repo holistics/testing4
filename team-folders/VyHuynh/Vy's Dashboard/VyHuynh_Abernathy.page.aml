@@ -218,11 +218,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         mode: 'auto'
       }
       block v_3mef {
-        position: pos(20, 860, 1240, 280)
+        position: pos(20, 760, 1240, 280)
         layer: 1
       }
       block v_059z {
-        position: pos(20, 500, 1240, 340)
+        position: pos(20, 500, 1240, 240)
         layer: 1
       }
       block v_ck6w {
