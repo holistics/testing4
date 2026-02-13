@@ -2012,15 +2012,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       ]
     },
     FilterInteraction {
-      from: 'v_059z'
-      to: [
-        CustomMapping {
-          block: 'v_3mef'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
       from: 'v_dbuh'
       to: [
         CustomMapping {
