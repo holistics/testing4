@@ -398,7 +398,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: BarChart {
       dataset: demo_ecommerce
       calculation adhoc_dim {
-        label: 'Concat field'
+        label: 'My adhoc dim'
         formula: @aql concat(cast(total_orders, 'text'), " ", ecommerce_countries.continent_name);;
         calc_type: 'dimension'
         data_type: 'text'
@@ -408,9 +408,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         field: r(order_master.order_created_at)
         operator: 'matches'
         value: '2024'
-      }
-      theme {
-
       }
       legend: VizFieldFull {
         ref: r(ecommerce_countries.continent_name)
