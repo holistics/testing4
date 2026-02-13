@@ -1,0 +1,82 @@
+// This is a library dashboard block. For more details, visit https://docs.holistics.io/docs/canvas-dashboard/guides/build-library-blocks
+@template(
+  title='Chinh Test Table',
+  description='',
+  thumbnail='',
+  metadata={
+    group: ''
+    block_width: 1260
+    block_height: 680
+  }
+)
+Func block_chinh_test_table() {
+  VizBlock {
+    label: 'Table'
+    viz: DataTable {
+      dataset: ticket_23584
+      fields: [
+        VizFieldFull {
+          ref: r(chinh_dim_date.date)
+          format {
+            type: 'date'
+          }
+          uname: 'chinh_dim_date_date'
+        },
+        VizFieldFull {
+          ref: r(chinh_dim_category.category)
+          format {
+            type: 'text'
+          }
+          uname: 'chinh_dim_category_category_1'
+        },
+        VizFieldFull {
+          ref: r(ticket_23584, chinh_dim_category.active_category)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          hidden: true
+        },
+        VizFieldFull {
+          ref: r(ticket_23584.total_amount)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            key: 'chinh_dim_date_date'
+            direction: 'desc'
+          },
+          SortSetting {
+            key: 'chinh_dim_category_category_1'
+            direction: 'asc'
+          }
+        ]
+        conditional_formats: [
+          ConditionalFormat {
+            key: 'chinh_dim_date_date'
+            format: SingleFormat {
+              condition {
+                operator: 'before'
+                value: '2023-12-31'
+              }
+              text_color: '#BF0E08'
+              background_color: '#FAD2D1'
+              apply_to_row: true
+            }
+          }
+        ]
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+}
