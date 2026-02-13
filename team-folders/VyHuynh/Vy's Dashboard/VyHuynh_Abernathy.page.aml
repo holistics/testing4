@@ -397,10 +397,20 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     description: 'This is description of the block'
     viz: BarChart {
       dataset: demo_ecommerce
+      calculation adhoc_dim {
+        label: 'Concat field'
+        formula: @aql concat(cast(total_orders, 'text'), " ", ecommerce_countries.continent_name);;
+        calc_type: 'dimension'
+        data_type: 'text'
+        model: order_master
+      }
       filter {
         field: r(order_master.order_created_at)
         operator: 'matches'
         value: '2024'
+      }
+      theme {
+
       }
       legend: VizFieldFull {
         ref: r(ecommerce_countries.continent_name)
