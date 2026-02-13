@@ -106,6 +106,21 @@ Dataset demo_bigquery_ecommerce {
     description: ""
     definition: @aql median(bq_fct_order_items.value);;
   }
+  metric count_user_group {
+    label: "Count User Group"
+    type: "text"
+    hidden: false
+    description: ""
+    definition: @aql case(
+  when: count_users < 750,
+  then: "Less than 750",
+  when: and(count_users < 1500, count_users > 749),
+  then: "From 750 - 1500",
+  when: count_users > 1499,
+  then: "Greater than 1500",
+  else: "Other"
+);;
+  }
 
   owner: 'triet.lq@holistics.io'
 }
