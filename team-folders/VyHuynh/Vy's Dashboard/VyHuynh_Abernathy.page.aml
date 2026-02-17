@@ -204,7 +204,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 4
       }
       block v_8fpj {
-        position: pos(20, 1020, 1160, 400)
+        position: pos(20, 1020, 1160, 500)
         layer: 4
       }
       mobile {
@@ -1715,7 +1715,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: BarChart {
       dataset: vyhuynh_ecommerce_dataset
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(vy_sales_revenue_demo_csv.sales_rep)
