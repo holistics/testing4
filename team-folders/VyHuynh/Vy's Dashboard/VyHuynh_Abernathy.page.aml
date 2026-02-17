@@ -152,7 +152,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 3
       }
       block v6 {
-        position: pos(20, 600, 1160, 580)
+        position: pos(20, 680, 1160, 580)
         layer: 4
       }
       block v_csef {
@@ -206,6 +206,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       block v_bxa7 {
         position: pos(40, 260, 520, 320)
         layer: 1
+      }
+      block v_kup5 {
+        position: pos(40, 520, 580, 400)
+        layer: 4
       }
       mobile {
         mode: 'auto'
@@ -1723,7 +1727,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: '2024'
       }
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: ref('order_master', 'adhoc_dim')
@@ -1747,6 +1750,41 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             format {
               type: 'number'
               pattern: '#,###'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_kup5: VizBlock {
+    label: 'Sum of Revenue by Country'
+    viz: ColumnChart {
+      dataset: vyhuynh_ecommerce_dataset
+      theme {
+
+      }
+      legend: VizFieldFull {
+        ref: r(revenue_by_country_csv.country)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(revenue_by_country_csv.revenue)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
             }
           }
         }
