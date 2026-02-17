@@ -151,10 +151,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         position: pos(80, 20, 400, 60)
         layer: 3
       }
-      block v6 {
-        position: pos(20, 1420, 1160, 580)
-        layer: 4
-      }
       block v_qctn {
         position: pos(20, 2040, 1160, 580)
         layer: 1
@@ -204,7 +200,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 1
       }
       block v_vzap {
-        position: pos(20, 680, 1160, 400)
+        position: pos(20, 600, 1160, 400)
+        layer: 4
+      }
+      block v_8fpj {
+        position: pos(20, 1020, 1160, 400)
         layer: 4
       }
       mobile {
@@ -455,50 +455,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
   }
   block t2: TextBlock {
     content: @md # Regional Analysis;;
-  }
-  block v6: VizBlock {
-    label: 'Number of Order by Country Name and City Name'
-    viz: ColumnChart {
-      dataset: demo_ecommerce
-      x_axis: VizFieldFull {
-        ref: r(ecommerce_countries.name)
-        format {
-          type: 'text'
-        }
-      }
-      legend: VizFieldFull {
-        ref: r(ecommerce_cities.name)
-        format {
-          type: 'text'
-        }
-      }
-      y_axis {
-        label: 'Total Order'
-        settings {
-          show_data_label_by: 'value'
-          stack_series_by: 'value'
-        }
-        series {
-          field: VizFieldFull {
-            ref: r(order_master.order_id)
-            aggregation: 'count distinct'
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-        }
-      }
-      settings {
-        row_limit: 5000
-        x_axis_label: 'Country'
-        x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
   }
   block t3: TextBlock {
     content: @md <svg width="361" height="130" viewBox="0 0 361 130" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1725,7 +1681,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: ColumnChart {
       dataset: vyhuynh_ecommerce_dataset
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(revenue_by_country_csv.country)
@@ -1755,6 +1710,54 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
+  block v_8fpj: VizBlock {
+    label: 'Revenue by Sale reps'
+    viz: BarChart {
+      dataset: vyhuynh_ecommerce_dataset
+      theme {
+
+      }
+      x_axis: VizFieldFull {
+        ref: r(vy_sales_revenue_demo_csv.sales_rep)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(vy_sales_revenue_demo_csv.revenue_usd)
+            aggregation: 'sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+        series {
+          field: ConstantVizField {
+            label: 'KPI goal'
+            value: 60000
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            line_style: 'dashed'
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
     FilterInteraction {
       from: 'v2'
@@ -1764,7 +1767,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v3',
             'v4',
             'v_nehb',
-            'v_vzap'
+            'v_vzap',
+            'v_8fpj'
           ]
           disabled: true
         }
@@ -1778,7 +1782,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v2',
             'v4',
             'v_nehb',
-            'v_vzap'
+            'v_vzap',
+            'v_8fpj'
           ]
           disabled: true
         }
@@ -1792,7 +1797,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v2',
             'v3',
             'v_nehb',
-            'v_vzap'
+            'v_vzap',
+            'v_8fpj'
           ]
           disabled: true
         }
@@ -1803,7 +1809,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v6',
             'v_711g',
             'v_wsww',
             'v_qctn',
@@ -1819,35 +1824,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       ]
     },
     FilterInteraction {
-      from: 'v6'
-      to: [
-        CustomMapping {
-          block: [
-            'v5',
-            'v_711g',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww',
-            'v_qctn',
-            'v_9rhg',
-            'v_dbuh',
-            'v_tusm',
-            'v_j83d',
-            'v_nyr1',
-            'v_5dpt',
-            'v_bxa7'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
       from: 'f1'
       to: [
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v8',
             'v_711g',
             'v_ztqi',
@@ -1869,7 +1850,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v8',
             'v_711g',
             'v_ztqi',
@@ -1899,7 +1879,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v_711g',
             'v_ztqi',
             'v_hk4u',
@@ -1919,7 +1898,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v8',
             'v_ztqi',
             'v_hk4u',
@@ -1951,7 +1929,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v8',
             'v_711g',
             'v_ztqi',
@@ -1970,7 +1947,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v8',
             'v_711g',
             'v_ztqi',
@@ -1991,7 +1967,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v2',
             'v3',
             'v4',
-            'v_vzap'
+            'v_vzap',
+            'v_8fpj'
           ]
           disabled: true
         }
@@ -2015,7 +1992,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v_9rhg',
             'v_dbuh',
             'v_tusm',
@@ -2034,7 +2010,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v_qctn',
             'v_dbuh',
             'v_tusm',
@@ -2053,7 +2028,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v8',
             'v_711g',
             'v_ztqi',
@@ -2092,7 +2066,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v_qctn',
             'v_9rhg',
             'v_tusm',
@@ -2111,7 +2084,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v_qctn',
             'v_9rhg',
             'v_dbuh',
@@ -2130,7 +2102,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v8',
             'v_711g',
             'v_ztqi',
@@ -2156,7 +2127,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v_qctn',
             'v_9rhg',
             'v_dbuh',
@@ -2188,7 +2158,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v8',
             'v_711g',
             'v_ztqi',
@@ -2208,7 +2177,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v5',
-            'v6',
             'v_qctn',
             'v_9rhg',
             'v_dbuh',
@@ -2226,7 +2194,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v6',
             'v_711g',
             'v_wsww',
             'v_qctn',
@@ -2256,6 +2223,20 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       ]
     },
     FilterInteraction {
+      from: 'v_8fpj'
+      to: [
+        CustomMapping {
+          block: [
+            'v2',
+            'v3',
+            'v4',
+            'v_nehb'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
       from: 'f_countries_continent_name'
       to: [
         CustomMapping {
@@ -2267,10 +2248,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           field: ref('ecommerce_countries', 'continent_name')
         }
       ]
-    },
-    FilterInteraction {
-      from: 'v_g0a9'
-      to: []
     }
   ]
   settings {
