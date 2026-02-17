@@ -137,7 +137,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
-      height: 5480
+      height: 5820
       grid_size: 20
       block v5 {
         position: pos(580, 80, 600, 500)
@@ -152,35 +152,31 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 3
       }
       block v6 {
-        position: pos(20, 680, 1160, 580)
+        position: pos(20, 1420, 1160, 580)
         layer: 4
       }
-      block v_csef {
-        position: pos(20, 1200, 1160, 480)
-        layer: 5
-      }
       block v_qctn {
-        position: pos(20, 1700, 1160, 580)
+        position: pos(20, 2040, 1160, 580)
         layer: 1
       }
       block v_9rhg {
-        position: pos(20, 2300, 1160, 580)
+        position: pos(20, 2640, 1160, 580)
         layer: 1
       }
       block v_dbuh {
-        position: pos(20, 2900, 1160, 500)
+        position: pos(20, 3240, 1160, 500)
         layer: 1
       }
       block v_tusm {
-        position: pos(20, 3420, 1160, 500)
+        position: pos(20, 3760, 1160, 500)
         layer: 1
       }
       block v_j83d {
-        position: pos(20, 3940, 1160, 480)
+        position: pos(20, 4280, 1160, 480)
         layer: 1
       }
       block v_nyr1 {
-        position: pos(20, 4440, 1160, 500)
+        position: pos(20, 4780, 1160, 500)
         layer: 1
       }
       block t_4ttu {
@@ -200,15 +196,15 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 4
       }
       block v_5dpt {
-        position: pos(20, 4960, 1160, 500)
+        position: pos(20, 5300, 1160, 500)
         layer: 1
       }
       block v_bxa7 {
-        position: pos(40, 260, 520, 320)
+        position: pos(20, 260, 540, 320)
         layer: 1
       }
-      block v_kup5 {
-        position: pos(40, 520, 580, 400)
+      block v_vzap {
+        position: pos(20, 680, 1160, 400)
         layer: 4
       }
       mobile {
@@ -933,46 +929,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           }
         ]
         row_limit: 5000
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_csef: VizBlock {
-    label: 'Count of Id by Latitude, Longitude, and Neighbourhood'
-    viz: PointMap {
-      dataset: homestay
-      lng: VizFieldFull {
-        ref: r(homestay_listings.longitude)
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
-      }
-      lat: VizFieldFull {
-        ref: r(homestay_listings.latitude)
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
-      }
-      value: VizFieldFull {
-        ref: r(homestay_bookings.id)
-        aggregation: 'count'
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
-      }
-      legend: VizFieldFull {
-        ref: r(homestay_neighbourhoods.neighbourhood)
-        format {
-          type: 'text'
-        }
-      }
-      settings {
         aggregate_awareness {
           enabled: true
           debug_comments: true
@@ -1764,7 +1720,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_kup5: VizBlock {
+  block v_vzap: VizBlock {
     label: 'Sum of Revenue by Country'
     viz: ColumnChart {
       dataset: vyhuynh_ecommerce_dataset
@@ -1807,7 +1763,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           block: [
             'v3',
             'v4',
-            'v_nehb'
+            'v_nehb',
+            'v_vzap'
           ]
           disabled: true
         }
@@ -1820,7 +1777,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           block: [
             'v2',
             'v4',
-            'v_nehb'
+            'v_nehb',
+            'v_vzap'
           ]
           disabled: true
         }
@@ -1833,7 +1791,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           block: [
             'v2',
             'v3',
-            'v_nehb'
+            'v_nehb',
+            'v_vzap'
           ]
           disabled: true
         }
@@ -2031,7 +1990,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           block: [
             'v2',
             'v3',
-            'v4'
+            'v4',
+            'v_vzap'
           ]
           disabled: true
         }
@@ -2282,6 +2242,20 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       ]
     },
     FilterInteraction {
+      from: 'v_vzap'
+      to: [
+        CustomMapping {
+          block: [
+            'v2',
+            'v3',
+            'v4',
+            'v_nehb'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
       from: 'f_countries_continent_name'
       to: [
         CustomMapping {
@@ -2292,6 +2266,12 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           ]
           field: ref('ecommerce_countries', 'continent_name')
         }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_g0a9'
+      to: [
+
       ]
     }
   ]
