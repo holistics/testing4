@@ -1727,7 +1727,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       theme {
 
       }
-      legend: VizFieldFull {
+      x_axis: VizFieldFull {
         ref: r(revenue_by_country_csv.country)
         format {
           type: 'text'
@@ -2270,9 +2270,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     },
     FilterInteraction {
       from: 'v_g0a9'
-      to: [
-
-      ]
+      to: []
     }
   ]
   settings {
