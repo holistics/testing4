@@ -105,7 +105,7 @@ Dashboard thong_do_drill_through {
       position: pos(20, 20, 1260, 60)
     }
     block v_p6tl {
-      position: pos(60, 260, 620, 420)
+      position: pos(60, 200, 660, 480)
     }
     block f_orders_status {
       position: pos(420, 80, 300, 80)
