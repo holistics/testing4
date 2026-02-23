@@ -1,0 +1,161 @@
+Model runmetrics {
+  type: 'table'
+  label: 'Runmetrics'
+  description: ''
+  data_source_name: 'demodb'
+  dimension activity_id {
+    label: 'Activity'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.activity_id }};;
+  }
+  dimension avg_heart_rate_bpm {
+    label: 'Avg heart rate bpm'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.avg_heart_rate_bpm }};;
+  }
+  dimension max_heart_rate_bpm {
+    label: 'Max heart rate bpm'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.max_heart_rate_bpm }};;
+  }
+  dimension avg_pace_sec {
+    label: 'Avg pace sec'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.avg_pace_sec }};;
+  }
+  dimension avg_gap_sec {
+    label: 'Avg gap sec'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.avg_gap_sec }};;
+  }
+  dimension avg_speed_kmh {
+    label: 'Avg speed kmh'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.avg_speed_kmh }};;
+  }
+  dimension avg_power_w {
+    label: 'Avg power w'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.avg_power_w }};;
+  }
+  dimension max_power_w {
+    label: 'Max power w'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.max_power_w }};;
+  }
+  dimension specific_power_w_kg {
+    label: 'Specific power w kg'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.specific_power_w_kg }};;
+  }
+  dimension effective_vo_2_max {
+    label: 'Effective vo 2 max'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.effective_vo_2_max }};;
+  }
+  dimension trimp {
+    label: 'Trimp'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.trimp }};;
+  }
+  dimension training_effect {
+    label: 'Training effect'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.training_effect }};;
+  }
+  dimension anaerobic_training_effect {
+    label: 'Anaerobic training effect'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.anaerobic_training_effect }};;
+  }
+  dimension ground_contact_time_ms {
+    label: 'Ground contact time ms'
+    description: ''
+    type: 'datetime'
+    hidden: false
+    definition: @sql {{ #SOURCE.ground_contact_time_ms }};;
+  }
+  dimension vertical_oscillation_cm {
+    label: 'Vertical oscillation cm'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.vertical_oscillation_cm }};;
+  }
+  dimension running_effectiveness {
+    label: 'Running effectiveness'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.running_effectiveness }};;
+  }
+  dimension efficiency_index {
+    label: 'Efficiency index'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.efficiency_index }};;
+  }
+  dimension aerobic_efficiency {
+    label: 'Aerobic efficiency'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.aerobic_efficiency }};;
+  }
+
+  import_source: ImportSource {
+    type: 'csv'
+    original_file_name: 'runmetrics.csv'
+    uploaded_at: '2026-02-22 02:49:05'
+    hash: '4cb6e043bea4610e4941558069803820291ae671f2824cd9e540e13b714dc4fd'
+    column_configs: [
+      H.imports.column_config("activity_id", "activity_id", "number"),
+      H.imports.column_config("avg_heart_rate_bpm", "avg_heart_rate_bpm", "number"),
+      H.imports.column_config("max_heart_rate_bpm", "max_heart_rate_bpm", "number"),
+      H.imports.column_config("avg_pace_sec", "avg_pace_sec", "number"),
+      H.imports.column_config("avg_gap_sec", "avg_gap_sec", "number"),
+      H.imports.column_config("avg_speed_kmh", "avg_speed_kmh", "number"),
+      H.imports.column_config("avg_power_w", "avg_power_w", "number"),
+      H.imports.column_config("max_power_w", "max_power_w", "number"),
+      H.imports.column_config("specific_power_w_kg", "specific_power_w_kg", "number"),
+      H.imports.column_config("effective_vo_2_max", "effective_vo_2_max", "number"),
+      H.imports.column_config("trimp", "trimp", "number"),
+      H.imports.column_config("training_effect", "training_effect", "number"),
+      H.imports.column_config("anaerobic_training_effect", "anaerobic_training_effect", "number"),
+      H.imports.column_config("ground_contact_time_ms", "ground_contact_time_ms", "datetime"),
+      H.imports.column_config("vertical_oscillation_cm", "vertical_oscillation_cm", "number"),
+      H.imports.column_config("running_effectiveness", "running_effectiveness", "number"),
+      H.imports.column_config("efficiency_index", "efficiency_index", "number"),
+      H.imports.column_config("aerobic_efficiency", "aerobic_efficiency", "number")
+    ]
+  }
+  owner: 'tai.nguyen@holistics.io'
+  table_name: '"dbt_khai"."holistics_runmetrics_848a0_202602220249"'
+}

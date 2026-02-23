@@ -1,0 +1,93 @@
+Dashboard runalyze_dashboard {
+  title: 'runalyze'
+  description: ''
+  owner: 'tai.nguyen@holistics.io'
+  block title: TextBlock {
+    content: @md # Runalyze;;
+  }
+  block v_nlmh: VizBlock {
+    label: 'Overview'
+    viz: DataTable {
+      dataset: runalyze
+      fields: [
+        VizFieldFull {
+          ref: r(activities.id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'activities_id_1'
+          hidden: true
+        },
+        VizFieldFull {
+          ref: r(activities.date)
+          format {
+            type: 'date'
+            pattern: 'LLL dd, yyyy'
+          }
+          uname: 'activities_date_1'
+        },
+        VizFieldFull {
+          ref: r(activities.activity_type)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(activities.distance_km)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(activities.formatted_duration)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(activities.energy_kcal)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        sorts: [
+          SortSetting {
+            key: 'activities_date_1'
+            direction: 'asc'
+          }
+        ]
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+
+  view: CanvasLayout {
+    label: 'View 1'
+    width: 1280
+    height: 640
+    grid_size: 20
+    auto_expand_vertically: true
+    block title {
+      position: pos(20, 20, 1260, 60)
+    }
+    block v_nlmh {
+      position: pos(20, 100, 1240, 420)
+      layer: 1
+    }
+    mobile {
+      mode: 'auto'
+    }
+  }
+
+  theme: H.themes.vanilla
+}

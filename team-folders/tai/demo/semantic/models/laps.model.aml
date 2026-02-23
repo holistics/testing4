@@ -1,0 +1,65 @@
+Model laps {
+  type: 'table'
+  label: 'Laps'
+  description: ''
+  data_source_name: 'demodb'
+  dimension id {
+    label: 'Id'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.id }};;
+  }
+  dimension activity_id {
+    label: 'Activity'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.activity_id }};;
+  }
+  dimension lap_number {
+    label: 'Lap number'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.lap_number }};;
+  }
+  dimension distance_km {
+    label: 'Distance km'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.distance_km }};;
+  }
+  dimension duration_seconds {
+    label: 'Duration seconds'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.duration_seconds }};;
+  }
+  dimension pace_sec {
+    label: 'Pace sec'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.pace_sec }};;
+  }
+
+  import_source: ImportSource {
+    type: 'csv'
+    original_file_name: 'lap.csv'
+    uploaded_at: '2026-02-22 02:50:07'
+    hash: 'dcbdd78df09af09fb02652d83de0313da02c4e7f56ed76fded553fe96d453bb8'
+    column_configs: [
+      H.imports.column_config("id", "id", "number"),
+      H.imports.column_config("activity_id", "activity_id", "number"),
+      H.imports.column_config("lap_number", "lap_number", "number"),
+      H.imports.column_config("distance_km", "distance_km", "number"),
+      H.imports.column_config("duration_seconds", "duration_seconds", "number"),
+      H.imports.column_config("pace_sec", "pace_sec", "number")
+    ]
+  }
+  owner: 'tai.nguyen@holistics.io'
+  table_name: '"dbt_khai"."holistics_laps_a03e9_202602220250"'
+}

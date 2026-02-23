@@ -1,0 +1,144 @@
+Model activities {
+  type: 'table'
+  label: 'Activities'
+  description: ''
+  data_source_name: 'demodb'
+  dimension id {
+    label: 'Id'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.id }};;
+  }
+  dimension date {
+    label: 'Date'
+    description: ''
+    type: 'datetime'
+    hidden: false
+    definition: @sql {{ #SOURCE.date }};;
+  }
+  dimension title {
+    label: 'Title'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.title }};;
+  }
+  dimension activity_type {
+    label: 'Activity type'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.activity_type }};;
+  }
+  dimension temperature_c {
+    label: 'Temperature c'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.temperature_c }};;
+  }
+  dimension distance_km {
+    label: 'Distance km'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.distance_km }};;
+  }
+  dimension duration_seconds {
+    label: 'Duration seconds'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.duration_seconds }};;
+  }
+  dimension elapsed_time_seconds {
+    label: 'Elapsed time seconds'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.elapsed_time_seconds }};;
+  }
+  dimension elevation_m {
+    label: 'Elevation m'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.elevation_m }};;
+  }
+  dimension energy_kcal {
+    label: 'Energy kcal'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.energy_kcal }};;
+  }
+
+  dimension duration_minutes {
+    label: "Duration Minutes"
+    type: "number"
+    description: ""
+    hidden: true
+    definition: @aql div(activities.duration_seconds, 60);;
+    primary_key: false
+  }
+  dimension duration_format_seconds {
+    label: "Duration Format Seconds"
+    type: "number"
+    description: ""
+    hidden: true
+    definition: @aql mod(activities.duration_minutes, 60);;
+    primary_key: false
+  }
+  dimension duration_format_minutes {
+    label: "Duration Format Minutes"
+    type: "number"
+    description: ""
+    hidden: true
+    definition: @aql mod(activities.duration_minutes, 60);;
+    primary_key: false
+  }
+  dimension duration_format_hours {
+    label: "Duration Format Hours"
+    type: "number"
+    description: ""
+    hidden: true
+    definition: @aql div(activities.duration_minutes, 60);;
+    primary_key: false
+  }
+  dimension formatted_duration {
+    label: "Formatted Duration"
+    type: "text"
+    description: ""
+    hidden: false
+    definition: @aql case(
+  when: activities.duration_seconds >= 3600
+  , then: date_format(from_unixtime(activities.duration_seconds), '%H:%M:%S')
+  , else: date_format(from_unixtime(activities.duration_seconds), '%M:%S')
+)
+;;
+    primary_key: false
+  }
+
+
+  import_source: ImportSource {
+    type: 'csv'
+    original_file_name: 'activities.csv'
+    uploaded_at: '2026-02-22 03:16:44'
+    hash: '9474ffec77c552da17eb6e935ac37d714aa00ebf27ff829b1458592f765f16a0'
+    column_configs: [
+      H.imports.column_config("id", "id", "number"),
+      H.imports.column_config("date", "date", "datetime"),
+      H.imports.column_config("title", "title", "text"),
+      H.imports.column_config("activity_type", "activity_type", "text"),
+      H.imports.column_config("temperature_c", "temperature_c", "number"),
+      H.imports.column_config("distance_km", "distance_km", "number"),
+      H.imports.column_config("duration_seconds", "duration_seconds", "number"),
+      H.imports.column_config("elapsed_time_seconds", "elapsed_time_seconds", "number"),
+      H.imports.column_config("elevation_m", "elevation_m", "number"),
+      H.imports.column_config("energy_kcal", "energy_kcal", "number")
+    ]
+  }
+  owner: 'tai.nguyen@holistics.io'
+  table_name: '"dbt_khai"."holistics_activities_624c9_202602220249"'
+}

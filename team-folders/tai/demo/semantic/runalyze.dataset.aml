@@ -1,0 +1,14 @@
+Dataset runalyze {
+  label: 'runalyze'
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    activities,
+    laps,
+    runmetrics
+  ]
+  relationships: [
+    relationship(laps.activity_id > activities.id, true),
+    relationship(activities.id - runmetrics.activity_id, true)
+  ]
+}
