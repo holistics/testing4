@@ -4,7 +4,37 @@ Dashboard hoa_test {
   block title: TextBlock {
     content: @md # Your title goes here ;;
   }
-  interactions: []
+  block v_dil2: VizBlock {
+    label: 'Count of Id by User Id'
+    viz: PieChart {
+      dataset: hieu_haha_meme
+      legend: VizFieldFull {
+        ref: r(orderskk.user_id)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      series {
+        field: VizFieldFull {
+          ref: r(orderskk.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        data_label_position: 'none'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
@@ -13,6 +43,9 @@ Dashboard hoa_test {
     auto_expand_vertically: true
     block title {
       position: pos(20, 20, 1260, 60)
+    }
+    block v_dil2 {
+      position: pos(270, 110, 620, 420)
     }
     mobile {
       mode: 'auto'
