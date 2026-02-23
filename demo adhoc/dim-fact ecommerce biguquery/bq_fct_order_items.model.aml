@@ -103,4 +103,9 @@ definition: @sql
     ;;
     aggregation_type: "custom"
   }
+
+  param report_date_param {
+  label: 'Report Date Filter'
+  type: 'datetime'
+  }
 }
