@@ -38,7 +38,6 @@ Dashboard students_attendance_2 {
 and dim_students.enrollment_end_date > (dim_students.date_selected | first())'''
       ]
       theme {
-
       }
       fields: [
         VizFieldFull {
@@ -114,12 +113,9 @@ and dim_students.enrollment_end_date > (dim_students.date_selected | first())'''
       conditions: [
         '''dim_students.enrollment_start_date <= (dim_students.date_selected | first())
 and
-
-(
-  dim_students.enrollment_end_date >= (dim_students.date_selected | first())
-  or
-  dim_students.enrollment_end_date is not (dim_students.date_selected | first())
-)'''
+dim_students.enrollment_end_date >= (dim_students.date_selected | first())
+and
+dim_students.enrollment_end_date is not (dim_students.date_selected | first())'''
       ]
       theme {
 
