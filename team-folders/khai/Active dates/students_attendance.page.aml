@@ -67,7 +67,6 @@ and dim_students.enrollment_end_date > (dim_students.date_selected | first())'''
           format {
             type: 'date'
           }
-          uname: 'dim_students_enrollment_end_date'
         }
       ]
       settings {
@@ -81,10 +80,6 @@ and dim_students.enrollment_end_date > (dim_students.date_selected | first())'''
           ColumnStyle {
             key: 'dim_students_enrollment_start_date'
             width: 171
-          },
-          ColumnStyle {
-            key: 'dim_students_enrollment_end_date'
-            width: 131
           }
         ]
       }
@@ -99,7 +94,7 @@ and dim_students.enrollment_end_date > (dim_students.date_selected | first())'''
     }
     default {
       operator: 'matches'
-      value: 'Dec 15 2023 to Mar 01 2024'
+      value: '2023-12-15 - 2024-03-03'
     }
   }
 }
