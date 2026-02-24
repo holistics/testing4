@@ -1766,7 +1766,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: LineChart {
       dataset: demo_ecommerce_metrics
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(ecommerce_orders.created_date)
@@ -2294,6 +2293,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
   ]
   settings {
     timezone: 'Etc/UTC'
+    autorun: false
     cache_duration: 1440
   }
 }
