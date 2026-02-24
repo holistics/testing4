@@ -2,7 +2,6 @@ Dashboard students_attendance_2 {
   title: 'students_attendance'
   description: ''
   owner: 'khai.to@holistics.io'
-
   view: CanvasLayout {
     label: 'View 1'
     width: 860
@@ -21,7 +20,6 @@ Dashboard students_attendance_2 {
       layer: 1
     }
   }
-
   theme: H.themes.vanilla
   block v_mw9p: VizBlock {
     label: 'Student Name, Date Of Birth and 3 more'
@@ -67,6 +65,7 @@ and dim_students.enrollment_end_date > (dim_students.date_selected | first())'''
           format {
             type: 'date'
           }
+          uname: 'dim_students_enrollment_end_date'
         }
       ]
       settings {
@@ -80,6 +79,10 @@ and dim_students.enrollment_end_date > (dim_students.date_selected | first())'''
           ColumnStyle {
             key: 'dim_students_enrollment_start_date'
             width: 171
+          },
+          ColumnStyle {
+            key: 'dim_students_enrollment_end_date'
+            width: 165
           }
         ]
       }
