@@ -1,6 +1,6 @@
-Model ecommerce_orders2 {
+Model ecommerce_fct_orders {
   type: 'table'
-  label: 'Orders'
+  label: 'Fct Orders'
   description: ''
   data_source_name: 'demodb'
   dimension id {
@@ -8,6 +8,24 @@ Model ecommerce_orders2 {
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.id }};;
+  }
+  dimension user_id {
+    label: 'User Id'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.user_id }};;
+  }
+  dimension user_city_id {
+    label: 'User City Id'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.user_city_id }};;
+  }
+  dimension user_country_code {
+    label: 'User Country Code'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.user_country_code }};;
   }
   dimension status {
     label: 'Status'
@@ -21,11 +39,11 @@ Model ecommerce_orders2 {
     hidden: false
     definition: @sql {{ #SOURCE.created_at }};;
   }
-  dimension user_id {
-    label: 'User Id'
-    type: 'number'
+  dimension created_date {
+    label: 'Created Date'
+    type: 'date'
     hidden: false
-    definition: @sql {{ #SOURCE.user_id }};;
+    definition: @sql {{ #SOURCE.created_date }};;
   }
   dimension discount {
     label: 'Discount'
@@ -40,21 +58,6 @@ Model ecommerce_orders2 {
     definition: @sql {{ #SOURCE.delivery_attempts }};;
   }
 
-  owner: 'thang.lk@holistics.io'
-  table_name: '"ecommerce"."orders"'
-  measure all_orders_count {
-    label: "All Orders Count"
-    type: "text"
-    description: "Total Orders"
-    definition: @sql count({{id}});;
-    aggregation_type: "custom"
-  }
-  measure delivered_orders_count {
-    label: "Delivered Orders Count"
-    type: "text"
-    description: ""
-    hidden: false
-    definition: @sql COUNT(CASE WHEN {{ status }} = 'delivered' THEN {{ id }} ELSE NULL END);;
-    aggregation_type: "custom"
-  }
+  owner: 'tai.nguyen@holistics.io'
+  table_name: '"ecommerce"."fct_orders"'
 }

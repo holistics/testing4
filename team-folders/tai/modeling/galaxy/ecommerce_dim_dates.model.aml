@@ -1,5 +1,5 @@
-Model dim_date_hieu {
-  type: 'query'
+Model ecommerce_dim_dates {
+  type: 'table'
   label: 'Dim Dates'
   description: ''
   data_source_name: 'demodb'
@@ -34,7 +34,7 @@ Model dim_date_hieu {
     definition: @sql {{ #SOURCE.weekday_name }};;
   }
   dimension weekday_name_abbr {
-    label: 'Weekday Name Abbr.'
+    label: 'Weekday Name Abbr'
     type: 'text'
     hidden: false
     definition: @sql {{ #SOURCE.weekday_name_abbr }};;
@@ -46,13 +46,13 @@ Model dim_date_hieu {
     definition: @sql {{ #SOURCE.week_number }};;
   }
   dimension week_number_iso {
-    label: 'Week Number ISO'
+    label: 'Week Number Iso'
     type: 'text'
     hidden: false
     definition: @sql {{ #SOURCE.week_number_iso }};;
   }
   dimension year_week_iso {
-    label: 'Year Week ISO'
+    label: 'Year Week Iso'
     type: 'text'
     hidden: false
     definition: @sql {{ #SOURCE.year_week_iso }};;
@@ -64,7 +64,7 @@ Model dim_date_hieu {
     definition: @sql {{ #SOURCE.month_name }};;
   }
   dimension month_name_abbr {
-    label: 'Month Name Abbr.'
+    label: 'Month Name Abbr'
     type: 'text'
     hidden: false
     definition: @sql {{ #SOURCE.month_name_abbr }};;
@@ -100,60 +100,6 @@ Model dim_date_hieu {
     definition: @sql {{ #SOURCE.year }};;
   }
 
-  dimension time_grain_selector {
-    label: 'Time Grain Selector'
-    type: 'date'
-
-    definition: @aql case(
-      when: 'Day' in dim_dates.time_grain_choice
-      , then: dim_dates.day_of_year
-
-      , when: 'Week' in dim_dates.time_grain_choice
-      , then: dim_dates.year_week_iso
-
-      , when: 'Quarter' in dim_dates.time_grain_choice
-      , then: dim_dates.year_quarter
-    ) ;;
-  }
-
-  owner: 'ha.pham+demo4@holistics.io'
-  query: @sql
-    SELECT 
-          date_key::date
-          , to_char(date_key, 'ID') as day_of_week
-          , to_char(date_key, 'DD') as day_of_month
-          , to_char(date_key, 'DDD') as day_of_year
-          , to_char(date_key, 'Day') as weekday_name
-          , to_char(date_key, 'Dy') as weekday_name_abbr
-          , to_char(date_key, 'WW') as week_number
-          , to_char(date_key, 'IW') as week_number_iso
-          , to_char(date_key, 'YYYYIW') as year_week_iso
-          , to_char(date_key, 'Month') as month_name
-          , to_char(date_key, 'Mon') as month_name_abbr
-          , to_char(date_key, 'MM') as month_number
-          , to_char(date_key, 'YYYYMM') as year_month
-          , to_char(date_key, 'Q') as quarter
-          , to_char(date_key, 'YYYY') || 'Q' || to_char(date_key, 'Q')  as year_quarter
-          , to_char(date_key, 'YYYY') as year
-        FROM  generate_series ('2013-01-01' :: date, current_date ,'1 day' :: interval) date_key;;
-  models: [
-  ]
-
-  param time_grain_choice {
-    label: 'Time Grain Choice'
-    type: 'date'
-    allowed_values: [
-      'Day',
-      'Week',
-      'Quarter'
-    ]
-  }
-  measure measure_b38111c {
-    label: "Count of Dim Dates Day Of Month"
-    type: "number"
-    description: ""
-    hidden: false
-    definition: @aql count(dim_date_hieu.day_of_month);;
-    aggregation_type: "custom"
-  }
+  owner: 'tai.nguyen@holistics.io'
+  table_name: '"ecommerce"."dim_dates"'
 }

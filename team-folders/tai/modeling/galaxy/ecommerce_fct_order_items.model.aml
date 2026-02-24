@@ -1,46 +1,46 @@
-Model bq_fct_order_items {
+Model ecommerce_fct_order_items {
   type: 'table'
-  label: 'Order Items'
+  label: 'Fct Order Items'
   description: ''
-  data_source_name: 'data_staging'
+  data_source_name: 'demodb'
   dimension id {
-    label: 'ID'
+    label: 'Id'
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.id }};;
   }
   dimension order_id {
-    label: 'Order ID'
+    label: 'Order Id'
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.order_id }};;
   }
   dimension product_id {
-    label: 'Product ID'
+    label: 'Product Id'
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.product_id }};;
   }
   dimension user_id {
-    label: 'User ID'
+    label: 'User Id'
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.user_id }};;
   }
   dimension category_id {
-    label: 'Category ID'
+    label: 'Category Id'
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.category_id }};;
   }
   dimension merchant_id {
-    label: 'Merchant ID'
+    label: 'Merchant Id'
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.merchant_id }};;
   }
   dimension merchant_city_id {
-    label: 'Merchant City ID'
+    label: 'Merchant City Id'
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.merchant_city_id }};;
@@ -51,7 +51,6 @@ Model bq_fct_order_items {
     hidden: false
     definition: @sql {{ #SOURCE.merchant_country_code }};;
   }
-
   dimension created_at {
     label: 'Created At'
     type: 'datetime'
@@ -64,48 +63,25 @@ Model bq_fct_order_items {
     hidden: false
     definition: @sql {{ #SOURCE.created_date }};;
   }
-
   dimension quantity {
     label: 'Quantity'
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.quantity }};;
   }
-
   dimension value {
     label: 'Value'
     type: 'number'
     hidden: false
-    definition: @sql CAST({{ #SOURCE.value }} AS INTEGER);;
-    description: 'Price * Quantity'
+    definition: @sql {{ #SOURCE.value }};;
   }
   dimension discount_value {
     label: 'Discount Value'
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.discount_value }};;
-    description: 'Value * Discount(%)'
   }
 
-  owner: 'triet.lq@holistics.io'
-  table_name: '`demo_ecommerce`.`fct_order_items`'
-  measure test_median {
-    label: "Median of Order Items Value"
-    type: "number"
-    description: ""
-    hidden: false
-definition: @sql 
-      AVG(DISTINCT 
-        CAST(
-          PERCENTILE_CONT({{ #SOURCE.value }}, 0.5) OVER() 
-        AS FLOAT64)
-      ) 
-    ;;
-    aggregation_type: "custom"
-  }
-
-  param report_date_param {
-  label: 'Report Date Filter'
-  type: 'datetime'
-  }
+  owner: 'tai.nguyen@holistics.io'
+  table_name: '"ecommerce"."fct_order_items"'
 }
