@@ -20,25 +20,25 @@ Dataset khai_ecommerce {
   ]
 
   relationships: [
-    relationship(orders.user_id > users.id, true, 'one_to_many'),
-    relationship(order_items.order_id > orders.id, true, 'one_to_many'),
-    relationship(cities.country_code > countries.code, true, 'one_to_many'),
-    relationship(users.city_id > cities.id, true, 'one_to_many'),
-    relationship(order_items.product_id > products.id, true, 'one_to_many'),
-    relationship(products.merchant_id > merchants.id, true, 'one_to_many'),
-    relationship(merchants.city_id > cities.id, true, 'one_to_many'),
-    relationship(orders.created_date > khai_date_d.date_key, true, 'one_to_many')
+    relationship(orders.user_id > users.id, true, 'two_way'),
+    relationship(order_items.order_id > orders.id, true, 'two_way'),
+    relationship(cities.country_code > countries.code, true, 'two_way'),
+    relationship(users.city_id > cities.id, true, 'two_way'),
+    relationship(order_items.product_id > products.id, true, 'two_way'),
+    relationship(products.merchant_id > merchants.id, true, 'two_way'),
+    relationship(merchants.city_id > cities.id, true, 'two_way'),
+    relationship(orders.created_date > khai_date_d.date_key, true, 'two_way')
     ,
-    relationship(products.category_id > khai_categories.id, true, 'one_to_many')
+    relationship(products.category_id > khai_categories.id, true, 'two_way')
   ]
 
   owner: 'khai.to+demo4@holistics.io'
 
-  // permission vendor_access {
-  //   field: r(countries.name)
-  //   operator: 'matches_user_attribute'
-  //   value: 'country_attribute' // user attribute
-  // }
+  permission vendor_access {
+    field: r(countries.name)
+    operator: 'matches_user_attribute'
+    value: 'country_attribute' // user attribute
+  }
 
   dimension user_acquired_at {
     model: users
@@ -70,7 +70,7 @@ Dataset khai_ecommerce {
     definition: @aql H.current_user.country_attribute;;
     model: countries
   }
-  dimension is_country {
+  dimension is_country_ {
     label: "Is Country"
     type: "truefalse"
     description: ""

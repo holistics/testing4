@@ -31,14 +31,14 @@ Dashboard test_new {
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
-    height: 810
+    height: 270
     grid_size: 20
     auto_expand_vertically: true
     block title {
       position: pos(20, 20, 1260, 60)
     }
     block v_c3vu {
-      position: pos(220, 140, 620, 420)
+      position: pos(350, 100, 620, 420)
     }
     mobile {
       mode: 'auto'

@@ -1,0 +1,48 @@
+Dashboard test_zoom {
+  title: 'Insights'
+  description: ''
+
+  view: TabLayout {
+    label: 'View 1'
+    tab tab1: CanvasLayout {
+      default_zoom: 'fit_to_width'
+      label: 'Overview'
+      width: 1700
+      height: 2840
+      grid_size: 20
+      auto_expand_vertically: true
+     
+      mobile {
+        mode: 'auto'
+      }
+    }
+    tab tab2: CanvasLayout {
+      default_zoom: 'fit_to_width'
+      label: 'Games'
+      width: 1700
+      height: 540
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+    }
+    tab tab_l4op: CanvasLayout {
+      default_zoom: 'fit_to_width'
+      label: 'Players'
+      width: 1700
+      height: 1560
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+    }
+  }
+  settings {
+    timezone: 'Etc/UTC'
+    allow_timezone_change: true
+    cache_duration: 1440
+  }
+ 
+}
