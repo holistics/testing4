@@ -1,9 +1,5 @@
-// use lib
-// use demo
-
-Dashboard demo_ecommerce_dashboard_amyra_copy {
-  title: 'Ecommerce Dashboard - THANG'
-
+Dashboard demo_ecommerce_overview_pro_copy_1 {
+  title: 'Ecommerce Dashboard - Pro'
   block hd1: TextBlock {
     content: @md 
     <img style="margin-bottom:0 !important;overflow:hidden;" src="https://cdn.holistics.io/logos/holistics-logo-white.svg" alt="demo" width="255">;;
@@ -31,105 +27,89 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
   }
   block v1: VizBlock {
     label: ' KPI Overview'
-    viz: MetricSheet {
+    viz: PivotTable {
       dataset: demo_ecommerce
       filter {
         field: ref('dim_dates', 'date_key')
         operator: 'matches'
-        value: '12 months ago to last month end'
+        value: 'last 1 years to today'
       }
-      date_field: VizFieldFull {
-        ref: ref('dim_dates', 'date_key')
-        transformation: 'datetrunc month'
-        format {
-          type: 'date'
+      columns: [
+        VizFieldFull {
+          ref: ref('dim_dates', 'date_key')
+          transformation: 'datetrunc year'
+          format {
+            type: 'date'
+            pattern: 'yyyy'
+          }
         }
-      }
-      rows: [
-        MetricHeading {
-          label: '🎯Orders'
-          settings {
-            background_color: '#255DD4'
-            text_color: '#FFFFFF'
+      ]
+      values: [
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'total_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'custom_total_orders_count'
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'cancelled_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
         },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('ecommerce_orders', 'total_orders_count')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'refunded_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
         },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('ecommerce_orders', 'cancelled_orders_count')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'delivered_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
         },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('ecommerce_orders', 'refunded_orders_count')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+        VizFieldFull {
+          ref: ref('order_master', 'nmv')
+          format {
+            type: 'number'
+            pattern: '[$$]#,###0.00'
           }
         },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('ecommerce_orders', 'delivered_orders_count')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+        VizFieldFull {
+          ref: ref('order_master', 'gmv')
+          format {
+            type: 'number'
+            pattern: '[$$]#,###0.00'
           }
         },
-        MetricHeading {
-          label: '💰 Revenue'
-          settings {
-            background_color: '#255DD4'
-            text_color: '#FFFFFF'
-          }
-        },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('order_master', 'nmv')
-            format {
-              type: 'number'
-              pattern: '[$$]#,###0.00'
-            }
-          }
-        },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('order_master', 'gmv')
-            format {
-              type: 'number'
-              pattern: '[$$]#,###0.00'
-            }
-          }
-        },
-        MetricSeries {
-          field: VizFieldFull {
-            ref: ref('order_master', 'aov')
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
+        VizFieldFull {
+          ref: ref('order_master', 'aov')
+          format {
+            type: 'number'
+            pattern: 'inherited'
           }
         }
       ]
       settings {
-        max_column: 3
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
+        value_labels_position {
+          placement: 'rows'
+        }
+        column_styles: [
+          ColumnStyle {
+            key: 'custom_total_orders_count'
+            width: 278
+          }
+        ]
       }
     }
     settings {
@@ -140,12 +120,6 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
     label: 'GMV'
     viz: MetricKpi {
       dataset: demo_ecommerce
-      // calculation f_2fb1cc3 {
-      //   label: 'GMT last year'
-      //   formula: @aml order_master.gmv * 0.87;;
-      //   calc_type: 'measure'
-      //   data_type: 'number'
-      // }
       filter {
         field: ref('order_master', 'order_created_at')
         operator: 'matches'
@@ -174,12 +148,12 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
     viz: PieChart {
       dataset: demo_ecommerce
       filter {
-        field: r(order_master.order_created_at)
+        field: ref('order_master', 'order_created_at')
         operator: 'matches'
         value: '2023'
       }
       legend: VizFieldFull {
-        ref: r(map_categories.parent_category)
+        ref: ref('map_categories', 'parent_category')
         format {
           type: 'text'
         }
@@ -187,7 +161,7 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       series {
         field: VizFieldFull {
           label: ' '
-          ref: r(order_master.gmv)
+          ref: ref('order_master', 'gmv')
           format {
             type: 'number'
             pattern: '[$$]#,###'
@@ -464,6 +438,74 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       hide_label: true
       hide_controls: true
     }
+  }
+  block v12: VizBlock {
+    label: 'Daily GMV vs. 7-day Moving Average'
+    viz: CombinationChart {
+      dataset: demo_ecommerce
+      filter {
+        field: ref('order_master', 'order_created_at')
+        operator: 'matches'
+        value: '2023'
+      }
+      x_axis: VizFieldFull {
+        ref: ref('order_master', 'order_created_at')
+        transformation: 'datetrunc day'
+        format {
+          type: 'date'
+          pattern: 'LLL dd, yyyy'
+        }
+      }
+      y_axis {
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            ref: ref('order_master', 'gmv')
+            format {
+              type: 'number'
+              pattern: '#,###'
+            }
+          }
+          settings {
+            color: '#D1EDEC'
+            line_interpolation: 'smooth'
+          }
+        }
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            label: '7-day MovAvg of GMV'
+            ref: ref('order_master', 'gmv')
+            format {
+              type: 'number'
+              pattern: '#,###'
+            }
+            analytic: MovingCalculationField {
+              type: 'avg'
+              order: 'row'
+              range {
+                previous: 7
+                next: 0
+              }
+              null_if_not_enough_values: true
+            }
+          }
+          settings {
+            color: '#18A59E'
+            line_interpolation: 'smooth'
+          }
+        }
+      }
+      settings {
+        legend_label: 'right'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    description: @md # Description
+abc;;
   }
   block f1: FilterBlock {
     label: 'Country'
@@ -807,7 +849,6 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
 <p class="footer">Email: <a class="footer" href="mailto:support@holistics.io">support@holistics.io </a><br></p>
 <p class="footer">Website: <a class="footer" href="https://www.holistics.io/">www.holistics.io</a> </p>;;
   }
-  // block t46: background_gray()
   block t47: TextBlock {
     content: @md   <div style="height:100%;overflow:hidden;">
   <a href="#heading" class="border-radius:4px;overflow:hidden;">
@@ -857,6 +898,20 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
         border-radius: 4px;
         background: #fafafa;"
     </div>;;
+  }
+  block t54: TextBlock {
+    content: @md To embed external content;;
+    theme {
+      border {
+        border_width: 1
+        border_radius: 6
+        border_color: '#4896EA'
+        border_style: 'dashed'
+      }
+      background {
+        bg_color: '#E8F2FD'
+      }
+    }
   }
   block t55: TextBlock {
     content: @md <p></p>;;
@@ -1033,7 +1088,6 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
     viz: ColumnChart {
       dataset: demo_ecommerce
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: ref('ecommerce_users', 'age_group')
@@ -1088,196 +1142,631 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
       }
     }
   }
-  block f_users_gender: FilterBlock {
-    label: 'Users Gender'
-    type: 'field'
-    source: FieldFilterSource {
+  block v20: VizBlock {
+    label: ' KPI Overview'
+    viz: PivotTable {
       dataset: demo_ecommerce
-      field: r(ecommerce_users.gender)
-    }
-    default {
-      operator: 'is'
-      value: []
-    }
-  }
-  block v_kaqa: VizBlock {
-    label: 'Delivered Orders Count compared with Average Order Value'
-    viz: MetricKpi {
-      dataset: simple_dataset
-      value: VizFieldFull {
-        ref: r(ecommerce_orders.delivered_orders_count)
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
+      filter {
+        field: ref('dim_dates', 'date_key')
+        operator: 'matches'
+        value: '12 months ago to last month end'
       }
-      compare_value: VizFieldFull {
-        ref: r(simple_dataset.average_order_value)
-        format {
-          type: 'number'
-          pattern: 'inherited'
+      columns: [
+        VizFieldFull {
+          ref: ref('dim_dates', 'date_key')
+          transformation: 'datetrunc year'
+          format {
+            type: 'date'
+            pattern: 'yyyy'
+          }
         }
-      }
+      ]
+      values: [
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'total_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'custom_total_orders_count'
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'cancelled_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'refunded_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'delivered_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('order_master', 'nmv')
+          format {
+            type: 'number'
+            pattern: '[$$]#,###0.00'
+          }
+        },
+        VizFieldFull {
+          ref: ref('order_master', 'gmv')
+          format {
+            type: 'number'
+            pattern: '[$$]#,###0.00'
+          }
+        },
+        VizFieldFull {
+          ref: ref('order_master', 'aov')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
       settings {
+        show_row_total: true
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
-        alignment: 'left'
+        value_labels_position {
+          placement: 'rows'
+        }
+        column_styles: [
+          ColumnStyle {
+            key: 'custom_total_orders_count'
+            width: 322
+          }
+        ]
       }
     }
     settings {
       hide_label: true
     }
   }
-  view: CanvasLayout {
+  block v21: VizBlock {
+    label: ' KPI Overview'
+    viz: PivotTable {
+      dataset: demo_ecommerce
+      filter {
+        field: ref('dim_dates', 'date_key')
+        operator: 'matches'
+        value: 'last 1 years to today'
+      }
+      columns: [
+        VizFieldFull {
+          ref: ref('dim_dates', 'date_key')
+          transformation: 'datetrunc year'
+          format {
+            type: 'date'
+            pattern: 'yyyy'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: '%∆ Total Orders Count (prev. 1y)'
+          ref: ref('ecommerce_orders', 'total_orders_count')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_total_orders_count'
+        },
+        VizFieldFull {
+          label: '%∆ Cancelled Orders Count (prev. 1y)'
+          ref: ref('ecommerce_orders', 'cancelled_orders_count')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_cancelled_orders_count'
+        },
+        VizFieldFull {
+          label: '%∆ Refunded Orders Count (prev. 1y)'
+          ref: ref('ecommerce_orders', 'refunded_orders_count')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_refunded_orders_count'
+        },
+        VizFieldFull {
+          label: '%∆ Delivered Orders Count (prev. 1y)'
+          ref: ref('ecommerce_orders', 'delivered_orders_count')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_delivered_orders_count'
+        },
+        VizFieldFull {
+          label: '%∆ Nmv (prev. 1y)'
+          ref: ref('order_master', 'nmv')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_nmv'
+        },
+        VizFieldFull {
+          label: '%∆ Gmv (prev. 1y)'
+          ref: ref('order_master', 'gmv')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_gmv'
+        },
+        VizFieldFull {
+          label: '%∆ Aov (prev. 1y)'
+          ref: ref('order_master', 'aov')
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+          analytic: PeriodOverPeriodComparison {
+            time_dimension: ref('dim_dates', 'date_key')
+            display: 'percent_change'
+            comparison_period: 'relative to previous 1 year'
+          }
+          uname: 'custom_aov'
+        }
+      ]
+      settings {
+        conditional_formats: [
+          ConditionalFormat {
+            key: 'custom_total_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_total_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_total_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_cancelled_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_cancelled_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_cancelled_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_refunded_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_refunded_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_refunded_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_delivered_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_delivered_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_delivered_orders_count'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_nmv'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_nmv'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_nmv'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_gmv'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_gmv'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_gmv'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_aov'
+            format: SingleFormat {
+              condition {
+                operator: 'greater_than'
+                value: 0
+              }
+              text_color: '#399367'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_aov'
+            format: SingleFormat {
+              condition {
+                operator: 'is'
+                value: 0
+              }
+              text_color: '#B16920'
+              background_color: '#00000000'
+            }
+          },
+          ConditionalFormat {
+            key: 'custom_aov'
+            format: SingleFormat {
+              condition {
+                operator: 'less_than'
+                value: 0
+              }
+              text_color: '#BF0E08'
+              background_color: '#00000000'
+            }
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        value_labels_position {
+          placement: 'rows'
+        }
+        column_styles: [
+          ColumnStyle {
+            key: 'custom_total_orders_count'
+            width: 328
+          }
+        ]
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  view: TabLayout {
     label: 'View 1'
-    width: 1540
-    height: 4800
-    grid_size: 20
-    block hd1 {
-      position: pos(1320, 20, 180, 60)
-    }
-    block hd2 {
-      position: pos(180, 360, 640, 60)
-    }
-    block hd3 {
-      position: pos(0, 0, 1540, 200)
-      layer: -1
-    }
-    block t2 {
-      position: pos(40, 100, 660, 60)
-    }
-    block v1 {
-      position: pos(60, 800, 1420, 380)
-    }
-    block v2 {
-      position: pos(80, 460, 300, 140)
-    }
-    block v2_dup_dup {
-      position: pos(440, 2300, 380, 500)
-    }
-    block v6 {
-      position: pos(840, 2300, 680, 500)
-    }
-    block v7 {
-      position: pos(60, 3380, 1440, 440)
-    }
-    block v8 {
-      position: pos(380, 2960, 560, 400)
-    }
-    block v10 {
-      position: pos(80, 600, 320, 140)
-    }
-    block f1 {
-      position: pos(80, 3020, 260, 40)
-    }
-    block t5 {
-      position: pos(40, 320, 1460, 80)
-    }
-    block t6 {
-      position: pos(40, 1300, 1460, 80)
-    }
-    block t8 {
-      position: pos(60, 2860, 1460, 80)
-    }
-    block t9 {
-      position: pos(80, 2980, 260, 40)
-    }
-    block t10 {
-      position: pos(920, 100, 180, 60)
-    }
-    block t11 {
-      position: pos(1120, 100, 180, 60)
-    }
-    block t12 {
-      position: pos(1320, 100, 180, 60)
-    }
-    block v13 {
-      position: pos(40, 1380, 720, 460)
-    }
-    block t26 {
-      position: pos(60, 2960, 300, 120)
-      layer: -2
-    }
-    block t28 {
-      position: pos(80, 3260, 260, 40)
-    }
-    block f2 {
-      position: pos(80, 3300, 260, 40)
-    }
-    block f3 {
-      position: pos(80, 3160, 260, 40)
-    }
-    block t32 {
-      position: pos(80, 3120, 260, 40)
-      layer: 1
-    }
-    block v15 {
-      position: pos(960, 2960, 560, 400)
-    }
-    block v16 {
-      position: pos(780, 1380, 720, 460)
-    }
-    block t38 {
-      position: pos(0, 4400, 1540, 180)
-      layer: -1
-    }
-    block t39 {
-      position: pos(60, 3860, 200, 80)
-    }
-    block t40 {
-      position: pos(1120, 4440, 400, 120)
-    }
-    block t47 {
-      position: pos(1420, 1240, 80, 100)
-      layer: 1
-    }
-    block t49 {
-      position: pos(40, 780, 1460, 420)
-      layer: -2
-    }
-    block t51 {
-      position: pos(1440, 2820, 80, 100)
-      layer: 1
-    }
-    block t52 {
-      position: pos(460, 420, 1040, 340)
-      layer: -2
-    }
-    block t53 {
-      position: pos(40, 420, 400, 340)
-      layer: -2
-    }
-    block t55 {
-      position: pos(60, 3100, 300, 120)
-      layer: -1
-    }
-    block t56 {
-      position: pos(60, 3240, 300, 120)
-      layer: -1
-    }
-    block v17 {
-      position: pos(40, 1860, 1480, 420)
-    }
-    block v18 {
-      position: pos(60, 3820, 1480, 500)
-    }
-    block p1 {
-      position: pos(1300, 2960, 220, 60)
-      layer: 2
-    }
-    block v19 {
-      position: pos(40, 2300, 380, 500)
-      layer: 3
-    }
-    block f_users_gender {
-      position: pos(1160, 220, 300, 80)
-      layer: -1
-    }
-    block v_kaqa {
-      position: pos(20, 4600, 260, 180)
-      layer: 4
+    tab view_1: CanvasLayout {
+      label: 'Tab 1'
+      width: 1540
+      height: 4460
+      grid_size: 20
+      block f1 {
+        position: pos(80, 2920, 260, 40)
+      }
+      block f2 {
+        position: pos(80, 3200, 260, 40)
+      }
+      block f3 {
+        position: pos(80, 3060, 260, 40)
+      }
+      block p1 {
+        position: pos(1300, 2860, 220, 60)
+        layer: 2
+      }
+      block t2 {
+        position: pos(40, 100, 660, 50)
+      }
+      block t5 {
+        position: pos(40, 220, 1460, 80)
+      }
+      block t6 {
+        position: pos(40, 1190, 1460, 80)
+      }
+      block t8 {
+        position: pos(60, 2760, 1460, 80)
+      }
+      block t9 {
+        position: pos(80, 2880, 260, 40)
+      }
+      block v1 {
+        position: pos(60, 700, 760, 380)
+      }
+      block v2 {
+        position: pos(80, 360, 300, 140)
+      }
+      block v6 {
+        position: pos(840, 2200, 680, 500)
+      }
+      block v7 {
+        position: pos(60, 3280, 1440, 430)
+      }
+      block v8 {
+        position: pos(380, 2860, 560, 400)
+      }
+      block hd1 {
+        position: pos(1320, 20, 180, 50)
+      }
+      block hd2 {
+        position: pos(40, 20, 640, 60)
+      }
+      block hd3 {
+        position: pos(0, 0, 1540, 200)
+        layer: -1
+      }
+      block t10 {
+        position: pos(920, 100, 180, 50)
+      }
+      block t11 {
+        position: pos(1120, 100, 180, 50)
+      }
+      block t12 {
+        position: pos(1320, 100, 180, 50)
+      }
+      block t26 {
+        position: pos(60, 2860, 300, 120)
+        layer: -2
+      }
+      block t28 {
+        position: pos(80, 3160, 260, 40)
+      }
+      block t32 {
+        position: pos(80, 3020, 260, 40)
+        layer: 1
+      }
+      block t38 {
+        position: pos(0, 4300, 1540, 170)
+        layer: -1
+      }
+      block t39 {
+        position: pos(60, 3760, 200, 70)
+      }
+      block t40 {
+        position: pos(1120, 4340, 400, 110)
+      }
+      block t47 {
+        position: pos(1420, 1140, 80, 100)
+        layer: 1
+      }
+      block t49 {
+        position: pos(40, 660, 1460, 420)
+        layer: -4
+      }
+      block t51 {
+        position: pos(1440, 2720, 80, 100)
+        layer: 1
+      }
+      block t52 {
+        position: pos(460, 320, 1040, 340)
+        layer: -2
+      }
+      block t53 {
+        position: pos(40, 320, 400, 340)
+        layer: -2
+      }
+      block t54 {
+        position: pos(60, 2200, 360, 500)
+      }
+      block t55 {
+        position: pos(60, 3000, 300, 120)
+        layer: -1
+      }
+      block t56 {
+        position: pos(60, 3140, 300, 120)
+        layer: -1
+      }
+      block v10 {
+        position: pos(80, 500, 320, 140)
+      }
+      block v12 {
+        position: pos(480, 340, 1000, 300)
+        layer: -1
+      }
+      block v13 {
+        position: pos(40, 1280, 720, 460)
+      }
+      block v15 {
+        position: pos(960, 2860, 560, 400)
+      }
+      block v16 {
+        position: pos(780, 1280, 720, 460)
+      }
+      block v17 {
+        position: pos(40, 1760, 1480, 420)
+      }
+      block v18 {
+        position: pos(60, 3720, 1480, 500)
+      }
+      block v19 {
+        position: pos(20, 4490, 400, 300)
+        layer: 3
+      }
+      block v20 {
+        position: pos(280, 700, 1180, 380)
+        layer: -3
+      }
+      block v21 {
+        position: pos(280, 700, 860, 260)
+        layer: -1
+      }
+      block v2_dup_dup {
+        position: pos(440, 2200, 380, 500)
+      }
+      mobile {
+        mode: 'auto'
+      }
     }
   }
   settings {
@@ -1285,352 +1774,6 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
     cache_duration: 10
   }
   interactions: [
-    FilterInteraction {
-      from: 'v1'
-      to: [
-        CustomMapping {
-          block: [
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v2'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v2_dup_dup'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v6'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v7'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v8'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v10'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f1'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19',
-            'f2',
-            'f3'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v13'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v15',
-            'v17',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f2'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19',
-            'f1',
-            'f3'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f3'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19',
-            'f1',
-            'f2'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v15'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v17',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v17'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v18'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v19'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_users_gender'
-      to: [
-        CustomMapping {
-          block: [
-            'v1',
-            'v2',
-            'v2_dup_dup',
-            'v6',
-            'v7',
-            'v8',
-            'v10',
-            'v13',
-            'v15',
-            'v17',
-            'v18',
-            'v19'
-          ]
-          disabled: true
-        }
-      ]
-    },
     PopInteraction {
       from: 'p1'
       to: [
