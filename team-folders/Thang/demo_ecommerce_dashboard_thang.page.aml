@@ -1,7 +1,7 @@
 // use lib
 // use demo
 
-Dashboard demo_ecommerce_dashboard_amyra_copy {
+Dashboard demo_ecommerce_dashboard_amyra_copy2222 {
   title: 'Ecommerce Dashboard - THANG'
 
   block hd1: TextBlock {
