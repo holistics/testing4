@@ -2293,7 +2293,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
   ]
   settings {
     timezone: 'Etc/UTC'
-    autorun: false
     cache_duration: 1440
   }
 }
