@@ -1,10 +1,11 @@
-Dashboard untitled_10 {
-  title: 'Untitled'
-  owner: 'vy.ht@holistics.io'
+Dashboard untitled_8_2 {
+  title: 'new_dashboard'
+  description: ''
+  owner: 'vu.dq@holistics.io'
   block title: TextBlock {
-    content: @md # Your title goes here ;;
+    content: @md # New Dashboard;;
   }
-  interactions: []
+
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
@@ -18,5 +19,6 @@ Dashboard untitled_10 {
       mode: 'auto'
     }
   }
+
   theme: H.themes.vanilla
 }
