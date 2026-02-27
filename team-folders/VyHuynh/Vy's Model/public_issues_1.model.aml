@@ -108,8 +108,8 @@ Model public_issues_1 {
     definition: @sql {{ #SOURCE.completed_at }};;
     primary_key: false
   }
-  dimension dimension_58d0fd5 {
-    label: "Days between Created At and Started At"
+  dimension cycle_time {
+    label: "Cycle Time"
     type: "number"
     description: ""
     hidden: false
@@ -118,19 +118,4 @@ Model public_issues_1 {
 
   owner: 'vy.ht@holistics.io'
   table_name: '"public"."issues"'
-  measure cycle_time {
-    label: "Cycle Time"
-    type: "number"
-    description: "**Cycle Time** represents the duration between when an issue was started and when it was completed.  \nIt measures the time taken to complete the issue from the start date to the completion date.  \nThis metric helps evaluate the efficiency of issue resolution within a project.  "
-    hidden: false
-    definition: @sql {{ completed_at }} - {{ started_at }};;
-    aggregation_type: "count"
-  }
-  measure time {
-    label: "Time"
-    type: "text"
-    description: ""
-    definition: @sql {{ completed_at }} - {{ started_at }} ;;
-    aggregation_type: "sum"
-  }
 }
