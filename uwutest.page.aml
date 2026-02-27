@@ -1,0 +1,89 @@
+Dashboard uwutest {
+  title: 'testuwu'
+  description: ''''''
+
+  block title: TextBlock {
+    content: @md # Your title goes here
+<font color="#D2D5DF">(Double click to edit)</font>;;
+  }
+  block v1: VizBlock {
+    label: 'tessst'
+    viz: DataTable {
+      dataset: demo_ecommerce_internal_training
+      fields: [
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'delivered_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'status')
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v2: VizBlock {
+    label: 'hjhj'
+    viz: DataTable {
+      dataset: demo_ecommerce_internal_training
+      fields: [
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'delivered_orders_count')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('ecommerce_orders', 'status')
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+
+  view: CanvasLayout {
+    label: 'View 1'
+    height: 480
+    grid_size: 20
+    block title {
+      position: pos(20, 20, 1160, 120)
+    }
+    block v1 {
+      position: pos(20, 160, 400, 300)
+      layer: 1
+    }
+    block v2 {
+      position: pos(440, 160, 400, 300)
+      layer: 2
+    }
+    mobile {
+      mode: 'auto'
+    }
+  }
+
+  theme: H.themes.vanilla
+}
