@@ -369,18 +369,7 @@ Dashboard khai_test {
       value: []
     }
   }
-  block f_j1la: FilterBlock {
-    label: 'Countries Is Country'
-    type: 'field'
-    source: FieldFilterSource {
-      dataset: khai_ecommerce
-      field: r(khai_ecommerce, countries.is_country_)
-    }
-    default {
-      operator: 'is'
-      value: true
-    }
-  }
+
   block v_6g2o: VizBlock {
     label: 'Name and Revenue'
     viz: DataTable {
