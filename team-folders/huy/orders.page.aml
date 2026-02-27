@@ -1,7 +1,6 @@
 Dashboard untitled_7 {
   title: 'Orders (Huy)'
   description: ''''''
-  owner: 'huy@holistics.io'
   view: TabLayout {
     label: 'View 1'
     tab tab1: CanvasLayout {
