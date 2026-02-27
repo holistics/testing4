@@ -1,6 +1,6 @@
 Dataset khai_ecommerce {
   __engine__: 'aql'
-  label: 'Ecommerce (from Khai)'
+  label: 'Khai Ecommerce'
   description: "This is Dataset for AQL testing"
   data_source_name: "demodb"
   models: [
@@ -11,25 +11,17 @@ Dataset khai_ecommerce {
     merchants,
     products,
     cities,
-    khai_date_d,
     param_model
-    ,
-    khai_categories
-    ,
-    time_type
   ]
 
   relationships: [
-    relationship(orders.user_id > users.id, true, 'two_way'),
-    relationship(order_items.order_id > orders.id, true, 'two_way'),
-    relationship(cities.country_code > countries.code, true, 'two_way'),
-    relationship(users.city_id > cities.id, true, 'two_way'),
-    relationship(order_items.product_id > products.id, true, 'two_way'),
-    relationship(products.merchant_id > merchants.id, true, 'two_way'),
-    relationship(merchants.city_id > cities.id, true, 'two_way'),
-    relationship(orders.created_date > khai_date_d.date_key, true, 'two_way')
-    ,
-    relationship(products.category_id > khai_categories.id, true, 'two_way')
+    relationship(orders.user_id > users.id, true),
+    relationship(order_items.order_id > orders.id, true),
+    relationship(cities.country_code > countries.code, true),
+    relationship(users.city_id > cities.id, true),
+    relationship(order_items.product_id > products.id, true),
+    relationship(products.merchant_id > merchants.id, true),
+    relationship(merchants.city_id > cities.id, false)
   ]
 
   owner: 'khai.to+demo4@holistics.io'
@@ -68,14 +60,12 @@ Dataset khai_ecommerce {
     label: 'Revenue'
     type: 'number'
     definition: @aql sum(order_items, order_items.quantity * products.price) ;;
-    format: "[\$\$]#,###"
   }
 
   metric total_orders {
     label: 'Total Orders'
     type: 'number'
     definition: @aql count(orders.id) ;;
-    format: "#,###"
   }
 
   metric total_delivered_orders {
@@ -114,7 +104,6 @@ Dataset khai_ecommerce {
     label: 'Total Users'
     type: 'number'
     definition: @aql count(users.id) ;;
-    format: "#,###"
   }
 
   metric dynamic_metric {
@@ -130,16 +119,6 @@ Dataset khai_ecommerce {
         , then: total_users
       )
      ;;
-    format: "#,###,\"K\""
-  }
-
-  metric gmv {
-    label: "GMV (Gross Merchandise Value)"
-    type: "number"
-    hidden: false
-    description: "GMV - Gross Merchandise Value: Total value of all orders before discount."
-    definition: @aql order_items | sum(order_items.quantity * products.price);;
-    format: "[\$\$]#,###0"
   }
 
   metric gmv_converted {

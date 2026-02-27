@@ -6,7 +6,6 @@ Model orders {
   dimension id {
     label: 'Id'
     type: 'number'
-    primary_key: true
     hidden: false
     definition: @sql {{ #SOURCE.id }};;
   }
@@ -39,13 +38,6 @@ Model orders {
     type: 'number'
     hidden: false
     definition: @sql {{ #SOURCE.delivery_attempts }};;
-  }
-  dimension created_date {
-    label: "Created Date"
-    type: "date"
-    description: ""
-    hidden: false
-    definition: @sql {{ created_at }}::date;;
   }
 
   measure total_orders {

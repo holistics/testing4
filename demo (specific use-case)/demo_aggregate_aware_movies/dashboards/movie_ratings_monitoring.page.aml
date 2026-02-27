@@ -20,18 +20,18 @@ Dashboard wip_demo_movie_ratings_monitoring {
       value: '2017'
     }
   }
-  // block tags: FilterBlock {
-  //   label: 'Tags'
-  //   type: 'field'
-  //   source: FieldFilterSource {
-  //     dataset: movie_ratings_analysis
-  //     field: ref('public_tags', 'tag')
-  //   }
-  //   default {
-  //     operator: 'is'
-  //     value: []
-  //   }
-  // }
+  block tags: FilterBlock {
+    label: 'Tags'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: movie_ratings_analysis
+      field: ref('public_tags', 'tag')
+    }
+    default {
+      operator: 'is'
+      value: []
+    }
+  }
   block date_drill: DateDrillBlock {
     label: 'Date Drill'
   }
@@ -363,7 +363,6 @@ Learn about this feature on [Aggregate Awareness | Public Doc](https://docs.holi
   settings {
     timezone: 'America/Los_Angeles'
     autorun: false
-    allow_timezone_change: true
     cache_duration: 10
   }
   description: @md This demo illustrates the capability of Aggregate Awareness in Holistics
