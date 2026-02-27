@@ -1,0 +1,136 @@
+Model public_issues_1 {
+  type: 'table'
+  label: 'Issues'
+  description: ''
+  data_source_name: 'project_management'
+
+  dimension id {
+    label: 'Id'
+    type: 'text'
+    description: "The **Id** field contains the unique identifier assigned to each issue in the system.  \nExamples include `1`, `10`, `100`, `23`, and `89`."
+    hidden: false
+    definition: @sql {{ #SOURCE.id }};;
+    primary_key: true
+  }
+  dimension title {
+    label: 'Title'
+    type: 'text'
+    description: "The **title** field contains the descriptive name of an issue.  \nIt represents the main summary or headline used to identify and reference the issue in the project management context.  "
+    hidden: false
+    definition: @sql {{ #SOURCE.title }};;
+    primary_key: false
+  }
+  dimension identifier {
+    label: 'Identifier'
+    type: 'text'
+    description: "The **identifier** field contains a unique textual label assigned to each issue for identification purposes within the system.  \n\nExamples include `abeo ultio tergo`, `adfero`, and `adimpleo alius campana`."
+    hidden: false
+    definition: @sql {{ #SOURCE.identifier }};;
+    primary_key: false
+  }
+  dimension project_id {
+    label: 'Project Id'
+    type: 'text'
+    description: "**Project Id** contains the unique identifier for the project associated with each issue.  \n\nThis field links the issue to a specific project within the system.  \n"
+    hidden: false
+    definition: @sql {{ #SOURCE.project_id }};;
+    primary_key: false
+  }
+  dimension assignee_id {
+    label: 'Assignee Id'
+    type: 'text'
+    description: "The **assignee_id** field contains the unique identifier of the user assigned to an issue.  \nIt represents the person responsible for addressing or resolving the issue within the project.  \n"
+    hidden: false
+    definition: @sql {{ #SOURCE.assignee_id }};;
+    primary_key: false
+  }
+  dimension creator_id {
+    label: 'Creator Id'
+    type: 'text'
+    description: "**Creator Id** contains the unique identifier of the user who created the issue.  \nThis field links each issue to its originator for tracking and accountability.  "
+    hidden: false
+    definition: @sql {{ #SOURCE.creator_id }};;
+    primary_key: false
+  }
+  dimension status {
+    label: 'Status'
+    type: 'text'
+    description: "The **status** field indicates the current phase or condition of an issue within the project workflow. It reflects the progress stage of the issue from creation to completion.\n\nExample value:\n- `in_progress`\n- `pr_review`\n- `merged`\n- `deployed_to_staging`\n- `tested_on_staging`\n- `deployed`"
+    hidden: false
+    definition: @sql {{ #SOURCE.status }};;
+    primary_key: false
+  }
+  dimension priority {
+    label: 'Priority'
+    type: 'text'
+    description: "**Priority** indicates the level of urgency or importance assigned to an issue within the project management process.  \nValue: `low`, `medium`, `high`, `urgent`, and `none`."
+    hidden: false
+    definition: @sql {{ #SOURCE.priority }};;
+    primary_key: false
+  }
+  dimension label {
+    label: 'Label'
+    type: 'text'
+    description: "The **label** field categorizes the issue by its type or nature within the project management context. \n\nIt identifies the classification such as `chore`, `bug`, `improvement`, `tech_debt`, or `feature`.  "
+    hidden: false
+    definition: @sql {{ #SOURCE.label }};;
+    primary_key: false
+  }
+  dimension estimate {
+    label: 'Estimate'
+    type: 'number'
+    description: "The **estimate** field contains the projected effort or time required to complete an issue. It represents a numerical value used for planning and resource allocation in project management. "
+    hidden: false
+    definition: @sql {{ #SOURCE.estimate }};;
+    primary_key: false
+  }
+  dimension created_at {
+    label: 'Created At'
+    type: 'datetime'
+    description: "The **created_at** field records the date and time when an issue was initially created in the system.  "
+    hidden: false
+    definition: @sql {{ #SOURCE.created_at }};;
+    primary_key: false
+  }
+  dimension started_at {
+    label: 'Started At'
+    type: 'datetime'
+    description: "The **started_at** field records the date and time when work on an issue began.  \nIt indicates the moment the issue transitioned from a pending state to active progress.  "
+    hidden: false
+    definition: @sql {{ #SOURCE.started_at }};;
+    primary_key: false
+  }
+  dimension completed_at {
+    label: 'Completed At'
+    type: 'datetime'
+    description: "The **completed_at** field records the date and time when an issue was finished.  \nIt indicates the exact moment the issue\'s work was completed in the project workflow.  "
+    hidden: false
+    definition: @sql {{ #SOURCE.completed_at }};;
+    primary_key: false
+  }
+
+  owner: 'vy.ht@holistics.io'
+  table_name: '"public"."issues"'
+  measure cycle_time {
+    label: "Cycle Time"
+    type: "number"
+    description: "**Cycle Time** represents the duration between when an issue was started and when it was completed.  \nIt measures the time taken to complete the issue from the start date to the completion date.  \nThis metric helps evaluate the efficiency of issue resolution within a project.  "
+    hidden: false
+    definition: @sql {{ completed_at }} - {{ started_at }};;
+    aggregation_type: "count"
+  }
+
+  measure time_to_complete {
+    label: 'Time To Complete (Days)'
+    type: 'number'
+    description: "The number of days between when work started and when it was completed."
+    definition: @aql date_diff('day', {{ completed_at }}, {{ started_at }} ) ;;
+  }
+  measure time {
+    label: "Time"
+    type: "text"
+    description: ""
+    definition: @sql {{ completed_at }} - {{ started_at }} ;;
+    aggregation_type: "sum"
+  }
+}
