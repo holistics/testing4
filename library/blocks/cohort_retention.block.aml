@@ -11,14 +11,10 @@
         input_type: 'select'
         options: ['month', 'quarter', 'year']
       }
-      param category_name_param: StringParamMetadata {
-        input_type: 'select'
-        options: ['Gaming', 'Body', 'Audio Gadgets', 'Baking and Cooking', 'Tablet']
-      }
     }
   }
 )
-Func block_cohort_retention(time_granularity:String, category_name_param:String) {
+Func block_cohort_retention(time_granularity:String) {
   VizBlock {
     label: 'Cohort Retention'
     viz: PivotTable {
@@ -34,7 +30,7 @@ Func block_cohort_retention(time_granularity:String, category_name_param:String)
         model: users
       }
       calculation months_from_first_orders {
-        label: '${time_granularity} from first orders'
+        label: 'Months From First Orders'
         formula: @aql date_diff(
   '${time_granularity}',
   users.first_acquired_at,
@@ -53,14 +49,9 @@ Func block_cohort_retention(time_granularity:String, category_name_param:String)
         data_type: 'number'
       }
       filter {
-        field: r(khai_ecommerce, users.user_acquired_at)
+        field: ref('users', 'first_acquired_at')
         operator: 'matches'
         value: 'last year to current year'
-      }
-      filter {
-        field: r(khai_categories.name)
-        operator: 'is'
-        value: ['${category_name_param}']
       }
       theme {
         table {

@@ -42,7 +42,7 @@ Dashboard dynamic_datasouce_test {
 
   view: CanvasLayout {
     label: 'View 1'
-    height: 1120
+    height: 840
     grid_size: 20
     block title {
       position: pos(20, 20, 1160, 60)

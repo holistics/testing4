@@ -1,7 +1,6 @@
 EmbedPortal embed_portal {
   objects: [
-    demo_ecommerce_overview_pro,
-    test_zoom
-  ]
-  initial_object: test_zoom
+    demo_ecommerce,
+    demo_ecommerce_overview_pro
+  ],
 }
