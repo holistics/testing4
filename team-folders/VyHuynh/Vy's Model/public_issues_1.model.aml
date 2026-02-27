@@ -108,6 +108,13 @@ Model public_issues_1 {
     definition: @sql {{ #SOURCE.completed_at }};;
     primary_key: false
   }
+  dimension dimension_58d0fd5 {
+    label: "Days between Created At and Started At"
+    type: "number"
+    description: ""
+    hidden: false
+    definition: @aql date_diff('day', public_issues_1.created_at, public_issues_1.started_at);;
+  }
 
   owner: 'vy.ht@holistics.io'
   table_name: '"public"."issues"'
@@ -118,13 +125,6 @@ Model public_issues_1 {
     hidden: false
     definition: @sql {{ completed_at }} - {{ started_at }};;
     aggregation_type: "count"
-  }
-
-  measure time_to_complete {
-    label: 'Time To Complete (Days)'
-    type: 'number'
-    description: "The number of days between when work started and when it was completed."
-    definition: @aql date_diff('day', {{ completed_at }}, {{ started_at }} ) ;;
   }
   measure time {
     label: "Time"
