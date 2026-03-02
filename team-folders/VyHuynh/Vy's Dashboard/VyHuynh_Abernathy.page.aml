@@ -141,10 +141,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
     tab tab3: CanvasLayout {
       label: 'Regional Analysis'
-      height: 9400
+      height: 9440
       grid_size: 20
       block v5 {
-        position: pos(20, 320, 540, 420)
+        position: pos(20, 360, 540, 420)
         layer: 1
       }
       block t1 {
@@ -156,63 +156,63 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 3
       }
       block v_qctn {
-        position: pos(20, 5620, 1160, 580)
+        position: pos(20, 5660, 1160, 580)
         layer: 1
       }
       block v_9rhg {
-        position: pos(20, 6220, 1160, 580)
+        position: pos(20, 6260, 1160, 580)
         layer: 1
       }
       block v_tusm {
-        position: pos(20, 7340, 1160, 500)
+        position: pos(20, 7380, 1160, 500)
         layer: 1
       }
       block v_j83d {
-        position: pos(20, 7860, 1160, 480)
+        position: pos(20, 7900, 1160, 480)
         layer: 1
       }
       block v_nyr1 {
-        position: pos(20, 8360, 1160, 500)
+        position: pos(20, 8400, 1160, 500)
         layer: 1
       }
       block v_5dpt {
-        position: pos(20, 8880, 1160, 500)
+        position: pos(20, 8920, 1160, 500)
         layer: 1
       }
       block v_8fpj {
-        position: pos(20, 5100, 1160, 500)
+        position: pos(20, 5140, 1160, 500)
         layer: 4
       }
       block v_350o {
-        position: pos(20, 760, 540, 400)
+        position: pos(20, 800, 540, 400)
         layer: 1
       }
       block v_qnug {
-        position: pos(20, 1180, 1160, 400)
+        position: pos(20, 1220, 1160, 400)
         layer: 1
       }
       block v_tq6d {
-        position: pos(580, 760, 600, 400)
+        position: pos(580, 800, 600, 400)
         layer: 1
       }
       block t_hcv3 {
-        position: pos(20, 1620, 320, 60)
+        position: pos(20, 1660, 320, 60)
         layer: 1
       }
       block t_ww35 {
-        position: pos(20, 260, 320, 60)
+        position: pos(20, 300, 320, 60)
         layer: 1
       }
       block v_6o9d {
-        position: pos(20, 3540, 1160, 440)
+        position: pos(20, 3580, 1160, 440)
         layer: 1
       }
       block v_wwiv {
-        position: pos(20, 3080, 1160, 440)
+        position: pos(20, 3120, 1160, 440)
         layer: 1
       }
       block t_vh1h {
-        position: pos(20, 4040, 320, 60)
+        position: pos(20, 4080, 320, 60)
         layer: 1
       }
       block v_7vcf {
@@ -220,23 +220,23 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 1
       }
       block v_ji80 {
-        position: pos(20, 4100, 1160, 480)
+        position: pos(20, 4140, 1160, 480)
         layer: 1
       }
       block v_n0qr {
-        position: pos(20, 4600, 1160, 480)
+        position: pos(20, 4640, 1160, 480)
         layer: 1
       }
       block v_0sbb {
-        position: pos(20, 2620, 1160, 440)
+        position: pos(20, 2660, 1160, 440)
         layer: 1
       }
       block v_58pi {
-        position: pos(20, 2160, 1160, 440)
+        position: pos(20, 2200, 1160, 440)
         layer: 1
       }
       block v_jpzg {
-        position: pos(20, 1700, 1160, 440)
+        position: pos(20, 1740, 1160, 440)
         layer: 1
       }
       mobile {
@@ -2314,7 +2314,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         data_type: 'number'
       }
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(order_master.order_created_at)
