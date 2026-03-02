@@ -2195,7 +2195,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: '2024'
       }
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(order_master.order_created_at)
@@ -2247,7 +2246,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: '2024'
       }
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(order_master.order_created_at)
@@ -2298,7 +2296,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
   }
   block v_58pi: VizBlock {
-    label: 'GMV over time - with trendline copy'
+    label: 'GMV over time - vs LY'
     description: 'This is description of the block'
     viz: ColumnChart {
       dataset: demo_ecommerce
@@ -2314,11 +2312,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         formula: @aql order_master.gmv | relative_period(order_master.order_created_at, interval(-1 year), strict: true);;
         calc_type: 'measure'
         data_type: 'number'
-      }
-      filter {
-        field: r(order_master.order_created_at)
-        operator: 'matches'
-        value: '2025'
       }
       theme {
 
