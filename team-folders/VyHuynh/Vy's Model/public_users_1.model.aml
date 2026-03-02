@@ -1,0 +1,34 @@
+Model public_users_1 {
+  type: 'table'
+  label: 'Users'
+  description: ''
+  data_source_name: 'project_management'
+  dimension id {
+    label: 'Id'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.id }};;
+    primary_key: true
+  }
+  dimension name {
+    label: 'Name'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.name }};;
+  }
+  dimension email {
+    label: 'Email'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.email }};;
+  }
+  dimension role {
+    label: 'Role'
+    type: 'unknown'
+    hidden: false
+    definition: @sql {{ #SOURCE.role }};;
+  }
+
+  owner: 'vy.ht@holistics.io'
+  table_name: '"public"."users"'
+}

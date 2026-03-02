@@ -1,10 +1,11 @@
-Dashboard hoa_test {
-  title: 'hoa test'
-  owner: 'hoa.huynh@holistics.io'
+Dashboard untitled_8_2 {
+  title: 'new_dashboard'
+  description: ''
+  owner: 'vu.dq@holistics.io'
   block title: TextBlock {
-    content: @md # Your title goes here ;;
+    content: @md # New Dashboard;;
   }
-  interactions: []
+
   view: CanvasLayout {
     label: 'View 1'
     width: 1300
@@ -12,11 +13,12 @@ Dashboard hoa_test {
     grid_size: 20
     auto_expand_vertically: true
     block title {
-      position: pos(21, 101, 1260, 60)
+      position: pos(20, 20, 1260, 60)
     }
     mobile {
       mode: 'auto'
     }
   }
+
   theme: H.themes.vanilla
 }

@@ -1,0 +1,46 @@
+Model public_issue_status_transitions_1 {
+  type: 'table'
+  label: 'Issue Status Transitions'
+  description: ''
+  data_source_name: 'project_management'
+  dimension id {
+    label: 'Id'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.id }};;
+    primary_key: true
+  }
+  dimension issue_id {
+    label: 'Issue Id'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.issue_id }};;
+  }
+  dimension from_status {
+    label: 'From Status'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.from_status }};;
+  }
+  dimension to_status {
+    label: 'To Status'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.to_status }};;
+  }
+  dimension transitioned_at {
+    label: 'Transitioned At'
+    type: 'datetime'
+    hidden: false
+    definition: @sql {{ #SOURCE.transitioned_at }};;
+  }
+  dimension transitioned_by {
+    label: 'Transitioned By'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.transitioned_by }};;
+  }
+
+  owner: 'vy.ht@holistics.io'
+  table_name: '"public"."issue_status_transitions"'
+}

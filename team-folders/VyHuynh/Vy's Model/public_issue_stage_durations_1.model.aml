@@ -1,0 +1,46 @@
+Model public_issue_stage_durations_1 {
+  type: 'table'
+  label: 'Issue Stage Durations'
+  description: ''
+  data_source_name: 'project_management'
+  dimension id {
+    label: 'Id'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.id }};;
+    primary_key: true
+  }
+  dimension issue_id {
+    label: 'Issue Id'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.issue_id }};;
+  }
+  dimension stage {
+    label: 'Stage'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.stage }};;
+  }
+  dimension entered_at {
+    label: 'Entered At'
+    type: 'datetime'
+    hidden: false
+    definition: @sql {{ #SOURCE.entered_at }};;
+  }
+  dimension exited_at {
+    label: 'Exited At'
+    type: 'datetime'
+    hidden: false
+    definition: @sql {{ #SOURCE.exited_at }};;
+  }
+  dimension duration_hours {
+    label: 'Duration Hours'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.duration_hours }};;
+  }
+
+  owner: 'vy.ht@holistics.io'
+  table_name: '"public"."issue_stage_durations"'
+}
