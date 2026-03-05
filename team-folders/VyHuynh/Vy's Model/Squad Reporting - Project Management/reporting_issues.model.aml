@@ -48,7 +48,7 @@ Model reporting_issues {
   dimension status {
     label: 'Status'
     type: 'text'
-    description: '**Status** indicates the current stage of a task or issue within the project workflow.  \nIt includes `pr_review`, `deployed_to_staging`, `deployed`, `tested_on_staging`, `merged`, and `in_progress`.'
+    description: '**Status** indicates the current stage of a task or issue within the project workflow.  \n\nIt reflects progress milestones such as `pr_review`, `deployed_to_staging`, `deployed`, `tested_on_staging`, `merged`, and `in_progress`.  \n\nFor example, a task with status `in_progress` is actively being worked on, while `deployed` means it has been released.'
     hidden: false
     definition: @sql {{ #SOURCE.status }};;
     primary_key: false

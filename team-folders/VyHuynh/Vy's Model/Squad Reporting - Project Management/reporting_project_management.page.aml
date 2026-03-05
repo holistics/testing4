@@ -5,19 +5,12 @@ Dashboard reporting_project_management_2 {
   block title: TextBlock {
     content: @md <h1 style={{ fontFamily: "'Outfit'", fontSize: 20, fontWeight: 700, color: T.text, letterSpacing: "-0.02em" }}>Squad Reporting</h1>;;
   }
-  block v_0a3z: VizBlock {
-    label: 'Completed issue compared with LM - Completed Issue'
+  block v_wioy: VizBlock {
+    label: 'Completed issue compared with LM - Completed issue'
     viz: MetricKpi {
       dataset: reporting_project_management
-      calculation metric_63f4786 {
-        label: 'Completed issue'
-        formula: @aql count(reporting_issues.id)
-| where(reporting_issues.status == "deployed");;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation metric_6a7e2b6 {
-        label: 'LM - Completed Issue'
+      calculation metric_3b5d3d8 {
+        label: 'LM - Completed issue'
         formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
         calc_type: 'measure'
         data_type: 'number'
@@ -28,17 +21,16 @@ Dashboard reporting_project_management_2 {
         value: 'last 30 days'
       }
       value: VizFieldFull {
-        ref: 'metric_63f4786'
+        ref: r(reporting_project_management.metric_63f4786)
         format {
           type: 'number'
           pattern: 'inherited'
         }
       }
       compare_value: VizFieldFull {
-        ref: 'metric_6a7e2b6'
+        ref: 'metric_3b5d3d8'
         format {
           type: 'number'
-          pattern: 'inherited'
         }
       }
       settings {
@@ -64,7 +56,7 @@ Dashboard reporting_project_management_2 {
       block title {
         position: pos(20, 20, 1260, 60)
       }
-      block v_0a3z {
+      block v_wioy {
         position: pos(20, 80, 260, 180)
       }
       mobile {
