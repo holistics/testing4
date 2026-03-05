@@ -1,0 +1,87 @@
+Dashboard reporting_project_management_2 {
+  title: 'reporting_project_management'
+  description: ''
+  owner: 'vy.ht@holistics.io'
+  block title: TextBlock {
+    content: @md <h1 style={{ fontFamily: "'Outfit'", fontSize: 20, fontWeight: 700, color: T.text, letterSpacing: "-0.02em" }}>Squad Reporting</h1>;;
+  }
+  block v_10wq: VizBlock {
+    label: 'Shipped (Last 30D)'
+    viz: MetricKpi {
+      dataset: reporting_project_management
+      calculation metric_a38460b {
+        label: 'PoP Comparison of Reporting issues Id'
+        formula: @aql count(reporting_issues, reporting_issues.id) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_issues.status)
+        operator: 'is'
+        value: 'deployed'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: 'last 30 days'
+      }
+      value: VizFieldFull {
+        ref: r(reporting_issues.id)
+        aggregation: 'count'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      compare_value: VizPopSettings {
+        field: r(reporting_issues.completed_at)
+        value: RelativePopValue {
+          duration: 1
+          granularity: 'month'
+        }
+      }
+      settings {
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+        alignment: 'left'
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+
+  view: TabLayout {
+    label: 'View 1'
+    tab view_1: CanvasLayout {
+      label: 'Overview'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      block title {
+        position: pos(20, 20, 1260, 60)
+      }
+      block v_10wq {
+        position: pos(20, 80, 260, 180)
+      }
+      mobile {
+        mode: 'auto'
+      }
+    }
+    tab tab_y21m: CanvasLayout {
+      label: 'Tab 2'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
+    }
+  }
+
+  theme: H.themes.vanilla
+}
