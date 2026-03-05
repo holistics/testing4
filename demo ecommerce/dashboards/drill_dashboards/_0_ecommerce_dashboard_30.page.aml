@@ -264,6 +264,9 @@ Dashboard _0_ecommerce_dashboard_30 {
     label: 'GMV Total'
     viz: LineChart {
       dataset: demo_ecommerce
+      theme {
+
+      }
       x_axis: VizFieldFull {
         ref: ref('ecommerce_orders', 'created_at')
         transformation: 'datetrunc month'
@@ -281,8 +284,27 @@ Dashboard _0_ecommerce_dashboard_30 {
             }
           }
         }
+        series {
+          field: VizFieldFull {
+            label: 'Gmv (prev. 1y)'
+            ref: ref('order_master', 'gmv')
+            format {
+              type: 'number'
+              pattern: '[$$]#,###'
+            }
+            analytic: PeriodOverPeriodComparison {
+              time_dimension: ref('ecommerce_orders', 'created_at')
+              display: 'value'
+              comparison_period: 'relative to previous 1 year'
+            }
+          }
+          settings {
+            line_style: 'dashed'
+          }
+        }
       }
       settings {
+        x_axis_show_null_datetime: true
         aggregate_awareness {
           enabled: true
           debug_comments: true

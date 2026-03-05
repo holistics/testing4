@@ -1,0 +1,11 @@
+Dataset dynamic_schema_dataset {
+  label: 'Dynamic Schema Dataset'
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    dynamic_schema_ecommerce_orders
+  ]
+  relationships: [
+  ]
+  owner: 'tai.nguyen@holistics.io'
+}
