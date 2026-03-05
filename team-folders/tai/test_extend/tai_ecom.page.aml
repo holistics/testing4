@@ -1,9 +1,5 @@
-// use lib
-// use demo
-
 Dashboard tai_ecom {
   title: 'Ecommerce Dashboard - Pro'
-
   block hd1: TextBlock {
     content: @md 
     <img style="margin-bottom:0 !important;overflow:hidden;" src="https://cdn.holistics.io/logos/holistics-logo-white.svg" alt="demo" width="255">;;
@@ -124,12 +120,6 @@ This dashboard tracks the KPIs of all managers for their respective teams. This 
     label: 'GMV'
     viz: MetricKpi {
       dataset: demo_ecommerce
-      // calculation f_2fb1cc3 {
-      //   label: 'GMT last year'
-      //   formula: @aml order_master.gmv * 0.87;;
-      //   calc_type: 'measure'
-      //   data_type: 'number'
-      // }
       filter {
         field: ref('order_master', 'order_created_at')
         operator: 'matches'
@@ -859,7 +849,6 @@ abc;;
 <p class="footer">Email: <a class="footer" href="mailto:support@holistics.io">support@holistics.io </a><br></p>
 <p class="footer">Website: <a class="footer" href="https://www.holistics.io/">www.holistics.io</a> </p>;;
   }
-  // block t46: background_gray()
   block t47: TextBlock {
     content: @md   <div style="height:100%;overflow:hidden;">
   <a href="#heading" class="border-radius:4px;overflow:hidden;">
@@ -1099,7 +1088,6 @@ abc;;
     viz: ColumnChart {
       dataset: demo_ecommerce
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: ref('ecommerce_users', 'age_group')
@@ -1618,10 +1606,35 @@ abc;;
       hide_label: true
     }
   }
+  block v_xd99: VizBlock {
+    label: 'Untitled Report'
+    viz: DataTable {
+      dataset: buyers_sellers_transactions
+      theme {
+
+      }
+      fields: [
+        VizFieldFull {
+          ref: r(sellers.sign_up_date)
+          format {
+            type: 'date'
+          }
+        }
+      ]
+      settings {
+        show_row_number: true
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   view: CanvasLayout {
     label: 'View 1'
     width: 1540
-    height: 4460
+    height: 4930
     grid_size: 20
     block hd1 {
       position: pos(1320, 20, 180, 50)
@@ -1773,6 +1786,10 @@ abc;;
     block v21 {
       position: pos(280, 700, 860, 260)
       layer: -1
+    }
+    block v_xd99 {
+      position: pos(440, 4490, 620, 420)
+      layer: 4
     }
     mobile {
       mode: 'auto'
