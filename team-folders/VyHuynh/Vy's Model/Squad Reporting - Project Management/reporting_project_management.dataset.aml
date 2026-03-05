@@ -16,4 +16,12 @@ Dataset reporting_project_management {
     relationship(reporting_issues.assignee_id > reporting_team.id, true),
     relationship(reporting_issues.creator_id > reporting_team.id, true)
   ]
+  metric metric_63f4786 {
+    label: "Completed issue"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql count(reporting_issues.id)
+| where(reporting_issues.status == "deployed");;
+  }
 }

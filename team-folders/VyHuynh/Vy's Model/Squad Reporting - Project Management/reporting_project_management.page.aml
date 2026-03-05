@@ -5,19 +5,20 @@ Dashboard reporting_project_management_2 {
   block title: TextBlock {
     content: @md <h1 style={{ fontFamily: "'Outfit'", fontSize: 20, fontWeight: 700, color: T.text, letterSpacing: "-0.02em" }}>Squad Reporting</h1>;;
   }
-  block v_xxxu: VizBlock {
-    label: 'Shipped (30D)'
+  block v_0a3z: VizBlock {
+    label: 'Completed issue compared with LM - Completed Issue'
     viz: MetricKpi {
       dataset: reporting_project_management
-      calculation completed_issues_this_month {
-        label: 'Completed Issues This Month'
-        formula: @aql reporting_issues | count(reporting_issues.id);;
+      calculation metric_63f4786 {
+        label: 'Completed issue'
+        formula: @aql count(reporting_issues.id)
+| where(reporting_issues.status == "deployed");;
         calc_type: 'measure'
         data_type: 'number'
       }
-      calculation completed_issues_last_month {
-        label: 'Completed Issues Last Month'
-        formula: @aql reporting_issues | count(reporting_issues.id) | relative_period(reporting_issues.completed_at, interval(-1 month));;
+      calculation metric_6a7e2b6 {
+        label: 'LM - Completed Issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
         calc_type: 'measure'
         data_type: 'number'
       }
@@ -26,22 +27,15 @@ Dashboard reporting_project_management_2 {
         operator: 'matches'
         value: 'last 30 days'
       }
-      filter {
-        field: r(reporting_issues.status)
-        operator: 'is'
-        value: 'deployed'
-      }
-      theme {
-      }
       value: VizFieldFull {
-        ref: 'completed_issues_this_month'
+        ref: 'metric_63f4786'
         format {
           type: 'number'
           pattern: 'inherited'
         }
       }
       compare_value: VizFieldFull {
-        ref: 'completed_issues_last_month'
+        ref: 'metric_6a7e2b6'
         format {
           type: 'number'
           pattern: 'inherited'
@@ -63,16 +57,15 @@ Dashboard reporting_project_management_2 {
     label: 'View 1'
     tab view_1: CanvasLayout {
       label: 'Overview'
-      width: 1300
-      height: 800
+      width: 1320
+      height: 820
       grid_size: 20
       auto_expand_vertically: true
       block title {
         position: pos(20, 20, 1260, 60)
       }
-      block v_xxxu {
+      block v_0a3z {
         position: pos(20, 80, 260, 180)
-        layer: 1
       }
       mobile {
         mode: 'auto'
@@ -90,5 +83,4 @@ Dashboard reporting_project_management_2 {
     }
   }
   theme: H.themes.vanilla
-  interactions: []
 }
