@@ -5,53 +5,6 @@ Dashboard reporting_project_management_2 {
   block title: TextBlock {
     content: @md <h1 style={{ fontFamily: "'Outfit'", fontSize: 20, fontWeight: 700, color: T.text, letterSpacing: "-0.02em" }}>Squad Reporting</h1>;;
   }
-  block v_10wq: VizBlock {
-    label: 'Shipped (Last 30D)'
-    viz: MetricKpi {
-      dataset: reporting_project_management
-      calculation metric_a38460b {
-        label: 'PoP Comparison of Reporting issues Id'
-        formula: @aql count(reporting_issues, reporting_issues.id) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      filter {
-        field: r(reporting_issues.status)
-        operator: 'is'
-        value: 'deployed'
-      }
-      filter {
-        field: r(reporting_issues.completed_at)
-        operator: 'matches'
-        value: 'last 30 days'
-      }
-      value: VizFieldFull {
-        ref: r(reporting_issues.id)
-        aggregation: 'count'
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
-      }
-      compare_value: VizPopSettings {
-        field: r(reporting_issues.completed_at)
-        value: RelativePopValue {
-          duration: 1
-          granularity: 'month'
-        }
-      }
-      settings {
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-        alignment: 'left'
-      }
-    }
-    settings {
-      hide_label: true
-    }
-  }
   block v_xxxu: VizBlock {
     label: 'Shipped (30D)'
     viz: MetricKpi {
@@ -79,7 +32,6 @@ Dashboard reporting_project_management_2 {
         value: 'deployed'
       }
       theme {
-
       }
       value: VizFieldFull {
         ref: 'completed_issues_this_month'
@@ -118,11 +70,8 @@ Dashboard reporting_project_management_2 {
       block title {
         position: pos(20, 20, 1260, 60)
       }
-      block v_10wq {
-        position: pos(20, 80, 260, 180)
-      }
       block v_xxxu {
-        position: pos(300, 100, 260, 180)
+        position: pos(20, 80, 260, 180)
         layer: 1
       }
       mobile {
