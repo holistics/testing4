@@ -50,7 +50,18 @@ Dashboard untitled_10_2 {
     label: 'raw users'
     viz: DataTable {
       dataset: hieu_haha_meme
-      theme {
+      calculation dimension_23f49c7 {
+        label: 'Untitled Dimension'
+        formula: @aql users_kk.id + users_kk.tenant_id;;
+        calc_type: 'dimension'
+        data_type: 'number'
+        model: users_kk
+      }
+      calculation metric_0ad16b9 {
+        label: 'Count Users'
+        formula: @aql users_kk | count(1);;
+        calc_type: 'measure'
+        data_type: 'number'
       }
       fields: [
         VizFieldFull {
@@ -69,6 +80,20 @@ Dashboard untitled_10_2 {
         },
         VizFieldFull {
           ref: r(users_kk.tenant_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: 'metric_0ad16b9'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('users_kk', 'dimension_23f49c7')
           format {
             type: 'number'
             pattern: 'inherited'
