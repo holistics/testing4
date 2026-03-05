@@ -65,7 +65,7 @@ Dashboard reporting_project_management_2 {
         position: pos(20, 20, 1260, 60)
       }
       block v_10wq {
-        position: pos(20, 80, 260, 180)
+        position: pos(20, 80, 260, 160)
       }
       mobile {
         mode: 'auto'
