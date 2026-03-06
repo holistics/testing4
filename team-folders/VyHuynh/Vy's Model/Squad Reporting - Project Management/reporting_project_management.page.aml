@@ -1056,6 +1056,9 @@ Dashboard squad_command_center {
     label: 'Count of Id by Status'
     viz: BarChart {
       dataset: reporting_project_management
+      theme {
+
+      }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.status)
         format {
@@ -1073,6 +1076,7 @@ Dashboard squad_command_center {
             }
           }
           settings {
+            color: '#8DA9C4FF'
             point {
               value: 'merged'
               color: '#22D3EEFF'
