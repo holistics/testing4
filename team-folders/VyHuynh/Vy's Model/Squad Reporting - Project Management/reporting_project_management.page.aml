@@ -359,7 +359,7 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'number'
       }
-      calculation metric_abbd5a2 {
+      calculation percent_completed_issue {
         label: '%LM - Completed issue'
         formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
@@ -368,7 +368,7 @@ Dashboard squad_command_center {
       calculation color_condition {
         label: 'Color Condition'
         formula: @aql case(
-  when: metric_abbd5a2 < 0,
+  when: percent_completed_issue < 0,
   then: "red",
   else: "#4ade80"
 );;
@@ -379,7 +379,7 @@ Dashboard squad_command_center {
         label: 'Icon Condition'
         formula: @aql case(
         when: 
-          metric_abbd5a2 < 0,
+           or(percent_completed_issue < 0, percent_avg_cycle_time < 0, percent_lm_avg_pr_review < 0 
         then: "▼",
         else: "▲"
 );;
@@ -401,7 +401,7 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
-          ref: 'metric_abbd5a2'
+          ref: 'percent_completed_issue'
           format {
             type: 'number'
             pattern: '#,###%'
@@ -504,7 +504,7 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'number'
       }
-      calculation metric_abbd5a2 {
+      calculation percent_completed_issue {
         label: '%LM - Completed issue'
         formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
@@ -513,7 +513,7 @@ Dashboard squad_command_center {
       calculation color_condition {
         label: 'Completed issue - Color Condition'
         formula: @aql case(
-  when: metric_abbd5a2 < 0,
+  when: percent_completed_issue < 0,
   then: "red",
   else: "green"
 );;
@@ -523,7 +523,7 @@ Dashboard squad_command_center {
       calculation icon_condition {
         label: 'Completed issue - Icon Condition'
         formula: @aql case(
-  when: metric_abbd5a2 < 0,
+  when: percent_completed_issue < 0,
   then: "▾",
   else: "▴"
 );;
@@ -533,7 +533,7 @@ Dashboard squad_command_center {
       calculation metric_02fef53 {
         label: 'Cycle Time - Color Condition'
         formula: @aql case(
-  when: avg_cycle_time < 0,
+  when: percent_avg_cycle_time < 0,
   then: "green",
   else: "red"
 );;
@@ -543,14 +543,14 @@ Dashboard squad_command_center {
       calculation metric_8cf2423 {
         label: 'Cycle Time - Icon Condition'
         formula: @aql case(
-  when: avg_cycle_time < 0,
+  when: percent_avg_cycle_time < 0,
   then: "▾",
   else: "▴"
 );;
         calc_type: 'measure'
         data_type: 'text'
       }
-      calculation avg_cycle_time {
+      calculation percent_avg_cycle_time {
         label: '%LM - Avg Cycle Time'
         formula: @aql safe_divide(avg(reporting_issues, reporting_issues.cycle_time_hours), avg(reporting_issues, reporting_issues.cycle_time_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
@@ -572,7 +572,7 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
-          ref: 'avg_cycle_time'
+          ref: 'percent_avg_cycle_time'
           format {
             type: 'number'
             pattern: '#,###%'
@@ -674,7 +674,7 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'number'
       }
-      calculation metric_abbd5a2 {
+      calculation percent_completed_issue {
         label: '%LM - Completed issue'
         formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
@@ -683,7 +683,7 @@ Dashboard squad_command_center {
       calculation color_condition {
         label: 'Completed issue - Color Condition'
         formula: @aql case(
-  when: metric_abbd5a2 < 0,
+  when: percent_completed_issue < 0,
   then: "red",
   else: "green"
 );;
@@ -693,7 +693,7 @@ Dashboard squad_command_center {
       calculation icon_condition {
         label: 'Completed issue - Icon Condition'
         formula: @aql case(
-  when: metric_abbd5a2 < 0,
+  when: percent_completed_issue < 0,
   then: "▾",
   else: "▴"
 );;
@@ -846,7 +846,7 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'number'
       }
-      calculation metric_abbd5a2 {
+      calculation percent_completed_issue {
         label: '%LM - Completed issue'
         formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
@@ -855,7 +855,7 @@ Dashboard squad_command_center {
       calculation color_condition {
         label: 'Completed issue - Color Condition'
         formula: @aql case(
-  when: metric_abbd5a2 < 0,
+  when: percent_completed_issue < 0,
   then: "red",
   else: "green"
 );;
@@ -865,7 +865,7 @@ Dashboard squad_command_center {
       calculation icon_condition {
         label: 'Completed issue - Icon Condition'
         formula: @aql case(
-  when: metric_abbd5a2 < 0,
+  when: percent_completed_issue < 0,
   then: "▾",
   else: "▴"
 );;
@@ -898,7 +898,7 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'text'
       }
-      calculation lm_avg_pr_review {
+      calculation percent_lm_avg_pr_review {
         label: '%LM - Avg PR Review'
         formula: @aql safe_divide(avg(reporting_issue_duration, reporting_issue_duration.duration_hours), avg(reporting_issue_duration, reporting_issue_duration.duration_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
@@ -907,7 +907,7 @@ Dashboard squad_command_center {
       calculation metric_7eece09 {
         label: 'Avg PR Review - Color Condition'
         formula: @aql case(
-  when: lm_avg_pr_review < 0,
+  when: percent_lm_avg_pr_review < 0,
   then: "green",
   else: "red"
 );;
@@ -917,7 +917,7 @@ Dashboard squad_command_center {
       calculation metric_0e96b56 {
         label: 'Avg PR Review - Icon Condition'
         formula: @aql case(
-  when: lm_avg_pr_review < 0,
+  when: percent_lm_avg_pr_review < 0,
   then: "▾",
   else: "▴"
 );;
@@ -945,7 +945,7 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
-          ref: 'lm_avg_pr_review'
+          ref: 'percent_lm_avg_pr_review'
           format {
             type: 'number'
             pattern: '#,###%'
@@ -1047,7 +1047,7 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'number'
       }
-      calculation metric_abbd5a2 {
+      calculation percent_completed_issue {
         label: '%LM - Completed issue'
         formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
@@ -1056,7 +1056,7 @@ Dashboard squad_command_center {
       calculation color_condition {
         label: 'Completed issue - Color Condition'
         formula: @aql case(
-  when: metric_abbd5a2 < 0,
+  when: percent_completed_issue < 0,
   then: "red",
   else: "green"
 );;
@@ -1066,7 +1066,7 @@ Dashboard squad_command_center {
       calculation icon_condition {
         label: 'Completed issue - Icon Condition'
         formula: @aql case(
-  when: metric_abbd5a2 < 0,
+  when: percent_completed_issue < 0,
   then: "▾",
   else: "▴"
 );;
@@ -1099,7 +1099,7 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'text'
       }
-      calculation lm_avg_pr_review {
+      calculation percent_lm_avg_pr_review {
         label: '%LM - Avg PR Review'
         formula: @aql safe_divide(avg(reporting_issue_duration, reporting_issue_duration.duration_hours), avg(reporting_issue_duration, reporting_issue_duration.duration_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
@@ -1108,7 +1108,7 @@ Dashboard squad_command_center {
       calculation metric_7eece09 {
         label: 'Avg PR Review - Color Condition'
         formula: @aql case(
-  when: lm_avg_pr_review < 0,
+  when: percent_lm_avg_pr_review < 0,
   then: "green",
   else: "red"
 );;
@@ -1118,7 +1118,7 @@ Dashboard squad_command_center {
       calculation metric_0e96b56 {
         label: 'Avg PR Review - Icon Condition'
         formula: @aql case(
-  when: lm_avg_pr_review < 0,
+  when: percent_lm_avg_pr_review < 0,
   then: "▾",
   else: "▴"
 );;
