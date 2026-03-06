@@ -5,7 +5,7 @@ Dashboard squad_command_center {
     label: 'Squad Command Center'
     tab overview_tab: CanvasLayout {
       label: '◎ Overview'
-      height: 1400
+      height: 1220
       grid_size: 20
       block kpi_shipped {
         position: pos(0, 0, 300, 120)
@@ -41,10 +41,10 @@ Dashboard squad_command_center {
         position: pos(240, 20, 220, 160)
       }
       block v_gt75 {
-        position: pos(480, 20, 200, 160)
+        position: pos(700, 20, 200, 160)
       }
       block v_uhk0 {
-        position: pos(700, 20, 200, 160)
+        position: pos(480, 20, 200, 160)
       }
       block v_sffe {
         position: pos(920, 20, 180, 160)
@@ -198,7 +198,6 @@ Dashboard squad_command_center {
         value: 'last 30 days'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -382,7 +381,6 @@ Dashboard squad_command_center {
         value: 'last 30 days'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -561,7 +559,6 @@ Dashboard squad_command_center {
         value: []
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -758,7 +755,6 @@ Dashboard squad_command_center {
         value: 'pr_review'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -960,7 +956,6 @@ Dashboard squad_command_center {
         value: 'last 14 days'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
