@@ -38,21 +38,21 @@ Dashboard squad_command_center {
         position: pos(20, 20, 200, 160)
       }
       block v_997c {
-        position: pos(240, 20, 200, 160)
+        position: pos(240, 20, 220, 160)
       }
       block v_gt75 {
-        position: pos(460, 20, 200, 160)
+        position: pos(480, 20, 200, 160)
       }
       block v_uhk0 {
-        position: pos(680, 20, 200, 160)
+        position: pos(700, 20, 200, 160)
       }
       block v_sffe {
-        position: pos(900, 20, 180, 160)
+        position: pos(920, 20, 180, 160)
       }
       block v_jdaq {
         position: pos(20, 200, 520, 380)
       }
-      width: 1100
+      width: 1120
     }
     tab ttm_tab: CanvasLayout {
       label: '⏱ Time-to-Market'
@@ -197,6 +197,9 @@ Dashboard squad_command_center {
         operator: 'matches'
         value: 'last 30 days'
       }
+      theme {
+
+      }
       values: [
         VizFieldFull {
           label: 'Completed issue (Last 30D)'
@@ -243,8 +246,8 @@ Dashboard squad_command_center {
     margin-top: 12px;
   }
   .kpi-shipped-value {
-    font-size: 56px;
-    font-weight: 800;
+    font-size: 52px;
+    font-weight: 500;
     color: #4ade80;
     line-height: 1;
   }
@@ -277,7 +280,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>         ;;
+</div>          ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -379,6 +382,7 @@ Dashboard squad_command_center {
         value: 'last 30 days'
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -426,8 +430,8 @@ Dashboard squad_command_center {
     margin-top: 12px;
   }
   .kpi-cycle-value {
-    font-size: 56px;
-    font-weight: 800;
+    font-size: 52px;
+    font-weight: 500;
     color: #4f8cff;
     line-height: 1;
   }
@@ -450,7 +454,7 @@ Dashboard squad_command_center {
 <div>
   <p class="kpi-title">Avg Cycle Time (30D)</p>
   <span class="kpi-cycle-value">
-    {{ rows[0].values.`Avg Cycle Time` }}
+    {{ rows[0].values.`Avg Cycle Time` }}h
   </span>
 
   <div class="kpi-cycle-compare">
@@ -460,7 +464,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>     ;;
+</div>      ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -556,6 +560,9 @@ Dashboard squad_command_center {
         operator: 'not_null'
         value: []
       }
+      theme {
+
+      }
       values: [
         VizFieldFull {
           label: 'WIP'
@@ -591,8 +598,8 @@ Dashboard squad_command_center {
     margin-top: 12px;
   }
   .kpi-wip-value {
-    font-size: 56px;
-    font-weight: 800;
+    font-size: 52px;
+    font-weight: 500;
     color: #ffffff;
     line-height: 1;
   }
@@ -623,7 +630,7 @@ Dashboard squad_command_center {
     <span > status </span>
   </div>
 
-</div>  ;;
+</div>   ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -751,6 +758,7 @@ Dashboard squad_command_center {
         value: 'pr_review'
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -798,8 +806,8 @@ Dashboard squad_command_center {
     margin-top: 12px;
   }
   .kpi-pr-review-value {
-    font-size: 56px;
-    font-weight: 800;
+    font-size: 52px;
+    font-weight: 500;
     color: #fbbf24;
     line-height: 1;
   }
@@ -832,7 +840,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>      ;;
+</div>       ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -952,6 +960,7 @@ Dashboard squad_command_center {
         value: 'last 14 days'
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -1004,8 +1013,8 @@ Dashboard squad_command_center {
     margin-top: 12px;
   }
   .kpi-completion-value {
-    font-size: 56px;
-    font-weight: 800;
+    font-size: 52px;
+    font-weight: 500;
     color: #34d399;
     line-height: 1;
   }
@@ -1038,7 +1047,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>     ;;
+</div>      ;;
       settings {
         show_row_total: true
         show_column_total: true
