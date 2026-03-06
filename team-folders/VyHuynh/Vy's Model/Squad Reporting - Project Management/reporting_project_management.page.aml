@@ -1,109 +1,6 @@
-const squad_bg = '#0c0e14'
-const squad_surface = '#141720'
-const squad_border = '#1e2235'
-const squad_text = '#e8eaf0'
-const squad_muted = '#6b7194'
-const squad_accent = '#4f8cff'
-const squad_green = '#34d399'
-const squad_red = '#f87171'
-const squad_amber = '#fbbf24'
-const squad_font = 'Inter'
-const squad_mono = 'JetBrains Mono'
-PageTheme squad_dark {
-  background {
-    bg_color: squad_bg
-  }
-  canvas {
-    background {
-      bg_color: squad_bg
-    }
-    border {
-      border_width: 0
-      border_radius: 0
-      border_color: squad_border
-      border_style: 'none'
-    }
-    shadow: 'none'
-    opacity: 1
-  }
-  block {
-    label {
-      font_family: squad_font
-      font_size: 14
-      font_color: squad_text
-      font_weight: 'semibold'
-      font_style: 'normal'
-    }
-    text {
-      font_family: squad_font
-      font_size: 12
-      font_color: squad_muted
-      font_weight: 'normal'
-      font_style: 'normal'
-    }
-  }
-  viz {
-    table {
-      general {
-        bg_color: squad_surface
-        hover_color: '#1a1d2a'
-        banding_color: '#161922'
-        font_size: 12
-        font_color: squad_muted
-        font_family: squad_font
-        border_color: squad_border
-        border_width: 1
-        grid_color: squad_border
-      }
-      header {
-        bg_color: '#1a1d2a'
-        font_size: 12
-        font_color: squad_text
-        font_weight: 'semibold'
-      }
-      sub_header {
-        bg_color: '#1a1d2a'
-        font_size: 11
-        font_color: squad_muted
-        font_weight: 'medium'
-      }
-      sub_title {
-        font_size: 11
-        font_color: squad_muted
-        font_weight: 'medium'
-      }
-    }
-  }
-  custom_css: @css
-    /* ---- Squad Command Center ---- */
-
-    /* Tab bar styling */
-    .tab-bar { background: #0c0e14 !important; border-bottom: 1px solid #1e2235 !important; }
-    .tab-bar .tab-item { color: #6b7194 !important; font-family: 'Inter', sans-serif !important; font-size: 13px !important; }
-    .tab-bar .tab-item.active { color: #4f8cff !important; border-bottom: 2px solid #4f8cff !important; }
-
-    /* Metric sheet overrides */
-    .metric-sheet .metric-value { font-family: 'JetBrains Mono', monospace !important; font-size: 28px !important; font-weight: 700 !important; color: #e8eaf0 !important; }
-    .metric-sheet .metric-label { font-family: 'Inter', sans-serif !important; font-size: 11px !important; color: #6b7194 !important; text-transform: uppercase !important; letter-spacing: 0.05em !important; }
-
-    /* Chart axis and legend */
-    .recharts-cartesian-axis-tick-value { fill: #6b7194 !important; font-size: 10px !important; }
-    .recharts-legend-item-text { color: #6b7194 !important; font-size: 11px !important; }
-    .recharts-cartesian-grid line { stroke: #1e2235 !important; }
-
-    /* Tooltip */
-    .recharts-tooltip-wrapper .recharts-default-tooltip { background: #1a1d2a !important; border: 1px solid #262a3e !important; border-radius: 8px !important; }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
-    ::-webkit-scrollbar-track { background: #0c0e14; }
-    ::-webkit-scrollbar-thumb { background: #262a3e; border-radius: 3px; }
-  ;;
-}
 Dashboard squad_command_center {
   title: 'Squad Reporting - Project Management'
   description: 'Engineering delivery metrics · Bottleneck analysis · Team health'
-  theme: squad_dark
   view: TabLayout {
     label: 'Squad Command Center'
     tab overview_tab: CanvasLayout {
@@ -138,24 +35,24 @@ Dashboard squad_command_center {
         position: pos(0, 860, 1200, 340)
       }
       block v_x8r0 {
-        position: pos(20, 20, 220, 160)
+        position: pos(20, 20, 200, 160)
       }
       block v_997c {
-        position: pos(280, 20, 260, 200)
+        position: pos(240, 20, 200, 160)
       }
       block v_gt75 {
-        position: pos(560, 20, 240, 200)
+        position: pos(460, 20, 200, 160)
       }
       block v_uhk0 {
-        position: pos(820, 20, 260, 200)
+        position: pos(680, 20, 200, 160)
       }
       block v_sffe {
-        position: pos(1100, 20, 240, 200)
+        position: pos(900, 20, 180, 160)
       }
       block v_jdaq {
-        position: pos(20, 220, 520, 380)
+        position: pos(20, 200, 520, 380)
       }
-      width: 1380
+      width: 1100
     }
     tab ttm_tab: CanvasLayout {
       label: '⏱ Time-to-Market'
@@ -300,8 +197,6 @@ Dashboard squad_command_center {
         operator: 'matches'
         value: 'last 30 days'
       }
-      theme {
-      }
       values: [
         VizFieldFull {
           label: 'Completed issue (Last 30D)'
@@ -332,15 +227,7 @@ Dashboard squad_command_center {
         }
       ]
       content: @md <style>
-  .kpi-card {
-    padding: 24px;
-    background-color: #0f1117;
-    border-radius: 16px;
-    color: #ffffff;
-    font-family: sans-serif;
-    width: 200px;
-    border: 1px solid #1f222c;
-  }
+
   .kpi-title {
     margin: 0;
     color: #8e94a5;
@@ -377,7 +264,7 @@ Dashboard squad_command_center {
   
 </style>
 
-<div class="kpi-card">
+<div>
   <p class="kpi-title">Shipped (30D)</p>
   <span class="kpi-shipped-value">
     {{ rows[0].values.`Completed issue (Last 30D)` }}
@@ -390,7 +277,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>       ;;
+</div>         ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -524,15 +411,6 @@ Dashboard squad_command_center {
         }
       ]
       content: @md <style>
-  .kpi-cycle-card {
-    padding: 24px;
-    background-color: #0f1117;
-    border-radius: 16px;
-    color: #ffffff;
-    font-family: sans-serif;
-    width: 210px;
-    border: 1px solid #1f222c;
-  }
   .kpi-title {
     margin: 0;
     color: #8e94a5;
@@ -569,7 +447,7 @@ Dashboard squad_command_center {
   
 </style>
 
-<div class="kpi-cycle-card">
+<div>
   <p class="kpi-title">Avg Cycle Time (30D)</p>
   <span class="kpi-cycle-value">
     {{ rows[0].values.`Avg Cycle Time` }}
@@ -698,15 +576,6 @@ Dashboard squad_command_center {
         }
       ]
       content: @md <style>
-  .kpi-card {
-    padding: 24px;
-    background-color: #0f1117;
-    border-radius: 16px;
-    color: #ffffff;
-    font-family: sans-serif;
-    width: 210px;
-    border: 1px solid #1f222c;
-  }
   .kpi-title {
     margin: 0;
     color: #8e94a5;
@@ -742,7 +611,7 @@ Dashboard squad_command_center {
   
 </style>
 
-<div class="kpi-card">
+<div>
   <p class="kpi-title">WIP (Last 14D)</p>
   <span class="kpi-wip-value">
     {{ rows[0].values.`WIP` }}
@@ -914,15 +783,6 @@ Dashboard squad_command_center {
         }
       ]
       content: @md <style>
-  .kpi-pr-review-card {
-    padding: 24px;
-    background-color: #0f1117;
-    border-radius: 16px;
-    color: #ffffff;
-    font-family: sans-serif;
-    width: 220px;
-    border: 1px solid #1f222c;
-  }
   .kpi-title {
     margin: 0;
     color: #8e94a5;
@@ -959,7 +819,7 @@ Dashboard squad_command_center {
   
 </style>
 
-<div class="kpi-pr-review-card">
+<div>
   <p class="kpi-title">Avg PR Review (14D)</p>
   <span class="kpi-pr-review-value">
     {{ rows[0].values.`Avg PR Review` }}h
@@ -1129,15 +989,6 @@ Dashboard squad_command_center {
         }
       ]
       content: @md <style>
-  .kpi-card {
-    padding: 24px;
-    background-color: #0f1117;
-    border-radius: 16px;
-    color: #ffffff;
-    font-family: sans-serif;
-    width: 200px;
-    border: 1px solid #1f222c;
-  }
   .kpi-title {
     margin: 0;
     color: #8e94a5;
@@ -1174,7 +1025,7 @@ Dashboard squad_command_center {
   
 </style>
 
-<div class="kpi-card">
+<div>
   <p class="kpi-title">Completion (14D)</p>
   <span class="kpi-completion-value">
     {{ rows[0].values.`% Issue Completion` }}
@@ -1262,5 +1113,5 @@ Dashboard squad_command_center {
       }
     }
   }
-  interactions: []
+  theme: squad_dark
 }
