@@ -24,19 +24,54 @@ Dataset reporting_project_management {
     definition: @aql count(reporting_issues.id) | where(reporting_issues.status == "deployed");;
   }
 
-  metric metric_abbd5a2 {
+  metric percent_lm_completed_issue {
     label: "%LM - Completed issue"
     type: "number"
     hidden: false
     definition: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
   }
 
+    metric percent_lm_avg_cycle_time {
+    label: "%LM - Avg Cycle Time"
+    type: "number"
+    hidden: false
+    definition: @aql safe_divide(avg(reporting_issues, reporting_issues.cycle_time_hours), avg(reporting_issues, reporting_issues.cycle_time_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+  }
+
+    metric percent_lm_avg_pr_review {
+    label: "%LM - Avg PR Review"
+    type: "number"
+    hidden: false
+    definition: @aql safe_divide(avg(reporting_issue_duration, reporting_issue_duration.duration_hours), avg(reporting_issue_duration, reporting_issue_duration.duration_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+  }
+
+  metric percent_completion {
+    label: "Percent Issue Completed"
+    type: "number"
+    hidden: false
+    definition: @aql completed_issue / count(reporting_issues.id);;
+  }
+
+  metric l2w_issue_completed {
+    label: "L2W - % Issue Completed"
+    type: "number"
+    hidden: false
+    definition: @aql percent_completion | relative_period(reporting_issues.completed_at, interval(-2 week), strict: true);;
+  }
+
+  metric percent_delta_completion {
+    label: "Delta - % Issue Completed"
+    type: "number"
+    hidden: false
+    definition: @aql percent_completion - l2w_issue_completed;;
+  }
+
   metric main_color_condition {
     label: "Main Color Condition"
     type: "text"
-    hidden: true
+    hidden: false
     definition: @aql case(
-      when: percent_lm_completed_issue < 0 or percent_delta_completion < 0,
+      when: percent_lm_completed_issue + percent_delta_completion < 0,
       then: "red",
       else: "#4ade80"
     );;
@@ -45,9 +80,9 @@ Dataset reporting_project_management {
   metric reverse_color_condition {
     label: "Reverse Color Condition"
     type: "text"
-    hidden: true
+    hidden: false
     definition: @aql case(
-      when: percent_lm_avg_cycle_time > 0 or percent_lm_avg_pr_review > 0,
+      when: percent_lm_avg_cycle_time + percent_lm_avg_pr_review > 0,
       then: "red",
       else: "#4ade80"
     );;
@@ -56,12 +91,12 @@ Dataset reporting_project_management {
   metric main_icon_condition {
     label: "Main Icon Condition"
     type: "text"
-    hidden: true
+    hidden: false
     definition: @aql case(
-      when: percent_lm_completed_issue < 0 
-            or percent_delta_completion < 0 
-            or percent_lm_avg_cycle_time < 0 
-            or percent_lm_avg_pr_review < 0,
+      when: percent_lm_completed_issue 
+            + percent_delta_completion
+            + percent_lm_avg_cycle_time
+            + percent_lm_avg_pr_review < 0,
       then: "▼",
       else: "▲"
     );;

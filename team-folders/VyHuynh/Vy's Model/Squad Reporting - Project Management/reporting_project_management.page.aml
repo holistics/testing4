@@ -194,8 +194,8 @@ Dashboard squad_command_center {
       block v_uhk0 {
         position: pos(860, 20, 280, 200)
       }
-      block v_msvd {
-        position: pos(1160, 20, 280, 200)
+      block v_fef1 {
+        position: pos(1180, 20, 280, 200)
       }
       width: 1460
     }
@@ -374,7 +374,7 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
-          ref: r(reporting_project_management.metric_abbd5a2)
+          ref: r(reporting_project_management.percent_lm_completed_issue)
           format {
             type: 'number'
             pattern: '#,###%'
@@ -434,7 +434,7 @@ Dashboard squad_command_center {
     color: #525866;
   }
   .kpi-shipped-compare {
-    color: {{ rows[0].values.`Color Condition` }};
+    color: {{ rows[0].values.`Main Color Condition` }};
     font-weight: 500
   }
   
@@ -447,13 +447,13 @@ Dashboard squad_command_center {
   </span>
 
   <div class="kpi-shipped-compare">
-      {{ rows[0].values.`Icon Condition` }}
+      {{ rows[0].values.`Main Icon Condition` }}
       {{ rows[0].values.`%LM - Completed issue` }}
   <span style="color: #525866;">
       vs last month</span>
   </div>
 
-</div>     ;;
+</div>      ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -545,20 +545,20 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
-          ref: 'avg_cycle_time'
+          ref: r(reporting_project_management.percent_lm_avg_cycle_time)
           format {
             type: 'number'
             pattern: '#,###%'
           }
         },
         VizFieldFull {
-          ref: 'metric_02fef53'
+          ref: r(reporting_project_management.reverse_color_condition)
           format {
             type: 'text'
           }
         },
         VizFieldFull {
-          ref: 'metric_8cf2423'
+          ref: r(reporting_project_management.main_icon_condition)
           format {
             type: 'text'
           }
@@ -604,7 +604,7 @@ Dashboard squad_command_center {
     color: #525866;
   }
   .kpi-cycle-compare {
-    color: {{ rows[0].values.`Cycle Time - Color Condition` }};
+    color: {{ rows[0].values.`Reverse Color Condition` }};
     font-weight: 500;
   }
   
@@ -617,13 +617,13 @@ Dashboard squad_command_center {
   </span>
 
   <div class="kpi-cycle-compare">
-      {{ rows[0].values.`Cycle Time - Icon Condition` }}
+      {{ rows[0].values.`Main Icon Condition` }}
       {{ rows[0].values.`%LM - Avg Cycle Time` }}
   <span style="color: #525866;">
       vs last month</span>
   </div>
 
-</div>   ;;
+</div>    ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -918,20 +918,20 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
-          ref: 'lm_avg_pr_review'
+          ref: r(reporting_project_management.percent_lm_avg_pr_review)
           format {
             type: 'number'
             pattern: '#,###%'
           }
         },
         VizFieldFull {
-          ref: 'metric_7eece09'
+          ref: r(reporting_project_management.main_icon_condition)
           format {
             type: 'text'
           }
         },
         VizFieldFull {
-          ref: 'metric_0e96b56'
+          ref: r(reporting_project_management.reverse_color_condition)
           format {
             type: 'text'
           }
@@ -976,8 +976,8 @@ Dashboard squad_command_center {
     font-size: 15px;
     color: #525866;
   }
-  .kpi-pr-review-compare {
-    color: {{ rows[0].values.`Avg PR Review - Color Condition` }};
+  .kpi-reverse-compare {
+    color: {{ rows[0].values.`Reverse Color Condition` }};
     font-weight: 500
   }
   
@@ -989,14 +989,14 @@ Dashboard squad_command_center {
     {{ rows[0].values.`Avg PR Review` }}h
   </span>
 
-  <div class="kpi-pr-review-compare">
-      {{ rows[0].values.`Avg PR Review - Icon Condition` }}
+  <div class="kpi-reverse-compare">
+      {{ rows[0].values.`Main Icon Condition` }}
       {{ rows[0].values.`%LM - Avg PR Review`}}
   <span style="color: #525866;">
       vs last month</span>
   </div>
 
-</div>    ;;
+</div>     ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -1010,8 +1010,8 @@ Dashboard squad_command_center {
       hide_label: true
     }
   }
-  block v_msvd: VizBlock {
-    label: 'Completion'
+  block v_fef1: VizBlock {
+    label: 'Avg PR Review (14D) copy'
     viz: MarkdownViz {
       dataset: reporting_project_management
       calculation metric_e98dbc4 {
@@ -1098,83 +1098,43 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'text'
       }
-      calculation percent_completion {
-        label: '% Issue Completed'
-        formula: @aql completed_issue / count(reporting_issues.id);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation delta__issue_completed {
-        label: 'Delta - % Issue Completed'
-        formula: @aql percent_completion - l2w___issue_completed;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation l2w___issue_completed {
-        label: 'L2W - % Issue Completed'
-        formula: @aql percent_completion | relative_period(reporting_issues.completed_at, interval(-2 week), strict: true);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation issue_completed__color_condition {
-        label: 'Issue Completed - Color Condition'
-        formula: @aql case(
-  when: delta__issue_completed < 0,
-  then: "red",
-  else: "#34d399"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation issue_completed__icon_condition {
-        label: 'Issue Completed - Icon Condition'
-        formula: @aql case(
-  when: delta__issue_completed < 0,
-  then: "▼",
-  else: "▲"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
       filter {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
-        value: 'last 14 days'
+        value: 'last 30 days'
       }
       values: [
         VizFieldFull {
-          ref: 'percent_completion'
+          ref: r(reporting_project_management.percent_completion)
           format {
             type: 'number'
             pattern: '#,###%'
           }
         },
         VizFieldFull {
-          ref: 'l2w___issue_completed'
+          ref: r(reporting_project_management.l2w_issue_completed)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(reporting_project_management.percent_delta_completion)
           format {
             type: 'number'
             pattern: '#,###%'
           }
         },
         VizFieldFull {
-          ref: 'delta__issue_completed'
-          format {
-            type: 'number'
-            pattern: '#,###%'
-          }
-        },
-        VizFieldFull {
-          ref: 'issue_completed__color_condition'
+          ref: r(reporting_project_management.main_icon_condition)
           format {
             type: 'text'
-            pattern: '#,###%'
           }
         },
         VizFieldFull {
-          ref: 'issue_completed__icon_condition'
+          ref: r(reporting_project_management.main_color_condition)
           format {
             type: 'text'
-            pattern: '#,###%'
           }
         }
       ]
@@ -1202,10 +1162,10 @@ Dashboard squad_command_center {
     gap: 10px;
     margin-top: 12px;
   }
-  .kpi-completion-value {
+  .kpi-pr-review-value {
     font-size: 56px;
     font-weight: 800;
-    color: #34d399;
+    color: #fbbf24;
     line-height: 1;
   }
   .kpi-percent {
@@ -1217,8 +1177,8 @@ Dashboard squad_command_center {
     font-size: 15px;
     color: #525866;
   }
-  .kpi-pr-review-compare {
-    color: {{ rows[0].values.`Avg PR Review - Color Condition` }};
+  .kpi-reverse-compare {
+    color: {{ rows[0].values.`Main Color Condition` }};
     font-weight: 500
   }
   
@@ -1226,15 +1186,15 @@ Dashboard squad_command_center {
 
 <div class="kpi-card">
   <p class="kpi-title">Completion (14D)</p>
-  <span class="kpi-completion-value">
-    {{ rows[0].values.`% Issue Completed` }}
+  <span class="kpi-pr-review-value">
+    {{ rows[0].values.`Percent Issue Completed` }}
   </span>
 
-  <div class="kpi-pr-review-compare">
-      {{ rows[0].values.`Issue Completed - Icon Condition` }}
+  <div class="kpi-reverse-compare">
+      {{ rows[0].values.`Main Icon Condition` }}
       {{ rows[0].values.`Delta - % Issue Completed`}}
   <span style="color: #525866;">
-      vs last 14 days</span>
+      vs last month</span>
   </div>
 
 </div>     ;;
