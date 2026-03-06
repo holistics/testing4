@@ -41,18 +41,6 @@ PageTheme squad_dark {
       font_weight: 'normal'
       font_style: 'normal'
     }
-    border {
-      border_width: 1
-      border_radius: 12
-      border_color: squad_border
-      border_style: 'solid'
-    }
-    background {
-      bg_color: squad_surface
-    }
-    padding: 16
-    shadow: 'none'
-    opacity: 1
   }
   viz {
     table {
@@ -150,7 +138,7 @@ Dashboard squad_command_center {
         position: pos(0, 860, 1200, 340)
       }
       block v_x8r0 {
-        position: pos(20, 20, 240, 200)
+        position: pos(20, 20, 220, 160)
       }
       block v_997c {
         position: pos(280, 20, 260, 200)
