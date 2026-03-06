@@ -359,33 +359,6 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'number'
       }
-      calculation metric_abbd5a2 {
-        label: '%LM - Completed issue'
-        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation color_condition {
-        label: 'Color Condition'
-        formula: @aql case(
-  when: metric_abbd5a2 < 0,
-  then: "red",
-  else: "#4ade80"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation icon_condition {
-        label: 'Icon Condition'
-        formula: @aql case(
-        when: 
-          metric_abbd5a2 < 0,
-        then: "▼",
-        else: "▲"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
       filter {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
@@ -401,21 +374,21 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
-          ref: 'metric_abbd5a2'
+          ref: r(reporting_project_management.metric_abbd5a2)
           format {
             type: 'number'
             pattern: '#,###%'
           }
         },
         VizFieldFull {
-          ref: 'color_condition'
+          ref: r(reporting_project_management.main_color_condition)
           format {
             type: 'text'
             pattern: '#,###%'
           }
         },
         VizFieldFull {
-          ref: 'icon_condition'
+          ref: r(reporting_project_management.main_icon_condition)
           format {
             type: 'text'
           }
@@ -480,7 +453,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>    ;;
+</div>     ;;
       settings {
         show_row_total: true
         show_column_total: true

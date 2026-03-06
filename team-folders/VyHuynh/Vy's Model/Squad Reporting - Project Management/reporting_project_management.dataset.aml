@@ -13,16 +13,57 @@ Dataset reporting_project_management {
     relationship(reporting_issues_log.id > reporting_issues.id, true),
     relationship(reporting_issues.project_id > reporting_project.id, true),
     relationship(reporting_issues.assignee_id > reporting_team.id, true),
-    relationship(reporting_issues.creator_id > reporting_team.id, true)
-    ,
+    relationship(reporting_issues.creator_id > reporting_team.id, true),
     relationship(reporting_issue_duration.id > reporting_issues.id, true)
   ]
+
   metric completed_issue {
     label: "Completed issue"
     type: "number"
     hidden: false
-    description: ""
-    definition: @aql count(reporting_issues.id)
-| where(reporting_issues.status == "deployed");;
+    definition: @aql count(reporting_issues.id) | where(reporting_issues.status == "deployed");;
+  }
+
+  metric metric_abbd5a2 {
+    label: "%LM - Completed issue"
+    type: "number"
+    hidden: false
+    definition: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+  }
+
+  metric main_color_condition {
+    label: "Main Color Condition"
+    type: "text"
+    hidden: true
+    definition: @aql case(
+      when: percent_lm_completed_issue < 0 or percent_delta_completion < 0,
+      then: "red",
+      else: "#4ade80"
+    );;
+  }
+
+  metric reverse_color_condition {
+    label: "Reverse Color Condition"
+    type: "text"
+    hidden: true
+    definition: @aql case(
+      when: percent_lm_avg_cycle_time > 0 or percent_lm_avg_pr_review > 0,
+      then: "red",
+      else: "#4ade80"
+    );;
+  }
+
+  metric main_icon_condition {
+    label: "Main Icon Condition"
+    type: "text"
+    hidden: true
+    definition: @aql case(
+      when: percent_lm_completed_issue < 0 
+            or percent_delta_completion < 0 
+            or percent_lm_avg_cycle_time < 0 
+            or percent_lm_avg_pr_review < 0,
+      then: "▼",
+      else: "▲"
+    );;
   }
 }
