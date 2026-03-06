@@ -65,40 +65,4 @@ Dataset reporting_project_management {
     hidden: false
     definition: @aql percent_completion - l2w_issue_completed;;
   }
-
-  metric main_color_condition {
-    label: "Main Color Condition"
-    type: "text"
-    hidden: false
-    definition: @aql case(
-      when: percent_lm_completed_issue + percent_delta_completion < 0,
-      then: "red",
-      else: "#4ade80"
-    );;
-  }
-
-  metric reverse_color_condition {
-    label: "Reverse Color Condition"
-    type: "text"
-    hidden: false
-    definition: @aql case(
-      when: percent_lm_avg_cycle_time + percent_lm_avg_pr_review > 0,
-      then: "red",
-      else: "#4ade80"
-    );;
-  }
-
-  metric main_icon_condition {
-    label: "Main Icon Condition"
-    type: "text"
-    hidden: false
-    definition: @aql case(
-      when: percent_lm_completed_issue 
-            + percent_delta_completion
-            + percent_lm_avg_cycle_time
-            + percent_lm_avg_pr_review < 0,
-      then: "▼",
-      else: "▲"
-    );;
-  }
 }
