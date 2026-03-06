@@ -1110,5 +1110,5 @@ Dashboard squad_command_center {
       }
     }
   }
-  theme: obsidian_navy
+  theme: squad_dark
 }
