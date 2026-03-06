@@ -188,6 +188,12 @@ Dashboard squad_command_center {
       block v_997c {
         position: pos(300, 20, 240, 200)
       }
+      block v_gt75 {
+        position: pos(580, 20, 240, 200)
+      }
+      block v_uhk0 {
+        position: pos(860, 20, 240, 200)
+      }
     }
 
     // ────────────────────────────────────
@@ -433,7 +439,7 @@ Dashboard squad_command_center {
     gap: 10px;
     margin-top: 12px;
   }
-  .kpi-value {
+  .kpi-shipped-value {
     font-size: 56px;
     font-weight: 800;
     color: #4ade80;
@@ -456,7 +462,7 @@ Dashboard squad_command_center {
 
 <div class="kpi-card">
   <p class="kpi-title">Shipped (30D)</p>
-  <span class="kpi-value">
+  <span class="kpi-shipped-value">
     {{ rows[0].values.`Completed issue (Last 30D)` }}
   </span>
 
@@ -482,7 +488,7 @@ Dashboard squad_command_center {
     }
   }
   block v_997c: VizBlock {
-    label: 'Avg Cycle Time (7D)'
+    label: 'Avg Cycle Time (30D)'
     viz: MarkdownViz {
       dataset: reporting_project_management
       calculation metric_e98dbc4 {
@@ -518,8 +524,8 @@ Dashboard squad_command_center {
         data_type: 'text'
       }
       calculation metric_bcc0c1b {
-        label: '%LW - Avg Cycle Time'
-        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.dimension_ffede77), avg(reporting_issues, reporting_issues.dimension_ffede77) | relative_period(reporting_issues.completed_at, interval(-1 week), strict: true)) - 1;;
+        label: '%LM - Avg Cycle Time'
+        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.dimension_ffede77), avg(reporting_issues, reporting_issues.dimension_ffede77) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
         data_type: 'number'
       }
@@ -546,7 +552,7 @@ Dashboard squad_command_center {
       filter {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
-        value: 'last 7 days'
+        value: 'last 30 days'
       }
       values: [
         VizFieldFull {
@@ -617,8 +623,8 @@ Dashboard squad_command_center {
     font-size: 15px;
     color: #525866;
   }
-  .kpi-compare {
-    color: {{ rows[0].values.`Color Condition` }};
+  .kpi-cycle-time-compare {
+    color: {{ rows[0].values.`Cycle Time - Color Condition` }};
   }
   
 </style>
@@ -629,6 +635,333 @@ Dashboard squad_command_center {
     {{ rows[0].values.`Avg Cycle Time` }}h
   </span>
 
+  <div class="kpi-cycle-time-compare">
+      {{ rows[0].values.`Cycle Time - Icon Condition` }}
+      {{ rows[0].values.`%LM - Avg Cycle Time` }}
+  <span style="color: #525866;">
+      vs last month</span>
+  </div>
+
+</div>   ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_gt75: VizBlock {
+    label: 'WIP issues (Last 14D)'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_abbd5a2 {
+        label: '%LM - Completed issue'
+        formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation color_condition {
+        label: 'Completed issue - Color Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "red",
+  else: "green"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation icon_condition {
+        label: 'Completed issue - Icon Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_bcc0c1b {
+        label: '%LW - Avg Cycle Time'
+        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.dimension_ffede77), avg(reporting_issues, reporting_issues.dimension_ffede77) | relative_period(reporting_issues.completed_at, interval(-1 week), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_02fef53 {
+        label: 'Cycle Time - Color Condition'
+        formula: @aql case(
+  when: metric_bcc0c1b < 0,
+  then: "green",
+  else: "red"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_8cf2423 {
+        label: 'Cycle Time - Icon Condition'
+        formula: @aql case(
+  when: metric_bcc0c1b < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: 'last 14 days'
+      }
+      filter {
+        field: r(reporting_issues.status)
+        operator: 'is_not'
+        value: 'deployed'
+      }
+      filter {
+        field: r(reporting_issues.started_at)
+        operator: 'not_null'
+        value: []
+      }
+      filter {
+        field: r(reporting_issues.status)
+        operator: 'not_null'
+        value: []
+      }
+      values: [
+        VizFieldFull {
+          label: 'WIP'
+          ref: r(reporting_issues.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(reporting_issues.status)
+          aggregation: 'count distinct'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      content: @md <style>
+  .kpi-card {
+    padding: 24px;
+    background-color: #0f1117;
+    border-radius: 16px;
+    color: #ffffff;
+    font-family: sans-serif;
+    width: 210px;
+    border: 1px solid #1f222c;
+  }
+  .kpi-title {
+    margin: 0;
+    color: #8e94a5;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .kpi-wip-value {
+    font-size: 56px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+  }
+  .kpi-percent {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .kpi-footer {
+    margin: 12px 0 0 0;
+    font-size: 15px;
+    color: #525866;
+  }
+  .kpi-compare {
+    color: {{ rows[0].values.`Color Condition` }};
+  }
+  
+</style>
+
+<div class="kpi-card">
+  <p class="kpi-title">WIP (Last 14D)</p>
+  <span class="kpi-wip-value">
+    {{ rows[0].values.`WIP` }}
+  </span>
+
+  <div style="color: #525866;">
+    <span > issues across </span>
+    <span style="color: #8e94a5;" > {{ rows[0].values.`CountD of Status` }} </span>
+    <span > status </span>
+  </div>
+
+</div>  ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_uhk0: VizBlock {
+    label: 'Avg Cycle Time (7D) copy'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_abbd5a2 {
+        label: '%LM - Completed issue'
+        formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation color_condition {
+        label: 'Completed issue - Color Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "red",
+  else: "green"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation icon_condition {
+        label: 'Completed issue - Icon Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_bcc0c1b {
+        label: '%LW - Avg Cycle Time'
+        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.dimension_ffede77), avg(reporting_issues, reporting_issues.dimension_ffede77) | relative_period(reporting_issues.completed_at, interval(-1 week), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_02fef53 {
+        label: 'Cycle Time - Color Condition'
+        formula: @aql case(
+  when: metric_bcc0c1b < 0,
+  then: "green",
+  else: "red"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_8cf2423 {
+        label: 'Cycle Time - Icon Condition'
+        formula: @aql case(
+  when: metric_bcc0c1b < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: 'last 30 days'
+      }
+      filter {
+        field: r(reporting_issue_duration.stage)
+        operator: 'is'
+        value: 'pr_review'
+      }
+      values: [
+        VizFieldFull {
+          label: 'Avg PR Review'
+          ref: r(reporting_issue_duration.duration_hours)
+          aggregation: 'avg'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      content: @md <style>
+  .kpi-card {
+    padding: 24px;
+    background-color: #0f1117;
+    border-radius: 16px;
+    color: #ffffff;
+    font-family: sans-serif;
+    width: 210px;
+    border: 1px solid #1f222c;
+  }
+  .kpi-title {
+    margin: 0;
+    color: #8e94a5;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .kpi-value {
+    font-size: 56px;
+    font-weight: 800;
+    color: #4f8cff;
+    line-height: 1;
+  }
+  .kpi-percent {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .kpi-footer {
+    margin: 12px 0 0 0;
+    font-size: 15px;
+    color: #525866;
+  }
+  .kpi-compare {
+    color: {{ rows[0].values.`Color Condition` }};
+  }
+  
+</style>
+
+<div class="kpi-card">
+  <p class="kpi-title">Avg PR Review (7D)</p>
+  <span class="kpi-value">
+    {{ rows[0].values.`Avg PR Review` }}h
+  </span>
+
   <div class="kpi-compare">
       {{ rows[0].values.`Cycle Time - Icon Condition` }}
       {{ rows[0].values.`%LW - Avg Cycle Time` }}
@@ -636,7 +969,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>  ;;
+</div>   ;;
       settings {
         show_row_total: true
         show_column_total: true
