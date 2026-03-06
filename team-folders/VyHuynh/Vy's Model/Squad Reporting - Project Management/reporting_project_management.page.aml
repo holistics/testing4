@@ -1053,11 +1053,10 @@ Dashboard squad_command_center {
     }
   }
   block v_jdaq: VizBlock {
-    label: 'Count of Id by Status'
+    label: 'Live Pipeline'
     viz: BarChart {
       dataset: reporting_project_management
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.status)
