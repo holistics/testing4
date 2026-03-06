@@ -152,6 +152,9 @@ Dashboard squad_command_center {
       block v_sffe {
         position: pos(1100, 20, 240, 200)
       }
+      block v_jdaq {
+        position: pos(20, 220, 520, 380)
+      }
       width: 1380
     }
     tab ttm_tab: CanvasLayout {
@@ -298,7 +301,6 @@ Dashboard squad_command_center {
         value: 'last 30 days'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -490,7 +492,6 @@ Dashboard squad_command_center {
         value: 'last 30 days'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -881,7 +882,6 @@ Dashboard squad_command_center {
         value: 'pr_review'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -1092,7 +1092,6 @@ Dashboard squad_command_center {
         value: 'last 14 days'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -1200,6 +1199,67 @@ Dashboard squad_command_center {
     }
     settings {
       hide_label: true
+    }
+  }
+  block v_jdaq: VizBlock {
+    label: 'Count of Id by Status'
+    viz: BarChart {
+      dataset: reporting_project_management
+      theme {
+
+      }
+      legend: VizFieldFull {
+        ref: r(reporting_issues.status)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(reporting_issues.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            point {
+              value: 'merged'
+              color: '#22D3EEFF'
+            }
+            point {
+              value: 'deployed'
+              color: '#4F8CFFFF'
+            }
+            point {
+              value: 'pr_review'
+              color: '#34D399'
+            }
+            point {
+              value: 'in_progress'
+              color: '#A78BFAFF'
+            }
+            point {
+              value: 'tested_on_staging'
+              color: '#F472B6'
+            }
+            point {
+              value: 'deployed_to_staging'
+              color: '#FBBF24FF'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
     }
   }
   interactions: []
