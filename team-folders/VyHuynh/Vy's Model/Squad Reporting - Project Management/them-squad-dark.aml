@@ -17,7 +17,7 @@ const dark_squad_mono     = 'JetBrains Mono'
 
 PageTheme squad_dark {
   background {
-    bg_color: dark_squad_bg
+    bg_color: '#1C2641'
   }
 
   canvas {
