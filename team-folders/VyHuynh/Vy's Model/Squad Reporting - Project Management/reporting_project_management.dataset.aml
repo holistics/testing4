@@ -17,20 +17,12 @@ Dataset reporting_project_management {
     ,
     relationship(reporting_issue_duration.id > reporting_issues.id, true)
   ]
-  metric metric_63f4786 {
+  metric completed_issue {
     label: "Completed issue"
     type: "number"
     hidden: false
     description: ""
     definition: @aql count(reporting_issues.id)
 | where(reporting_issues.status == "deployed");;
-  }
-  dimension dimension_ffede77 {
-    label: "Cycle time hour - num"
-    type: "number"
-    hidden: false
-    description: ""
-    definition: @aql hour_num(reporting_issues.cycle_time_hours);;
-    model: reporting_issues
   }
 }

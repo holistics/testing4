@@ -192,8 +192,12 @@ Dashboard squad_command_center {
         position: pos(580, 20, 240, 200)
       }
       block v_uhk0 {
-        position: pos(860, 20, 240, 200)
+        position: pos(860, 20, 280, 200)
       }
+      block v_msvd {
+        position: pos(1160, 20, 280, 200)
+      }
+      width: 1460
     }
 
     // ────────────────────────────────────
@@ -346,6 +350,7 @@ Dashboard squad_command_center {
   }
   block v_x8r0: VizBlock {
     label: 'Shipped (30D)'
+    description: 'Total issues launched last 30 days'
     viz: MarkdownViz {
       dataset: reporting_project_management
       calculation metric_e98dbc4 {
@@ -356,7 +361,7 @@ Dashboard squad_command_center {
       }
       calculation metric_abbd5a2 {
         label: '%LM - Completed issue'
-        formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
         data_type: 'number'
       }
@@ -365,7 +370,7 @@ Dashboard squad_command_center {
         formula: @aql case(
   when: metric_abbd5a2 < 0,
   then: "red",
-  else: "green"
+  else: "#4ade80"
 );;
         calc_type: 'measure'
         data_type: 'text'
@@ -373,9 +378,10 @@ Dashboard squad_command_center {
       calculation icon_condition {
         label: 'Icon Condition'
         formula: @aql case(
-  when: metric_abbd5a2 < 0,
-  then: "▾",
-  else: "▴"
+        when: 
+          metric_abbd5a2 < 0,
+        then: "▼",
+        else: "▲"
 );;
         calc_type: 'measure'
         data_type: 'text'
@@ -388,7 +394,7 @@ Dashboard squad_command_center {
       values: [
         VizFieldFull {
           label: 'Completed issue (Last 30D)'
-          ref: r(reporting_project_management.metric_63f4786)
+          ref: r(reporting_project_management.completed_issue)
           format {
             type: 'number'
             pattern: 'inherited'
@@ -454,8 +460,9 @@ Dashboard squad_command_center {
     font-size: 15px;
     color: #525866;
   }
-  .kpi-compare {
+  .kpi-shipped-compare {
     color: {{ rows[0].values.`Color Condition` }};
+    font-weight: 500
   }
   
 </style>
@@ -466,14 +473,14 @@ Dashboard squad_command_center {
     {{ rows[0].values.`Completed issue (Last 30D)` }}
   </span>
 
-  <div class="kpi-compare">
+  <div class="kpi-shipped-compare">
       {{ rows[0].values.`Icon Condition` }}
       {{ rows[0].values.`%LM - Completed issue` }}
   <span style="color: #525866;">
       vs last month</span>
   </div>
 
-</div>  ;;
+</div>    ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -523,16 +530,10 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'text'
       }
-      calculation metric_bcc0c1b {
-        label: '%LM - Avg Cycle Time'
-        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.dimension_ffede77), avg(reporting_issues, reporting_issues.dimension_ffede77) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
       calculation metric_02fef53 {
         label: 'Cycle Time - Color Condition'
         formula: @aql case(
-  when: metric_bcc0c1b < 0,
+  when: avg_cycle_time < 0,
   then: "green",
   else: "red"
 );;
@@ -542,12 +543,18 @@ Dashboard squad_command_center {
       calculation metric_8cf2423 {
         label: 'Cycle Time - Icon Condition'
         formula: @aql case(
-  when: metric_bcc0c1b < 0,
+  when: avg_cycle_time < 0,
   then: "▾",
   else: "▴"
 );;
         calc_type: 'measure'
         data_type: 'text'
+      }
+      calculation avg_cycle_time {
+        label: '%LM - Avg Cycle Time'
+        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.cycle_time_hours), avg(reporting_issues, reporting_issues.cycle_time_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
       }
       filter {
         field: r(reporting_issues.completed_at)
@@ -557,7 +564,7 @@ Dashboard squad_command_center {
       values: [
         VizFieldFull {
           label: 'Avg Cycle Time'
-          ref: ref('reporting_issues', 'dimension_ffede77')
+          ref: r(reporting_issues.cycle_time_hours)
           aggregation: 'avg'
           format {
             type: 'number'
@@ -565,7 +572,7 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
-          ref: 'metric_bcc0c1b'
+          ref: 'avg_cycle_time'
           format {
             type: 'number'
             pattern: '#,###%'
@@ -591,7 +598,7 @@ Dashboard squad_command_center {
     border-radius: 16px;
     color: #ffffff;
     font-family: sans-serif;
-    width: 210px;
+    width: 200px;
     border: 1px solid #1f222c;
   }
   .kpi-title {
@@ -608,7 +615,7 @@ Dashboard squad_command_center {
     gap: 10px;
     margin-top: 12px;
   }
-  .kpi-value {
+  .kpi-cycle-value {
     font-size: 56px;
     font-weight: 800;
     color: #4f8cff;
@@ -623,19 +630,20 @@ Dashboard squad_command_center {
     font-size: 15px;
     color: #525866;
   }
-  .kpi-cycle-time-compare {
+  .kpi-cycle-compare {
     color: {{ rows[0].values.`Cycle Time - Color Condition` }};
+    font-weight: 500;
   }
   
 </style>
 
 <div class="kpi-card">
-  <p class="kpi-title">Avg Cycle Time (7D)</p>
-  <span class="kpi-value">
-    {{ rows[0].values.`Avg Cycle Time` }}h
+  <p class="kpi-title">Avg Cycle Time (30D)</p>
+  <span class="kpi-cycle-value">
+    {{ rows[0].values.`Avg Cycle Time` }}
   </span>
 
-  <div class="kpi-cycle-time-compare">
+  <div class="kpi-cycle-compare">
       {{ rows[0].values.`Cycle Time - Icon Condition` }}
       {{ rows[0].values.`%LM - Avg Cycle Time` }}
   <span style="color: #525866;">
@@ -829,7 +837,7 @@ Dashboard squad_command_center {
     }
   }
   block v_uhk0: VizBlock {
-    label: 'Avg Cycle Time (7D) copy'
+    label: 'Avg PR Review (14D)'
     viz: MarkdownViz {
       dataset: reporting_project_management
       calculation metric_e98dbc4 {
@@ -890,6 +898,32 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'text'
       }
+      calculation lm_avg_pr_review {
+        label: '%LM - Avg PR Review'
+        formula: @aql safe_divide(avg(reporting_issue_duration, reporting_issue_duration.duration_hours), avg(reporting_issue_duration, reporting_issue_duration.duration_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_7eece09 {
+        label: 'Avg PR Review - Color Condition'
+        formula: @aql case(
+  when: lm_avg_pr_review < 0,
+  then: "green",
+  else: "red"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_0e96b56 {
+        label: 'Avg PR Review - Icon Condition'
+        formula: @aql case(
+  when: lm_avg_pr_review < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
       filter {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
@@ -907,7 +941,26 @@ Dashboard squad_command_center {
           aggregation: 'avg'
           format {
             type: 'number'
-            pattern: 'inherited'
+            pattern: '#,###'
+          }
+        },
+        VizFieldFull {
+          ref: 'lm_avg_pr_review'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'metric_7eece09'
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: 'metric_0e96b56'
+          format {
+            type: 'text'
           }
         }
       ]
@@ -918,7 +971,7 @@ Dashboard squad_command_center {
     border-radius: 16px;
     color: #ffffff;
     font-family: sans-serif;
-    width: 210px;
+    width: 220px;
     border: 1px solid #1f222c;
   }
   .kpi-title {
@@ -935,10 +988,10 @@ Dashboard squad_command_center {
     gap: 10px;
     margin-top: 12px;
   }
-  .kpi-value {
+  .kpi-pr-review-value {
     font-size: 56px;
     font-weight: 800;
-    color: #4f8cff;
+    color: #fbbf24;
     line-height: 1;
   }
   .kpi-percent {
@@ -950,26 +1003,268 @@ Dashboard squad_command_center {
     font-size: 15px;
     color: #525866;
   }
-  .kpi-compare {
-    color: {{ rows[0].values.`Color Condition` }};
+  .kpi-pr-review-compare {
+    color: {{ rows[0].values.`Avg PR Review - Color Condition` }};
+    font-weight: 500
   }
   
 </style>
 
 <div class="kpi-card">
-  <p class="kpi-title">Avg PR Review (7D)</p>
-  <span class="kpi-value">
+  <p class="kpi-title">Avg PR Review (14D)</p>
+  <span class="kpi-pr-review-value">
     {{ rows[0].values.`Avg PR Review` }}h
   </span>
 
-  <div class="kpi-compare">
-      {{ rows[0].values.`Cycle Time - Icon Condition` }}
-      {{ rows[0].values.`%LW - Avg Cycle Time` }}
+  <div class="kpi-pr-review-compare">
+      {{ rows[0].values.`Avg PR Review - Icon Condition` }}
+      {{ rows[0].values.`%LM - Avg PR Review`}}
   <span style="color: #525866;">
       vs last month</span>
   </div>
 
-</div>   ;;
+</div>    ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_msvd: VizBlock {
+    label: 'Completion'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_abbd5a2 {
+        label: '%LM - Completed issue'
+        formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation color_condition {
+        label: 'Completed issue - Color Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "red",
+  else: "green"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation icon_condition {
+        label: 'Completed issue - Icon Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_bcc0c1b {
+        label: '%LW - Avg Cycle Time'
+        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.dimension_ffede77), avg(reporting_issues, reporting_issues.dimension_ffede77) | relative_period(reporting_issues.completed_at, interval(-1 week), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_02fef53 {
+        label: 'Cycle Time - Color Condition'
+        formula: @aql case(
+  when: metric_bcc0c1b < 0,
+  then: "green",
+  else: "red"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_8cf2423 {
+        label: 'Cycle Time - Icon Condition'
+        formula: @aql case(
+  when: metric_bcc0c1b < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation lm_avg_pr_review {
+        label: '%LM - Avg PR Review'
+        formula: @aql safe_divide(avg(reporting_issue_duration, reporting_issue_duration.duration_hours), avg(reporting_issue_duration, reporting_issue_duration.duration_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_7eece09 {
+        label: 'Avg PR Review - Color Condition'
+        formula: @aql case(
+  when: lm_avg_pr_review < 0,
+  then: "green",
+  else: "red"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_0e96b56 {
+        label: 'Avg PR Review - Icon Condition'
+        formula: @aql case(
+  when: lm_avg_pr_review < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation percent_completion {
+        label: '% Issue Completed'
+        formula: @aql completed_issue / count(reporting_issues.id);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation delta__issue_completed {
+        label: 'Delta - % Issue Completed'
+        formula: @aql percent_completion - l2w___issue_completed;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation l2w___issue_completed {
+        label: 'L2W - % Issue Completed'
+        formula: @aql percent_completion | relative_period(reporting_issues.completed_at, interval(-2 week), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation issue_completed__color_condition {
+        label: 'Issue Completed - Color Condition'
+        formula: @aql case(
+  when: delta__issue_completed < 0,
+  then: "red",
+  else: "#34d399"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation issue_completed__icon_condition {
+        label: 'Issue Completed - Icon Condition'
+        formula: @aql case(
+  when: delta__issue_completed < 0,
+  then: "▼",
+  else: "▲"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: 'last 14 days'
+      }
+      values: [
+        VizFieldFull {
+          ref: 'percent_completion'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'l2w___issue_completed'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'delta__issue_completed'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'issue_completed__color_condition'
+          format {
+            type: 'text'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'issue_completed__icon_condition'
+          format {
+            type: 'text'
+            pattern: '#,###%'
+          }
+        }
+      ]
+      content: @md <style>
+  .kpi-card {
+    padding: 24px;
+    background-color: #0f1117;
+    border-radius: 16px;
+    color: #ffffff;
+    font-family: sans-serif;
+    width: 220px;
+    border: 1px solid #1f222c;
+  }
+  .kpi-title {
+    margin: 0;
+    color: #8e94a5;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .kpi-completion-value {
+    font-size: 56px;
+    font-weight: 800;
+    color: #34d399;
+    line-height: 1;
+  }
+  .kpi-percent {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .kpi-footer {
+    margin: 12px 0 0 0;
+    font-size: 15px;
+    color: #525866;
+  }
+  .kpi-pr-review-compare {
+    color: {{ rows[0].values.`Avg PR Review - Color Condition` }};
+    font-weight: 500
+  }
+  
+</style>
+
+<div class="kpi-card">
+  <p class="kpi-title">Completion (14D)</p>
+  <span class="kpi-completion-value">
+    {{ rows[0].values.`% Issue Completed` }}
+  </span>
+
+  <div class="kpi-pr-review-compare">
+      {{ rows[0].values.`Issue Completed - Icon Condition` }}
+      {{ rows[0].values.`Delta - % Issue Completed`}}
+  <span style="color: #525866;">
+      vs last 14 days</span>
+  </div>
+
+</div>     ;;
       settings {
         show_row_total: true
         show_column_total: true
