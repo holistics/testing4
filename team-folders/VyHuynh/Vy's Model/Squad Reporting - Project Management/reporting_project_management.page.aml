@@ -35,22 +35,31 @@ Dashboard squad_command_center {
         position: pos(0, 860, 1200, 340)
       }
       block v_x8r0 {
-        position: pos(20, 20, 200, 160)
+        position: pos(20, 40, 200, 160)
       }
       block v_997c {
-        position: pos(240, 20, 220, 160)
+        position: pos(240, 40, 220, 160)
       }
       block v_gt75 {
-        position: pos(700, 20, 200, 160)
+        position: pos(700, 40, 200, 160)
       }
       block v_uhk0 {
-        position: pos(480, 20, 200, 160)
+        position: pos(480, 40, 200, 160)
       }
       block v_sffe {
-        position: pos(920, 20, 180, 160)
+        position: pos(920, 40, 180, 160)
       }
       block v_jdaq {
-        position: pos(20, 200, 520, 380)
+        position: pos(20, 220, 520, 360)
+      }
+      block v_zv1h {
+        position: pos(560, 200, 540, 380)
+      }
+      block v_3qu5 {
+        position: pos(560, 220, 540, 360)
+      }
+      block v_gq0k {
+        position: pos(20, 600, 1080, 360)
       }
       width: 1120
     }
@@ -380,8 +389,6 @@ Dashboard squad_command_center {
         operator: 'matches'
         value: 'last 30 days'
       }
-      theme {
-      }
       values: [
         VizFieldFull {
           label: 'Avg Cycle Time'
@@ -389,7 +396,7 @@ Dashboard squad_command_center {
           aggregation: 'avg'
           format {
             type: 'number'
-            pattern: '#,###0.00'
+            pattern: '#,###'
           }
         },
         VizFieldFull {
@@ -462,7 +469,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>      ;;
+</div>       ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -1060,8 +1067,6 @@ Dashboard squad_command_center {
     label: 'Live Pipeline'
     viz: BarChart {
       dataset: reporting_project_management
-      theme {
-      }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.status)
         format {
@@ -1109,6 +1114,7 @@ Dashboard squad_command_center {
       }
       settings {
         row_limit: 5000
+        legend_label: 'hidden'
         x_axis_show_null_datetime: false
         aggregate_awareness {
           enabled: true
@@ -1117,5 +1123,111 @@ Dashboard squad_command_center {
       }
     }
   }
+  block v_3qu5: VizBlock {
+    label: 'Burnup Created vs Completed'
+    viz: AreaChart {
+      dataset: reporting_project_management
+      calculation metric_93579d9 {
+        label: 'Running total of Count of Reporting Burnup Created'
+        formula: @aql count(reporting_burnup.created) | running_total();;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      x_axis: VizFieldFull {
+        ref: r(reporting_burnup.week)
+        transformation: 'datetrunc week'
+        format {
+          type: 'date'
+          pattern: 'LLL dd, yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            label: 'Created'
+            ref: r(reporting_burnup.created)
+            aggregation: 'running sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+        series {
+          field: VizFieldFull {
+            label: 'Completed'
+            ref: r(reporting_burnup.completed)
+            aggregation: 'running sum'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        legend_label: 'hidden'
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_gq0k: VizBlock {
+    label: 'Weekly Throughput'
+    description: 'Created vs completed per week'
+    viz: ColumnChart {
+      dataset: reporting_project_management
+      filter {
+        field: r(reporting_burnup.week)
+        operator: 'matches'
+        value: 'last 3 months'
+      }
+      x_axis: VizFieldFull {
+        ref: r(reporting_burnup.week)
+        transformation: 'datetrunc week'
+        format {
+          type: 'date'
+          pattern: 'LLL dd, yyyy'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            label: 'Created'
+            ref: r(reporting_burnup.created)
+            aggregation: 'max'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+        series {
+          field: VizFieldFull {
+            label: 'Completed'
+            ref: r(reporting_burnup.completed)
+            aggregation: 'max'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+
   theme: squad_dark
 }
