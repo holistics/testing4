@@ -3,8 +3,8 @@
 // Reusable dark theme for the squad dashboard
 // ============================================================
 
-const dark_squad_bg       = '#0c0e14'
-const dark_squad_surface  = '#141720'
+const dark_squad_bg       = '#141720'
+const dark_squad_surface  = '#0c0e14' 
 const dark_squad_border   = '#1e2235'
 const dark_squad_text     = '#e8eaf0'
 const dark_squad_muted    = '#6b7194'
