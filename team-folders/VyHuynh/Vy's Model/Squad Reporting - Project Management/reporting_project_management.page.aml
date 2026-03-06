@@ -1056,10 +1056,7 @@ Dashboard squad_command_center {
     label: 'Count of Id by Status'
     viz: BarChart {
       dataset: reporting_project_management
-      theme {
-
-      }
-      legend: VizFieldFull {
+      x_axis: VizFieldFull {
         ref: r(reporting_issues.status)
         format {
           type: 'text'
@@ -1113,5 +1110,5 @@ Dashboard squad_command_center {
       }
     }
   }
-  theme: squad_dark
+  theme: obsidian_navy
 }

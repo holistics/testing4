@@ -4,6 +4,7 @@
 // ============================================================
 
 const dark_squad_bg       = '#141720'
+const dark_squad_canvas   = '#343F4B'
 const dark_squad_surface  = '#0c0e14' 
 const dark_squad_border   = '#1e2235'
 const dark_squad_text     = '#e8eaf0'
@@ -17,7 +18,7 @@ const dark_squad_mono     = 'JetBrains Mono'
 
 PageTheme squad_dark {
   background {
-    bg_color: '#1C2641'
+    bg_color: dark_squad_canvas
   }
 
   canvas {
