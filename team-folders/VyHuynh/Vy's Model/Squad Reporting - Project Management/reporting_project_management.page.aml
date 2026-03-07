@@ -5,7 +5,7 @@ Dashboard squad_command_center {
     label: 'Squad Command Center'
     tab overview_tab: CanvasLayout {
       label: '◎ Overview'
-      height: 1220
+      height: 980
       grid_size: 20
       block kpi_shipped {
         position: pos(0, 0, 300, 120)
