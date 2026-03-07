@@ -17,12 +17,12 @@ Dataset reporting_project_management {
     relationship(reporting_issues_log.issue_id > reporting_issues.id, true),
     relationship(reporting_stage_duration.issue_id > reporting_issues.id, true),
   ]
-
   metric completed_issue {
     label: "Completed issue"
     type: "number"
     hidden: false
-    definition: @aql count(reporting_issues.id) | where(reporting_issues.status == "deployed");;
+    description: ""
+    definition: @aql count(reporting_issues.id) | where(reporting_issues.status == "Deployed");;
   }
 
   metric percent_lm_completed_issue {
