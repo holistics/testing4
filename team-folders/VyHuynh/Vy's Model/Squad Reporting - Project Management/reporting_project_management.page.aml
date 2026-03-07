@@ -74,7 +74,7 @@ Dashboard squad_command_center {
         position: pos(40, 40, 300, 80)
       }
       block v_d3sa {
-        position: pos(40, 560, 580, 400)
+        position: pos(40, 560, 540, 400)
       }
     }
     tab bottleneck_tab: CanvasLayout {
@@ -1308,7 +1308,6 @@ Dashboard squad_command_center {
     viz: PieChart {
       dataset: reporting_project_management
       theme {
-
       }
       legend: VizFieldFull {
         ref: r(reporting_stage_duration.stage)
