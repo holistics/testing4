@@ -48,8 +48,8 @@ Model reporting_issues_log {
 
   import_source: ImportSource {
     type: 'csv'
-    original_file_name: 'issue_status_transitions_final.csv'
-    uploaded_at: '2026-03-07 16:44:03'
+    original_file_name: 'issue_status_transitions_complete_iso8601.csv'
+    uploaded_at: '2026-03-07 16:47:53'
     hash: 'd129f72a4df5876ac06498ff57293e4e2deb31a6d8c3e87a94d8a743d912230a'
     column_configs: [
       H.imports.column_config("id", "id", "number"),
