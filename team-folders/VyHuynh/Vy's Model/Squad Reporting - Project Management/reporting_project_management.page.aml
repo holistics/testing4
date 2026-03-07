@@ -73,6 +73,9 @@ Dashboard squad_command_center {
       block f_project_name_ynq6 {
         position: pos(40, 40, 300, 80)
       }
+      block v_d3sa {
+        position: pos(40, 560, 580, 400)
+      }
     }
     tab bottleneck_tab: CanvasLayout {
       label: '⚡ Bottlenecks'
@@ -1230,7 +1233,6 @@ Dashboard squad_command_center {
         value: 'Deployed'
       }
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.identifier)
@@ -1300,13 +1302,55 @@ Dashboard squad_command_center {
       value: 'Explore 2'
     }
   }
+  block v_d3sa: VizBlock {
+    label: 'Segment Contribution %'
+    description: 'Where does time-to-market actually go?'
+    viz: PieChart {
+      dataset: reporting_project_management
+      theme {
+
+      }
+      legend: VizFieldFull {
+        ref: r(reporting_stage_duration.stage)
+        format {
+          type: 'text'
+        }
+      }
+      series {
+        field: VizFieldFull {
+          label: 'Duration'
+          ref: r(reporting_stage_duration.duration_hours)
+          aggregation: 'sum'
+          format {
+            type: 'number'
+            pattern: '#,###'
+          }
+        }
+      }
+      settings {
+        display_as_donut: true
+        row_limit: 5000
+        sort: 'desc'
+        legend_label: 'hidden'
+        show_percentage: true
+        data_label_position: 'outside'
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   theme: squad_dark
   interactions: [
     FilterInteraction {
       from: 'v_x8r0'
       to: [
         CustomMapping {
-          block: 'v_lvp5'
+          block: [
+            'v_lvp5',
+            'v_d3sa'
+          ]
           disabled: true
         }
       ]
@@ -1315,7 +1359,10 @@ Dashboard squad_command_center {
       from: 'v_997c'
       to: [
         CustomMapping {
-          block: 'v_lvp5'
+          block: [
+            'v_lvp5',
+            'v_d3sa'
+          ]
           disabled: true
         }
       ]
@@ -1324,7 +1371,10 @@ Dashboard squad_command_center {
       from: 'v_gt75'
       to: [
         CustomMapping {
-          block: 'v_lvp5'
+          block: [
+            'v_lvp5',
+            'v_d3sa'
+          ]
           disabled: true
         }
       ]
@@ -1333,7 +1383,10 @@ Dashboard squad_command_center {
       from: 'v_uhk0'
       to: [
         CustomMapping {
-          block: 'v_lvp5'
+          block: [
+            'v_lvp5',
+            'v_d3sa'
+          ]
           disabled: true
         }
       ]
@@ -1342,7 +1395,10 @@ Dashboard squad_command_center {
       from: 'v_sffe'
       to: [
         CustomMapping {
-          block: 'v_lvp5'
+          block: [
+            'v_lvp5',
+            'v_d3sa'
+          ]
           disabled: true
         }
       ]
@@ -1351,7 +1407,10 @@ Dashboard squad_command_center {
       from: 'v_jdaq'
       to: [
         CustomMapping {
-          block: 'v_lvp5'
+          block: [
+            'v_lvp5',
+            'v_d3sa'
+          ]
           disabled: true
         }
       ]
@@ -1360,7 +1419,10 @@ Dashboard squad_command_center {
       from: 'v_3qu5'
       to: [
         CustomMapping {
-          block: 'v_lvp5'
+          block: [
+            'v_lvp5',
+            'v_d3sa'
+          ]
           disabled: true
         }
       ]
@@ -1369,7 +1431,10 @@ Dashboard squad_command_center {
       from: 'v_gq0k'
       to: [
         CustomMapping {
-          block: 'v_lvp5'
+          block: [
+            'v_lvp5',
+            'v_d3sa'
+          ]
           disabled: true
         }
       ]
@@ -1405,6 +1470,7 @@ Dashboard squad_command_center {
             'v_jdaq',
             'v_3qu5',
             'v_gq0k',
+            'v_d3sa',
             'f_project_name_ynq6'
           ]
           disabled: true
@@ -1425,6 +1491,24 @@ Dashboard squad_command_center {
             'v_3qu5',
             'v_gq0k',
             'f_project_name'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_d3sa'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k'
           ]
           disabled: true
         }
