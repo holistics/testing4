@@ -695,12 +695,6 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'text'
       }
-      calculation lm_avg_pr_review {
-        label: '%LM - Avg PR Review'
-        formula: @aql safe_divide(avg(reporting_issue_duration, reporting_issue_duration.duration_hours), avg(reporting_issue_duration, reporting_issue_duration.duration_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
       calculation metric_7eece09 {
         label: 'Avg PR Review - Color Condition'
         formula: @aql case(
@@ -725,7 +719,7 @@ Dashboard squad_command_center {
         label: 'Avg PR Review Icon'
         formula: @aql case(
       when:  
-            percent_lm_avg_pr_review < 0,
+            lm_avg_pr_review < 0,
       then: "▼",
       else: "▲"
     );;
@@ -735,12 +729,18 @@ Dashboard squad_command_center {
       calculation avg_pr_review_color {
         label: 'Avg PR Review Color'
         formula: @aql case(
-      when: percent_lm_avg_pr_review > 0,
+      when: lm_avg_pr_review > 0,
       then: "red",
       else: "#4ade80"
     );;
         calc_type: 'measure'
         data_type: 'text'
+      }
+      calculation lm_avg_pr_review {
+        label: '%LM - Avg PR Review'
+        formula: @aql safe_divide(avg(reporting_stage_duration, reporting_stage_duration.duration_hours), avg(reporting_stage_duration, reporting_stage_duration.duration_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
       }
       filter {
         field: r(reporting_issues.completed_at)
@@ -750,9 +750,7 @@ Dashboard squad_command_center {
       filter {
         field: r(reporting_stage_duration.stage)
         operator: 'is'
-        value: 'pr_review'
-      }
-      theme {
+        value: 'In PR Review'
       }
       values: [
         VizFieldFull {
@@ -765,16 +763,16 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
+          ref: 'avg_pr_review_icon'
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
           ref: 'lm_avg_pr_review'
           format {
             type: 'number'
             pattern: '#,###%'
-          }
-        },
-        VizFieldFull {
-          ref: 'avg_pr_review_icon'
-          format {
-            type: 'text'
           }
         },
         VizFieldFull {
@@ -827,14 +825,14 @@ Dashboard squad_command_center {
     {{ rows[0].values.`Avg PR Review` }}h
   </span>
 
-  <div class="kpi-avg-pr-compare">
+  <div class="kpi-avg-pr-compare" style="margin-top: 8px">
       {{ rows[0].values.`Avg PR Review Icon` }}
       {{ rows[0].values.`%LM - Avg PR Review`}}
   <span style="color: #525866;">
       vs last month</span>
   </div>
 
-</div>       ;;
+</div>        ;;
       settings {
         show_row_total: true
         show_column_total: true
