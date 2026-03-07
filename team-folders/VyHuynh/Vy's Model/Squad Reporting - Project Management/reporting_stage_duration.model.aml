@@ -34,10 +34,11 @@ Model reporting_stage_duration {
     definition: @sql {{ #SOURCE.exited_at }};;
   }
   dimension duration_hours {
-    label: 'Duration Hours'
-    type: 'number'
+    label: "Duration Hours"
+    type: "number"
     hidden: false
     definition: @sql {{ #SOURCE.duration_hours }};;
+    primary_key: false
   }
 
   owner: 'vy.ht@holistics.io'
@@ -60,35 +61,36 @@ Model reporting_stage_duration {
       SELECT 
         st.issue_id,
         CASE 
-          WHEN st.to_status = 'pr_review' THEN 'In Progress'
-          WHEN st.to_status = 'merged' THEN 'In PR Review'
-          WHEN st.to_status = 'deployed_to_staging' THEN 'Deploying to Staging'
-          WHEN st.to_status = 'tested_on_staging' THEN 'Testing on Staging'
-          WHEN st.to_status = 'deployed' THEN 'Waiting for Deployment'
+          WHEN st.to_status = 'in_progress' THEN 'In Progress'
+          WHEN st.to_status = 'pr_review' THEN 'In PR Review'
+          WHEN st.to_status = 'merged' THEN 'Deploying to Staging'
+          WHEN st.to_status = 'deployed_to_staging' THEN 'Testing on Staging'
+          WHEN st.to_status = 'tested_on_staging' THEN 'Waiting for Deployment'
         END AS stage,
-        COALESCE(st.previous_transitioned_at, {{ #reporting_issues.started_at }}) AS entered_at,
-        st.transitioned_at AS exited_at
+        st.transitioned_at AS entered_at,
+        LEAD(st.transitioned_at) OVER (
+          PARTITION BY st.issue_id 
+          ORDER BY st.transitioned_at
+        ) AS exited_at
       FROM status_transitions st
-      LEFT JOIN {{ #reporting_issues }} ON st.issue_id = {{ #reporting_issues.id }}
-      WHERE st.to_status IN ('pr_review', 'merged', 'deployed_to_staging', 'tested_on_staging', 'deployed')
+      WHERE st.to_status IN ('in_progress', 'pr_review', 'merged', 'deployed_to_staging', 'tested_on_staging')
     )
 
-    -- Calculate duration for each stage
+    -- Return stages with properly formatted timestamps and the duration in hours
     SELECT 
       ROW_NUMBER() OVER (ORDER BY issue_id, entered_at) AS id,
       issue_id,
       stage,
-      entered_at,
-      exited_at,
-      ROUND(
-        CAST((exited_at - entered_at) / 3600.0 AS NUMERIC),
-        2
-      ) AS duration_hours
+      entered_at::timestamp AS entered_at,
+      exited_at::timestamp AS exited_at,
+      -- Extract seconds (epoch), divide by 3600 to get hours
+      (EXTRACT(EPOCH FROM (exited_at::timestamp - entered_at::timestamp)) / 3600.0) AS duration_hours
     FROM stages_with_mapping
-    WHERE entered_at < exited_at
+    WHERE exited_at IS NOT NULL
+      AND entered_at < exited_at
       AND stage IS NOT NULL
     ORDER BY 
-      issue_id,
+      issue_id, 
       CASE stage
         WHEN 'In Progress' THEN 1
         WHEN 'In PR Review' THEN 2
@@ -97,7 +99,6 @@ Model reporting_stage_duration {
         WHEN 'Waiting for Deployment' THEN 5
       END;;
   models: [
-    reporting_issues,
     reporting_issues_log
   ]
 }
