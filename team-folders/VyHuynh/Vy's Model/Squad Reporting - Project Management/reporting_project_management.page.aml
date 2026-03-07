@@ -68,7 +68,7 @@ Dashboard squad_command_center {
       height: 1500
       grid_size: 20
       block v_lvp5 {
-        position: pos(40, 140, 580, 400)
+        position: pos(40, 140, 1120, 400)
       }
       block f_project_name_ynq6 {
         position: pos(40, 40, 300, 80)
@@ -1221,13 +1221,16 @@ Dashboard squad_command_center {
   }
   block v_lvp5: VizBlock {
     label: 'Issue Time-to-Market Breakdown'
-    description: 'Stacked hours per stage - sorted by total TTM (top 30 issues)'
+    description: 'Stacked hours per stage - sorted by total TTM'
     viz: BarChart {
       dataset: reporting_project_management
       filter {
         field: r(reporting_issues.status)
         operator: 'is'
         value: 'Deployed'
+      }
+      theme {
+
       }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.identifier)
@@ -1263,7 +1266,7 @@ Dashboard squad_command_center {
         sort {
           field_index: 0
           direction: 'asc'
-          type: 'xaxis'
+          type: 'yaxis'
         }
         x_axis_show_null_datetime: false
         aggregate_awareness {
