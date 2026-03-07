@@ -179,7 +179,7 @@ Dashboard squad_command_center {
         label: 'Completed Issue Color'
         formula: @aql case(
       when: percent_lm_completed_issue < 0,
-      then: "red",
+      then: "rgb(248, 113, 113)",
       else: "#4ade80"
     );;
         calc_type: 'measure'
@@ -283,7 +283,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>           ;;
+</div>            ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -363,7 +363,7 @@ Dashboard squad_command_center {
         label: 'Avg Cycle Time Color'
         formula: @aql case(
       when: percent_lm_avg_cycle_time > 0,
-      then: "red",
+      then: "rgb(248, 113, 113)",
       else: "#4ade80"
     );;
         calc_type: 'measure'
@@ -467,7 +467,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>        ;;
+</div>         ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -564,7 +564,6 @@ Dashboard squad_command_center {
         value: []
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -738,7 +737,7 @@ Dashboard squad_command_center {
         label: 'Avg PR Review Color'
         formula: @aql case(
       when: lm_avg_pr_review > 0,
-      then: "red",
+      then: "rgb(248, 113, 113)",
       else: "#4ade80"
     );;
         calc_type: 'measure'
@@ -759,6 +758,9 @@ Dashboard squad_command_center {
         field: r(reporting_stage_duration.stage)
         operator: 'is'
         value: 'In PR Review'
+      }
+      theme {
+
       }
       values: [
         VizFieldFull {
@@ -840,7 +842,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>        ;;
+</div>         ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -932,7 +934,7 @@ Dashboard squad_command_center {
         label: 'Delta - % Issue Completion Color'
         formula: @aql case(
       when: delta_percent_issue_completion < 0,
-      then: "red",
+      then: "rgb(248, 113, 113)",
       else: "#4ade80"
     );;
         calc_type: 'measure'
@@ -1047,7 +1049,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>       ;;
+</div>        ;;
       settings {
         show_row_total: true
         show_column_total: true
