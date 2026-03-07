@@ -19,15 +19,7 @@ Model reporting_stage_duration {
     label: 'Stage'
     type: 'text'
     hidden: false
-    definition: @sql CASE
-      WHEN {{ #SOURCE.stage }} = 'in_progress' THEN 'In Progress'
-      WHEN {{ #SOURCE.stage }} = 'pr_review' THEN 'PR Review'
-      WHEN {{ #SOURCE.stage }} = 'merged' THEN 'Merged'
-      WHEN {{ #SOURCE.stage }} = 'deployed_to_staging' THEN 'Deployed to Staging'
-      WHEN {{ #SOURCE.stage }} = 'tested_on_staging' THEN 'Tested on Staging'
-      WHEN {{ #SOURCE.stage }} = 'deployed' THEN 'Deployed'
-    ELSE 'Other'
-  END;;
+    definition: @sql {{#SOURCE.stage}};;
   }
   dimension entered_at {
     label: 'Entered At'
@@ -49,73 +41,61 @@ Model reporting_stage_duration {
   }
 
   owner: 'vy.ht@holistics.io'
-  query: @sql
-    WITH status_exits AS (
-          -- Calculate when each status was entered and exited
-          SELECT 
-            issue_id,
-            from_status AS stage,
-            transitioned_at AS exited_at,
-            LAG(transitioned_at) OVER (
-              PARTITION BY issue_id 
-              ORDER BY transitioned_at
-            ) AS entered_at
-          FROM {{ #reporting_issues_log }}
-          WHERE from_status IS NOT NULL
-        ),
+  query: @sql WITH status_transitions AS (
+      -- Get all status transitions with their timestamps
+      SELECT 
+        issue_id,
+        to_status,
+        transitioned_at,
+        LAG(transitioned_at) OVER (
+          PARTITION BY issue_id 
+          ORDER BY transitioned_at
+        ) AS previous_transitioned_at
+      FROM {{ #reporting_issues_log }}
+      WHERE to_status IS NOT NULL
+    ),
 
-        status_with_start_time AS (
-          -- Use issue started_at as entered_at for first status
-          SELECT 
-            se.issue_id,
-            se.stage,
-            COALESCE(se.entered_at, {{ #reporting_issues.started_at }}) AS entered_at,
-            se.exited_at
-          FROM status_exits se
-          LEFT JOIN {{ #reporting_issues }} ON se.issue_id = {{ #reporting_issues.id }}
-          WHERE se.entered_at IS NOT NULL OR {{ #reporting_issues.started_at }} IS NOT NULL
-        ),
+    stages_with_mapping AS (
+      -- Map each transition to its corresponding stage name
+      SELECT 
+        st.issue_id,
+        CASE 
+          WHEN st.to_status = 'pr_review' THEN 'In Progress'
+          WHEN st.to_status = 'merged' THEN 'In PR Review'
+          WHEN st.to_status = 'deployed_to_staging' THEN 'Deploying to Staging'
+          WHEN st.to_status = 'tested_on_staging' THEN 'Testing on Staging'
+          WHEN st.to_status = 'deployed' THEN 'Waiting for Deployment'
+        END AS stage,
+        COALESCE(st.previous_transitioned_at, {{ #reporting_issues.started_at }}) AS entered_at,
+        st.transitioned_at AS exited_at
+      FROM status_transitions st
+      LEFT JOIN {{ #reporting_issues }} ON st.issue_id = {{ #reporting_issues.id }}
+      WHERE st.to_status IN ('pr_review', 'merged', 'deployed_to_staging', 'tested_on_staging', 'deployed')
+    )
 
-        current_status AS (
-          -- Add the current/final status for each issue
-          SELECT 
-            t.issue_id,
-            t.to_status AS stage,
-            t.transitioned_at AS entered_at,
-            COALESCE({{ #reporting_issues.completed_at }}, CURRENT_TIMESTAMP) AS exited_at
-          FROM (
-            SELECT 
-              issue_id,
-              to_status,
-              transitioned_at,
-              ROW_NUMBER() OVER (
-                PARTITION BY issue_id 
-                ORDER BY transitioned_at DESC
-              ) AS rn
-            FROM {{ #reporting_issues_log }}
-          ) t
-          LEFT JOIN {{ #reporting_issues }} ON t.issue_id = {{ #reporting_issues.id }}
-          WHERE t.rn = 1
-        )
-
-        -- Combine all stages and calculate duration
-        SELECT 
-          ROW_NUMBER() OVER (ORDER BY issue_id, entered_at) AS id,
-          issue_id,
-          stage,
-          entered_at,
-          exited_at,
-          ROUND(
-            CAST(EXTRACT(EPOCH FROM (exited_at - entered_at)) / 3600.0 AS NUMERIC),
-            2
-          ) AS duration_hours
-        FROM (
-          SELECT * FROM status_with_start_time
-          UNION ALL
-          SELECT * FROM current_status
-        ) all_stages
-        WHERE entered_at < exited_at
-        ORDER BY issue_id, entered_at;;
+    -- Calculate duration for each stage
+    SELECT 
+      ROW_NUMBER() OVER (ORDER BY issue_id, entered_at) AS id,
+      issue_id,
+      stage,
+      entered_at,
+      exited_at,
+      ROUND(
+        CAST((exited_at - entered_at) / 3600.0 AS NUMERIC),
+        2
+      ) AS duration_hours
+    FROM stages_with_mapping
+    WHERE entered_at < exited_at
+      AND stage IS NOT NULL
+    ORDER BY 
+      issue_id,
+      CASE stage
+        WHEN 'In Progress' THEN 1
+        WHEN 'In PR Review' THEN 2
+        WHEN 'Deploying to Staging' THEN 3
+        WHEN 'Testing on Staging' THEN 4
+        WHEN 'Waiting for Deployment' THEN 5
+      END;;
   models: [
     reporting_issues,
     reporting_issues_log
