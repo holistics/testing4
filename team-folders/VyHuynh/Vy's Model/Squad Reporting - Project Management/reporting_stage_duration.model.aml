@@ -38,12 +38,10 @@ Model reporting_stage_duration {
     type: "number"
     hidden: false
     definition: @sql {{ #SOURCE.duration_hours }};;
-    primary_key: false
   }
 
   owner: 'vy.ht@holistics.io'
   query: @sql WITH status_transitions AS (
-      -- Get all status transitions with their timestamps
       SELECT 
         issue_id,
         to_status,
@@ -57,7 +55,6 @@ Model reporting_stage_duration {
     ),
 
     stages_with_mapping AS (
-      -- Map each transition to its corresponding stage name
       SELECT 
         st.issue_id,
         CASE 
@@ -73,22 +70,23 @@ Model reporting_stage_duration {
           ORDER BY st.transitioned_at
         ) AS exited_at
       FROM status_transitions st
-      WHERE st.to_status IN ('in_progress', 'pr_review', 'merged', 'deployed_to_staging', 'tested_on_staging', 'deployed')
+      WHERE st.to_status IN ('in_progress', 'pr_review', 'merged', 'deployed_to_staging', 'tested_on_staging')
     )
 
-    -- Return stages with timestamps
     SELECT 
       ROW_NUMBER() OVER (ORDER BY issue_id, entered_at) AS id,
       issue_id,
       stage,
-      entered_at::timestamp AS entered_at,
-      exited_at::timestamp AS exited_at
+      -- Force display format to include hours/mins/secs
+      TO_CHAR(entered_at::timestamp, 'YYYY-MM-DD HH24:MI:SS') AS entered_at,
+      TO_CHAR(exited_at::timestamp, 'YYYY-MM-DD HH24:MI:SS') AS exited_at,
+      (EXTRACT(EPOCH FROM (exited_at::timestamp - entered_at::timestamp)) / 3600.0) AS duration_hours
     FROM stages_with_mapping
     WHERE exited_at IS NOT NULL
       AND entered_at < exited_at
       AND stage IS NOT NULL
     ORDER BY 
-      issue_id,
+      issue_id, 
       CASE stage
         WHEN 'In Progress' THEN 1
         WHEN 'In PR Review' THEN 2
