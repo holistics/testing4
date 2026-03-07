@@ -39,6 +39,23 @@ Model reporting_stage_duration {
     hidden: false
     definition: @sql {{ #SOURCE.duration_hours }};;
   }
+  dimension stage_priority {
+    label: "Stage Priority"
+    type: "text"
+    description: ""
+    hidden: true
+    definition: @aql case(
+  when: reporting_stage_duration.stage == "In Progress",
+  then: "1",
+  when: reporting_stage_duration.stage == "In PR Review",
+  then: "2",
+  when: reporting_stage_duration.stage == "Deploying to Staging",
+  then: "3",
+  when: reporting_stage_duration.stage == "Testing on Staging",
+  then: "4",
+  else: "5"
+);;
+  }
 
   owner: 'vy.ht@holistics.io'
   query: @sql WITH status_transitions AS (
