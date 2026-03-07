@@ -1224,29 +1224,10 @@ Dashboard squad_command_center {
     description: 'Stacked hours per stage - sorted by total TTM (top 30 issues)'
     viz: BarChart {
       dataset: reporting_project_management
-      calculation stage_priority {
-        label: 'Stage priority'
-        formula: @aql case(
-  when: reporting_stage_duration.stage == "In Progress",
-  then: "1",
-  when: reporting_stage_duration.stage == "In PR Review",
-  then: "2",
-  when: reporting_stage_duration.stage == "Deploying to Staging",
-  then: "3",
-  when: reporting_stage_duration.stage == "Testing on Staging",
-  then: "4",
-  else: "5"
-);;
-        calc_type: 'dimension'
-        data_type: 'text'
-        model: reporting_stage_duration
-      }
       filter {
         field: r(reporting_issues.status)
         operator: 'is'
         value: 'Deployed'
-      }
-      theme {
       }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.identifier)

@@ -43,7 +43,7 @@ Model reporting_stage_duration {
     label: "Stage Priority"
     type: "text"
     description: ""
-    hidden: true
+    hidden: false
     definition: @aql case(
   when: reporting_stage_duration.stage == "In Progress",
   then: "1",
@@ -53,7 +53,9 @@ Model reporting_stage_duration {
   then: "3",
   when: reporting_stage_duration.stage == "Testing on Staging",
   then: "4",
-  else: "5"
+  when: reporting_stage_duration.stage == "Waiting for Deployment",
+  then: "5"
+  else: "6"
 );;
   }
 
