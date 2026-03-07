@@ -7,16 +7,15 @@ Dataset reporting_project_management {
     reporting_project,
     reporting_issues,
     reporting_issues_log,
-    reporting_issue_duration
-    ,
-    reporting_burnup
+    reporting_burnup,
+    reporting_stage_duration
   ]
   relationships: [
-    relationship(reporting_issues_log.id > reporting_issues.id, true),
     relationship(reporting_issues.project_id > reporting_project.id, true),
     relationship(reporting_issues.assignee_id > reporting_team.id, true),
     relationship(reporting_issues.creator_id > reporting_team.id, true),
-    relationship(reporting_issue_duration.id > reporting_issues.id, true)
+    relationship(reporting_issues_log.issue_id > reporting_issues.id, true),
+    relationship(reporting_stage_duration.issue_id > reporting_issues.id, true),
   ]
 
   metric completed_issue {

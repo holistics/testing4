@@ -1,0 +1,115 @@
+Model reporting_stage_duration {
+  type: 'query'
+  label: 'Reporting Stage Duration'
+  description: ''
+  data_source_name: 'demodb'
+  dimension id {
+    label: 'Id'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.id }};;
+  }
+  dimension issue_id {
+    label: 'Issue Id'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.issue_id }};;
+  }
+  dimension stage {
+    label: 'Stage'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.stage }};;
+  }
+  dimension entered_at {
+    label: 'Entered At'
+    type: 'date'
+    hidden: false
+    definition: @sql {{ #SOURCE.entered_at }};;
+  }
+  dimension exited_at {
+    label: 'Exited At'
+    type: 'datetime'
+    hidden: false
+    definition: @sql {{ #SOURCE.exited_at }};;
+  }
+  dimension duration_hours {
+    label: 'Duration Hours'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.duration_hours }};;
+  }
+
+  owner: 'vy.ht@holistics.io'
+  query: @sql
+    WITH status_exits AS (
+          -- Calculate when each status was entered and exited
+          SELECT 
+            issue_id,
+            from_status AS stage,
+            transitioned_at AS exited_at,
+            LAG(transitioned_at) OVER (
+              PARTITION BY issue_id 
+              ORDER BY transitioned_at
+            ) AS entered_at
+          FROM {{ #reporting_issues_log }}
+          WHERE from_status IS NOT NULL
+        ),
+
+        status_with_start_time AS (
+          -- Use issue started_at as entered_at for first status
+          SELECT 
+            se.issue_id,
+            se.stage,
+            COALESCE(se.entered_at, {{ #reporting_issues.started_at }}) AS entered_at,
+            se.exited_at
+          FROM status_exits se
+          LEFT JOIN {{ #reporting_issues }} ON se.issue_id = {{ #reporting_issues.id }}
+          WHERE se.entered_at IS NOT NULL OR {{ #reporting_issues.started_at }} IS NOT NULL
+        ),
+
+        current_status AS (
+          -- Add the current/final status for each issue
+          SELECT 
+            t.issue_id,
+            t.to_status AS stage,
+            t.transitioned_at AS entered_at,
+            COALESCE({{ #reporting_issues.completed_at }}, CURRENT_TIMESTAMP) AS exited_at
+          FROM (
+            SELECT 
+              issue_id,
+              to_status,
+              transitioned_at,
+              ROW_NUMBER() OVER (
+                PARTITION BY issue_id 
+                ORDER BY transitioned_at DESC
+              ) AS rn
+            FROM {{ #reporting_issues_log }}
+          ) t
+          LEFT JOIN {{ #reporting_issues }} ON t.issue_id = {{ #reporting_issues.id }}
+          WHERE t.rn = 1
+        )
+
+        -- Combine all stages and calculate duration
+        SELECT 
+          ROW_NUMBER() OVER (ORDER BY issue_id, entered_at) AS id,
+          issue_id,
+          stage,
+          entered_at,
+          exited_at,
+          ROUND(
+            CAST(EXTRACT(EPOCH FROM (exited_at - entered_at)) / 3600.0 AS NUMERIC),
+            2
+          ) AS duration_hours
+        FROM (
+          SELECT * FROM status_with_start_time
+          UNION ALL
+          SELECT * FROM current_status
+        ) all_stages
+        WHERE entered_at < exited_at
+        ORDER BY issue_id, entered_at;;
+  models: [
+    reporting_issues,
+    reporting_issues_log
+  ]
+}

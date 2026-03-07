@@ -757,7 +757,7 @@ Dashboard squad_command_center {
         value: 'last 30 days'
       }
       filter {
-        field: r(reporting_issue_duration.stage)
+        field: r(reporting_stage_duration.stage)
         operator: 'is'
         value: 'pr_review'
       }
@@ -766,7 +766,7 @@ Dashboard squad_command_center {
       values: [
         VizFieldFull {
           label: 'Avg PR Review'
-          ref: r(reporting_issue_duration.duration_hours)
+          ref: r(reporting_stage_duration.duration_hours)
           aggregation: 'avg'
           format {
             type: 'number'
