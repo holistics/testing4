@@ -46,12 +46,20 @@ Model reporting_issues {
     definition: @sql {{ #SOURCE.creator_id }};;
   }
   dimension status {
-    label: 'Status'
-    description: ''
-    type: 'text'
-    hidden: false
-    definition: @sql {{ #SOURCE.status }};;
-  }
+  label: 'Status'
+  description: ''
+  type: 'text'
+  hidden: false
+  definition: @sql CASE
+      WHEN {{ #SOURCE.status }} = 'in_progress' THEN 'In Progress'
+      WHEN {{ #SOURCE.status }} = 'pr_review' THEN 'PR Review'
+      WHEN {{ #SOURCE.status }} = 'merged' THEN 'Merged'
+      WHEN {{ #SOURCE.status }} = 'deployed_to_staging' THEN 'Deployed to Staging'
+      WHEN {{ #SOURCE.status }} = 'tested_on_staging' THEN 'Tested on Staging'
+      WHEN {{ #SOURCE.status }} = 'deployed' THEN 'Deployed'
+    ELSE 'Other'
+  END;;
+}
   dimension priority {
     label: 'Priority'
     description: ''
