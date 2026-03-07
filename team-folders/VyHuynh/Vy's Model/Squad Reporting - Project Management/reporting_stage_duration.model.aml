@@ -19,7 +19,15 @@ Model reporting_stage_duration {
     label: 'Stage'
     type: 'text'
     hidden: false
-    definition: @sql {{ #SOURCE.stage }};;
+    definition: @sql CASE
+      WHEN {{ #SOURCE.stage }} = 'in_progress' THEN 'In Progress'
+      WHEN {{ #SOURCE.stage }} = 'pr_review' THEN 'PR Review'
+      WHEN {{ #SOURCE.stage }} = 'merged' THEN 'Merged'
+      WHEN {{ #SOURCE.stage }} = 'deployed_to_staging' THEN 'Deployed to Staging'
+      WHEN {{ #SOURCE.stage }} = 'tested_on_staging' THEN 'Tested on Staging'
+      WHEN {{ #SOURCE.stage }} = 'deployed' THEN 'Deployed'
+    ELSE 'Other'
+  END;;
   }
   dimension entered_at {
     label: 'Entered At'
