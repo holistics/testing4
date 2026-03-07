@@ -105,8 +105,8 @@ Model reporting_issues {
   import_source: ImportSource {
     type: 'csv'
     original_file_name: 'issues.csv'
-    uploaded_at: '2026-03-06 05:15:40'
-    hash: '51c656b0c185757586e81a133e3f8ad26d5e70726e21d8f21646104978d4b64e'
+    uploaded_at: '2026-03-07 03:49:36'
+    hash: 'a16492e35106d89f985607bc226c6cfbe5fa46666d20c188c47c89852a5e48ce'
     column_configs: [
       H.imports.column_config("id", "id", "number"),
       H.imports.column_config("title", "title", "text"),
