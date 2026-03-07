@@ -54,7 +54,7 @@ Model reporting_stage_duration {
   when: reporting_stage_duration.stage == "Testing on Staging",
   then: "4",
   when: reporting_stage_duration.stage == "Waiting for Deployment",
-  then: "5"
+  then: "5",
   else: "6"
 );;
   }
