@@ -66,4 +66,18 @@ Dataset reporting_project_management {
     hidden: false
     definition: @aql percent_completion - l2w_issue_completed;;
   }
+  metric duration_day {
+    label: "Duration Day"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql avg(reporting_stage_duration.duration_hours) / 24;;
+  }
+  dimension duration_day {
+    label: "Duration Day"
+    type: "number"
+    description: ""
+    definition: @aql reporting_stage_duration.duration_hours / 24;;
+    model: reporting_stage_duration
+  }
 }
