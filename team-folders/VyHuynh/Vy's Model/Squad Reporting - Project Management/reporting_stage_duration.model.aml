@@ -73,24 +73,22 @@ Model reporting_stage_duration {
           ORDER BY st.transitioned_at
         ) AS exited_at
       FROM status_transitions st
-      WHERE st.to_status IN ('in_progress', 'pr_review', 'merged', 'deployed_to_staging', 'tested_on_staging')
+      WHERE st.to_status IN ('in_progress', 'pr_review', 'merged', 'deployed_to_staging', 'tested_on_staging', 'deployed')
     )
 
-    -- Return stages with properly formatted timestamps and the duration in hours
+    -- Return stages with timestamps
     SELECT 
       ROW_NUMBER() OVER (ORDER BY issue_id, entered_at) AS id,
       issue_id,
       stage,
       entered_at::timestamp AS entered_at,
-      exited_at::timestamp AS exited_at,
-      -- Extract seconds (epoch), divide by 3600 to get hours
-      (EXTRACT(EPOCH FROM (exited_at::timestamp - entered_at::timestamp)) / 3600.0) AS duration_hours
+      exited_at::timestamp AS exited_at
     FROM stages_with_mapping
     WHERE exited_at IS NOT NULL
       AND entered_at < exited_at
       AND stage IS NOT NULL
     ORDER BY 
-      issue_id, 
+      issue_id,
       CASE stage
         WHEN 'In Progress' THEN 1
         WHEN 'In PR Review' THEN 2
