@@ -179,7 +179,7 @@ Dashboard squad_command_center {
         label: 'Completed Issue Color'
         formula: @aql case(
       when: percent_lm_completed_issue < 0,
-      then: "red",
+      then: "rgb(248, 113, 113)",
       else: "#4ade80"
     );;
         calc_type: 'measure'
@@ -201,6 +201,7 @@ Dashboard squad_command_center {
         value: 'last 30 days'
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -275,14 +276,14 @@ Dashboard squad_command_center {
     {{ rows[0].values.`Completed issue (Last 30D)` }}
   </span>
 
-  <div class="kpi-shipped-compare">
+  <div class="kpi-shipped-compare" style="margin-top: 8px">
       {{ rows[0].values.`Completed Issue Icon` }}
       {{ rows[0].values.`%LM - Completed Issue` }}
   <span style="color: #525866;">
       vs last month</span>
   </div>
 
-</div>          ;;
+</div>            ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -362,7 +363,7 @@ Dashboard squad_command_center {
         label: 'Avg Cycle Time Color'
         formula: @aql case(
       when: percent_lm_avg_cycle_time > 0,
-      then: "red",
+      then: "rgb(248, 113, 113)",
       else: "#4ade80"
     );;
         calc_type: 'measure'
@@ -382,6 +383,9 @@ Dashboard squad_command_center {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
         value: 'last 30 days'
+      }
+      theme {
+
       }
       values: [
         VizFieldFull {
@@ -456,14 +460,14 @@ Dashboard squad_command_center {
     {{ rows[0].values.`Avg Cycle Time` }}h
   </span>
 
-  <div class="kpi-cycle-compare">
+  <div class="kpi-cycle-compare" style="margin-top: 8px">
       {{ rows[0].values.`Avg Cycle Time Icon` }}
       {{ rows[0].values.`%LM - Avg Cycle Time` }}
   <span style="color: #525866;">
       vs last month</span>
   </div>
 
-</div>       ;;
+</div>         ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -622,13 +626,13 @@ Dashboard squad_command_center {
     {{ rows[0].values.`WIP` }}
   </span>
 
-  <div style="color: #525866;">
+  <div style="color: #525866;" style="margin-top: 8px">
     <span > issues across </span>
     <span style="color: #8e94a5;" > {{ rows[0].values.`CountD of Status` }} </span>
     <span > status </span>
   </div>
 
-</div>   ;;
+</div>    ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -733,7 +737,7 @@ Dashboard squad_command_center {
         label: 'Avg PR Review Color'
         formula: @aql case(
       when: lm_avg_pr_review > 0,
-      then: "red",
+      then: "rgb(248, 113, 113)",
       else: "#4ade80"
     );;
         calc_type: 'measure'
@@ -754,6 +758,9 @@ Dashboard squad_command_center {
         field: r(reporting_stage_duration.stage)
         operator: 'is'
         value: 'In PR Review'
+      }
+      theme {
+
       }
       values: [
         VizFieldFull {
@@ -835,7 +842,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>        ;;
+</div>         ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -927,7 +934,7 @@ Dashboard squad_command_center {
         label: 'Delta - % Issue Completion Color'
         formula: @aql case(
       when: delta_percent_issue_completion < 0,
-      then: "red",
+      then: "rgb(248, 113, 113)",
       else: "#4ade80"
     );;
         calc_type: 'measure'
@@ -955,6 +962,7 @@ Dashboard squad_command_center {
         value: 'last 14 days'
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -1034,14 +1042,14 @@ Dashboard squad_command_center {
     {{ rows[0].values.`% Issue Completion` }}
   </span>
 
-  <div class="kpi-completion-compare">
+  <div class="kpi-completion-compare" style="margin-top: 8px">
       {{ rows[0].values.`Delta- % Issue Completion Icon` }}
       {{ rows[0].values.`Delta - % Issue Completion` }}
   <span style="color: #525866;">
       vs last month</span>
   </div>
 
-</div>      ;;
+</div>        ;;
       settings {
         show_row_total: true
         show_column_total: true
