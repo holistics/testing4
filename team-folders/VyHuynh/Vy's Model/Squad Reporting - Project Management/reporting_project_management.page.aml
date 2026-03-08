@@ -1308,7 +1308,11 @@ Dashboard squad_command_center {
     }
     default {
       operator: 'is'
-      value: 'Explore 2'
+      value: [
+        'Explore 2',
+        'Dashboard Performance',
+        'Data Alerts Revamp'
+      ]
     }
   }
   block v_d3sa: VizBlock {
@@ -1355,7 +1359,6 @@ Dashboard squad_command_center {
     viz: CustomChart {
       dataset: reporting_project_management
       theme {
-
       }
       custom_chart_id: 33211
       field label: VizFieldFull {
