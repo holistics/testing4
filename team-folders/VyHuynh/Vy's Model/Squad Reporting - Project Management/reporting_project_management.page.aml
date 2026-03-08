@@ -1321,6 +1321,7 @@ Dashboard squad_command_center {
     viz: PieChart {
       dataset: reporting_project_management
       theme {
+
       }
       legend: VizFieldFull {
         ref: r(reporting_stage_duration.stage)
@@ -1336,6 +1337,28 @@ Dashboard squad_command_center {
           format {
             type: 'number'
             pattern: '#,###'
+          }
+        }
+        settings {
+          point {
+            value: 'In Progress'
+            color: '#528CFCFF'
+          }
+          point {
+            value: 'In PR Review'
+            color: '#FAC03AFF'
+          }
+          point {
+            value: 'Testing on Staging'
+            color: '#45D3D3FF'
+          }
+          point {
+            value: 'Deploying to Staging'
+            color: '#FF5B5BFF'
+          }
+          point {
+            value: 'Waiting for Deployment'
+            color: '#F375B6FF'
           }
         }
       }
