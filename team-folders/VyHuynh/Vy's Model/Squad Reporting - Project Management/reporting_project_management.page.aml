@@ -1242,6 +1242,7 @@ Dashboard squad_command_center {
         value: 'Deployed'
       }
       theme {
+
       }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.identifier)
@@ -1268,6 +1269,28 @@ Dashboard squad_command_center {
             format {
               type: 'number'
               pattern: 'inherited'
+            }
+          }
+          settings {
+            point {
+              value: 'In Progress'
+              color: '#3185D9'
+            }
+            point {
+              value: 'In PR Review'
+              color: '#FFAC51'
+            }
+            point {
+              value: 'Testing on Staging'
+              color: '#00CDCC'
+            }
+            point {
+              value: 'Deploying to Staging'
+              color: '#FF5255FF'
+            }
+            point {
+              value: 'Waiting for Deployment'
+              color: '#AC82FA'
             }
           }
         }
@@ -1358,7 +1381,7 @@ Dashboard squad_command_center {
           }
           point {
             value: 'Waiting for Deployment'
-            color: '#F375B6FF'
+            color: '#AC82FA'
           }
         }
       }
