@@ -1376,7 +1376,7 @@ Dashboard squad_command_center {
       }
       setting bar_size: 40
       setting end_label: 'Total'
-      setting value_format: ''
+      setting value_format: ',.1fh'
       setting total_bar_color: '#999A9F'
       settings {
         row_limit: 5000
