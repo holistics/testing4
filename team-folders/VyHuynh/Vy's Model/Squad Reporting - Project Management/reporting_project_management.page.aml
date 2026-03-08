@@ -1346,7 +1346,7 @@ Dashboard squad_command_center {
     }
   }
   block v_ut8c: VizBlock {
-    label: 'Avg of Duration Hours, Stage, and Stage Priority'
+    label: 'TTM Waterfall'
     viz: CustomChart {
       dataset: reporting_project_management
       theme {
@@ -1364,7 +1364,7 @@ Dashboard squad_command_center {
         aggregation: 'avg'
         format {
           type: 'number'
-          pattern: 'inherited'
+          pattern: '#,###'
         }
       }
       field label_sorter: VizFieldFull {
@@ -1377,9 +1377,13 @@ Dashboard squad_command_center {
       setting bar_size: 40
       setting end_label: 'Total'
       setting value_format: ''
-      setting total_bar_color: '#32343E'
+      setting total_bar_color: '#999A9F'
       settings {
         row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
       }
     }
   }
