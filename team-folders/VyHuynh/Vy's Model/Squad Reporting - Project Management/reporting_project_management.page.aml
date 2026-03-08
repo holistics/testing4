@@ -5,7 +5,7 @@ Dashboard squad_command_center {
     label: 'Squad Command Center'
     tab overview_tab: CanvasLayout {
       label: '◎ Overview'
-      height: 1360
+      height: 1300
       grid_size: 20
       block kpi_shipped {
         position: pos(0, 0, 300, 120)
@@ -35,35 +35,34 @@ Dashboard squad_command_center {
         position: pos(0, 860, 1200, 340)
       }
       block v_x8r0 {
-        position: pos(20, 40, 200, 160)
+        position: pos(20, 140, 200, 160)
       }
       block v_997c {
-        position: pos(240, 40, 220, 160)
+        position: pos(240, 140, 220, 160)
       }
       block v_gt75 {
-        position: pos(700, 40, 200, 160)
+        position: pos(700, 140, 200, 160)
       }
       block v_uhk0 {
-        position: pos(480, 40, 200, 160)
+        position: pos(480, 140, 200, 160)
       }
       block v_sffe {
-        position: pos(920, 40, 180, 160)
+        position: pos(920, 140, 180, 160)
       }
       block v_jdaq {
-        position: pos(20, 220, 520, 360)
+        position: pos(20, 320, 520, 360)
       }
       block v_zv1h {
         position: pos(560, 200, 540, 380)
       }
       block v_3qu5 {
-        position: pos(560, 220, 540, 360)
+        position: pos(560, 320, 540, 360)
       }
       block v_gq0k {
-        position: pos(20, 600, 1080, 360)
+        position: pos(20, 700, 1080, 360)
       }
-      block v_1lk1 {
-        position: pos(20, 980, 540, 360)
-        layer: 1
+      block f_project_name_ynq6 {
+        position: pos(20, 40, 300, 80)
       }
       width: 1120
     }
@@ -80,8 +79,9 @@ Dashboard squad_command_center {
       block v_d3sa {
         position: pos(40, 560, 540, 400)
       }
-      block v_ut8c {
+      block v_22mj {
         position: pos(600, 560, 560, 400)
+        layer: 1
       }
     }
     tab bottleneck_tab: CanvasLayout {
@@ -1349,49 +1349,9 @@ Dashboard squad_command_center {
       }
     }
   }
-  block v_ut8c: VizBlock {
+  block v_22mj: VizBlock {
     label: 'TTM Waterfall'
-    viz: CustomChart {
-      dataset: reporting_project_management
-      theme {
-      }
-      custom_chart_id: 33211
-      field label: VizFieldFull {
-        ref: r(reporting_stage_duration.stage)
-        format {
-          type: 'text'
-        }
-      }
-      field amount: VizFieldFull {
-        ref: r(reporting_stage_duration.duration_hours)
-        aggregation: 'avg'
-        format {
-          type: 'number'
-          pattern: '#,###'
-        }
-      }
-      field label_sorter: VizFieldFull {
-        ref: r(reporting_stage_duration.stage_priority)
-        format {
-          type: 'number'
-          pattern: 'inherited'
-        }
-      }
-      setting bar_size: 40
-      setting end_label: 'Total'
-      setting value_format: ',.1fh'
-      setting total_bar_color: '#999A9F'
-      settings {
-        row_limit: 5000
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_1lk1: VizBlock {
-    label: 'Avg of Duration Hours, Stage, and Stage Priority'
+    description: 'Average contribution of each stage'
     viz: CustomChart {
       dataset: reporting_project_management
       theme {
@@ -1441,7 +1401,7 @@ Dashboard squad_command_center {
           block: [
             'v_lvp5',
             'v_d3sa',
-            'v_ut8c'
+            'v_22mj'
           ]
           disabled: true
         }
@@ -1454,7 +1414,7 @@ Dashboard squad_command_center {
           block: [
             'v_lvp5',
             'v_d3sa',
-            'v_ut8c'
+            'v_22mj'
           ]
           disabled: true
         }
@@ -1467,7 +1427,7 @@ Dashboard squad_command_center {
           block: [
             'v_lvp5',
             'v_d3sa',
-            'v_ut8c'
+            'v_22mj'
           ]
           disabled: true
         }
@@ -1480,7 +1440,7 @@ Dashboard squad_command_center {
           block: [
             'v_lvp5',
             'v_d3sa',
-            'v_ut8c'
+            'v_22mj'
           ]
           disabled: true
         }
@@ -1493,7 +1453,7 @@ Dashboard squad_command_center {
           block: [
             'v_lvp5',
             'v_d3sa',
-            'v_ut8c'
+            'v_22mj'
           ]
           disabled: true
         }
@@ -1506,7 +1466,7 @@ Dashboard squad_command_center {
           block: [
             'v_lvp5',
             'v_d3sa',
-            'v_ut8c'
+            'v_22mj'
           ]
           disabled: true
         }
@@ -1519,7 +1479,7 @@ Dashboard squad_command_center {
           block: [
             'v_lvp5',
             'v_d3sa',
-            'v_ut8c'
+            'v_22mj'
           ]
           disabled: true
         }
@@ -1532,7 +1492,7 @@ Dashboard squad_command_center {
           block: [
             'v_lvp5',
             'v_d3sa',
-            'v_ut8c'
+            'v_22mj'
           ]
           disabled: true
         }
@@ -1550,8 +1510,7 @@ Dashboard squad_command_center {
             'v_sffe',
             'v_jdaq',
             'v_3qu5',
-            'v_gq0k',
-            'v_1lk1'
+            'v_gq0k'
           ]
           disabled: true
         }
@@ -1571,8 +1530,7 @@ Dashboard squad_command_center {
             'v_3qu5',
             'v_gq0k',
             'v_d3sa',
-            'v_ut8c',
-            'v_1lk1',
+            'v_22mj',
             'f_project_name_ynq6'
           ]
           disabled: true
@@ -1583,18 +1541,7 @@ Dashboard squad_command_center {
       from: 'f_project_name_ynq6'
       to: [
         CustomMapping {
-          block: [
-            'v_x8r0',
-            'v_997c',
-            'v_gt75',
-            'v_uhk0',
-            'v_sffe',
-            'v_jdaq',
-            'v_3qu5',
-            'v_gq0k',
-            'v_1lk1',
-            'f_project_name'
-          ]
+          block: 'f_project_name'
           disabled: true
         }
       ]
@@ -1611,15 +1558,14 @@ Dashboard squad_command_center {
             'v_sffe',
             'v_jdaq',
             'v_3qu5',
-            'v_gq0k',
-            'v_1lk1'
+            'v_gq0k'
           ]
           disabled: true
         }
       ]
     },
     FilterInteraction {
-      from: 'v_ut8c'
+      from: 'v_22mj'
       to: [
         CustomMapping {
           block: [
@@ -1630,21 +1576,7 @@ Dashboard squad_command_center {
             'v_sffe',
             'v_jdaq',
             'v_3qu5',
-            'v_gq0k',
-            'v_1lk1'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_1lk1'
-      to: [
-        CustomMapping {
-          block: [
-            'v_lvp5',
-            'v_d3sa',
-            'v_ut8c'
+            'v_gq0k'
           ]
           disabled: true
         }
