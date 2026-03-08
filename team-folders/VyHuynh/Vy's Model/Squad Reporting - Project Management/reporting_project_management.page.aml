@@ -5,7 +5,7 @@ Dashboard squad_command_center {
     label: 'Squad Command Center'
     tab overview_tab: CanvasLayout {
       label: '◎ Overview'
-      height: 980
+      height: 1360
       grid_size: 20
       block kpi_shipped {
         position: pos(0, 0, 300, 120)
@@ -60,6 +60,10 @@ Dashboard squad_command_center {
       }
       block v_gq0k {
         position: pos(20, 600, 1080, 360)
+      }
+      block v_1lk1 {
+        position: pos(20, 980, 540, 360)
+        layer: 1
       }
       width: 1120
     }
@@ -1350,7 +1354,6 @@ Dashboard squad_command_center {
     viz: CustomChart {
       dataset: reporting_project_management
       theme {
-
       }
       custom_chart_id: 33211
       field label: VizFieldFull {
@@ -1377,6 +1380,48 @@ Dashboard squad_command_center {
       setting bar_size: 40
       setting end_label: 'Total'
       setting value_format: ',.1fh'
+      setting total_bar_color: '#999A9F'
+      settings {
+        row_limit: 5000
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1lk1: VizBlock {
+    label: 'Avg of Duration Hours, Stage, and Stage Priority'
+    viz: CustomChart {
+      dataset: reporting_project_management
+      theme {
+
+      }
+      custom_chart_id: 33211
+      field label: VizFieldFull {
+        ref: r(reporting_stage_duration.stage)
+        format {
+          type: 'text'
+        }
+      }
+      field amount: VizFieldFull {
+        ref: r(reporting_stage_duration.duration_hours)
+        aggregation: 'avg'
+        format {
+          type: 'number'
+          pattern: '#,###'
+        }
+      }
+      field label_sorter: VizFieldFull {
+        ref: r(reporting_stage_duration.stage_priority)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      setting bar_size: 40
+      setting end_label: 'Total'
+      setting value_format: ''
       setting total_bar_color: '#999A9F'
       settings {
         row_limit: 5000
@@ -1505,7 +1550,8 @@ Dashboard squad_command_center {
             'v_sffe',
             'v_jdaq',
             'v_3qu5',
-            'v_gq0k'
+            'v_gq0k',
+            'v_1lk1'
           ]
           disabled: true
         }
@@ -1526,6 +1572,7 @@ Dashboard squad_command_center {
             'v_gq0k',
             'v_d3sa',
             'v_ut8c',
+            'v_1lk1',
             'f_project_name_ynq6'
           ]
           disabled: true
@@ -1545,6 +1592,7 @@ Dashboard squad_command_center {
             'v_jdaq',
             'v_3qu5',
             'v_gq0k',
+            'v_1lk1',
             'f_project_name'
           ]
           disabled: true
@@ -1563,7 +1611,8 @@ Dashboard squad_command_center {
             'v_sffe',
             'v_jdaq',
             'v_3qu5',
-            'v_gq0k'
+            'v_gq0k',
+            'v_1lk1'
           ]
           disabled: true
         }
@@ -1581,7 +1630,21 @@ Dashboard squad_command_center {
             'v_sffe',
             'v_jdaq',
             'v_3qu5',
-            'v_gq0k'
+            'v_gq0k',
+            'v_1lk1'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_1lk1'
+      to: [
+        CustomMapping {
+          block: [
+            'v_lvp5',
+            'v_d3sa',
+            'v_ut8c'
           ]
           disabled: true
         }
