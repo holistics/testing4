@@ -41,21 +41,21 @@ Model reporting_stage_duration {
   }
   dimension stage_priority {
     label: "Stage Priority"
-    type: "text"
+    type: "number"
     description: ""
     hidden: false
     definition: @aql case(
   when: reporting_stage_duration.stage == "In Progress",
-  then: "1",
+  then: 1,
   when: reporting_stage_duration.stage == "In PR Review",
-  then: "2",
+  then: 2,
   when: reporting_stage_duration.stage == "Deploying to Staging",
-  then: "3",
+  then: 3,
   when: reporting_stage_duration.stage == "Testing on Staging",
-  then: "4",
+  then: 4,
   when: reporting_stage_duration.stage == "Waiting for Deployment",
-  then: "5",
-  else: "6"
+  then: 5,
+  else: 6
 );;
   }
 
