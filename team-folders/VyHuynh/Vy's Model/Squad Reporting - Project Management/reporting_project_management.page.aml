@@ -76,6 +76,9 @@ Dashboard squad_command_center {
       block v_d3sa {
         position: pos(40, 560, 540, 400)
       }
+      block v_ut8c {
+        position: pos(600, 560, 560, 400)
+      }
     }
     tab bottleneck_tab: CanvasLayout {
       label: '⚡ Bottlenecks'
@@ -758,7 +761,6 @@ Dashboard squad_command_center {
         value: 'last 14 days'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -1343,6 +1345,44 @@ Dashboard squad_command_center {
       }
     }
   }
+  block v_ut8c: VizBlock {
+    label: 'Avg of Duration Hours, Stage, and Stage Priority'
+    viz: CustomChart {
+      dataset: reporting_project_management
+      theme {
+
+      }
+      custom_chart_id: 33211
+      field label: VizFieldFull {
+        ref: r(reporting_stage_duration.stage)
+        format {
+          type: 'text'
+        }
+      }
+      field amount: VizFieldFull {
+        ref: r(reporting_stage_duration.duration_hours)
+        aggregation: 'avg'
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      field label_sorter: VizFieldFull {
+        ref: r(reporting_stage_duration.stage_priority)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      setting bar_size: 40
+      setting end_label: 'Total'
+      setting value_format: ''
+      setting total_bar_color: '#32343E'
+      settings {
+        row_limit: 5000
+      }
+    }
+  }
   theme: squad_dark
   interactions: [
     FilterInteraction {
@@ -1351,7 +1391,8 @@ Dashboard squad_command_center {
         CustomMapping {
           block: [
             'v_lvp5',
-            'v_d3sa'
+            'v_d3sa',
+            'v_ut8c'
           ]
           disabled: true
         }
@@ -1363,7 +1404,8 @@ Dashboard squad_command_center {
         CustomMapping {
           block: [
             'v_lvp5',
-            'v_d3sa'
+            'v_d3sa',
+            'v_ut8c'
           ]
           disabled: true
         }
@@ -1375,7 +1417,8 @@ Dashboard squad_command_center {
         CustomMapping {
           block: [
             'v_lvp5',
-            'v_d3sa'
+            'v_d3sa',
+            'v_ut8c'
           ]
           disabled: true
         }
@@ -1387,7 +1430,8 @@ Dashboard squad_command_center {
         CustomMapping {
           block: [
             'v_lvp5',
-            'v_d3sa'
+            'v_d3sa',
+            'v_ut8c'
           ]
           disabled: true
         }
@@ -1399,7 +1443,8 @@ Dashboard squad_command_center {
         CustomMapping {
           block: [
             'v_lvp5',
-            'v_d3sa'
+            'v_d3sa',
+            'v_ut8c'
           ]
           disabled: true
         }
@@ -1411,7 +1456,8 @@ Dashboard squad_command_center {
         CustomMapping {
           block: [
             'v_lvp5',
-            'v_d3sa'
+            'v_d3sa',
+            'v_ut8c'
           ]
           disabled: true
         }
@@ -1423,7 +1469,8 @@ Dashboard squad_command_center {
         CustomMapping {
           block: [
             'v_lvp5',
-            'v_d3sa'
+            'v_d3sa',
+            'v_ut8c'
           ]
           disabled: true
         }
@@ -1435,7 +1482,8 @@ Dashboard squad_command_center {
         CustomMapping {
           block: [
             'v_lvp5',
-            'v_d3sa'
+            'v_d3sa',
+            'v_ut8c'
           ]
           disabled: true
         }
@@ -1473,6 +1521,7 @@ Dashboard squad_command_center {
             'v_3qu5',
             'v_gq0k',
             'v_d3sa',
+            'v_ut8c',
             'f_project_name_ynq6'
           ]
           disabled: true
@@ -1500,6 +1549,24 @@ Dashboard squad_command_center {
     },
     FilterInteraction {
       from: 'v_d3sa'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ut8c'
       to: [
         CustomMapping {
           block: [
