@@ -201,7 +201,6 @@ Dashboard squad_command_center {
         value: 'last 30 days'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -385,7 +384,6 @@ Dashboard squad_command_center {
         value: 'last 30 days'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -745,19 +743,19 @@ Dashboard squad_command_center {
       }
       calculation lm_avg_pr_review {
         label: '%LM - Avg PR Review'
-        formula: @aql safe_divide(avg(reporting_stage_duration, reporting_stage_duration.duration_hours), avg(reporting_stage_duration, reporting_stage_duration.duration_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        formula: @aql safe_divide(avg(reporting_stage_duration, reporting_stage_duration.duration_hours), avg(reporting_stage_duration, reporting_stage_duration.duration_hours) | relative_period(reporting_stage_duration.exited_at, interval(-1 month), strict: true)) - 1;;
         calc_type: 'measure'
         data_type: 'number'
-      }
-      filter {
-        field: r(reporting_issues.completed_at)
-        operator: 'matches'
-        value: 'last 30 days'
       }
       filter {
         field: r(reporting_stage_duration.stage)
         operator: 'is'
         value: 'In PR Review'
+      }
+      filter {
+        field: r(reporting_stage_duration.exited_at)
+        operator: 'matches'
+        value: 'last 14 days'
       }
       theme {
 
@@ -773,16 +771,16 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
-          ref: 'avg_pr_review_icon'
-          format {
-            type: 'text'
-          }
-        },
-        VizFieldFull {
           ref: 'lm_avg_pr_review'
           format {
             type: 'number'
             pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'avg_pr_review_icon'
+          format {
+            type: 'text'
           }
         },
         VizFieldFull {
@@ -842,7 +840,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>         ;;
+</div>          ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -962,7 +960,6 @@ Dashboard squad_command_center {
         value: 'last 14 days'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
