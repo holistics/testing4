@@ -1,7 +1,7 @@
 Model orders {
   type: 'table'
   label: 'Orders'
-  description: ''
+  description: 'new description'
   data_source_name: 'demodb'
   dimension id {
     label: 'Id'
