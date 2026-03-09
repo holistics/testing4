@@ -1502,7 +1502,7 @@ Overview
   }
   block t_jsob: TextBlock {
     content: @md <a 
-      href="#ttm_tab"
+      href="?_t=ttm_tab#ttm_tab"
       style=
         "padding: 8px 16px; 
         border-radius: 8px; 
