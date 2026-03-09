@@ -106,12 +106,23 @@ Model order_master {
     hidden: false
     definition: @sql {{ #SOURCE.product_id }};;
   }
-  dimension price {
-    label: 'Price'
-    type: 'number'
-    hidden: false
-    definition: @sql {{ #SOURCE.price }};;
-  }
+dimension price {
+  label: 'Price'
+  type: 'number'
+  hidden: false
+  description: '''
+    The standard unit price breakdown.
+
+    | Tier Name | Min Price | Max Price | Discount % | Support Level |
+    | :--- | :---: | :---: | :---: | :--- |
+    | **Basic** | $0 | $50 | 0% | Email Only |
+    | **Pro** | $51 | $200 | 5% | Priority Email |
+    | **Team** | $201 | $500 | 10% | Chat + Email |
+    | **Corp** | $501 | $1000 | 15% | Dedicated Rep |
+    | **Ent.** | $1001+ | N/A | Negotiable | 24/7 Phone |
+  '''
+  definition: @sql {{ #SOURCE.price }};;
+}
   dimension merchant_id {
     label: 'Merchant Id'
     type: 'number'
@@ -148,7 +159,7 @@ Model order_master {
     label: 'Final Item Value'
     type: 'number'
     hidden: false
-    definition: @sql {{ #SOURCE.price }} * (1 - {{ #SOURCE.discount }}) ;;
+    definition: @sql CAST({{ #SOURCE.price }} * (1 - {{ #SOURCE.discount }}) AS NUMERIC) ;;
   }
   dimension order_is_delivered {
     label: 'Order Is Delivered'
@@ -384,5 +395,3 @@ Model order_master {
     ]
   }
 }
-
-order_master.dim_selector

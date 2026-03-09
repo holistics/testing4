@@ -26,7 +26,6 @@ pre_aggregates: {
   daily: agg_daily
 }
 
-
   models: [
     order_master,
     ecommerce_orders,
