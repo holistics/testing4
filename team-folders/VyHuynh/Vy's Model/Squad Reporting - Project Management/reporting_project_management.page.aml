@@ -77,6 +77,9 @@ Dashboard squad_command_center {
       block t_jsob {
         position: pos(140, 80, 180, 80)
       }
+      block t_4s9o {
+        position: pos(340, 230, 440, 380)
+      }
       width: 1120
     }
     tab ttm_tab: CanvasLayout {
@@ -1530,6 +1533,21 @@ Overview
         bg_color: 'transparent'
       }
     }
+  }
+  block t_4s9o: TextBlock {
+    content: @md   <a href="#ttm_tab">
+  <button style="
+  background-color: #47B881;
+  color: white;
+  padding: 20px 60px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 25px;">
+Time-to-market
+</button>
+  </a>;;
   }
   theme: squad_dark
   interactions: [
