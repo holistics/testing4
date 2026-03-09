@@ -9,7 +9,7 @@ Dataset hieu_haha_meme {
     tenants
   ]
   relationships: [
-    relationship(orderskk.user_id > users_kk.id, false),
+    relationship(orderskk.user_id > users_kk.id, true),
     relationship(users_kk.tenant_id > tenants.id, true),
     relationship(orderskk.tenant_id > tenants.id, true)
   ]

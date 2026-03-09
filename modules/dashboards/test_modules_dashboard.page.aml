@@ -1,9 +1,9 @@
-Dashboard untitled_5 {
-  title: 'Untitled Test Push master'
+Dashboard test_modules_dashboard {
+  title: 'test_modules_dashboard'
   description: ''
-  owner: 'thang.lk@holistics.io'
+  owner: 'khai.to@holistics.io'
   block title: TextBlock {
-    content: @md # Your title goes here sdas;;
+    content: @md # Your title goes here ;;
   }
 
   view: CanvasLayout {
@@ -13,7 +13,7 @@ Dashboard untitled_5 {
     grid_size: 20
     auto_expand_vertically: true
     block title {
-      position: pos(20, 20, 280, 140)
+      position: pos(20, 20, 1260, 60)
     }
     mobile {
       mode: 'auto'
@@ -21,4 +21,5 @@ Dashboard untitled_5 {
   }
 
   theme: H.themes.vanilla
+
 }

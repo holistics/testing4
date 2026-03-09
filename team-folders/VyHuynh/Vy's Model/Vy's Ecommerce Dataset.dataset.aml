@@ -7,6 +7,12 @@ Dataset vyhuynh_ecommerce_dataset {
     vyht_ecommerce_orders_1,
     vyht_ecommerce_products,
     vyht_ecommerce_users_1
+    ,
+    vy_sales_revenue_demo_csv
+    ,
+    revenue_by_country_csv
+    ,
+    sales_rep_uc_3_outlier_csv
   ]
   relationships: [
     relationship(vyht_ecommerce_orders_1.user_id > vyht_ecommerce_users_1.id, true),

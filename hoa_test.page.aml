@@ -12,7 +12,7 @@ Dashboard hoa_test {
     grid_size: 20
     auto_expand_vertically: true
     block title {
-      position: pos(20, 20, 1260, 60)
+      position: pos(21, 101, 1260, 60)
     }
     mobile {
       mode: 'auto'
