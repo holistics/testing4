@@ -1,3 +1,23 @@
+Func time_compare(metric_name: String, metric_label: String, format: String) {
+  Metric {
+    label: '${metric_label} (time compare)'
+    type: 'number'
+    definition: @aql case(
+        when: time_type.time_type == "1. Week"
+        , then: ${metric_name} | where(khai_date_d.date_key match @(this week))
+        , when: time_type.time_type == "2. MTD"
+        , then: ${metric_name} | where(khai_date_d.date_key match @(this month to today))
+        , when: time_type.time_type == "3. MTD LY"
+        , then: ${metric_name} | relative_period(khai_date_d.date_key, interval(-1 year)) | where(khai_date_d.date_key match @(this month to today))
+        , when: time_type.time_type == "4. YTD"
+        , then: ${metric_name} | where(khai_date_d.date_key match @(this year to today))
+        , when: time_type.time_type == "5. YTD LY"
+        , then: ${metric_name} | relative_period(khai_date_d.date_key, interval(-1 year)) | where(khai_date_d.date_key match @(this year to today))
+      )  ;;
+    format: format
+  }
+}
+
 Dataset khai_ecommerce {
   __engine__: 'aql'
   label: 'Khai Ecommerce'
@@ -60,5 +80,71 @@ Dataset khai_ecommerce {
         , then: total_users
       )
      ;;
+    format: "#,###,\"K\""
   }
+
+  metric gmv {
+    label: "GMV (Gross Merchandise Value)"
+    type: "number"
+    hidden: false
+    description: "GMV - Gross Merchandise Value: Total value of all orders before discount."
+    definition: @aql order_items | sum(order_items.quantity * products.price);;
+    format: "[\$\$]#,###0"
+  }
+
+  metric gmv_converted {
+    label: 'GMV (Converted)'
+    type: 'number'
+    definition: @aql case(
+      when: '🇺🇸 USD' in param_model.currency, then: gmv * 1,
+      when: '🇲🇾 MYR' in param_model.currency, then: gmv * 4.47,
+      when: '🇸🇬 SGD' in param_model.currency, then: gmv * 1.35,
+      when: '🇹🇭 THB' in param_model.currency, then: gmv * 35.5,
+      when: '🇻🇳 VND' in param_model.currency, then: gmv * 25450,
+      when: '🇦🇺 AUD' in param_model.currency, then: gmv * 1.57
+    ) ;;
+    format: "#,###0"
+  }
+  metric revenue_per_active_customers {
+    label: "Revenue Per Active Customers"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql revenue / total_users;;
+  }
+
+  metric nmv {
+    label: "NMV (Net Merchandise Value)"
+    type: "number"
+    hidden: false
+    description: "* Fulfilled order value after discount. Excludes cancelled/refunded orders. <br>* Represents the total paid value of fulfilled orders, excluding cancelled and refunded orders, and adjusted for any discounts applied. <br>* This reflects what customers actually paid for successfully completed transactions, and serves as the revenue base before applying commission."
+    definition: @aql (order_items | sum(order_items.quantity * products.price * (1 - orders.discount))) |  where(orders.status not in ['cancelled', 'refunded']);;
+    format: "[\$\$]#,###0"
+  }
+
+  metric aov {
+    label: "AOV (Average Order Value)"
+    type: "number"
+    description: "AOV - Average Order Value: Average value per order (GMV / number of orders)."
+    hidden: false
+    definition: @aql gmv / total_orders;;
+    format: "[\$\$]#,###0"
+  }
+
+  // time comparison metrics
+
+  metric gmv_time_compare: time_compare('gmv', 'GMV', '[\$\$]#,###0')
+
+  metric nmv_time_compare: time_compare('nmv', 'NMV', '[\$\$]#,###0')
+
+  metric aov_time_compare: time_compare('aov', 'AOV', '[\$\$]#,###0')
+
+  metric total_orders_compare: time_compare('total_orders', 'Total Orders', '#,###')
+
+  metric total_delivered_orders_time_compare: time_compare('total_delivered_orders', 'Total Delivered Orders', '#,###')
+
+  metric total_cancelled_orders_time_compare: time_compare('total_cancelled_orders', 'Total Cancelled Orders', '#,###')
+
+  metric cancelled_order_ratio_time_compare: time_compare('cancelled_order_ratio', 'Cancelled Orders Ratio', '#,###0.00%')
+
 }
