@@ -5,7 +5,7 @@ Dashboard squad_command_center {
     label: 'Squad Command Center'
     tab overview_tab: CanvasLayout {
       label: '◎ Overview'
-      height: 1080
+      height: 1220
       grid_size: 20
       block kpi_shipped {
         position: pos(0, 0, 300, 120)
@@ -1501,10 +1501,15 @@ Overview
     }
   }
   block t_jsob: TextBlock {
-    content: @md <button style="padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-family: Inter; font-size: 12px; font-weight: 600; background: rgba(79, 140, 255, 0.094); color: rgb(79, 140, 255); transition: 0.15s; display: flex; align-items: center; gap: 6px;">
-<span style="font-size: 13px;"> ⏱ </span>
-Time-to-market
-</button>;;
+    content: @md <div 
+      onclick="window.location.hash='dashboards/v4/111060-squad-reporting-project-management?_t=ttm_tab'"
+      onmouseover="this.style.background='rgba(79, 140, 255, 0.2)'"
+      onmouseout="this.style.background='rgba(79, 140, 255, 0.094)'"
+      style="padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: Inter; font-size: 12px; font-weight: 600; background: rgba(79, 140, 255, 0.094); color: rgb(79, 140, 255); display: flex; align-items: center; gap: 6px; transition: 0.15s;"
+    >
+      <span style="font-size: 13px;"> ⏱ </span>
+      Time-to-market
+    </div>;;
     theme {
       border {
         border_width: 0
