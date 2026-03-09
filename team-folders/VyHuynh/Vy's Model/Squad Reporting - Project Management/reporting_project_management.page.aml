@@ -35,34 +35,47 @@ Dashboard squad_command_center {
         position: pos(0, 860, 1200, 340)
       }
       block v_x8r0 {
-        position: pos(20, 140, 200, 160)
+        position: pos(20, 280, 200, 160)
       }
       block v_997c {
-        position: pos(240, 140, 220, 160)
+        position: pos(240, 280, 220, 160)
       }
       block v_gt75 {
-        position: pos(700, 140, 200, 160)
+        position: pos(700, 280, 200, 160)
       }
       block v_uhk0 {
-        position: pos(480, 140, 200, 160)
+        position: pos(480, 280, 200, 160)
       }
       block v_sffe {
-        position: pos(920, 140, 180, 160)
+        position: pos(920, 280, 180, 160)
       }
       block v_jdaq {
-        position: pos(20, 320, 520, 360)
+        position: pos(20, 460, 520, 360)
       }
       block v_zv1h {
         position: pos(560, 200, 540, 380)
       }
       block v_3qu5 {
-        position: pos(560, 320, 540, 360)
+        position: pos(560, 460, 540, 360)
       }
       block v_gq0k {
-        position: pos(20, 700, 1080, 360)
+        position: pos(20, 840, 1080, 360)
       }
       block f_project_name_ynq6 {
-        position: pos(20, 40, 300, 80)
+        position: pos(20, 180, 300, 80)
+      }
+      block t_87la {
+        position: pos(40, 20, 740, 80)
+        layer: 1
+      }
+      block t_vx6z {
+        position: pos(0, 20, 80, 80)
+      }
+      block t_d6y7 {
+        position: pos(20, 80, 140, 80)
+      }
+      block t_jsob {
+        position: pos(140, 80, 180, 80)
       }
       width: 1120
     }
@@ -1436,6 +1449,69 @@ Dashboard squad_command_center {
           enabled: true
           debug_comments: true
         }
+      }
+    }
+  }
+  block t_87la: TextBlock {
+    content: @md ## Squad Reporting - Project Management;;
+    theme {
+      border {
+        border_width: 0
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      text {
+        font_color: '#ffffff'
+      }
+    }
+  }
+  block t_vx6z: TextBlock {
+    content: @md <div style="width: 8px; 
+      height: 8px; 
+      margin: 15px;
+      border-radius: 50%; 
+      background: rgb(52, 211, 153); 
+      box-shadow: rgba(52, 211, 153, 0.5) 0px 0px 10px 2px;"
+</div>;;
+    theme {
+      border {
+        border_width: 0
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+    }
+  }
+  block t_d6y7: TextBlock {
+    content: @md <button style="padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-family: Inter; font-size: 12px; font-weight: 600; background: rgba(79, 140, 255, 0.094); color: rgb(79, 140, 255); transition: 0.15s; display: flex; align-items: center; gap: 6px;">
+<span style="font-size: 13px;"> ◎ </span>
+Overview
+</button>;;
+    theme {
+      border {
+        border_width: 0
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+    }
+  }
+  block t_jsob: TextBlock {
+    content: @md <button style="padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-family: Inter; font-size: 12px; font-weight: 600; background: rgba(79, 140, 255, 0.094); color: rgb(79, 140, 255); transition: 0.15s; display: flex; align-items: center; gap: 6px;">
+<span style="font-size: 13px;"> ⏱ </span>
+Time-to-market
+</button>;;
+    theme {
+      border {
+        border_width: 0
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
       }
     }
   }
