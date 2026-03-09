@@ -75,7 +75,7 @@ Dashboard squad_command_center {
         position: pos(20, 80, 140, 80)
       }
       block t_jsob {
-        position: pos(140, 80, 180, 80)
+        position: pos(140, 80, 480, 340)
       }
       width: 1120
     }
@@ -1502,7 +1502,7 @@ Overview
   }
   block t_jsob: TextBlock {
     content: @md <a 
-      href="#/dashboards/v4/111060-squad-reporting-project-management?_t=ttm_tab"
+      href="#ttm_tab"
       style=
         "padding: 8px 16px; 
         border-radius: 8px; 
