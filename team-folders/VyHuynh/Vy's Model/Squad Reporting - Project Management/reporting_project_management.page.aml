@@ -1505,8 +1505,7 @@ Overview
       onclick="window.location.hash='dashboards/v4/111060-squad-reporting-project-management?_t=ttm_tab'"
       onmouseover="this.style.background='rgba(79, 140, 255, 0.2)'"
       onmouseout="this.style.background='rgba(79, 140, 255, 0.094)'"
-      style="padding: 8px 16px; border-radius: 8px; cursor: pointer; font-family: Inter; font-size: 12px; font-weight: 600; background: rgba(79, 140, 255, 0.094); color: rgb(79, 140, 255); display: flex; align-items: center; gap: 6px; transition: 0.15s;"
-    >
+      style="padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; font-family: Inter; font-size: 12px; font-weight: 400; background: transparent; color: rgb(107, 113, 148); transition: 0.15s; display: flex; align-items: center; gap: 6px;"    >
       <span style="font-size: 13px;"> ⏱ </span>
       Time-to-market
     </div>;;
