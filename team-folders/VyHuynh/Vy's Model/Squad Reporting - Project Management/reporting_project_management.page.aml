@@ -5,7 +5,7 @@ Dashboard squad_command_center {
     label: 'Squad Command Center'
     tab overview_tab: CanvasLayout {
       label: '◎ Overview'
-      height: 1300
+      height: 1080
       grid_size: 20
       block kpi_shipped {
         position: pos(0, 0, 300, 120)
@@ -1242,7 +1242,6 @@ Dashboard squad_command_center {
         value: 'Deployed'
       }
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.identifier)
@@ -1344,7 +1343,6 @@ Dashboard squad_command_center {
     viz: PieChart {
       dataset: reporting_project_management
       theme {
-
       }
       legend: VizFieldFull {
         ref: r(reporting_stage_duration.stage)
