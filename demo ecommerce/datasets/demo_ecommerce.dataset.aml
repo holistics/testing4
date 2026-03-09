@@ -22,14 +22,20 @@ Dataset demo_ecommerce {
   owner: 'ha.pham+demo4@holistics.io'
   data_source_name: 'demodb'
 
-pre_aggregates: {
-  daily: agg_daily
-}
+  pre_aggregates: {
+    daily: agg_daily
+  }
 
   permission country_access {
     field: ref('ecommerce_countries', 'continent_name')
     operator: 'matches_user_attribute'
     value: 'region'
+  }
+
+  permission country2_access {
+    field: ref('ecommerce_countries', 'continent_name')
+    operator: 'matches_user_attribute'
+    value: 'country_attribute'
   }
 
 

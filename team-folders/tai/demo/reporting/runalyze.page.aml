@@ -74,7 +74,7 @@ Dashboard runalyze_dashboard {
   view: CanvasLayout {
     label: 'View 1'
     width: 1280
-    height: 640
+    height: 540
     grid_size: 20
     auto_expand_vertically: true
     block title {
