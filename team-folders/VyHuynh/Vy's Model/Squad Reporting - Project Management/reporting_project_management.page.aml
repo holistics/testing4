@@ -1083,6 +1083,9 @@ Dashboard squad_command_center {
     label: 'Live Pipeline'
     viz: BarChart {
       dataset: reporting_project_management
+      theme {
+
+      }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.status)
         format {
@@ -1092,6 +1095,7 @@ Dashboard squad_command_center {
       y_axis {
         series {
           field: VizFieldFull {
+            label: 'Number of Issue'
             ref: r(reporting_issues.id)
             aggregation: 'count'
             format {
@@ -1202,6 +1206,8 @@ Dashboard squad_command_center {
         operator: 'matches'
         value: 'last 3 months'
       }
+      theme {
+      }
       x_axis: VizFieldFull {
         ref: r(reporting_burnup.week)
         transformation: 'datetrunc week'
@@ -1213,7 +1219,7 @@ Dashboard squad_command_center {
       y_axis {
         series {
           field: VizFieldFull {
-            label: 'Created'
+            label: 'Issue Created'
             ref: r(reporting_burnup.created)
             aggregation: 'max'
             format {
@@ -1224,7 +1230,7 @@ Dashboard squad_command_center {
         }
         series {
           field: VizFieldFull {
-            label: 'Completed'
+            label: 'Issue Completed'
             ref: r(reporting_burnup.completed)
             aggregation: 'max'
             format {
