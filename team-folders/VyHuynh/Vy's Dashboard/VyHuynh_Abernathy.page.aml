@@ -914,6 +914,13 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           format {
             type: 'text'
           }
+        },
+        VizFieldFull {
+          ref: r(demo_ecommerce.total_orders)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
         }
       ]
       settings {
