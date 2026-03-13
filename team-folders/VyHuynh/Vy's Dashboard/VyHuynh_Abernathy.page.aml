@@ -893,6 +893,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: DataTable {
       dataset: demo_ecommerce
       theme {
+
       }
       fields: [
         VizFieldFull {
@@ -909,23 +910,14 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           }
         },
         VizFieldFull {
-          ref: r(order_master.user_id)
-          aggregation: 'count distinct'
+          ref: r(ecommerce_users.email_user)
           format {
-            type: 'number'
-            pattern: 'inherited'
+            type: 'text'
           }
-          uname: 'count_distinct_user_id_1'
         }
       ]
       settings {
         show_row_number: true
-        sorts: [
-          SortSetting {
-            key: 'count_distinct_user_id_1'
-            direction: 'desc'
-          }
-        ]
         row_limit: 5000
         aggregate_awareness {
           enabled: true
@@ -2451,7 +2443,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: '2025'
       }
       theme {
-
       }
       value: VizFieldFull {
         ref: r(order_master.gmv)
