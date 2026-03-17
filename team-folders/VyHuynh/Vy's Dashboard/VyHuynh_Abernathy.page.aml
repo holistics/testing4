@@ -75,7 +75,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 1
       }
       block v_nehb {
-        position: pos(20, 2320, 1160, 460)
+        position: pos(20, 2320, 540, 460)
         layer: 1
       }
       block v_cii9 {
@@ -855,6 +855,14 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     label: 'Total Revenue and Number of Order by Month'
     viz: DataTable {
       dataset: vyhuynh_ecommerce_dataset
+      filter {
+        field: r(vyht_ecommerce_users_1.sign_up_date)
+        operator: 'matches'
+        value: '2025'
+      }
+      theme {
+
+      }
       fields: [
         VizFieldFull {
           label: 'Order Month'
@@ -866,16 +874,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           }
         },
         VizFieldFull {
-          label: 'Total Revenue'
           ref: r(vyhuynh_ecommerce_dataset.total_revenue)
-          format {
-            type: 'number'
-            pattern: '[$$]#,###'
-          }
-        },
-        VizFieldFull {
-          ref: r(vyht_ecommerce_orders_1.id)
-          aggregation: 'count distinct'
           format {
             type: 'number'
             pattern: 'inherited'
@@ -1008,7 +1007,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: LineChart {
       dataset: demo_ecommerce
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(order_master.order_created_at)
@@ -2485,7 +2483,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: ColumnChart {
       dataset: demo_ecommerce
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(ecommerce_countries.continent_name)
