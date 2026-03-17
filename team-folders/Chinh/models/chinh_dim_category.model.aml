@@ -3,6 +3,7 @@ Model chinh_dim_category {
   label: 'Chinh Dim Category'
   description: ''
   data_source_name: 'demodb'
+
   dimension category_id {
     label: 'Category Id'
     type: 'number'
@@ -20,6 +21,17 @@ Model chinh_dim_category {
     type: 'datetime'
     hidden: false
     definition: @sql {{ #SOURCE.created_at }};;
+  }
+  dimension pii_access {
+    label: 'Category (PII)'
+    type: 'text'
+    definition: @aql case(
+  when:
+    in(1, H.current_user.pii_access),
+  then: user_58392321.email,
+  else: '(redacted)'
+)}
+    ;;
   }
 
   owner: 'chinh.dm@holistics.io'

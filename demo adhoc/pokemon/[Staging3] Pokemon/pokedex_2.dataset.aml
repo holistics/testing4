@@ -8,4 +8,12 @@ Dataset pokedex_2 {
   relationships: [
   ]
   owner: 'chukwudi@holistics.io'
+  metric metric_e05a0c0 {
+    label: "Running total of Count of Pkm 2 Pokedex Number"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql count(pkm_2.pokedex_number) | running_total();;
+    format: "#,###"
+  }
 }
