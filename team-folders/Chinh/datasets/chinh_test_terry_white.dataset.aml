@@ -1,0 +1,9 @@
+Dataset chinh_test_terry_white {
+  label: 'chinh_test_terry_white',
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    chinh_dim_date
+  ]
+  relationships: []
+}

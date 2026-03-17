@@ -7,6 +7,7 @@ Dataset chinh_dynamic_dataset {
   models: [
     chinh_dynamic_dim_model,
     param_model,
+    chinh_dim_date,
   ]
 
   metric filter_input {

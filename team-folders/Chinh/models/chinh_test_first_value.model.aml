@@ -1,0 +1,58 @@
+Model chinh_test_first_value {
+  type: 'query'
+  label: 'Chinh Test First Value'
+  description: ''
+  data_source_name: 'demodb'
+  dimension practitioner_id {
+    label: 'Practitioner Id'
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.practitioner_id }};;
+  }
+  dimension created_date {
+    label: 'Created Date'
+    type: 'date'
+    hidden: false
+    definition: @sql {{ #SOURCE.created_date }};;
+  }
+  dimension event_type {
+    label: 'Event Type'
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.event_type }};;
+  }
+  dimension count_discount {
+    label: 'Count Discount'
+    type: 'number'
+    definition: @sql {{ #SOURCE.count_discount }} ;;
+  }
+
+  owner: 'chinh.dm@holistics.io'
+  query: @sql
+SELECT 101 AS practitioner_id, DATE '2025-11-03' AS created_date, 'appointment_booked' AS event_type, 2 AS count_discount
+UNION ALL SELECT 102, DATE '2025-11-03', 'appointment_canceled', 0
+UNION ALL SELECT 103, DATE '2025-11-04', 'note_created', 1
+UNION ALL SELECT 101, DATE '2025-11-04', 'lab_ordered', 3
+UNION ALL SELECT 104, DATE '2025-11-05', 'prescription_written', 1
+UNION ALL SELECT 105, DATE '2025-11-06', 'followup_scheduled', 2
+UNION ALL SELECT 102, DATE '2025-11-06', 'patient_check_in', 0
+UNION ALL SELECT 106, DATE '2025-11-07', 'patient_check_out', 1
+UNION ALL SELECT 103, DATE '2025-11-08', 'lab_result_received', 0
+UNION ALL SELECT 101, DATE '2025-11-08', 'referral_sent', 2
+UNION ALL SELECT 107, DATE '2025-11-09', 'appointment_booked', 1
+UNION ALL SELECT 104, DATE '2025-11-10', 'note_created', 0
+UNION ALL SELECT 105, DATE '2025-11-10', 'billing_submitted', 3
+UNION ALL SELECT 106, DATE '2025-11-11', 'billing_paid', 1
+UNION ALL SELECT 102, DATE '2025-11-12', 'appointment_rescheduled', 2
+-- one additional record per practitioner:
+UNION ALL SELECT 101, DATE '2025-11-13', 'check_out', 1
+UNION ALL SELECT 102, DATE '2025-11-13', 'check_out', 0
+UNION ALL SELECT 103, DATE '2025-11-13', 'check_out', 2
+UNION ALL SELECT 104, DATE '2025-11-13', 'check_out', 1
+UNION ALL SELECT 105, DATE '2025-11-13', 'check_out', 3
+UNION ALL SELECT 106, DATE '2025-11-13', 'check_out', 0
+UNION ALL SELECT 107, DATE '2025-11-13', 'check_out', 2
+;;
+  models: [
+  ]
+}

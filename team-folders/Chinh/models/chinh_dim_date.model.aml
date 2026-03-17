@@ -40,6 +40,10 @@ Model chinh_dim_date {
     hidden: false
     definition: @sql {{ #SOURCE.day }};;
   }
+  param date_selector {
+    label: 'Date Selector'
+    type: 'date'
+  }
 
   owner: 'chinh.dm@holistics.io'
   query: @sql

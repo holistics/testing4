@@ -1,0 +1,33 @@
+Dashboard chinh_test_terry_white_2 {
+  title: 'chinh_test_terry_white'
+  description: ''
+  owner: 'chinh.dm@holistics.io'
+
+  view: CanvasLayout {
+    label: 'View 1'
+    width: 1300
+    height: 800
+    grid_size: 20
+    auto_expand_vertically: true
+    mobile {
+      mode: 'auto'
+    }
+    block f_date_selector {
+      position: pos(100, 80, 300, 80)
+    }
+  }
+
+  theme: H.themes.vanilla
+  block f_date_selector: FilterBlock {
+    label: 'Date Selector'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: chinh_test_terry_white
+      field: r(chinh_dim_date.date_selector)
+    }
+    default {
+      operator: 'is'
+      value: '$H_NIL$'
+    }
+  }
+}

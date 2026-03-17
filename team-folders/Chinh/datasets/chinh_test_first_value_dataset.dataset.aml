@@ -1,0 +1,37 @@
+Dataset chinh_test_first_value_dataset {
+  label: 'chinh_test_first_value_dataset'
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    chinh_test_first_value
+  ]
+  relationships: []
+
+  metric first_date {
+    label: 'First Date'
+    type: 'date'
+    definition: @aql
+first_value(
+  min(chinh_test_first_value.created_date),
+  order: chinh_test_first_value.created_date | asc(),
+  partition: chinh_test_first_value.practitioner_id,
+)
+| where(chinh_test_first_value.event_type is 'check_out')
+;;
+  }
+  metric running_discount {
+    label: "Running Discount"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql discount
+| running_total(chinh_test_first_value.created_date | asc());;
+  }
+  metric discount {
+    label: "Discount"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql count_distinct(chinh_test_first_value.count_discount);;
+  }
+}
