@@ -75,7 +75,7 @@ Dashboard squad_command_center {
         position: pos(20, 80, 140, 80)
       }
       block t_jsob {
-        position: pos(140, 80, 480, 340)
+        position: pos(140, 80, 180, 60)
       }
       width: 1120
     }
@@ -218,9 +218,10 @@ Dashboard squad_command_center {
       filter {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
-        value: 'last 30 days'
+        value: '2026-02-01 - 2026-02-28'
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -302,7 +303,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>            ;;
+</div>             ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -401,9 +402,10 @@ Dashboard squad_command_center {
       filter {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
-        value: 'last 30 days'
+        value: '2026-02-01 - 2026-02-28'
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -485,7 +487,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>         ;;
+</div>          ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -775,9 +777,10 @@ Dashboard squad_command_center {
       filter {
         field: r(reporting_stage_duration.exited_at)
         operator: 'matches'
-        value: 'last 14 days'
+        value: '2026-03-15 - 2026-03-31'
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -859,7 +862,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>          ;;
+</div>           ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -1084,7 +1087,6 @@ Dashboard squad_command_center {
     viz: BarChart {
       dataset: reporting_project_management
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.status)
