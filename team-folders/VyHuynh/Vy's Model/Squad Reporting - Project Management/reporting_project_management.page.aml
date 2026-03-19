@@ -221,7 +221,6 @@ Dashboard squad_command_center {
         value: '2026-02-01 - 2026-02-28'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -405,7 +404,6 @@ Dashboard squad_command_center {
         value: '2026-02-01 - 2026-02-28'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -566,7 +564,7 @@ Dashboard squad_command_center {
       filter {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
-        value: 'last 14 days'
+        value: '2026-02-15 - 2026-02-28'
       }
       filter {
         field: r(reporting_issues.status)
@@ -584,6 +582,7 @@ Dashboard squad_command_center {
         value: []
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -652,7 +651,7 @@ Dashboard squad_command_center {
     <span > status </span>
   </div>
 
-</div>    ;;
+</div>     ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -777,7 +776,7 @@ Dashboard squad_command_center {
       filter {
         field: r(reporting_stage_duration.exited_at)
         operator: 'matches'
-        value: '2026-03-15 - 2026-03-31'
+        value: '2026-02-15 - 2026-02-28'
       }
       theme {
 
@@ -862,7 +861,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>           ;;
+</div>            ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -979,9 +978,10 @@ Dashboard squad_command_center {
       filter {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
-        value: 'last 14 days'
+        value: '2026-02-14 - 2026-02-28'
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -1068,7 +1068,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>        ;;
+</div>         ;;
       settings {
         show_row_total: true
         show_column_total: true
