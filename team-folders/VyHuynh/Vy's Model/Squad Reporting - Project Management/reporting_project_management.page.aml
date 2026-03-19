@@ -35,31 +35,31 @@ Dashboard squad_command_center {
         position: pos(0, 860, 1200, 340)
       }
       block v_x8r0 {
-        position: pos(20, 280, 200, 160)
+        position: pos(20, 420, 200, 160)
       }
       block v_997c {
-        position: pos(240, 280, 220, 160)
+        position: pos(240, 420, 220, 160)
       }
       block v_gt75 {
-        position: pos(700, 280, 200, 160)
+        position: pos(700, 420, 200, 160)
       }
       block v_uhk0 {
-        position: pos(480, 280, 200, 160)
+        position: pos(480, 420, 200, 160)
       }
       block v_sffe {
-        position: pos(920, 280, 180, 160)
+        position: pos(920, 420, 180, 160)
       }
       block v_jdaq {
-        position: pos(20, 460, 520, 360)
+        position: pos(20, 600, 520, 360)
       }
       block v_zv1h {
         position: pos(560, 200, 540, 380)
       }
       block v_3qu5 {
-        position: pos(560, 460, 540, 360)
+        position: pos(560, 600, 540, 360)
       }
       block v_gq0k {
-        position: pos(20, 840, 1080, 360)
+        position: pos(20, 980, 1080, 360)
       }
       block f_project_name_ynq6 {
         position: pos(20, 180, 300, 80)
@@ -167,14 +167,8 @@ Dashboard squad_command_center {
       label: '📊 Projects'
       height: 1000
       grid_size: 20
-      block project_completion {
-        position: pos(0, 0, 1200, 360)
-      }
-      block project_stages {
-        position: pos(0, 380, 600, 380)
-      }
-      block project_velocity {
-        position: pos(600, 380, 600, 380)
+      block v_1s64 {
+        position: pos(40, 20, 200, 140)
       }
     }
   }
@@ -582,7 +576,6 @@ Dashboard squad_command_center {
         value: []
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -779,7 +772,6 @@ Dashboard squad_command_center {
         value: '2026-02-15 - 2026-02-28'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -981,7 +973,6 @@ Dashboard squad_command_center {
         value: '2026-02-14 - 2026-02-28'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -1537,6 +1528,204 @@ Overview
       background {
         bg_color: 'transparent'
       }
+    }
+  }
+  block v_1s64: VizBlock {
+    label: 'Shipped (30D) copy'
+    description: 'Total issues launched last 30 days'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm__completed_issue {
+        label: '%LM - Completed Issue'
+        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation completed_issue_color {
+        label: 'Completed Issue Color'
+        formula: @aql case(
+      when: percent_lm_completed_issue < 0,
+      then: "rgb(248, 113, 113)",
+      else: "#4ade80"
+    );;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation completed_issue_icon {
+        label: 'Completed Issue Icon'
+        formula: @aql case(
+      when: percent_lm_completed_issue < 0,
+      then: "▼",
+      else: "▲"
+    );;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation percent_issue_completed {
+        label: 'Percent Issue Completed'
+        formula: @aql completed_issue / count(reporting_issues.id);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation remaining_issue {
+        label: 'Remaining Issue'
+        formula: @aql count(reporting_issues.id) - completed_issue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_project.name)
+        operator: 'is'
+        value: 'Explore 2'
+      }
+      theme {
+
+      }
+      values: [
+        VizFieldFull {
+          ref: r(reporting_project_management.percent_completion)
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          label: 'Total'
+          ref: r(reporting_issues.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'Done'
+          ref: r(reporting_project_management.completed_issue)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'Remaining'
+          ref: 'remaining_issue'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      content: @md <style>
+  .project-card {
+    background: #141720;
+    border-radius: 14px;
+    border: 1px solid #1e2235;
+    padding: 20px 24px;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  .project-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #e8eaf0;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.01em;
+  }
+  
+  .project-content {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  
+  .donut-container {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+  }
+  
+  .donut-percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: 700;
+    color: #4f8cff;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .project-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  
+  .stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    color: #6b7194;
+    font-weight: 400;
+  }
+  
+  .stat-value {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.02em;
+  }
+  
+  .stat-total {
+    color: #e8eaf0;
+  }
+  
+  .stat-done {
+    color: #34d399;
+  }
+  
+  .stat-remaining {
+    color: #fbbf24;
+  }
+</style>
+
+<div class="project-stats">
+  <div class="stat-row">
+        <span class="stat-label">Total</span>
+        <span class="stat-value stat-total">{{ rows[0].values.`Total` }}</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Done</span>
+        <span class="stat-value stat-done">{{ rows[0].values.`Done` }}</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Remaining</span>
+        <span class="stat-value stat-remaining">{{ rows[0].values.`Remaining` }}</span>
+</div>
+ ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
     }
   }
   theme: squad_dark
