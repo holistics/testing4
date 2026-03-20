@@ -21,9 +21,11 @@ PageTheme ai_1773979634521_3 {
     label {
       font_color: "#1e293b"
       font_weight: "semibold"
+      font_family: "Inter"
     }
     text {
       font_color: "#475569"
+      font_family: "Inter"
     }
     border {
       border_radius: 16
@@ -58,6 +60,7 @@ PageTheme ai_1773979634521_3 {
     }
   }
   custom_css: @css
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
     /* KPI styles */
     .h-kpi-metric-kpi {
       font-size: 46px;

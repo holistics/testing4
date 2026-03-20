@@ -1483,17 +1483,19 @@ Dashboard squad_command_center {
   }
   block t_87la: TextBlock {
     content: @md ## Squad Reporting - Project Management;;
-    theme {
-      border {
-        border_width: 0
-        border_style: 'none'
-      }
+    theme: BlockTheme {
       background {
         bg_color: 'transparent'
       }
       text {
-        font_color: '#ffffff'
+        font_color: '#333333'
       }
+      border {
+        border_width: 0
+        border_style: 'solid'
+        border_color: 'transparent'
+      }
+      shadow: 'none'
     }
   }
   block t_vx6z: TextBlock {
@@ -1504,14 +1506,16 @@ Dashboard squad_command_center {
       background: rgb(52, 211, 153); 
       box-shadow: rgba(52, 211, 153, 0.5) 0px 0px 10px 2px;"
 </div>;;
-    theme {
+    theme: BlockTheme {
       border {
         border_width: 0
         border_style: 'none'
+        border_color: 'transparent'
       }
       background {
         bg_color: 'transparent'
       }
+      shadow: 'none'
     }
   }
   block t_iu5s: TextBlock {
@@ -1523,7 +1527,9 @@ Dashboard squad_command_center {
       border {
         border_width: 0
         border_style: 'none'
+        border_color: 'transparent'
       }
+      shadow: 'none'
       background {
         bg_color: 'transparent'
       }
@@ -1538,7 +1544,9 @@ Dashboard squad_command_center {
       border {
         border_width: 0
         border_style: 'none'
+        border_color: 'transparent'
       }
+      shadow: 'none'
       background {
         bg_color: 'transparent'
       }
