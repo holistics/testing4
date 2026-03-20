@@ -1411,7 +1411,7 @@ Dashboard squad_command_center {
             }
             point {
               value: 'Waiting for Deployment'
-              color: '#AC82FA'
+              color: '#5DB88FFF'
             }
           }
         }
@@ -1499,7 +1499,7 @@ Dashboard squad_command_center {
           }
           point {
             value: 'Waiting for Deployment'
-            color: '#AC82FA'
+            color: '#5DB88FFF'
           }
         }
       }
