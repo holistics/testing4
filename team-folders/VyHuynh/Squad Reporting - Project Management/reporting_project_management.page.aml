@@ -1564,7 +1564,7 @@ Dashboard squad_command_center {
     }
   }
   block v_y7bo: VizBlock {
-    label: 'Shipped (30D) copy copy'
+    label: 'Explore 2.0 - Progress'
     description: 'Total issues launched last 30 days'
     viz: MarkdownViz {
       dataset: reporting_project_management
@@ -1618,6 +1618,7 @@ Dashboard squad_command_center {
         value: 'Explore 2'
       }
       theme {
+
       }
       values: [
         VizFieldFull {
@@ -1664,8 +1665,8 @@ Dashboard squad_command_center {
   
   .project-title {
     font-size: 18px;
-    font-weight: 600;
-    color: #e8eaf0;
+    font-weight: 800;
+    color: #1e40af;
     margin: 0 0 20px 0;
     letter-spacing: -0.01em;
   }
@@ -1721,15 +1722,15 @@ Dashboard squad_command_center {
   }
   
   .stat-total {
-    color: #e8eaf0;
+    color: #1e293b;
   }
   
   .stat-done {
-    color: #34d399;
+    color: #5db88f;
   }
   
   .stat-remaining {
-    color: #fbbf24;
+    color: #e9aa2b;
   }
 </style>
 
@@ -1745,7 +1746,7 @@ Dashboard squad_command_center {
           cy="45" 
           r="36" 
           fill="none" 
-          stroke="#1e2235" 
+          stroke="#e8eaf0" 
           stroke-width="9"
         />
         <!-- Progress circle (completed portion) -->
@@ -1780,7 +1781,7 @@ Dashboard squad_command_center {
       </div>
     </div>
   </div>
-</div> ;;
+</div>  ;;
       settings {
         show_row_total: true
         show_column_total: true
