@@ -1488,7 +1488,7 @@ Dashboard squad_command_center {
         bg_color: 'transparent'
       }
       text {
-        font_color: '#333333'
+        font_color: '#1e40af'
         
       }
       border {
@@ -1523,7 +1523,7 @@ Dashboard squad_command_center {
     content: @md ### ◎ Overview Metrics;;
     theme {
       text {
-        font_color: '#1e293b'
+        font_color: '#334155'
       }
       border {
         border_width: 0
