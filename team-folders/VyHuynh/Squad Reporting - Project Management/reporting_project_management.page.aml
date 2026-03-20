@@ -83,27 +83,35 @@ Dashboard squad_command_center {
     }
     tab ttm_tab: CanvasLayout {
       label: '🕰️ Time-to-Market'
-      height: 1080
+      height: 1120
       grid_size: 20
       block v_lvp5 {
-        position: pos(40, 220, 1120, 400)
+        position: pos(20, 300, 1140, 400)
       }
       block f_project_name_ynq6 {
-        position: pos(40, 120, 300, 80)
+        position: pos(20, 100, 300, 80)
       }
       block v_d3sa {
-        position: pos(40, 640, 540, 400)
+        position: pos(20, 720, 540, 400)
       }
       block v_22mj {
-        position: pos(600, 640, 560, 400)
+        position: pos(580, 720, 580, 400)
         layer: 1
       }
-      block t_n5cc {
-        position: pos(40, 20, 780, 60)
+      block t_uqe1 {
+        position: pos(20, 200, 740, 60)
       }
-      block t_obnq {
-        position: pos(40, 60, 1120, 60)
+      block t_07hn {
+        position: pos(20, 240, 1140, 60)
       }
+      block t_87la {
+        position: pos(40, 20, 740, 80)
+        layer: 1
+      }
+      block t_vx6z {
+        position: pos(0, 20, 80, 80)
+      }
+      width: 1180
     }
     tab bottleneck_tab: CanvasLayout {
       label: '⚡ Bottlenecks'
@@ -1489,7 +1497,7 @@ Dashboard squad_command_center {
       }
       text {
         font_color: '#1e40af'
-        
+
       }
       border {
         border_width: 0
@@ -1812,36 +1820,6 @@ Dashboard squad_command_center {
     }
     settings {
       hide_label: true
-    }
-  }
-  block t_obnq: TextBlock {
-    content: @md <div style="font-family: Outfit; font-size: 16px; font-weight: 700; color: rgb(26, 29, 46); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid rgb(225, 228, 236);"></div>;;
-    theme {
-      text {
-        font_color: '#ffffff'
-      }
-      border {
-        border_width: 0
-        border_style: 'none'
-      }
-      background {
-        bg_color: 'transparent'
-      }
-    }
-  }
-  block t_n5cc: TextBlock {
-    content: @md ### 🕰️ Time-to-market;;
-    theme {
-      text {
-        font_color: '#ffffff'
-      }
-      border {
-        border_width: 0
-        border_style: 'none'
-      }
-      background {
-        bg_color: 'transparent'
-      }
     }
   }
   block v_f17x: VizBlock {
@@ -2419,6 +2397,40 @@ Dashboard squad_command_center {
           enabled: true
           debug_comments: true
         }
+      }
+    }
+  }
+  block t_uqe1: TextBlock {
+    content: @md ### **🕰️ Time-to-Market**;;
+    theme {
+      text {
+        font_color: '#475569'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+    }
+  }
+  block t_07hn: TextBlock {
+    content: @md <div style="font-family: Outfit; font-size: 16px; font-weight: 700; color: rgb(26, 29, 46); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid rgb(225, 228, 236);"></div>;;
+    theme {
+      text {
+        font_color: '#ffffff'
+      }
+      border {
+        border_width: 0
+        border_style: 'none'
+        border_color: 'transparent'
+      }
+      shadow: 'none'
+      background {
+        bg_color: 'transparent'
       }
     }
   }
