@@ -3,8 +3,41 @@ Dashboard squad_command_center {
   description: 'Engineering delivery metrics · Bottleneck analysis · Team health'
   view: TabLayout {
     label: 'Squad Command Center'
+    tab projects_tab: CanvasLayout {
+      label: '📊 Projects Overview'
+      height: 920
+      grid_size: 20
+      block v_f17x {
+        position: pos(420, 120, 360, 180)
+        layer: 1
+      }
+      block v_pdt0 {
+        position: pos(800, 120, 360, 180)
+        layer: 1
+      }
+      block v_x2gw {
+        position: pos(40, 320, 560, 400)
+      }
+      block v_y7bo {
+        position: pos(40, 120, 360, 180)
+        layer: 1
+      }
+      block v_x4xc {
+        position: pos(620, 320, 540, 400)
+        layer: 1
+      }
+      block t_a8eh {
+        position: pos(40, 60, 1120, 60)
+        layer: 1
+      }
+      block t_bf42 {
+        position: pos(40, 20, 740, 60)
+        layer: 1
+      }
+      width: 1220
+    }
     tab overview_tab: CanvasLayout {
-      label: '◎ Overview'
+      label: '◎ Metric Overview'
       height: 1240
       grid_size: 20
       block kpi_shipped {
@@ -177,36 +210,6 @@ Dashboard squad_command_center {
       }
       block quality_cycle_label {
         position: pos(600, 520, 600, 360)
-      }
-    }
-    tab projects_tab: CanvasLayout {
-      label: '📊 Projects'
-      height: 740
-      grid_size: 20
-      block t_2k45 {
-        position: pos(40, 20, 780, 60)
-      }
-      block t_xflg {
-        position: pos(40, 60, 1140, 60)
-      }
-      block v_f17x {
-        position: pos(420, 120, 360, 180)
-        layer: 1
-      }
-      block v_pdt0 {
-        position: pos(800, 120, 360, 180)
-        layer: 1
-      }
-      block v_x2gw {
-        position: pos(40, 320, 560, 400)
-      }
-      block v_y7bo {
-        position: pos(40, 120, 360, 180)
-        layer: 1
-      }
-      block v_x4xc {
-        position: pos(620, 320, 540, 400)
-        layer: 1
       }
     }
   }
@@ -1497,7 +1500,6 @@ Dashboard squad_command_center {
       }
       text {
         font_color: '#1e40af'
-
       }
       border {
         border_width: 0
@@ -1528,7 +1530,7 @@ Dashboard squad_command_center {
     }
   }
   block t_iu5s: TextBlock {
-    content: @md ### **◎ Overview Metrics**;;
+    content: @md ### **◎ Metric Overview**;;
     theme {
       text {
         font_color: '#475569'
@@ -1556,36 +1558,6 @@ Dashboard squad_command_center {
         border_color: 'transparent'
       }
       shadow: 'none'
-      background {
-        bg_color: 'transparent'
-      }
-    }
-  }
-  block t_2k45: TextBlock {
-    content: @md ### 📊 Project Status;;
-    theme {
-      text {
-        font_color: '#ffffff'
-      }
-      border {
-        border_width: 0
-        border_style: 'none'
-      }
-      background {
-        bg_color: 'transparent'
-      }
-    }
-  }
-  block t_xflg: TextBlock {
-    content: @md <div style="font-family: Outfit; font-size: 16px; font-weight: 700; color: rgb(26, 29, 46); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid rgb(225, 228, 236);"></div>;;
-    theme {
-      text {
-        font_color: '#ffffff'
-      }
-      border {
-        border_width: 0
-        border_style: 'none'
-      }
       background {
         bg_color: 'transparent'
       }
@@ -2432,6 +2404,40 @@ Dashboard squad_command_center {
       background {
         bg_color: 'transparent'
       }
+    }
+  }
+  block t_bf42: TextBlock {
+    content: @md ### **📊 Projects Overview**;;
+    theme {
+      text {
+        font_color: '#475569'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+    }
+  }
+  block t_a8eh: TextBlock {
+    content: @md <div style="font-family: Outfit; font-size: 16px; font-weight: 700; color: rgb(26, 29, 46); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid rgb(225, 228, 236);"></div>;;
+    theme {
+      text {
+        font_color: '#ffffff'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
     }
   }
   theme: ai_1773979634521_3
