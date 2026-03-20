@@ -1617,9 +1617,6 @@ Dashboard squad_command_center {
         operator: 'is'
         value: 'Explore 2'
       }
-      theme {
-
-      }
       values: [
         VizFieldFull {
           ref: r(reporting_project_management.percent_completion)
@@ -1781,7 +1778,7 @@ Dashboard squad_command_center {
       </div>
     </div>
   </div>
-</div>  ;;
+</div>   ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -1849,8 +1846,6 @@ Dashboard squad_command_center {
         operator: 'is'
         value: 'Data Alerts Revamp'
       }
-      theme {
-      }
       values: [
         VizFieldFull {
           ref: r(reporting_project_management.percent_completion)
@@ -1894,10 +1889,10 @@ Dashboard squad_command_center {
     font-family: 'Outfit', sans-serif;
   }
   
-  .project-title {
+  .project-title-data-alert {
     font-size: 18px;
-    font-weight: 600;
-    color: #e8eaf0;
+    font-weight: 800;
+    color: #E27712;
     margin: 0 0 20px 0;
     letter-spacing: -0.01em;
   }
@@ -1915,14 +1910,14 @@ Dashboard squad_command_center {
     flex-shrink: 0;
   }
   
-  .donut-percentage {
+  .donut-percentage-data-alert {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 24px;
     font-weight: 700;
-    color: #4f8cff;
+    color: #E27712;
     font-family: 'JetBrains Mono', monospace;
   }
   
@@ -1953,20 +1948,20 @@ Dashboard squad_command_center {
   }
   
   .stat-total {
-    color: #e8eaf0;
+    color: #1e293b;
   }
   
   .stat-done {
-    color: #34d399;
+    color: #5db88f;
   }
   
   .stat-remaining {
-    color: #fbbf24;
+    color: #e9aa2b;
   }
 </style>
 
 <div>
-  <h3 class="project-title">Data Alerts Revamp</h3>
+  <h3 class="project-title-data-alert">Data Alerts Revamp</h3>
   
   <div class="project-content">
     <div class="donut-container">
@@ -1977,7 +1972,7 @@ Dashboard squad_command_center {
           cy="45" 
           r="36" 
           fill="none" 
-          stroke="#1e2235" 
+          stroke="#e8eaf0" 
           stroke-width="9"
         />
         <!-- Progress circle (completed portion) -->
@@ -1986,7 +1981,7 @@ Dashboard squad_command_center {
           cy="45" 
           r="36" 
           fill="none" 
-          stroke="#4f8cff" 
+          stroke="#E27712" 
           stroke-width="9"
           stroke-dasharray="{{ rows[0].values.`Done` / rows[0].values.`Total` * 226.2 }} 226.2"
           stroke-linecap="round"
@@ -1994,7 +1989,7 @@ Dashboard squad_command_center {
           style="transition: stroke-dasharray 0.8s ease"
         />
       </svg>
-      <div class="donut-percentage">{{rows[0].values.`Percent Issue Completed`}}</div>
+      <div class="donut-percentage-data-alert">{{rows[0].values.`Percent Issue Completed`}}</div>
     </div>
     
   <div class="project-stats">
@@ -2012,7 +2007,7 @@ Dashboard squad_command_center {
       </div>
     </div>
   </div>
-</div> ;;
+</div>  ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -2080,8 +2075,6 @@ Dashboard squad_command_center {
         operator: 'is'
         value: 'Dashboard Performance'
       }
-      theme {
-      }
       values: [
         VizFieldFull {
           ref: r(reporting_project_management.percent_completion)
@@ -2125,10 +2118,10 @@ Dashboard squad_command_center {
     font-family: 'Outfit', sans-serif;
   }
   
-  .project-title {
+  .project-title-dp {
     font-size: 18px;
-    font-weight: 600;
-    color: #e8eaf0;
+    font-weight: 800;
+    color: #009B93;
     margin: 0 0 20px 0;
     letter-spacing: -0.01em;
   }
@@ -2146,14 +2139,14 @@ Dashboard squad_command_center {
     flex-shrink: 0;
   }
   
-  .donut-percentage {
+  .donut-percentage-dp {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 24px;
     font-weight: 700;
-    color: #4f8cff;
+    color: #009B93;
     font-family: 'JetBrains Mono', monospace;
   }
   
@@ -2184,20 +2177,20 @@ Dashboard squad_command_center {
   }
   
   .stat-total {
-    color: #e8eaf0;
+    color: #1e293b;
   }
   
   .stat-done {
-    color: #34d399;
+    color: #5db88f;
   }
   
   .stat-remaining {
-    color: #fbbf24;
+    color: #e9aa2b;
   }
 </style>
 
 <div>
-  <h3 class="project-title">Dashboard Performance</h3>
+  <h3 class="project-title-dp">Dashboard Performance</h3>
   
   <div class="project-content">
     <div class="donut-container">
@@ -2208,7 +2201,7 @@ Dashboard squad_command_center {
           cy="45" 
           r="36" 
           fill="none" 
-          stroke="#1e2235" 
+          stroke="#e8eaf0" 
           stroke-width="9"
         />
         <!-- Progress circle (completed portion) -->
@@ -2217,7 +2210,7 @@ Dashboard squad_command_center {
           cy="45" 
           r="36" 
           fill="none" 
-          stroke="#4f8cff" 
+          stroke="#009B93" 
           stroke-width="9"
           stroke-dasharray="{{ rows[0].values.`Done` / rows[0].values.`Total` * 226.2 }} 226.2"
           stroke-linecap="round"
@@ -2225,7 +2218,7 @@ Dashboard squad_command_center {
           style="transition: stroke-dasharray 0.8s ease"
         />
       </svg>
-      <div class="donut-percentage">{{rows[0].values.`Percent Issue Completed`}}</div>
+      <div class="donut-percentage-dp">{{rows[0].values.`Percent Issue Completed`}}</div>
     </div>
     
   <div class="project-stats">
@@ -2243,7 +2236,7 @@ Dashboard squad_command_center {
       </div>
     </div>
   </div>
-</div> ;;
+</div>  ;;
       settings {
         show_row_total: true
         show_column_total: true
