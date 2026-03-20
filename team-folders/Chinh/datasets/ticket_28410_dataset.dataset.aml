@@ -22,32 +22,34 @@ Dataset ticket_28410_dataset {
   }
 
   // Group 1: box, booklet, flyer, sticker → next 1 month
+  // Version 1: worked
   metric demand_1m_v1 {
     label: "Demand (1m) (V1)"
     type: "number"
-    definition: @aql sum(
-      ticket_28410_inventory_2026_demand_csv
-      , case(
-        when: or(
-          ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'box%'
-          , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'booklet%'
-          , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'flyer%'
-          , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'sticker%'
+    definition: @aql
+      sum(
+        case(
+          when: or(
+            ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'box%'
+            , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'booklet%'
+            , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'flyer%'
+            , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'sticker%'
+          )
+          , then: ticket_28410_inventory_2026_demand_csv.demand
+          , else: 0
         )
-        , then: ticket_28410_inventory_2026_demand_csv.demand
-        , else: 0
       )
-    )
-    | where(ticket_28410_months_csv.month matches @(from today to next 1 month))
+      | where(ticket_28410_months_csv.month matches @(from today to next 1 month))
     ;;
   }
 
+  // Version 2: relative_period - not worked
   metric demand_1m_v2 {
     label: "Demand (1m) (V2)"
     type: "number"
-    definition: @aql sum(
-      ticket_28410_inventory_2026_demand_csv
-      , case(
+    definition: @aql
+      sum(
+        case(
           when: or(
             ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'box%'
             , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'booklet%'
@@ -62,13 +64,13 @@ Dataset ticket_28410_dataset {
     ;;
   }
 
-
+  // Version 3: worked
   metric demand_1m_v3 {
     label: "Demand (1m) (V3)"
     type: "number"
-    definition: @aql sum(
-      ticket_28410_inventory_2026_demand_csv
-      , case(
+    definition: @aql
+      sum(
+        case(
           when: and(
             or(
               ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'box%'
@@ -82,7 +84,7 @@ Dataset ticket_28410_dataset {
           , then: ticket_28410_inventory_2026_demand_csv.demand
           , else: 0
         )
-    )
+      )
     ;;
   }
 
