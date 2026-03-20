@@ -5,40 +5,63 @@ Dashboard squad_command_center {
     label: 'Squad Command Center'
     tab projects_tab: CanvasLayout {
       label: '📊 Projects Overview'
-      height: 920
+      height: 940
       grid_size: 20
       block v_f17x {
-        position: pos(420, 120, 360, 180)
+        position: pos(420, 200, 360, 180)
         layer: 1
       }
       block v_pdt0 {
-        position: pos(800, 120, 360, 180)
+        position: pos(800, 200, 360, 180)
         layer: 1
       }
       block v_x2gw {
-        position: pos(40, 320, 560, 400)
+        position: pos(40, 400, 560, 400)
       }
       block v_y7bo {
-        position: pos(40, 120, 360, 180)
+        position: pos(40, 200, 360, 180)
         layer: 1
       }
       block v_x4xc {
-        position: pos(620, 320, 540, 400)
+        position: pos(620, 400, 540, 400)
         layer: 1
       }
       block t_a8eh {
-        position: pos(40, 60, 1120, 60)
+        position: pos(40, 140, 1120, 60)
         layer: 1
       }
       block t_bf42 {
-        position: pos(40, 20, 740, 60)
+        position: pos(40, 100, 740, 60)
         layer: 1
       }
-      width: 1220
+      block t_87la {
+        position: pos(40, 20, 740, 80)
+        layer: 2
+      }
+      block t_vx6z {
+        position: pos(0, 20, 80, 80)
+        layer: 1
+      }
+      block t_aax1 {
+        position: pos(40, 820, 1120, 40)
+        layer: 1
+      }
+      block t_my4d {
+        position: pos(40, 860, 200, 60)
+        layer: 1
+      }
+      block t_677a {
+        position: pos(1020, 880, 60, 40)
+        layer: 1
+      }
+      block t_z5ve {
+        position: pos(1080, 880, 60, 40)
+        layer: 1
+      }
     }
     tab overview_tab: CanvasLayout {
       label: '◎ Metric Overview'
-      height: 1240
+      height: 1360
       grid_size: 20
       block kpi_shipped {
         position: pos(0, 0, 300, 120)
@@ -112,11 +135,23 @@ Dashboard squad_command_center {
         position: pos(20, 240, 1080, 60)
         layer: 1
       }
+      block t_aax1 {
+        position: pos(20, 1240, 1080, 40)
+      }
+      block t_my4d {
+        position: pos(20, 1280, 200, 60)
+      }
+      block t_677a {
+        position: pos(960, 1300, 60, 40)
+      }
+      block t_z5ve {
+        position: pos(1020, 1300, 60, 40)
+      }
       width: 1120
     }
     tab ttm_tab: CanvasLayout {
       label: '🕰️ Time-to-Market'
-      height: 1140
+      height: 1260
       grid_size: 20
       block v_lvp5 {
         position: pos(20, 300, 1140, 400)
@@ -143,6 +178,22 @@ Dashboard squad_command_center {
       }
       block t_vx6z {
         position: pos(0, 20, 80, 80)
+      }
+      block t_aax1 {
+        position: pos(20, 1140, 1140, 40)
+        layer: 1
+      }
+      block t_my4d {
+        position: pos(20, 1180, 200, 60)
+        layer: 1
+      }
+      block t_677a {
+        position: pos(1020, 1200, 60, 40)
+        layer: 1
+      }
+      block t_z5ve {
+        position: pos(1080, 1200, 60, 40)
+        layer: 1
       }
       width: 1180
     }
@@ -2456,6 +2507,85 @@ Dashboard squad_command_center {
         bg_color: 'transparent'
       }
       shadow: 'none'
+    }
+  }
+  block t_aax1: TextBlock {
+    content: @md <div style="font-family: Outfit; font-size: 16px; font-weight: 700; color: rgb(26, 29, 46); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid rgb(225, 228, 236);"></div>;;
+    theme {
+      text {
+        font_color: '#ffffff'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+      padding: 0
+    }
+  }
+  block t_my4d: TextBlock {
+    content: @md
+    <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+      <span style="color:#475569;">Powered by</span>
+      <a href="https://www.holistics.io/" target="_blank" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+        <img
+          src="https://cdn.holistics.io/v3/SSO/holistics-logo.png"
+          alt="Holistics"
+          style="height:40px; width:auto; display:block;"
+        />
+        <span style="color:#206bc4; font-weight: 700">Holistics</span>
+      </a>
+    </div>
+  ;;
+    theme {
+      text {
+        font_color: '#475569'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+      padding: 0
+    }
+
+  }
+  block t_677a: TextBlock {
+    content: @md <a href="https://docs.holistics.io/docs" target="_blank" style="color:#475569; text-decoration:none; font-weight:500;">Docs</a>;;
+    theme {
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+      padding: 0
+    }
+  }
+  block t_z5ve: TextBlock {
+    content: @md <a href="https://demo4.holistics.io/home" target="_blank" style="color:#475569; text-decoration:none; font-weight:500;">Sandbox</a>;;
+    theme {
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+      padding: 0
     }
   }
   theme: ai_1773979634521_3
