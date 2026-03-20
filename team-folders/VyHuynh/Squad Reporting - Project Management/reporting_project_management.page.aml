@@ -173,7 +173,7 @@ Dashboard squad_command_center {
     }
     tab projects_tab: CanvasLayout {
       label: '📊 Projects'
-      height: 1000
+      height: 740
       grid_size: 20
       block t_2k45 {
         position: pos(40, 20, 780, 60)
@@ -190,10 +190,14 @@ Dashboard squad_command_center {
         layer: 1
       }
       block v_x2gw {
-        position: pos(40, 320, 580, 400)
+        position: pos(40, 320, 560, 400)
       }
       block v_y7bo {
         position: pos(40, 120, 360, 180)
+        layer: 1
+      }
+      block v_x4xc {
+        position: pos(620, 320, 540, 400)
         layer: 1
       }
     }
@@ -1625,7 +1629,6 @@ Dashboard squad_command_center {
         value: 'Explore 2'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -1887,7 +1890,6 @@ Dashboard squad_command_center {
         value: 'Data Alerts Revamp'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -2119,7 +2121,6 @@ Dashboard squad_command_center {
         value: 'Dashboard Performance'
       }
       theme {
-
       }
       values: [
         VizFieldFull {
@@ -2297,11 +2298,10 @@ Dashboard squad_command_center {
     }
   }
   block v_x2gw: VizBlock {
-    label: 'Issue by Name and Status'
+    label: 'Stage Distribution by Project'
     viz: ColumnChart {
       dataset: reporting_project_management
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(reporting_project.name)
@@ -2345,6 +2345,74 @@ Dashboard squad_command_center {
         }
       }
     }
+    description: "Where each project's issues are sitting"
+  }
+  block v_x4xc: VizBlock {
+    label: 'Project Velocity Comparison'
+    description: 'Issues completed per month per project'
+    viz: LineChart {
+      dataset: reporting_project_management
+      calculation completion_rate {
+        label: 'Completion Rate'
+        formula: @aql completed_issue / count(reporting_issues.id);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      theme {
+
+      }
+      x_axis: VizFieldFull {
+        ref: r(reporting_issues.completed_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(reporting_project.name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: 'completion_rate'
+            format {
+              type: 'number'
+              pattern: '#,###%'
+            }
+          }
+          settings {
+            point {
+              value: 'Explore 2'
+              color: '#255DD4'
+              line_interpolation: 'smooth'
+            }
+            point {
+              value: 'Data Alerts Revamp'
+              color: '#E27712'
+              line_interpolation: 'smooth'
+            }
+            point {
+              value: 'Dashboard Performance'
+              color: '#18A59E'
+              line_interpolation: 'smooth'
+            }
+          }
+        }
+      }
+      settings {
+        show_data_points: true
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
   }
   theme: squad_dark
   interactions: [
@@ -2359,7 +2427,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2376,7 +2445,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2393,7 +2463,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2410,7 +2481,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2427,7 +2499,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2444,7 +2517,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2461,7 +2535,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2478,7 +2553,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2500,7 +2576,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2525,6 +2602,7 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
+            'v_x4xc',
             'f_project_name_ynq6'
           ]
           disabled: true
@@ -2540,6 +2618,7 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
+            'v_x4xc',
             'f_project_name'
           ]
           disabled: true
@@ -2562,7 +2641,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2584,7 +2664,8 @@ Dashboard squad_command_center {
             'v_y7bo',
             'v_f17x',
             'v_pdt0',
-            'v_x2gw'
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
@@ -2655,6 +2736,27 @@ Dashboard squad_command_center {
     },
     FilterInteraction {
       from: 'v_x2gw'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_x4xc'
       to: [
         CustomMapping {
           block: [
