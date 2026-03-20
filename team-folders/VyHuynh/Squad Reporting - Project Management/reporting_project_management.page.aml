@@ -1403,7 +1403,7 @@ Dashboard squad_command_center {
             }
             point {
               value: 'Testing on Staging'
-              color: '#60A5FAFF'
+              color: '#FCD34DFF'
             }
             point {
               value: 'Deploying to Staging'
@@ -2572,7 +2572,6 @@ Dashboard squad_command_center {
       shadow: 'none'
       padding: 0
     }
-
   }
   block t_677a: TextBlock {
     content: @md <a href="https://docs.holistics.io/docs" target="_blank" style="color:#475569; text-decoration:none; font-weight:500;">Docs</a>;;
