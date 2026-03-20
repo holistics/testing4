@@ -284,10 +284,10 @@ Dashboard squad_command_center {
       calculation completed_issue_color {
         label: 'Completed Issue Color'
         formula: @aql case(
-      when: percent_lm_completed_issue < 0,
-      then: "rgb(248, 113, 113)",
-      else: "#4ade80"
-    );;
+  when: percent_lm_completed_issue < 0,
+  then: "rgb(248, 113, 113)",
+  else: "#5DB88F"
+);;
         calc_type: 'measure'
         data_type: 'text'
       }
@@ -305,8 +305,6 @@ Dashboard squad_command_center {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
         value: '2026-02-01 - 2026-02-28'
-      }
-      theme {
       }
       values: [
         VizFieldFull {
@@ -356,7 +354,7 @@ Dashboard squad_command_center {
   .kpi-shipped-value {
     font-size: 52px;
     font-weight: 500;
-    color: #4ade80;
+    color: #5DB88F;
     line-height: 1;
   }
   .kpi-percent {
@@ -388,7 +386,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>             ;;
+</div>              ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -489,8 +487,6 @@ Dashboard squad_command_center {
         operator: 'matches'
         value: '2026-02-01 - 2026-02-28'
       }
-      theme {
-      }
       values: [
         VizFieldFull {
           label: 'Avg Cycle Time'
@@ -539,7 +535,7 @@ Dashboard squad_command_center {
   .kpi-cycle-value {
     font-size: 52px;
     font-weight: 500;
-    color: #4f8cff;
+    color: #206bc4;
     line-height: 1;
   }
   .kpi-percent {
@@ -571,7 +567,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>          ;;
+</div>           ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -667,8 +663,6 @@ Dashboard squad_command_center {
         operator: 'not_null'
         value: []
       }
-      theme {
-      }
       values: [
         VizFieldFull {
           label: 'WIP'
@@ -706,7 +700,7 @@ Dashboard squad_command_center {
   .kpi-wip-value {
     font-size: 52px;
     font-weight: 500;
-    color: #ffffff;
+    color: #206BC4;
     line-height: 1;
   }
   .kpi-percent {
@@ -732,11 +726,11 @@ Dashboard squad_command_center {
 
   <div style="color: #525866;" style="margin-top: 8px">
     <span > issues across </span>
-    <span style="color: #8e94a5;" > {{ rows[0].values.`CountD of Status` }} </span>
+    <span style="color: #206BC4;" > {{ rows[0].values.`CountD of Status` }} </span>
     <span > status </span>
   </div>
 
-</div>     ;;
+</div>      ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -1036,10 +1030,10 @@ Dashboard squad_command_center {
       calculation delta_percent_issue_completion_color {
         label: 'Delta - % Issue Completion Color'
         formula: @aql case(
-      when: delta_percent_issue_completion < 0,
-      then: "rgb(248, 113, 113)",
-      else: "#4ade80"
-    );;
+  when: delta_percent_issue_completion < 0,
+  then: "rgb(248, 113, 113)",
+  else: "#5DB88F"
+);;
         calc_type: 'measure'
         data_type: 'text'
       }
@@ -1063,8 +1057,6 @@ Dashboard squad_command_center {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
         value: '2026-02-14 - 2026-02-28'
-      }
-      theme {
       }
       values: [
         VizFieldFull {
@@ -1119,7 +1111,7 @@ Dashboard squad_command_center {
   .kpi-completion-value {
     font-size: 52px;
     font-weight: 500;
-    color: #34d399;
+    color: #5DB88F;
     line-height: 1;
   }
   .kpi-percent {
@@ -1151,7 +1143,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>         ;;
+</div>          ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -1291,8 +1283,6 @@ Dashboard squad_command_center {
         operator: 'matches'
         value: 'last 3 months'
       }
-      theme {
-      }
       x_axis: VizFieldFull {
         ref: r(reporting_burnup.week)
         transformation: 'datetrunc week'
@@ -1312,6 +1302,9 @@ Dashboard squad_command_center {
               pattern: 'inherited'
             }
           }
+          settings {
+            color: '#87A6C7FF'
+          }
         }
         series {
           field: VizFieldFull {
@@ -1322,6 +1315,9 @@ Dashboard squad_command_center {
               type: 'number'
               pattern: 'inherited'
             }
+          }
+          settings {
+            color: '#5DB88FFF'
           }
         }
       }
