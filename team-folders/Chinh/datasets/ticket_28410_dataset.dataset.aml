@@ -27,19 +27,28 @@ Dataset ticket_28410_dataset {
     label: "Demand (1m) (V1)"
     type: "number"
     definition: @aql
-      sum(
-        case(
-          when: or(
-            ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'box%'
-            , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'booklet%'
-            , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'flyer%'
-            , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'sticker%'
-          )
-          , then: ticket_28410_inventory_2026_demand_csv.demand
-          , else: 0
+      case(
+        when: or(
+          ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'box%'
+          , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'booklet%'
+          , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'flyer%'
+          , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'sticker%'
         )
+        , then: sum(ticket_28410_inventory_2026_demand_csv.demand) | where(ticket_28410_months_csv.month matches @(from today to next 1 month))
+        , when: or(
+          ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike '%bag%'
+          , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'jar%'
+          , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'kids%'
+        )
+        , then: sum(ticket_28410_inventory_2026_demand_csv.demand) | where(ticket_28410_months_csv.month matches @(from today to next 5 month))
+        , when: or(
+          ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'nutribacs%'
+          , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'beautybacs%'
+          , ticket_28410_inventory_2026_bundle_matrix_titles_csv.bundle_matrix_title ilike 'protein%'
+        )
+        , then: sum(ticket_28410_inventory_2026_demand_csv.demand) | where(ticket_28410_months_csv.month matches @(from today to next 4 month))
+        , else: sum(ticket_28410_inventory_2026_demand_csv.demand) | where(ticket_28410_months_csv.month matches @(from today to next 3 month))
       )
-      | where(ticket_28410_months_csv.month matches @(from today to next 1 month))
     ;;
   }
 
@@ -160,7 +169,7 @@ Dataset ticket_28410_dataset {
   }
 
   // Combined forecasted demand
-  metric forecasted_demand {
+  metric sum_demand {
     label: "Forecasted Demand"
     type: "number"
     definition: @aql demand_1m + demand_5m + demand_4m + demand_3m;;
