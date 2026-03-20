@@ -1520,10 +1520,10 @@ Dashboard squad_command_center {
     }
   }
   block t_iu5s: TextBlock {
-    content: @md ### ◎ Overview Metrics;;
+    content: @md ### **◎ Overview Metrics**;;
     theme {
       text {
-        font_color: '#334155'
+        font_color: '#475569'
       }
       border {
         border_width: 0
