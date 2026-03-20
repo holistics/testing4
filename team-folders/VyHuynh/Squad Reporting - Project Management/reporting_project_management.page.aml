@@ -83,7 +83,7 @@ Dashboard squad_command_center {
     }
     tab ttm_tab: CanvasLayout {
       label: '🕰️ Time-to-Market'
-      height: 1120
+      height: 1140
       grid_size: 20
       block v_lvp5 {
         position: pos(20, 300, 1140, 400)
