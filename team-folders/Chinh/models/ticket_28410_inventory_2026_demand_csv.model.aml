@@ -1,0 +1,41 @@
+Model ticket_28410_inventory_2026_demand_csv {
+  type: 'table'
+  label: 'Ticket 28410 inventory 2026 demand csv'
+  description: ''
+  data_source_name: 'demodb'
+  dimension bundle_matrix_title {
+    label: 'Bundle matrix title'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.bundle_matrix_title }};;
+  }
+  dimension month {
+    label: 'Month'
+    description: ''
+    type: 'date'
+    hidden: false
+    definition: @sql {{ #SOURCE.month }};;
+  }
+  dimension demand {
+    label: 'Demand'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.demand }};;
+  }
+
+  import_source: ImportSource {
+    type: 'csv'
+    original_file_name: 'inventory_2026_demand.csv'
+    uploaded_at: '2026-03-19 11:35:56'
+    hash: 'a65e401dded0d30ac5d4a0dbb6fbb3fcbd984b9c5ea2cd7d038030c62a9e7722'
+    column_configs: [
+      H.imports.column_config("bundle_matrix_title", "bundle_matrix_title", "text"),
+      H.imports.column_config("month", "month", "date"),
+      H.imports.column_config("demand", "demand", "number")
+    ]
+  }
+  owner: 'chinh.dm@holistics.io'
+  table_name: '"persisted_models"."holistics_ticket_28410__6ee71_202603191104"'
+}

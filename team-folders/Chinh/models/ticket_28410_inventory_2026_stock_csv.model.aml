@@ -1,0 +1,41 @@
+Model ticket_28410_inventory_2026_stock_csv {
+  type: 'table'
+  label: 'Ticket 28410 inventory 2026 stock csv'
+  description: ''
+  data_source_name: 'demodb'
+  dimension bundle_matrix_title {
+    label: 'Bundle matrix title'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.bundle_matrix_title }};;
+  }
+  dimension warehouse {
+    label: 'Warehouse'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.warehouse }};;
+  }
+  dimension latest_available {
+    label: 'Latest available'
+    description: ''
+    type: 'number'
+    hidden: false
+    definition: @sql {{ #SOURCE.latest_available }};;
+  }
+
+  import_source: ImportSource {
+    type: 'csv'
+    original_file_name: 'inventory_2026_stock.csv'
+    uploaded_at: '2026-03-19 11:03:54'
+    hash: '9d3a143dafaecfffa580e7e120517d052a7be3a14b339a0c0a1a4663bb1607f6'
+    column_configs: [
+      H.imports.column_config("bundle_matrix_title", "bundle_matrix_title", "text"),
+      H.imports.column_config("warehouse", "warehouse", "text"),
+      H.imports.column_config("latest_available", "latest_available", "number")
+    ]
+  }
+  owner: 'chinh.dm@holistics.io'
+  table_name: '"persisted_models"."holistics_ticket_28410__8ee26_202603191103"'
+}

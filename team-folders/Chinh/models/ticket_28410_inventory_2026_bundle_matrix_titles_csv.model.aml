@@ -1,0 +1,25 @@
+Model ticket_28410_inventory_2026_bundle_matrix_titles_csv {
+  type: 'table'
+  label: 'Ticket 28410 inventory 2026 bundle matrix titles csv'
+  description: ''
+  data_source_name: 'demodb'
+  dimension bundle_matrix_title {
+    label: 'Bundle matrix title'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.bundle_matrix_title }};;
+  }
+
+  import_source: ImportSource {
+    type: 'csv'
+    original_file_name: 'inventory_2026_bundle_matrix_titles.csv'
+    uploaded_at: '2026-03-19 11:04:32'
+    hash: '3d190eaef665a28c0271f04597f51568b0a96f4e2d4a11a9f23ccc9286948c37'
+    column_configs: [
+      H.imports.column_config("bundle_matrix_title", "bundle_matrix_title", "text")
+    ]
+  }
+  owner: 'chinh.dm@holistics.io'
+  table_name: '"persisted_models"."holistics_ticket_28410__b3aec_202603191104"'
+}

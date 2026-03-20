@@ -1,0 +1,24 @@
+Model ticket_28410_months_csv {
+  type: 'table'
+  label: 'Ticket 28410 months csv'
+  description: ''
+  data_source_name: 'demodb'
+  dimension month {
+    label: 'Month'
+    description: ''
+    type: 'date'
+    definition: @sql {{ #SOURCE.month }};;
+  }
+
+  import_source: ImportSource {
+    type: 'csv'
+    original_file_name: 'months.csv'
+    uploaded_at: '2026-03-19 11:11:45'
+    hash: 'fc4b709f186f65003bdb7f52ed1ff17595bb82c07c8d2faad6fe81db1645a64c'
+    column_configs: [
+      H.imports.column_config("month", "month", "date")
+    ]
+  }
+  owner: 'chinh.dm@holistics.io'
+  table_name: '"persisted_models"."holistics_ticket_28410__97009_202603191103"'
+}
