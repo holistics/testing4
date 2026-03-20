@@ -1161,8 +1161,6 @@ Dashboard squad_command_center {
     label: 'Live Pipeline'
     viz: BarChart {
       dataset: reporting_project_management
-      theme {
-      }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.status)
         format {
@@ -1170,9 +1168,12 @@ Dashboard squad_command_center {
         }
       }
       y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
         series {
           field: VizFieldFull {
-            label: 'Number of Issue'
+            label: 'Issue'
             ref: r(reporting_issues.id)
             aggregation: 'count'
             format {
@@ -1181,7 +1182,7 @@ Dashboard squad_command_center {
             }
           }
           settings {
-            color: '#8DA9C4FF'
+            color: '#206BC4FF'
             point {
               value: 'merged'
               color: '#22D3EEFF'
@@ -1206,12 +1207,35 @@ Dashboard squad_command_center {
               value: 'deployed_to_staging'
               color: '#FBBF24FF'
             }
+            point {
+              value: 'Deployed'
+              color: '#5DB88FFF'
+            }
+            point {
+              value: 'Deployed to Staging'
+              color: '#60A5FAFF'
+            }
+            point {
+              value: 'In Progress'
+              color: '#206BC4FF'
+            }
+            point {
+              value: 'Merged'
+              color: '#87A6C7FF'
+            }
+            point {
+              value: 'PR Review'
+              color: '#E9AA2BFF'
+            }
+            point {
+              value: 'Tested on Staging'
+              color: '#FCD34DFF'
+            }
           }
         }
       }
       settings {
         row_limit: 5000
-        legend_label: 'hidden'
         x_axis_show_null_datetime: false
         aggregate_awareness {
           enabled: true
@@ -1303,7 +1327,7 @@ Dashboard squad_command_center {
             }
           }
           settings {
-            color: '#87A6C7FF'
+            color: '#A8BEEE'
           }
         }
         series {
@@ -1317,7 +1341,7 @@ Dashboard squad_command_center {
             }
           }
           settings {
-            color: '#5DB88FFF'
+            color: '#059669'
           }
         }
       }
@@ -1340,8 +1364,6 @@ Dashboard squad_command_center {
         field: r(reporting_issues.status)
         operator: 'is'
         value: 'Deployed'
-      }
-      theme {
       }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.identifier)
@@ -1373,19 +1395,19 @@ Dashboard squad_command_center {
           settings {
             point {
               value: 'In Progress'
-              color: '#3185D9'
+              color: '#206BC4FF'
             }
             point {
               value: 'In PR Review'
-              color: '#FFAC51'
+              color: '#E9AA2BFF'
             }
             point {
               value: 'Testing on Staging'
-              color: '#00CDCC'
+              color: '#60A5FAFF'
             }
             point {
               value: 'Deploying to Staging'
-              color: '#FF5255FF'
+              color: '#87A6C7FF'
             }
             point {
               value: 'Waiting for Deployment'
@@ -1442,8 +1464,6 @@ Dashboard squad_command_center {
     description: 'Where does time-to-market actually go?'
     viz: PieChart {
       dataset: reporting_project_management
-      theme {
-      }
       legend: VizFieldFull {
         ref: r(reporting_stage_duration.stage)
         format {
@@ -1471,11 +1491,11 @@ Dashboard squad_command_center {
           }
           point {
             value: 'Testing on Staging'
-            color: '#45D3D3FF'
+            color: '#FCD34DFF'
           }
           point {
             value: 'Deploying to Staging'
-            color: '#FF5B5BFF'
+            color: '#87A6C7FF'
           }
           point {
             value: 'Waiting for Deployment'
