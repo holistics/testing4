@@ -2359,7 +2359,6 @@ Dashboard squad_command_center {
         data_type: 'number'
       }
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.completed_at)
@@ -2414,7 +2413,7 @@ Dashboard squad_command_center {
       }
     }
   }
-  theme: squad_dark
+  theme: ai_1773979634521_3
   interactions: [
     FilterInteraction {
       from: 'v_x8r0'
