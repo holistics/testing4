@@ -2251,11 +2251,10 @@ Dashboard squad_command_center {
     }
   }
   block v_x2gw: VizBlock {
-    label: 'Stage Distribution by Project'
+    label: 'Status Distribution by Project'
+    description: "Where each project's issues are sitting"
     viz: ColumnChart {
       dataset: reporting_project_management
-      theme {
-      }
       x_axis: VizFieldFull {
         ref: r(reporting_project.name)
         format {
@@ -2282,6 +2281,32 @@ Dashboard squad_command_center {
               pattern: 'inherited'
             }
           }
+          settings {
+            point {
+              value: 'Deployed'
+              color: '#5DB88FFF'
+            }
+            point {
+              value: 'Deployed to Staging'
+              color: '#60A5FAFF'
+            }
+            point {
+              value: 'In Progress'
+              color: '#206BC4FF'
+            }
+            point {
+              value: 'Merged'
+              color: '#87A6C7FF'
+            }
+            point {
+              value: 'PR Review'
+              color: '#E9AA2BFF'
+            }
+            point {
+              value: 'Tested on Staging'
+              color: '#FCD34DFF'
+            }
+          }
         }
       }
       settings {
@@ -2298,7 +2323,6 @@ Dashboard squad_command_center {
         }
       }
     }
-    description: "Where each project's issues are sitting"
   }
   block v_x4xc: VizBlock {
     label: 'Project Velocity Comparison'
