@@ -197,7 +197,7 @@ Dashboard squad_command_center {
     }
     tab quality_tab: CanvasLayout {
       label: '🎯 Quality & Bottlenecks'
-      height: 1900
+      height: 2000
       grid_size: 20
       block t_87la {
         position: pos(40, 20, 740, 80)
@@ -243,6 +243,19 @@ Dashboard squad_command_center {
       block v_45a6 {
         position: pos(40, 1300, 1140, 560)
       }
+      block t_aax1 {
+        position: pos(40, 1880, 1140, 40)
+      }
+      block t_my4d {
+        position: pos(40, 1920, 200, 60)
+      }
+      block t_677a {
+        position: pos(1040, 1940, 60, 40)
+      }
+      block t_z5ve {
+        position: pos(1100, 1940, 60, 40)
+      }
+      width: 1220
     }
     tab workload_tab: CanvasLayout {
       label: '👥 Workload'
@@ -2013,7 +2026,7 @@ Dashboard squad_command_center {
     }
   }
   block v_45a6: VizBlock {
-    label: 'Identifier, Title and 5 more'
+    label: 'Identifier, Title and 9 more'
     viz: MarkdownViz {
       dataset: reporting_project_management
       calculation stage_color {
@@ -2035,6 +2048,76 @@ Dashboard squad_command_center {
         data_type: 'text'
         model: reporting_stage_duration
       }
+      calculation priority_color {
+        label: 'Priority Color'
+        formula: @aql case(
+  when: reporting_issues.priority == "high",
+  then: "#E27712",
+  when: reporting_issues.priority == "urgent",
+  then: "#982021",
+  when: reporting_issues.priority == "medium",
+  then: "#60A5FA",
+  when: reporting_issues.priority == "low",
+  then: "#87A6C7",
+  when: reporting_issues.priority == "none",
+  then: "#D5DCE4",
+  else: "others"
+);;
+        calc_type: 'dimension'
+        data_type: 'text'
+        model: reporting_stage_duration
+      }
+      calculation duration_color {
+        label: 'Duration Color'
+        formula: @aql case(
+    when: reporting_stage_duration.duration_hours >= 60,
+    then: "#ef4444",
+    else: "#eab308"
+  );;
+        calc_type: 'dimension'
+        data_type: 'text'
+        model: reporting_stage_duration
+      }
+      calculation duration_bar_width {
+        label: 'Duration Bar Width'
+        formula: @aql case(
+    when: reporting_stage_duration.duration_hours >= 120,
+    then: 120,
+    when: reporting_stage_duration.duration_hours >= 100,
+    then: 100,
+    when: reporting_stage_duration.duration_hours >= 80,
+    then: 80,
+    when: reporting_stage_duration.duration_hours >= 60,
+    then: 60,
+    when: reporting_stage_duration.duration_hours >= 40,
+    then: 40,
+    when: reporting_stage_duration.duration_hours >= 20,
+    then: 20,
+    else: 12
+  );;
+        calc_type: 'dimension'
+        data_type: 'number'
+        model: reporting_stage_duration
+      }
+      calculation priority_ranking {
+        label: 'Priority Ranking'
+        formula: @aql case(
+    when: reporting_issues.priority == "urgent",
+    then: 1,
+    when: reporting_issues.priority == "high",
+    then: 2,
+    when: reporting_issues.priority == "medium",
+    then: 3,
+    when: reporting_issues.priority == "low",
+    then: 4,
+    when: reporting_issues.priority == "none",
+    then: 5,
+    else: 99
+  );;
+        calc_type: 'dimension'
+        data_type: 'number'
+        model: reporting_issues
+      }
       rows: [
         VizFieldFull {
           ref: r(reporting_issues.identifier)
@@ -2049,6 +2132,35 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
+          ref: r(reporting_stage_duration.duration_hours)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'reporting_stage_duration_duration_hours'
+        },
+        VizFieldFull {
+          ref: ref('reporting_stage_duration', 'duration_color')
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: ref('reporting_stage_duration', 'duration_bar_width')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: ref('reporting_issues', 'priority_ranking')
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+          uname: 'reporting_issues_priority_ranking'
+        },
+        VizFieldFull {
           ref: r(reporting_stage_duration.stage)
           format {
             type: 'text'
@@ -2058,13 +2170,6 @@ Dashboard squad_command_center {
           ref: ref('reporting_stage_duration', 'stage_color')
           format {
             type: 'text'
-          }
-        },
-        VizFieldFull {
-          ref: r(reporting_stage_duration.duration_hours)
-          format {
-            type: 'number'
-            pattern: 'inherited'
           }
         },
         VizFieldFull {
@@ -2079,25 +2184,30 @@ Dashboard squad_command_center {
           format {
             type: 'text'
           }
+        },
+        VizFieldFull {
+          ref: ref('reporting_stage_duration', 'priority_color')
+          format {
+            type: 'text'
+          }
         }
       ]
       content: @md <style>
   .issues-container {
-    background-color: #1a1d2e;
     color: #e5e7eb;
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 8px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
   
   .issues-header {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
   
   .issues-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #ffffff;
+    color: #475569;
     margin: 0 0 0.25rem 0;
   }
   
@@ -2113,7 +2223,7 @@ Dashboard squad_command_center {
   
   .table-header {
     display: grid;
-    grid-template-columns: 100px 2fr 120px 200px 150px 100px;
+    grid-template-columns: 100px 2.5fr 200px 200px 80px 100px;
     gap: 1.5rem;
     padding: 0.75rem 0;
     border-bottom: 1px solid #374151;
@@ -2130,11 +2240,11 @@ Dashboard squad_command_center {
   
   .table-row {
     display: grid;
-    grid-template-columns: 100px 2fr 120px 200px 150px 100px;
+    grid-template-columns: 100px 2.5fr 200px 200px 80px 100px;
     gap: 1.5rem;
     padding: 1rem 0;
     align-items: center;
-    border-bottom: 1px solid #2d3748;
+    border-bottom: 1px solid #D0D0D0;
   }
   
   .table-row:last-child {
@@ -2149,7 +2259,7 @@ Dashboard squad_command_center {
   
   .issue-title {
     font-size: 0.875rem;
-    color: #e5e7eb;
+    color: #475569;
   }
 
   .stage-badge {
@@ -2172,21 +2282,13 @@ Dashboard squad_command_center {
   .hours-bar {
     height: 8px;
     border-radius: 4px;
-    min-width: 20px;
-  }
-  
-  .hours-bar-red {
-    background-color: #ef4444;
-  }
-  
-  .hours-bar-yellow {
-    background-color: #eab308;
+    min-width: 12px;
   }
   
   .hours-value {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #e5e7eb;
+    color: #475569;
     white-space: nowrap;
   }
   
@@ -2284,28 +2386,46 @@ Dashboard squad_command_center {
         {{ `Stage` }}
       </span>    
     </div>
-    <div data-label="Duration Hours">
-      {{ `Duration Hours` }}
+    <div class="hours-container" data-label="Duration Hours">
+      <div
+        class="hours-bar"
+        style="width: {{ `Duration Bar Width`.raw }}px; background-color: {{ `Duration Color`.raw }};">
+      </div>
+    <span class="hours-value">{{ `Duration Hours` }}h</span>
     </div>
     <div class="assignee" data-label="Assignee">
       {{ `Assignee` }}
     </div>
     <div data-label="Priority">
-      <span class="priority priority-{{ `Priority` }}">{{ `Priority` }}</span>
+      <span class="priority" style="background-color: {{ `Priority Color`.raw }}; color: #ffffff;">
+        {{ `Priority` }}</span>
     </div>
   </div>
   {% end %}
 
   </div>
-</div> ;;
+</div>   ;;
       settings {
         show_row_total: true
         show_column_total: true
+        sorts: [
+          SortSetting {
+            key: 'reporting_issues_priority_ranking'
+            direction: 'asc'
+          },
+          SortSetting {
+            key: 'reporting_stage_duration_duration_hours'
+            direction: 'desc'
+          }
+        ]
         aggregate_awareness {
           enabled: true
           debug_comments: true
         }
       }
+    }
+    settings {
+      hide_label: true
     }
   }
   block v_ipdo: VizBlock {
@@ -2978,6 +3098,7 @@ case(
       to: [
         CustomMapping {
           block: [
+            'v_45a6',
             'v_ipdo',
             'v_7dso',
             'v_r2ma',
