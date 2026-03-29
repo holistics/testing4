@@ -201,9 +201,21 @@ Dashboard squad_command_center {
       label: '🎯 Quality'
       height: 1300
       grid_size: 20
-      block t_24js {
+      block t_87la {
         position: pos(40, 20, 740, 80)
         layer: 1
+      }
+      block t_vx6z {
+        position: pos(0, 20, 80, 80)
+      }
+      block f_project_name_ynq6 {
+        position: pos(40, 100, 300, 80)
+      }
+      block t_07hn {
+        position: pos(20, 240, 1140, 60)
+      }
+      block t_3f6l {
+        position: pos(20, 200, 740, 60)
       }
     }
     tab bottleneck_tab: CanvasLayout {
@@ -2756,23 +2768,6 @@ Dashboard squad_command_center {
       shadow: 'none'
     }
   }
-  block t_24js: TextBlock {
-    content: @md ## **Squad Reporting - Project Management**;;
-    theme {
-      text {
-        font_color: '#1e40af'
-      }
-      border {
-        border_width: 0
-        border_color: 'transparent'
-        border_style: 'solid'
-      }
-      background {
-        bg_color: 'transparent'
-      }
-      shadow: 'none'
-    }
-  }
   block t_m4lt: TextBlock {
     content: @md ### **🎯 Quality**;;
     theme {
@@ -2964,6 +2959,23 @@ Dashboard squad_command_center {
     }
     settings {
       hide_label: true
+    }
+  }
+  block t_3f6l: TextBlock {
+    content: @md ### **🎯 Quality**;;
+    theme {
+      text {
+        font_color: '#475569'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
     }
   }
   theme: ai_1773979634521_3
