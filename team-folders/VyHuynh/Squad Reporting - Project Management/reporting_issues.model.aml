@@ -72,14 +72,7 @@ Model reporting_issues {
     description: ''
     type: 'text'
     hidden: false
-    definition: @sql CASE 
-      WHEN {{ #SOURCE.label }} = 'bug' THEN 'Bug'
-      WHEN {{ #SOURCE.label }} = 'chore' THEN 'Chore'
-      WHEN {{ #SOURCE.label }} = 'feature' THEN 'Feature'
-      WHEN {{ #SOURCE.label }} = 'improvement' THEN 'Improvement'
-      WHEN {{ #SOURCE.label }} = 'tech_debt' THEN 'Tech Debt'
-    ELSE 'Other'
-  END;;
+    definition: @sql {{ #SOURCE.label }};;
   }
   dimension estimate {
     label: 'Estimate'

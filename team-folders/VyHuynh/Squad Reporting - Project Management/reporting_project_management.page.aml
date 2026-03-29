@@ -7,15 +7,23 @@ Dashboard squad_command_center {
       label: '📊 Projects Overview'
       height: 940
       grid_size: 20
+      block v_f17x {
+        position: pos(420, 200, 360, 180)
+        layer: 1
+      }
+      block v_pdt0 {
+        position: pos(800, 200, 360, 180)
+        layer: 1
+      }
       block v_x2gw {
-        position: pos(40, 600, 560, 400)
+        position: pos(40, 400, 560, 400)
       }
       block v_y7bo {
         position: pos(40, 200, 360, 180)
         layer: 1
       }
       block v_x4xc {
-        position: pos(620, 600, 540, 400)
+        position: pos(620, 400, 540, 400)
         layer: 1
       }
       block t_a8eh {
@@ -35,23 +43,19 @@ Dashboard squad_command_center {
         layer: 1
       }
       block t_aax1 {
-        position: pos(40, 1020, 1120, 40)
+        position: pos(40, 820, 1120, 40)
         layer: 1
       }
       block t_my4d {
-        position: pos(40, 1060, 200, 60)
+        position: pos(40, 860, 200, 60)
         layer: 1
       }
       block t_677a {
-        position: pos(1020, 1080, 60, 40)
+        position: pos(1020, 880, 60, 40)
         layer: 1
       }
       block t_z5ve {
-        position: pos(1080, 1080, 60, 40)
-        layer: 1
-      }
-      block v_3ck8 {
-        position: pos(100, 400, 360, 180)
+        position: pos(1080, 880, 60, 40)
         layer: 1
       }
     }
@@ -197,27 +201,9 @@ Dashboard squad_command_center {
       label: '🎯 Quality'
       height: 1300
       grid_size: 20
-      block t_a0mx {
-        position: pos(0, 0, 80, 80)
-      }
-      block t_zb56 {
-        position: pos(40, 0, 740, 80)
+      block t_24js {
+        position: pos(40, 20, 740, 80)
         layer: 1
-      }
-      block t_sv82 {
-        position: pos(20, 220, 1140, 60)
-      }
-      block t_02ub {
-        position: pos(20, 180, 740, 60)
-      }
-      block f_project_name_ynq6 {
-        position: pos(40, 80, 300, 80)
-      }
-      block v_42xw {
-        position: pos(40, 280, 540, 400)
-      }
-      block v_lrtf {
-        position: pos(600, 280, 560, 400)
       }
     }
     tab bottleneck_tab: CanvasLayout {
@@ -1853,6 +1839,464 @@ Dashboard squad_command_center {
       hide_label: true
     }
   }
+  block v_f17x: VizBlock {
+    label: 'Shipped (30D) copy copy copy'
+    description: 'Total issues launched last 30 days'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm__completed_issue {
+        label: '%LM - Completed Issue'
+        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation completed_issue_color {
+        label: 'Completed Issue Color'
+        formula: @aql case(
+      when: percent_lm_completed_issue < 0,
+      then: "rgb(248, 113, 113)",
+      else: "#4ade80"
+    );;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation completed_issue_icon {
+        label: 'Completed Issue Icon'
+        formula: @aql case(
+      when: percent_lm_completed_issue < 0,
+      then: "▼",
+      else: "▲"
+    );;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation percent_issue_completed {
+        label: 'Percent Issue Completed'
+        formula: @aql completed_issue / count(reporting_issues.id);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation remaining_issue {
+        label: 'Remaining Issue'
+        formula: @aql count(reporting_issues.id) - completed_issue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_project.name)
+        operator: 'is'
+        value: 'Data Alerts Revamp'
+      }
+      values: [
+        VizFieldFull {
+          ref: r(reporting_project_management.percent_completion)
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          label: 'Total'
+          ref: r(reporting_issues.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'Done'
+          ref: r(reporting_project_management.completed_issue)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'Remaining'
+          ref: 'remaining_issue'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      content: @md <style>
+  .project-card {
+    background: #141720;
+    border-radius: 14px;
+    border: 1px solid #1e2235;
+    padding: 20px 24px;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  .project-title-data-alert {
+    font-size: 18px;
+    font-weight: 800;
+    color: #E27712;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.01em;
+  }
+  
+  .project-content {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  
+  .donut-container {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+  }
+  
+  .donut-percentage-data-alert {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: 700;
+    color: #E27712;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .project-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  
+  .stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    color: #6b7194;
+    font-weight: 400;
+  }
+  
+  .stat-value {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.02em;
+  }
+  
+  .stat-total {
+    color: #1e293b;
+  }
+  
+  .stat-done {
+    color: #5db88f;
+  }
+  
+  .stat-remaining {
+    color: #e9aa2b;
+  }
+</style>
+
+<div>
+  <h3 class="project-title-data-alert">Data Alerts Revamp</h3>
+  
+  <div class="project-content">
+    <div class="donut-container">
+      <svg width="90" height="90" viewBox="0 0 90 90">
+        <!-- Background circle (incomplete portion) -->
+        <circle 
+          cx="45" 
+          cy="45" 
+          r="36" 
+          fill="none" 
+          stroke="#e8eaf0" 
+          stroke-width="9"
+        />
+        <!-- Progress circle (completed portion) -->
+        <circle 
+          cx="45" 
+          cy="45" 
+          r="36" 
+          fill="none" 
+          stroke="#E27712" 
+          stroke-width="9"
+          stroke-dasharray="{{ rows[0].values.`Done` / rows[0].values.`Total` * 226.2 }} 226.2"
+          stroke-linecap="round"
+          transform="rotate(-90 45 45)"
+          style="transition: stroke-dasharray 0.8s ease"
+        />
+      </svg>
+      <div class="donut-percentage-data-alert">{{rows[0].values.`Percent Issue Completed`}}</div>
+    </div>
+    
+  <div class="project-stats">
+      <div class="stat-row">
+        <span class="stat-label">Total</span>
+        <span class="stat-value stat-total">{{ rows[0].values.`Total` }}</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Done</span>
+        <span class="stat-value stat-done">{{ rows[0].values.`Done` }}</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Remaining</span>
+        <span class="stat-value stat-remaining">{{ rows[0].values.`Remaining` }}</span>
+      </div>
+    </div>
+  </div>
+</div>  ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_pdt0: VizBlock {
+    label: 'Shipped (30D) copy copy copy copy'
+    description: 'Total issues launched last 30 days'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm__completed_issue {
+        label: '%LM - Completed Issue'
+        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation completed_issue_color {
+        label: 'Completed Issue Color'
+        formula: @aql case(
+      when: percent_lm_completed_issue < 0,
+      then: "rgb(248, 113, 113)",
+      else: "#4ade80"
+    );;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation completed_issue_icon {
+        label: 'Completed Issue Icon'
+        formula: @aql case(
+      when: percent_lm_completed_issue < 0,
+      then: "▼",
+      else: "▲"
+    );;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation percent_issue_completed {
+        label: 'Percent Issue Completed'
+        formula: @aql completed_issue / count(reporting_issues.id);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation remaining_issue {
+        label: 'Remaining Issue'
+        formula: @aql count(reporting_issues.id) - completed_issue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_project.name)
+        operator: 'is'
+        value: 'Dashboard Performance'
+      }
+      values: [
+        VizFieldFull {
+          ref: r(reporting_project_management.percent_completion)
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          label: 'Total'
+          ref: r(reporting_issues.id)
+          aggregation: 'count'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'Done'
+          ref: r(reporting_project_management.completed_issue)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          label: 'Remaining'
+          ref: 'remaining_issue'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      content: @md <style>
+  .project-card {
+    background: #141720;
+    border-radius: 14px;
+    border: 1px solid #1e2235;
+    padding: 20px 24px;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  .project-title-dp {
+    font-size: 18px;
+    font-weight: 800;
+    color: #009B93;
+    margin: 0 0 20px 0;
+    letter-spacing: -0.01em;
+  }
+  
+  .project-content {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  
+  .donut-container {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+  }
+  
+  .donut-percentage-dp {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: 700;
+    color: #009B93;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .project-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  
+  .stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    color: #6b7194;
+    font-weight: 400;
+  }
+  
+  .stat-value {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.02em;
+  }
+  
+  .stat-total {
+    color: #1e293b;
+  }
+  
+  .stat-done {
+    color: #5db88f;
+  }
+  
+  .stat-remaining {
+    color: #e9aa2b;
+  }
+</style>
+
+<div>
+  <h3 class="project-title-dp">Dashboard Performance</h3>
+  
+  <div class="project-content">
+    <div class="donut-container">
+      <svg width="90" height="90" viewBox="0 0 90 90">
+        <!-- Background circle (incomplete portion) -->
+        <circle 
+          cx="45" 
+          cy="45" 
+          r="36" 
+          fill="none" 
+          stroke="#e8eaf0" 
+          stroke-width="9"
+        />
+        <!-- Progress circle (completed portion) -->
+        <circle 
+          cx="45" 
+          cy="45" 
+          r="36" 
+          fill="none" 
+          stroke="#009B93" 
+          stroke-width="9"
+          stroke-dasharray="{{ rows[0].values.`Done` / rows[0].values.`Total` * 226.2 }} 226.2"
+          stroke-linecap="round"
+          transform="rotate(-90 45 45)"
+          style="transition: stroke-dasharray 0.8s ease"
+        />
+      </svg>
+      <div class="donut-percentage-dp">{{rows[0].values.`Percent Issue Completed`}}</div>
+    </div>
+    
+  <div class="project-stats">
+      <div class="stat-row">
+        <span class="stat-label">Total</span>
+        <span class="stat-value stat-total">{{ rows[0].values.`Total` }}</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Done</span>
+        <span class="stat-value stat-done">{{ rows[0].values.`Done` }}</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Remaining</span>
+        <span class="stat-value stat-remaining">{{ rows[0].values.`Remaining` }}</span>
+      </div>
+    </div>
+  </div>
+</div>  ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
   block v_x2gw: VizBlock {
     label: 'Status Distribution by Project'
     description: "Where each project's issues are sitting"
@@ -2312,6 +2756,23 @@ Dashboard squad_command_center {
       shadow: 'none'
     }
   }
+  block t_24js: TextBlock {
+    content: @md ## **Squad Reporting - Project Management**;;
+    theme {
+      text {
+        font_color: '#1e40af'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'solid'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+    }
+  }
   block t_m4lt: TextBlock {
     content: @md ### **🎯 Quality**;;
     theme {
@@ -2505,443 +2966,449 @@ Dashboard squad_command_center {
       hide_label: true
     }
   }
-  block t_a0mx: TextBlock {
-    content: @md <div style="width: 8px; 
-      height: 8px; 
-      margin: 15px;
-      border-radius: 50%; 
-      background: rgb(52, 211, 153); 
-      box-shadow: rgba(52, 211, 153, 0.5) 0px 0px 10px 2px;"
-</div>;;
-    theme: BlockTheme {
-      border {
-        border_width: 0
-        border_style: 'none'
-        border_color: 'transparent'
-      }
-      background {
-        bg_color: 'transparent'
-      }
-      shadow: 'none'
-    }
-  }
-  block t_zb56: TextBlock {
-    content: @md ## **Squad Reporting - Project Management**;;
-    theme: BlockTheme {
-      background {
-        bg_color: 'transparent'
-      }
-      text {
-        font_color: '#1e40af'
-      }
-      border {
-        border_width: 0
-        border_style: 'solid'
-        border_color: 'transparent'
-      }
-      shadow: 'none'
-    }
-  }
-  block t_sv82: TextBlock {
-    content: @md <div style="font-family: Outfit; font-size: 16px; font-weight: 700; color: rgb(26, 29, 46); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid rgb(225, 228, 236);"></div>;;
-    theme {
-      text {
-        font_color: '#ffffff'
-      }
-      border {
-        border_width: 0
-        border_style: 'none'
-        border_color: 'transparent'
-      }
-      shadow: 'none'
-      background {
-        bg_color: 'transparent'
-      }
-    }
-  }
-  block t_02ub: TextBlock {
-    content: @md ### **🎯 Quality**;;
-    theme {
-      text {
-        font_color: '#475569'
-      }
-      border {
-        border_width: 0
-        border_color: 'transparent'
-        border_style: 'none'
-      }
-      background {
-        bg_color: 'transparent'
-      }
-      shadow: 'none'
-    }
-  }
-  block v_42xw: VizBlock {
-    label: 'Bug Ratio (Week by Week)'
-    description: 'What % of shipped work is bugs?'
-    viz: CombinationChart {
-      dataset: reporting_project_management
-      x_axis: VizFieldFull {
-        ref: r(reporting_issues.completed_at)
-        transformation: 'datetrunc week'
-        format {
-          type: 'date'
-          pattern: 'wwww'
-        }
-      }
-      y_axis {
-        series {
-          mark_type: 'column'
-          field: VizFieldFull {
-            ref: r(reporting_project_management.number_of_bug)
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-          settings {
-            color: '#982021FF'
-            color_palette: 0
-          }
-        }
-      }
-      y_axis {
-        settings {
-          alignment: 'right'
-        }
-        series {
-          mark_type: 'line'
-          field: VizFieldFull {
-            ref: r(reporting_project_management.bug_ratio)
-            format {
-              type: 'number'
-              pattern: '#,###%'
-            }
-          }
-          settings {
-            color: '#E9AA2BFF'
-            line_interpolation: 'smooth'
-          }
-        }
-      }
-      settings {
-        show_data_points: true
-        row_limit: 5000
-        x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_lrtf: VizBlock {
-    label: 'Work Type Distribution'
-    description: 'Stacked area — what type of work ships?'
-    viz: AreaChart {
-      dataset: reporting_project_management
-      x_axis: VizFieldFull {
-        ref: r(reporting_issues.completed_at)
-        transformation: 'datetrunc month'
-        format {
-          type: 'date'
-          pattern: 'LLL yyyy'
-        }
-      }
-      legend: VizFieldFull {
-        ref: r(reporting_issues.label)
-        format {
-          type: 'text'
-        }
-      }
-      y_axis {
-        settings {
-          stack_series_by: 'value'
-        }
-        series {
-          field: VizFieldFull {
-            label: 'Issues'
-            ref: r(reporting_issues.id)
-            aggregation: 'count'
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-          settings {
-            point {
-              value: 'bug'
-              line_interpolation: 'smooth'
-            }
-            point {
-              value: 'chore'
-              line_interpolation: 'smooth'
-            }
-            point {
-              value: 'feature'
-              line_interpolation: 'smooth'
-            }
-            point {
-              value: 'improvement'
-              line_interpolation: 'smooth'
-            }
-            point {
-              value: 'tech_debt'
-              line_interpolation: 'smooth'
-            }
-          }
-        }
-      }
-      settings {
-        row_limit: 5000
-        x_axis_show_null_datetime: false
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_3ck8: VizBlock {
-    label: 'Explore 2.0 - Progress copy'
-    description: 'Total issues launched last 30 days'
-    viz: MarkdownViz {
-      dataset: reporting_project_management
-      calculation metric_e98dbc4 {
-        label: 'LM - Completed issue'
-        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation lm__completed_issue {
-        label: '%LM - Completed Issue'
-        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation completed_issue_color {
-        label: 'Completed Issue Color'
-        formula: @aql case(
-      when: percent_lm_completed_issue < 0,
-      then: "rgb(248, 113, 113)",
-      else: "#4ade80"
-    );;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation completed_issue_icon {
-        label: 'Completed Issue Icon'
-        formula: @aql case(
-      when: percent_lm_completed_issue < 0,
-      then: "▼",
-      else: "▲"
-    );;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation percent_issue_completed {
-        label: 'Percent Issue Completed'
-        formula: @aql completed_issue / count(reporting_issues.id);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation remaining_issue {
-        label: 'Remaining Issue'
-        formula: @aql count(reporting_issues.id) - completed_issue;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      filter {
-        field: r(reporting_project.name)
-        operator: 'is'
-        value: 'Explore 2'
-      }
-      values: [
-        VizFieldFull {
-          ref: r(reporting_project_management.percent_completion)
-          format {
-            type: 'number'
-            pattern: '#,###%'
-          }
-        },
-        VizFieldFull {
-          label: 'Total'
-          ref: r(reporting_issues.id)
-          aggregation: 'count'
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        },
-        VizFieldFull {
-          label: 'Done'
-          ref: r(reporting_project_management.completed_issue)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        },
-        VizFieldFull {
-          label: 'Remaining'
-          ref: 'remaining_issue'
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        }
-      ]
-      content: @md <style>
-  .project-card {
-    background: #141720;
-    border-radius: 14px;
-    border: 1px solid #1e2235;
-    padding: 20px 24px;
-    font-family: 'Outfit', sans-serif;
-  }
-  
-  .project-title {
-    font-size: 18px;
-    font-weight: 800;
-    color: #1e40af;
-    margin: 0 0 20px 0;
-    letter-spacing: -0.01em;
-  }
-  
-  .project-content {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-  }
-  
-  .donut-container {
-    position: relative;
-    width: 90px;
-    height: 90px;
-    flex-shrink: 0;
-  }
-  
-  .donut-percentage {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 24px;
-    font-weight: 700;
-    color: #4f8cff;
-    font-family: 'JetBrains Mono', monospace;
-  }
-  
-  .project-stats {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    flex: 1;
-  }
-  
-  .stat-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .stat-label {
-    font-size: 14px;
-    color: #6b7194;
-    font-weight: 400;
-  }
-  
-  .stat-value {
-    font-size: 16px;
-    font-weight: 600;
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: -0.02em;
-  }
-  
-  .stat-total {
-    color: #1e293b;
-  }
-  
-  .stat-done {
-    color: #5db88f;
-  }
-  
-  .stat-remaining {
-    color: #e9aa2b;
-  }
-</style>
-
-<div>
-  <h3 class="project-title">Explore 2.0</h3>
-  
-  <div class="project-content">
-    <div class="donut-container">
-      <svg width="90" height="90" viewBox="0 0 90 90">
-        <!-- Background circle (incomplete portion) -->
-        <circle 
-          cx="45" 
-          cy="45" 
-          r="36" 
-          fill="none" 
-          stroke="#e8eaf0" 
-          stroke-width="9"
-        />
-        <!-- Progress circle (completed portion) -->
-        <circle 
-          cx="45" 
-          cy="45" 
-          r="36" 
-          fill="none" 
-          stroke="#4f8cff" 
-          stroke-width="9"
-          stroke-dasharray="{{ rows[0].values.`Done` / rows[0].values.`Total` * 226.2 }} 226.2"
-          stroke-linecap="round"
-          transform="rotate(-90 45 45)"
-          style="transition: stroke-dasharray 0.8s ease"
-        />
-      </svg>
-      <div class="donut-percentage">{{rows[0].values.`Percent Issue Completed`}}</div>
-    </div>
-    
-  <div class="project-stats">
-      <div class="stat-row">
-        <span class="stat-label">Total</span>
-        <span class="stat-value stat-total">{{ rows[0].values.`Total` }}</span>
-      </div>
-      <div class="stat-row">
-        <span class="stat-label">Done</span>
-        <span class="stat-value stat-done">{{ rows[0].values.`Done` }}</span>
-      </div>
-      <div class="stat-row">
-        <span class="stat-label">Remaining</span>
-        <span class="stat-value stat-remaining">{{ rows[0].values.`Remaining` }}</span>
-      </div>
-    </div>
-  </div>
-</div>   ;;
-      settings {
-        show_row_total: true
-        show_column_total: true
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-    settings {
-      hide_label: true
-    }
-  }
   theme: ai_1773979634521_3
   interactions: [
+    FilterInteraction {
+      from: 'v_x8r0'
+      to: [
+        CustomMapping {
+          block: [
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_997c'
+      to: [
+        CustomMapping {
+          block: [
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_gt75'
+      to: [
+        CustomMapping {
+          block: [
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_uhk0'
+      to: [
+        CustomMapping {
+          block: [
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_sffe'
+      to: [
+        CustomMapping {
+          block: [
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_jdaq'
+      to: [
+        CustomMapping {
+          block: [
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_3qu5'
+      to: [
+        CustomMapping {
+          block: [
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_gq0k'
+      to: [
+        CustomMapping {
+          block: [
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_lvp5'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_project_name'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw',
+            'f_project_name_ynq6'
+          ]
+          disabled: true
+        }
+      ]
+    },
     FilterInteraction {
       from: 'f_project_name_ynq6'
       to: [
         CustomMapping {
           block: [
             'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
             'v_x2gw',
             'v_x4xc',
             'f_project_name'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_d3sa'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_22mj'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_y7bo'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_f17x'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_pdt0'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_x2gw'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_x4xc'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_6rg8'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_6pdw'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }

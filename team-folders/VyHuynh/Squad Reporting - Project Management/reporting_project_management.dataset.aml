@@ -73,22 +73,6 @@ Dataset reporting_project_management {
     description: ""
     definition: @aql avg(reporting_stage_duration.duration_hours) / 24;;
   }
-  metric number_of_bug {
-    label: "Number Of Bug"
-    type: "number"
-    hidden: false
-    description: ""
-    definition: @aql count(reporting_issues.id)
-| where(reporting_issues.label == "Bug");;
-    format: ""
-  }
-  metric bug_ratio {
-    label: "Bug Ratio"
-    type: "number"
-    hidden: false
-    description: ""
-    definition: @aql number_of_bug / count(reporting_issues.id);;
-  }
   dimension duration_day {
     label: "Duration Day"
     type: "number"
