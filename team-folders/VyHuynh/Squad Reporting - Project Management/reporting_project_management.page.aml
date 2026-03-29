@@ -255,7 +255,6 @@ Dashboard squad_command_center {
       block t_z5ve {
         position: pos(1100, 1920, 60, 40)
       }
-      width: 1220
     }
     tab workload_tab: CanvasLayout {
       label: '👥 Workload'
