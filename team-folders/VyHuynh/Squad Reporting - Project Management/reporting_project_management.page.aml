@@ -250,23 +250,6 @@ Dashboard squad_command_center {
         position: pos(40, 1460, 1140, 400)
       }
     }
-    tab bottleneck_tab: CanvasLayout {
-      label: '⚡ Bottlenecks'
-      height: 1500
-      grid_size: 20
-      block bottleneck_trend {
-        position: pos(0, 0, 600, 360)
-      }
-      block stage_dist {
-        position: pos(600, 0, 600, 360)
-      }
-      block stale_header {
-        position: pos(0, 380, 1200, 50)
-      }
-      block stale_table {
-        position: pos(0, 440, 1200, 400)
-      }
-    }
     tab workload_tab: CanvasLayout {
       label: '👥 Workload'
       height: 1200
@@ -2661,165 +2644,7 @@ Dashboard squad_command_center {
       shadow: 'none'
     }
   }
-  block v_6pdw: VizBlock {
-    label: 'Bug Created (30D)'
-    description: 'Total issues launched last 30 days'
-    viz: MarkdownViz {
-      dataset: reporting_project_management
-      calculation metric_e98dbc4 {
-        label: 'LM - Completed issue'
-        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation lm__completed_issue {
-        label: '%LM - Completed Issue'
-        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation completed_issue_color {
-        label: 'Completed Issue Color'
-        formula: @aql case(
-  when: lm_bug_ratio < 0,
-  then: "#5DB88F",
-  else: "rgb(248, 113, 113)"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation completed_issue_icon {
-        label: 'Completed Issue Icon'
-        formula: @aql case(
-  when: lm_bug_ratio < 0,
-  then: "▼",
-  else: "▲"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation number_of_bug {
-        label: 'Number Of Bug'
-        formula: @aql count(reporting_issues.id) | where(reporting_issues.label == "bug");;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation bug_ratio {
-        label: 'Bug Ratio'
-        formula: @aql number_of_bug / count(reporting_issues.id);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation lm_bug_ratio {
-        label: 'LM - Bug Ratio'
-        formula: @aql bug_ratio - (bug_ratio | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true));;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation lm_bugs {
-        label: 'LM - Number of Bug'
-        formula: @aql safe_divide(number_of_bug, number_of_bug | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      filter {
-        field: r(reporting_issues.completed_at)
-        operator: 'matches'
-        value: '2026-02-01 - 2026-02-28'
-      }
-      values: [
-        VizFieldFull {
-          ref: 'number_of_bug'
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        },
-        VizFieldFull {
-          ref: 'lm_bugs'
-          format {
-            type: 'number'
-            pattern: '#,###%'
-          }
-        },
-        VizFieldFull {
-          ref: 'completed_issue_color'
-          format {
-            type: 'text'
-          }
-        },
-        VizFieldFull {
-          ref: 'completed_issue_icon'
-          format {
-            type: 'text'
-          }
-        }
-      ]
-      content: @md <style>
 
-  .kpi-title {
-    margin: 0;
-    color: #8e94a5;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .kpi-main {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-top: 12px;
-  }
-  .kpi-bug-value {
-    font-size: 52px;
-    font-weight: 500;
-    color: #5DB88F;
-    line-height: 1;
-  }
-  .kpi-percent {
-    font-weight: 700;
-    font-size: 20px;
-  }
-  .kpi-footer {
-    margin: 12px 0 0 0;
-    font-size: 15px;
-    color: #525866;
-  }
-  .kpi-bug-compare {
-    color: {{ rows[0].values.`Completed Issue Color` }};
-    font-weight: 500
-  }
-  
-</style>
-
-<div>
-  <p class="kpi-title">Bug Created (30D)</p>
-  <span class="kpi-bug-value">
-    {{ rows[0].values.`Number Of Bug` }}
-  </span>
-
-  <div class="kpi-bug-ratio-compare" style="margin-top: 8px">
-      {{ rows[0].values.`Completed Issue Icon` }}
-      {{ rows[0].values.`LM - Number of Bug` }}
-  <span style="color: #525866;">
-      vs last month</span>
-  </div>
-
-</div>               ;;
-      settings {
-        show_row_total: true
-        show_column_total: true
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-    settings {
-      hide_label: true
-    }
-  }
   block t_3f6l: TextBlock {
     content: @md ### **🎯 Quality**;;
     theme {
@@ -3028,7 +2853,7 @@ Dashboard squad_command_center {
       }
     }
   }
-  
+
   block v_yhu3: VizBlock {
     label: 'Bug Ratio (30D) copy copy'
     viz: MarkdownViz {
