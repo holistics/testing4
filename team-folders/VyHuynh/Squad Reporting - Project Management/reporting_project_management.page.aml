@@ -3819,9 +3819,28 @@ Dashboard squad_command_center {
     }
   }
   block v_45a6: VizBlock {
-    label: 'Identifier, Title and 2 more'
+    label: 'Identifier, Title and 5 more'
     viz: MarkdownViz {
       dataset: reporting_project_management
+      calculation stage_color {
+        label: 'Stage Color'
+        formula: @aql case(
+  when: reporting_stage_duration.stage == "In Progress",
+  then: "#206BC4",
+  when: reporting_stage_duration.stage == "In PR Review",
+  then: "#E9AA2B",
+  when: reporting_stage_duration.stage == "Deploying to Staging",
+  then: "#60A5FA",
+  when: reporting_stage_duration.stage == "Testing on Staging",
+  then: "#FCD34D",
+  when: reporting_stage_duration.stage == "Waiting for Deployment",
+  then: "#87A6C7",
+  else: "others"
+);;
+        calc_type: 'dimension'
+        data_type: 'text'
+        model: reporting_stage_duration
+      }
       rows: [
         VizFieldFull {
           ref: r(reporting_issues.identifier)
@@ -3842,10 +3861,29 @@ Dashboard squad_command_center {
           }
         },
         VizFieldFull {
+          ref: ref('reporting_stage_duration', 'stage_color')
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
           ref: r(reporting_stage_duration.duration_hours)
           format {
             type: 'number'
             pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(reporting_issues.assignee_id)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: r(reporting_issues.priority)
+          format {
+            type: 'text'
           }
         }
       ]
@@ -3919,7 +3957,7 @@ Dashboard squad_command_center {
     font-size: 0.875rem;
     color: #e5e7eb;
   }
-  
+
   .stage-badge {
     display: inline-block;
     padding: 0.25rem 0.75rem;
@@ -3927,26 +3965,8 @@ Dashboard squad_command_center {
     font-size: 0.75rem;
     font-weight: 600;
     text-align: center;
-  }
-  
-  .stage-pr-review {
-    background-color: #78350f;
-    color: #fbbf24;
-  }
-  
-  .stage-staging {
-    background-color: #164e63;
-    color: #22d3ee;
-  }
-  
-  .stage-qa {
-    background-color: #14532d;
-    color: #4ade80;
-  }
-  
-  .stage-dev {
-    background-color: #1e3a8a;
-    color: #60a5fa;
+    background-color: var(--stage-bg-color);
+    color: var(--stage-text-color);
   }
   
   .hours-container {
@@ -4051,6 +4071,10 @@ Dashboard squad_command_center {
     <div class="table-header">
       <div class="table-header-cell">Issue</div>
       <div class="table-header-cell">Title</div>
+      <div class="table-header-cell">Stage</div>
+      <div class="table-header-cell">Duration Hour</div>
+      <div class="table-header-cell">Assignee ID</div>
+      <div class="table-header-cell">Priority</div>
     </div>
 
   {% map(rows) %}
@@ -4062,10 +4086,18 @@ Dashboard squad_command_center {
       {{ `Title` }}
     </div>
     <div data-label="Stage">
-      {{ `Stage` }}
+      <span class="stage-badge" style="background-color: {{ `Stage Color`.raw }}; color: #ffffff;">      
+        {{ `Stage` }}
+      </span>    
     </div>
     <div data-label="Duration Hours">
       {{ `Duration Hours` }}
+    </div>
+    <div class="assignee" data-label="Assignee">
+      {{ `Assignee` }}
+    </div>
+    <div data-label="Priority">
+      <span class="priority priority-{{ `Priority` }}">{{ `Priority` }}</span>
     </div>
   </div>
   {% end %}
