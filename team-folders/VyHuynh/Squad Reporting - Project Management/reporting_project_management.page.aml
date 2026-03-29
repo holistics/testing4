@@ -197,7 +197,7 @@ Dashboard squad_command_center {
     }
     tab quality_tab: CanvasLayout {
       label: '🎯 Quality & Bottlenecks'
-      height: 2000
+      height: 1980
       grid_size: 20
       block t_87la {
         position: pos(40, 20, 740, 80)
@@ -216,18 +216,18 @@ Dashboard squad_command_center {
         position: pos(20, 200, 740, 60)
       }
       block v_baqx {
-        position: pos(40, 320, 540, 400)
+        position: pos(40, 300, 540, 400)
         layer: 1
       }
       block v_n6j9 {
-        position: pos(600, 320, 560, 400)
+        position: pos(600, 300, 560, 400)
         layer: 1
       }
       block v_hl2j {
-        position: pos(40, 740, 540, 400)
+        position: pos(40, 720, 540, 400)
       }
       block v_7fkd {
-        position: pos(600, 740, 560, 400)
+        position: pos(600, 720, 560, 400)
         layer: 1
       }
       block v_yro9 {
@@ -235,25 +235,25 @@ Dashboard squad_command_center {
         layer: 1
       }
       block t_q684 {
-        position: pos(40, 1200, 740, 60)
+        position: pos(40, 1180, 740, 60)
       }
       block t_lfpp {
-        position: pos(40, 1240, 1140, 60)
+        position: pos(40, 1220, 1140, 60)
       }
       block v_45a6 {
-        position: pos(40, 1300, 1140, 560)
+        position: pos(40, 1280, 1140, 560)
       }
       block t_aax1 {
-        position: pos(40, 1880, 1140, 40)
+        position: pos(40, 1860, 1140, 40)
       }
       block t_my4d {
-        position: pos(40, 1920, 200, 60)
+        position: pos(40, 1900, 200, 60)
       }
       block t_677a {
-        position: pos(1040, 1940, 60, 40)
+        position: pos(1040, 1920, 60, 40)
       }
       block t_z5ve {
-        position: pos(1100, 1940, 60, 40)
+        position: pos(1100, 1920, 60, 40)
       }
       width: 1220
     }
@@ -1098,18 +1098,6 @@ Dashboard squad_command_center {
           debug_comments: true
         }
       }
-    }
-  }
-  block f_project_name: FilterBlock {
-    label: 'Project Name'
-    type: 'field'
-    source: FieldFilterSource {
-      dataset: reporting_project_management
-      field: r(reporting_project.name)
-    }
-    default {
-      operator: 'is'
-      value: 'Explore 2'
     }
   }
   block f_project_name_ynq6: FilterBlock {
