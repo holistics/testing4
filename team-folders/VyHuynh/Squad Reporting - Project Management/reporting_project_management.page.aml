@@ -2651,12 +2651,6 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'text'
       }
-      calculation number_of_bug {
-        label: 'Number Of Bug'
-        formula: @aql count(reporting_issues.id) | where(reporting_issues.label == "bug");;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
       calculation bug_ratio {
         label: 'Bug Ratio'
         formula: @aql number_of_bug / count(reporting_issues.id);;
@@ -2857,12 +2851,6 @@ Dashboard squad_command_center {
 );;
         calc_type: 'measure'
         data_type: 'text'
-      }
-      calculation number_of_bug {
-        label: 'Number Of Bug'
-        formula: @aql count(reporting_issues.id) | where(reporting_issues.label == "bug");;
-        calc_type: 'measure'
-        data_type: 'number'
       }
       calculation bug_ratio {
         label: 'Bug Ratio'
@@ -3359,7 +3347,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>            ;;
+</div>              ;;
       settings {
         show_row_total: true
         show_column_total: true
