@@ -217,6 +217,14 @@ Dashboard squad_command_center {
       block t_3f6l {
         position: pos(20, 200, 740, 60)
       }
+      block v_baqx {
+        position: pos(40, 300, 540, 400)
+        layer: 1
+      }
+      block v_n6j9 {
+        position: pos(600, 300, 560, 400)
+        layer: 1
+      }
     }
     tab bottleneck_tab: CanvasLayout {
       label: '⚡ Bottlenecks'
@@ -2978,6 +2986,131 @@ Dashboard squad_command_center {
       shadow: 'none'
     }
   }
+  block v_baqx: VizBlock {
+    label: 'Bug Ratio (Week by Week)'
+    description: 'What % of shipped work is bugs?'
+    viz: CombinationChart {
+      dataset: reporting_project_management
+      x_axis: VizFieldFull {
+        ref: r(reporting_issues.completed_at)
+        transformation: 'datetrunc week'
+        format {
+          type: 'date'
+          pattern: 'wwww'
+        }
+      }
+      y_axis {
+        series {
+          mark_type: 'column'
+          field: VizFieldFull {
+            ref: r(reporting_project_management.number_of_bug)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color: '#982021FF'
+          }
+        }
+      }
+      y_axis {
+        settings {
+          alignment: 'right'
+        }
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            ref: r(reporting_project_management.bug_ratio)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color: '#E9AA2BFF'
+            line_interpolation: 'smooth'
+          }
+        }
+      }
+      settings {
+        show_data_points: true
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_n6j9: VizBlock {
+    label: 'Work Type Distribution'
+    description: 'What type of work ships?'
+    viz: AreaChart {
+      dataset: reporting_project_management
+      x_axis: VizFieldFull {
+        ref: r(reporting_issues.completed_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(reporting_issues.label)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        settings {
+          stack_series_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            label: 'Issues'
+            ref: r(reporting_issues.id)
+            aggregation: 'count'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            point {
+              value: 'Bug'
+              line_interpolation: 'smooth'
+            }
+            point {
+              value: 'Chore'
+              line_interpolation: 'smooth'
+            }
+            point {
+              value: 'Feature'
+              line_interpolation: 'smooth'
+            }
+            point {
+              value: 'Improvement'
+              line_interpolation: 'smooth'
+            }
+            point {
+              value: 'Tech Debt'
+              line_interpolation: 'smooth'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   theme: ai_1773979634521_3
   interactions: [
     FilterInteraction {
@@ -2994,7 +3127,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3014,7 +3149,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3034,7 +3171,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3054,7 +3193,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3074,7 +3215,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3094,7 +3237,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3114,7 +3259,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3134,7 +3281,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3159,7 +3308,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3187,6 +3338,8 @@ Dashboard squad_command_center {
             'v_x4xc',
             'v_6rg8',
             'v_6pdw',
+            'v_baqx',
+            'v_n6j9',
             'f_project_name_ynq6'
           ]
           disabled: true
@@ -3228,7 +3381,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3253,7 +3408,9 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3276,7 +3433,9 @@ Dashboard squad_command_center {
             'v_d3sa',
             'v_22mj',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3299,7 +3458,9 @@ Dashboard squad_command_center {
             'v_d3sa',
             'v_22mj',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3322,7 +3483,9 @@ Dashboard squad_command_center {
             'v_d3sa',
             'v_22mj',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3345,7 +3508,9 @@ Dashboard squad_command_center {
             'v_d3sa',
             'v_22mj',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3368,7 +3533,9 @@ Dashboard squad_command_center {
             'v_d3sa',
             'v_22mj',
             'v_6rg8',
-            'v_6pdw'
+            'v_6pdw',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3394,7 +3561,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_baqx',
+            'v_n6j9'
           ]
           disabled: true
         }
@@ -3420,7 +3589,65 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_baqx',
+            'v_n6j9'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_baqx'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_n6j9'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
