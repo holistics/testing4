@@ -78,7 +78,9 @@ Dataset reporting_project_management {
     type: "number"
     hidden: false
     description: ""
-    definition: @aql count(reporting_issues.id) | where(reporting_issues.label == "bug");;
+    definition: @aql count(reporting_issues.id)
+| where(reporting_issues.label == "Bug");;
+    format: ""
   }
   metric bug_ratio {
     label: "Bug Ratio"
