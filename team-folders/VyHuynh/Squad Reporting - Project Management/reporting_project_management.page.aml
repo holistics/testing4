@@ -118,7 +118,7 @@ Dashboard squad_command_center {
         position: pos(20, 860, 1080, 360)
       }
       block f_project_name_ynq6 {
-        position: pos(20, 100, 300, 80)
+        position: pos(40, 100, 300, 80)
       }
       block t_87la {
         position: pos(40, 20, 740, 80)
@@ -157,7 +157,7 @@ Dashboard squad_command_center {
         position: pos(20, 300, 1140, 400)
       }
       block f_project_name_ynq6 {
-        position: pos(20, 100, 300, 80)
+        position: pos(40, 100, 300, 80)
       }
       block v_d3sa {
         position: pos(20, 720, 540, 400)
@@ -197,6 +197,15 @@ Dashboard squad_command_center {
       }
       width: 1180
     }
+    tab quality_tab: CanvasLayout {
+      label: '🎯 Quality'
+      height: 1300
+      grid_size: 20
+      block t_24js {
+        position: pos(40, 20, 740, 80)
+        layer: 1
+      }
+    }
     tab bottleneck_tab: CanvasLayout {
       label: '⚡ Bottlenecks'
       height: 1500
@@ -232,35 +241,6 @@ Dashboard squad_command_center {
       }
       block cycle_label {
         position: pos(0, 760, 1200, 340)
-      }
-    }
-    tab quality_tab: CanvasLayout {
-      label: '🎯 Quality'
-      height: 1300
-      grid_size: 20
-      block kpi_bug_ratio {
-        position: pos(0, 0, 300, 120)
-      }
-      block kpi_bugs_created {
-        position: pos(300, 0, 300, 120)
-      }
-      block kpi_tech_debt {
-        position: pos(600, 0, 300, 120)
-      }
-      block kpi_bug_cycle {
-        position: pos(900, 0, 300, 120)
-      }
-      block bug_trend {
-        position: pos(0, 140, 600, 360)
-      }
-      block label_dist {
-        position: pos(600, 140, 600, 360)
-      }
-      block priority_scatter {
-        position: pos(0, 520, 600, 360)
-      }
-      block quality_cycle_label {
-        position: pos(600, 520, 600, 360)
       }
     }
   }
@@ -2603,6 +2583,389 @@ Dashboard squad_command_center {
       padding: 0
     }
   }
+  block v_6rg8: VizBlock {
+    label: 'Bug Ratio (30D)'
+    description: 'Total issues launched last 30 days'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm__completed_issue {
+        label: '%LM - Completed Issue'
+        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation completed_issue_color {
+        label: 'Completed Issue Color'
+        formula: @aql case(
+  when: lm_bug_ratio < 0,
+  then: "#5DB88F",
+  else: "rgb(248, 113, 113)"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation completed_issue_icon {
+        label: 'Completed Issue Icon'
+        formula: @aql case(
+  when: lm_bug_ratio < 0,
+  then: "▼",
+  else: "▲"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation number_of_bug {
+        label: 'Number Of Bug'
+        formula: @aql count(reporting_issues.id) | where(reporting_issues.label == "bug");;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation bug_ratio {
+        label: 'Bug Ratio'
+        formula: @aql number_of_bug / count(reporting_issues.id);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm_bug_ratio {
+        label: 'LM - Bug Ratio'
+        formula: @aql bug_ratio - (bug_ratio | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: '2026-02-01 - 2026-02-28'
+      }
+      values: [
+        VizFieldFull {
+          ref: 'bug_ratio'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'lm_bug_ratio'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'completed_issue_color'
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: 'completed_issue_icon'
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      content: @md <style>
+
+  .kpi-title {
+    margin: 0;
+    color: #8e94a5;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .kpi-bug-ratio-value {
+    font-size: 52px;
+    font-weight: 500;
+    color: #5DB88F;
+    line-height: 1;
+  }
+  .kpi-percent {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .kpi-footer {
+    margin: 12px 0 0 0;
+    font-size: 15px;
+    color: #525866;
+  }
+  .kpi-bug-ratio-compare {
+    color: {{ rows[0].values.`Completed Issue Color` }};
+    font-weight: 500
+  }
+  
+</style>
+
+<div>
+  <p class="kpi-title">Bug Ratio (30D)</p>
+  <span class="kpi-bug-ratio-value">
+    {{ rows[0].values.`Bug Ratio` }}
+  </span>
+
+  <div class="kpi-bug-ratio-compare" style="margin-top: 8px">
+      {{ rows[0].values.`Completed Issue Icon` }}
+      {{ rows[0].values.`LM - Bug Ratio` }}
+  <span style="color: #525866;">
+      vs last month</span>
+  </div>
+
+</div>               ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block t_eh1a: TextBlock {
+    content: @md <div style="width: 8px; 
+      height: 8px; 
+      margin: 15px;
+      border-radius: 50%; 
+      background: rgb(52, 211, 153); 
+      box-shadow: rgba(52, 211, 153, 0.5) 0px 0px 10px 2px;"
+</div>;;
+    theme {
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+    }
+  }
+  block t_24js: TextBlock {
+    content: @md ## **Squad Reporting - Project Management**;;
+    theme {
+      text {
+        font_color: '#1e40af'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'solid'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+    }
+  }
+  block t_m4lt: TextBlock {
+    content: @md ### **🎯 Quality**;;
+    theme {
+      text {
+        font_color: '#475569'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+    }
+  }
+  block t_k7fo: TextBlock {
+    content: @md <div style="font-family: Outfit; font-size: 16px; font-weight: 700; color: rgb(26, 29, 46); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid rgb(225, 228, 236);"></div>;;
+    theme {
+      text {
+        font_color: '#ffffff'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+    }
+  }
+  block v_6pdw: VizBlock {
+    label: 'Bug Created (30D)'
+    description: 'Total issues launched last 30 days'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm__completed_issue {
+        label: '%LM - Completed Issue'
+        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation completed_issue_color {
+        label: 'Completed Issue Color'
+        formula: @aql case(
+  when: lm_bug_ratio < 0,
+  then: "#5DB88F",
+  else: "rgb(248, 113, 113)"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation completed_issue_icon {
+        label: 'Completed Issue Icon'
+        formula: @aql case(
+  when: lm_bug_ratio < 0,
+  then: "▼",
+  else: "▲"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation number_of_bug {
+        label: 'Number Of Bug'
+        formula: @aql count(reporting_issues.id) | where(reporting_issues.label == "bug");;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation bug_ratio {
+        label: 'Bug Ratio'
+        formula: @aql number_of_bug / count(reporting_issues.id);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm_bug_ratio {
+        label: 'LM - Bug Ratio'
+        formula: @aql bug_ratio - (bug_ratio | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm_bugs {
+        label: 'LM - Number of Bug'
+        formula: @aql safe_divide(number_of_bug, number_of_bug | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: '2026-02-01 - 2026-02-28'
+      }
+      values: [
+        VizFieldFull {
+          ref: 'number_of_bug'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: 'lm_bugs'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'completed_issue_color'
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: 'completed_issue_icon'
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      content: @md <style>
+
+  .kpi-title {
+    margin: 0;
+    color: #8e94a5;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .kpi-bug-value {
+    font-size: 52px;
+    font-weight: 500;
+    color: #5DB88F;
+    line-height: 1;
+  }
+  .kpi-percent {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .kpi-footer {
+    margin: 12px 0 0 0;
+    font-size: 15px;
+    color: #525866;
+  }
+  .kpi-bug-compare {
+    color: {{ rows[0].values.`Completed Issue Color` }};
+    font-weight: 500
+  }
+  
+</style>
+
+<div>
+  <p class="kpi-title">Bug Created (30D)</p>
+  <span class="kpi-bug-value">
+    {{ rows[0].values.`Number Of Bug` }}
+  </span>
+
+  <div class="kpi-bug-ratio-compare" style="margin-top: 8px">
+      {{ rows[0].values.`Completed Issue Icon` }}
+      {{ rows[0].values.`LM - Number of Bug` }}
+  <span style="color: #525866;">
+      vs last month</span>
+  </div>
+
+</div>               ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
   theme: ai_1773979634521_3
   interactions: [
     FilterInteraction {
@@ -2617,7 +2980,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2635,7 +3000,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2653,7 +3020,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2671,7 +3040,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2689,7 +3060,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2707,7 +3080,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2725,7 +3100,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2743,7 +3120,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2766,7 +3145,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2792,6 +3173,8 @@ Dashboard squad_command_center {
             'v_pdt0',
             'v_x2gw',
             'v_x4xc',
+            'v_6rg8',
+            'v_6pdw',
             'f_project_name_ynq6'
           ]
           disabled: true
@@ -2831,7 +3214,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2854,7 +3239,9 @@ Dashboard squad_command_center {
             'v_f17x',
             'v_pdt0',
             'v_x2gw',
-            'v_x4xc'
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2875,7 +3262,9 @@ Dashboard squad_command_center {
             'v_gq0k',
             'v_lvp5',
             'v_d3sa',
-            'v_22mj'
+            'v_22mj',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2896,7 +3285,9 @@ Dashboard squad_command_center {
             'v_gq0k',
             'v_lvp5',
             'v_d3sa',
-            'v_22mj'
+            'v_22mj',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2917,7 +3308,9 @@ Dashboard squad_command_center {
             'v_gq0k',
             'v_lvp5',
             'v_d3sa',
-            'v_22mj'
+            'v_22mj',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2938,7 +3331,9 @@ Dashboard squad_command_center {
             'v_gq0k',
             'v_lvp5',
             'v_d3sa',
-            'v_22mj'
+            'v_22mj',
+            'v_6rg8',
+            'v_6pdw'
           ]
           disabled: true
         }
@@ -2959,7 +3354,61 @@ Dashboard squad_command_center {
             'v_gq0k',
             'v_lvp5',
             'v_d3sa',
-            'v_22mj'
+            'v_22mj',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_6rg8'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_6pdw'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc'
           ]
           disabled: true
         }
