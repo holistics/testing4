@@ -254,23 +254,6 @@ Dashboard squad_command_center {
         position: pos(40, 1460, 1140, 400)
       }
     }
-    tab bottleneck_tab: CanvasLayout {
-      label: '⚡ Bottlenecks'
-      height: 1500
-      grid_size: 20
-      block bottleneck_trend {
-        position: pos(0, 0, 600, 360)
-      }
-      block stage_dist {
-        position: pos(600, 0, 600, 360)
-      }
-      block stale_header {
-        position: pos(0, 380, 1200, 50)
-      }
-      block stale_table {
-        position: pos(0, 440, 1200, 400)
-      }
-    }
     tab workload_tab: CanvasLayout {
       label: '👥 Workload'
       height: 1200
