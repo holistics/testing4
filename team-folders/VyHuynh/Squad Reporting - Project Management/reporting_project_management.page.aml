@@ -90,20 +90,14 @@ Dashboard squad_command_center {
       block cycle_trend {
         position: pos(0, 860, 1200, 340)
       }
-      block v_x8r0 {
-        position: pos(20, 300, 200, 160)
-      }
       block v_997c {
-        position: pos(240, 300, 220, 160)
+        position: pos(280, 300, 260, 160)
       }
       block v_gt75 {
-        position: pos(700, 300, 200, 160)
-      }
-      block v_uhk0 {
-        position: pos(480, 300, 200, 160)
+        position: pos(560, 300, 260, 160)
       }
       block v_sffe {
-        position: pos(920, 300, 180, 160)
+        position: pos(840, 300, 260, 160)
       }
       block v_jdaq {
         position: pos(20, 480, 520, 360)
@@ -146,6 +140,10 @@ Dashboard squad_command_center {
       }
       block t_z5ve {
         position: pos(1020, 1300, 60, 40)
+      }
+      block v_7gn4 {
+        position: pos(20, 300, 240, 160)
+        layer: 1
       }
       width: 1120
     }
@@ -199,7 +197,7 @@ Dashboard squad_command_center {
     }
     tab quality_tab: CanvasLayout {
       label: '🎯 Quality & Bottlenecks'
-      height: 2060
+      height: 1900
       grid_size: 20
       block t_87la {
         position: pos(40, 20, 740, 80)
@@ -218,36 +216,32 @@ Dashboard squad_command_center {
         position: pos(20, 200, 740, 60)
       }
       block v_baqx {
-        position: pos(40, 480, 540, 400)
+        position: pos(40, 320, 540, 400)
         layer: 1
       }
       block v_n6j9 {
-        position: pos(600, 480, 560, 400)
+        position: pos(600, 320, 560, 400)
         layer: 1
       }
       block v_hl2j {
-        position: pos(40, 900, 540, 400)
+        position: pos(40, 740, 540, 400)
       }
       block v_7fkd {
-        position: pos(600, 900, 560, 400)
+        position: pos(600, 740, 560, 400)
         layer: 1
       }
       block v_yro9 {
         position: pos(440, 300, 340, 160)
         layer: 1
       }
-      block v_yhu3 {
-        position: pos(820, 300, 340, 160)
-        layer: 1
-      }
       block t_q684 {
-        position: pos(40, 1360, 740, 60)
+        position: pos(40, 1200, 740, 60)
       }
       block t_lfpp {
-        position: pos(40, 1400, 1140, 60)
+        position: pos(40, 1240, 1140, 60)
       }
       block v_45a6 {
-        position: pos(40, 1460, 1140, 400)
+        position: pos(40, 1300, 1140, 560)
       }
     }
     tab workload_tab: CanvasLayout {
@@ -269,142 +263,6 @@ Dashboard squad_command_center {
       block cycle_label {
         position: pos(0, 760, 1200, 340)
       }
-    }
-  }
-  block v_x8r0: VizBlock {
-    label: 'Shipped (30D)'
-    description: 'Total issues launched last 30 days'
-    viz: MarkdownViz {
-      dataset: reporting_project_management
-      calculation metric_e98dbc4 {
-        label: 'LM - Completed issue'
-        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation lm__completed_issue {
-        label: '%LM - Completed Issue'
-        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation completed_issue_color {
-        label: 'Completed Issue Color'
-        formula: @aql case(
-  when: percent_lm_completed_issue < 0,
-  then: "rgb(248, 113, 113)",
-  else: "#5DB88F"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation completed_issue_icon {
-        label: 'Completed Issue Icon'
-        formula: @aql case(
-      when: percent_lm_completed_issue < 0,
-      then: "▼",
-      else: "▲"
-    );;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      filter {
-        field: r(reporting_issues.completed_at)
-        operator: 'matches'
-        value: '2026-02-01 - 2026-02-28'
-      }
-      values: [
-        VizFieldFull {
-          label: 'Completed issue (Last 30D)'
-          ref: r(reporting_project_management.completed_issue)
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        },
-        VizFieldFull {
-          ref: 'lm__completed_issue'
-          format {
-            type: 'number'
-            pattern: '#,###%'
-          }
-        },
-        VizFieldFull {
-          ref: 'completed_issue_color'
-          format {
-            type: 'text'
-          }
-        },
-        VizFieldFull {
-          ref: 'completed_issue_icon'
-          format {
-            type: 'text'
-          }
-        }
-      ]
-      content: @md <style>
-
-  .kpi-title {
-    margin: 0;
-    color: #8e94a5;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .kpi-main {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-top: 12px;
-  }
-  .kpi-shipped-value {
-    font-size: 52px;
-    font-weight: 500;
-    color: #5DB88F;
-    line-height: 1;
-  }
-  .kpi-percent {
-    font-weight: 700;
-    font-size: 20px;
-  }
-  .kpi-footer {
-    margin: 12px 0 0 0;
-    font-size: 15px;
-    color: #525866;
-  }
-  .kpi-shipped-compare {
-    color: {{ rows[0].values.`Completed Issue Color` }};
-    font-weight: 500
-  }
-  
-</style>
-
-<div>
-  <p class="kpi-title">Shipped (30D)</p>
-  <span class="kpi-shipped-value">
-    {{ rows[0].values.`Completed issue (Last 30D)` }}
-  </span>
-
-  <div class="kpi-shipped-compare" style="margin-top: 8px">
-      {{ rows[0].values.`Completed Issue Icon` }}
-      {{ rows[0].values.`%LM - Completed Issue` }}
-  <span style="color: #525866;">
-      vs last month</span>
-  </div>
-
-</div>              ;;
-      settings {
-        show_row_total: true
-        show_column_total: true
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-    settings {
-      hide_label: true
     }
   }
   block v_997c: VizBlock {
@@ -738,215 +596,6 @@ Dashboard squad_command_center {
   </div>
 
 </div>      ;;
-      settings {
-        show_row_total: true
-        show_column_total: true
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-    settings {
-      hide_label: true
-    }
-  }
-  block v_uhk0: VizBlock {
-    label: 'Avg PR Review (14D)'
-    viz: MarkdownViz {
-      dataset: reporting_project_management
-      calculation metric_e98dbc4 {
-        label: 'LM - Completed issue'
-        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation metric_abbd5a2 {
-        label: '%LM - Completed issue'
-        formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation color_condition {
-        label: 'Completed issue - Color Condition'
-        formula: @aql case(
-  when: metric_abbd5a2 < 0,
-  then: "red",
-  else: "green"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation icon_condition {
-        label: 'Completed issue - Icon Condition'
-        formula: @aql case(
-  when: metric_abbd5a2 < 0,
-  then: "▾",
-  else: "▴"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation metric_02fef53 {
-        label: 'Cycle Time - Color Condition'
-        formula: @aql case(
-  when: metric_bcc0c1b < 0,
-  then: "green",
-  else: "red"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation metric_8cf2423 {
-        label: 'Cycle Time - Icon Condition'
-        formula: @aql case(
-  when: metric_bcc0c1b < 0,
-  then: "▾",
-  else: "▴"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation metric_7eece09 {
-        label: 'Avg PR Review - Color Condition'
-        formula: @aql case(
-  when: lm_avg_pr_review < 0,
-  then: "green",
-  else: "red"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation metric_0e96b56 {
-        label: 'Avg PR Review - Icon Condition'
-        formula: @aql case(
-  when: lm_avg_pr_review < 0,
-  then: "▾",
-  else: "▴"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation avg_pr_review_icon {
-        label: 'Avg PR Review Icon'
-        formula: @aql case(
-      when:  
-            lm_avg_pr_review < 0,
-      then: "▼",
-      else: "▲"
-    );;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation avg_pr_review_color {
-        label: 'Avg PR Review Color'
-        formula: @aql case(
-      when: lm_avg_pr_review > 0,
-      then: "rgb(248, 113, 113)",
-      else: "#4ade80"
-    );;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation lm_avg_pr_review {
-        label: '%LM - Avg PR Review'
-        formula: @aql safe_divide(avg(reporting_stage_duration, reporting_stage_duration.duration_hours), avg(reporting_stage_duration, reporting_stage_duration.duration_hours) | relative_period(reporting_stage_duration.exited_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      filter {
-        field: r(reporting_stage_duration.stage)
-        operator: 'is'
-        value: 'In PR Review'
-      }
-      filter {
-        field: r(reporting_stage_duration.exited_at)
-        operator: 'matches'
-        value: '2026-02-15 - 2026-02-28'
-      }
-      theme {
-      }
-      values: [
-        VizFieldFull {
-          label: 'Avg PR Review'
-          ref: r(reporting_stage_duration.duration_hours)
-          aggregation: 'avg'
-          format {
-            type: 'number'
-            pattern: '#,###'
-          }
-        },
-        VizFieldFull {
-          ref: 'lm_avg_pr_review'
-          format {
-            type: 'number'
-            pattern: '#,###%'
-          }
-        },
-        VizFieldFull {
-          ref: 'avg_pr_review_icon'
-          format {
-            type: 'text'
-          }
-        },
-        VizFieldFull {
-          ref: 'avg_pr_review_color'
-          format {
-            type: 'text'
-          }
-        }
-      ]
-      content: @md <style>
-  .kpi-title {
-    margin: 0;
-    color: #8e94a5;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .kpi-main {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-top: 12px;
-  }
-  .kpi-pr-review-value {
-    font-size: 52px;
-    font-weight: 500;
-    color: #fbbf24;
-    line-height: 1;
-  }
-  .kpi-percent {
-    font-weight: 700;
-    font-size: 20px;
-  }
-  .kpi-footer {
-    margin: 12px 0 0 0;
-    font-size: 15px;
-    color: #525866;
-  }
-  .kpi-avg-pr-compare {
-    color: {{ rows[0].values.`Avg PR Review Color` }};
-    font-weight: 500
-  }
-  
-</style>
-
-<div>
-  <p class="kpi-title">Avg PR Review (14D)</p>
-  <span class="kpi-pr-review-value">
-    {{ rows[0].values.`Avg PR Review` }}h
-  </span>
-
-  <div class="kpi-avg-pr-compare" style="margin-top: 8px">
-      {{ rows[0].values.`Avg PR Review Icon` }}
-      {{ rows[0].values.`%LM - Avg PR Review`}}
-  <span style="color: #525866;">
-      vs last month</span>
-  </div>
-
-</div>            ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -2329,210 +1978,6 @@ Dashboard squad_command_center {
       }
     }
   }
-
-  block v_yhu3: VizBlock {
-    label: 'Bug Ratio (30D) copy copy'
-    viz: MarkdownViz {
-      dataset: reporting_project_management
-      calculation metric_e98dbc4 {
-        label: 'LM - Completed issue'
-        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation metric_abbd5a2 {
-        label: '%LM - Completed issue'
-        formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation color_condition {
-        label: 'Completed issue - Color Condition'
-        formula: @aql case(
-  when: metric_abbd5a2 < 0,
-  then: "red",
-  else: "green"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation icon_condition {
-        label: 'Completed issue - Icon Condition'
-        formula: @aql case(
-  when: metric_abbd5a2 < 0,
-  then: "▾",
-  else: "▴"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation metric_02fef53 {
-        label: 'Cycle Time - Color Condition'
-        formula: @aql case(
-  when: avg_cycle_time < 0,
-  then: "green",
-  else: "red"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation metric_8cf2423 {
-        label: 'Cycle Time - Icon Condition'
-        formula: @aql case(
-  when: avg_cycle_time < 0,
-  then: "▾",
-  else: "▴"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation avg_cycle_time {
-        label: '%LM - Avg Cycle Time'
-        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.cycle_time_hours), avg(reporting_issues, reporting_issues.cycle_time_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation tech_debt_color {
-        label: 'Tech Debt Color'
-        formula: @aql case(
-  when: lm_tech_debt < 0,
-  then: "#5DB88F",
-  else: "rgb(248, 113, 113)"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation tech_debt_icon {
-        label: 'Tech Debt Icon'
-        formula: @aql case(
-  when: lm_tech_debt < 0,
-  then: "▼",
-  else: "▲"
-);;
-        calc_type: 'measure'
-        data_type: 'text'
-      }
-      calculation lm_bug_ratio {
-        label: 'LM - Bug Ratio'
-        formula: @aql bug_ratio - (bug_ratio | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true));;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation lm_number_of_bug {
-        label: 'LM - Number of Bug'
-        formula: @aql safe_divide(number_of_bug, number_of_bug | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation tech_debt {
-        label: 'Number of Tech Debt'
-        formula: @aql count(reporting_issues.id) | where(reporting_issues.label == "Tech Debt");;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation lm_tech_debt {
-        label: 'LM - Number of Tech Debt'
-        formula: @aql safe_divide(tech_debt, tech_debt | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      filter {
-        field: r(reporting_issues.completed_at)
-        operator: 'matches'
-        value: '2026-02-01 - 2026-02-28'
-      }
-      values: [
-        VizFieldFull {
-          ref: 'tech_debt'
-          format {
-            type: 'number'
-            pattern: 'inherited'
-          }
-        },
-        VizFieldFull {
-          ref: 'lm_tech_debt'
-          format {
-            type: 'number'
-            pattern: '#,###%'
-          }
-        },
-        VizFieldFull {
-          ref: 'tech_debt_icon'
-          format {
-            type: 'text'
-          }
-        },
-        VizFieldFull {
-          ref: 'tech_debt_color'
-          format {
-            type: 'text'
-          }
-        }
-      ]
-      content: @md <style>
-  .kpi-title {
-    margin: 0;
-    color: #8e94a5;
-    font-size: 13px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .kpi-main {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-top: 12px;
-  }
-  .kpi-tech-debt-value {
-    font-size: 52px;
-    font-weight: 500;
-    color: #fbbf24;
-    line-height: 1;
-  }
-  .kpi-percent {
-    font-weight: 700;
-    font-size: 20px;
-  }
-  .kpi-footer {
-    margin: 12px 0 0 0;
-    font-size: 15px;
-    color: #525866;
-  }
-  .kpi-tech-debt-compare {
-    color: {{ rows[0].values.`Tech Debt Color` }};
-    font-weight: 500;
-  }
-  
-</style>
-
-<div>
-  <p class="kpi-title">Tech Debt (30D)</p>
-  <span class="kpi-tech-debt-value">
-    {{ rows[0].values.`Number of Tech Debt` }}
-  </span>
-
-  <div class="kpi-tech-debt-compare" style="margin-top: 8px">
-      {{ rows[0].values.`Tech Debt Icon` }}
-      {{ rows[0].values.`LM - Number of Tech Debt` }}
-  <span style="color: #525866;">
-      vs last month</span>
-  </div>
-
-</div>            ;;
-      settings {
-        show_row_total: true
-        show_column_total: true
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-    settings {
-      hide_label: true
-    }
-  }
   block t_q684: TextBlock {
     content: @md ### **⚡ Bottlenecks**;;
     theme {
@@ -3304,21 +2749,138 @@ Dashboard squad_command_center {
       }
     }
   }
-  theme: ai_1773979634521_3
-  interactions: [
-    FilterInteraction {
-      from: 'v_x8r0'
-      to: [
-        CustomMapping {
-          block: [
-            'v_ipdo',
-            'v_7dso',
-            'v_r2ma'
-          ]
-          disabled: true
+  block v_7gn4: VizBlock {
+    settings {
+      hide_label: true
+    }
+    label: 'Completed issue (Last 30D), %LM - Completed issue and 2 more'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation lm_completed_issue {
+        label: '%LM - Completed issue'
+        formula: @aql safe_divide(completed_issue, completed_issue | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation completed_issue_color {
+        label: 'Completed Issue Color'
+        formula: @aql case(
+  when: lm_completed_issue < 0,
+  then: "rgb(248, 113, 113)",
+  else: "#5DB88F"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation completed_issue_icon {
+        label: 'Completed Issue Icon'
+        formula: @aql 
+case(
+      when: lm_completed_issue < 0,
+      then: "▼",
+      else: "▲"
+    );;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: '2026-02-01 - 2026-02-28'
+      }
+      values: [
+        VizFieldFull {
+          label: 'Completed issue (Last 30D)'
+          ref: r(reporting_project_management.completed_issue)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: 'lm_completed_issue'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'completed_issue_color'
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: 'completed_issue_icon'
+          format {
+            type: 'text'
+          }
         }
       ]
-    },
+      content: @md <style>
+
+  .kpi-title {
+    margin: 0;
+    color: #8e94a5;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .kpi-shipped-value {
+    font-size: 52px;
+    font-weight: 500;
+    color: #5DB88F;
+    line-height: 1;
+  }
+  .kpi-percent {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .kpi-footer {
+    margin: 12px 0 0 0;
+    font-size: 15px;
+    color: #525866;
+  }
+  .kpi-shipped-compare {
+    color: {{ rows[0].values.`Completed Issue Color` }};
+    font-weight: 500
+  }
+  
+</style>
+
+<div>
+  <p class="kpi-title">Shipped (30D)</p>
+  <span class="kpi-shipped-value">
+    {{ rows[0].values.`Completed issue (Last 30D)` }}
+  </span>
+
+  <div class="kpi-shipped-compare" style="margin-top: 8px">
+      {{ rows[0].values.`Completed Issue Icon` }}
+      {{ rows[0].values.`%LM - Completed issue` }}
+  <span style="color: #525866;">
+      vs last month</span>
+  </div>
+
+</div>               ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  theme: ai_1773979634521_3
+  interactions: [
     FilterInteraction {
       from: 'v_997c'
       to: [
@@ -3334,19 +2896,6 @@ Dashboard squad_command_center {
     },
     FilterInteraction {
       from: 'v_gt75'
-      to: [
-        CustomMapping {
-          block: [
-            'v_ipdo',
-            'v_7dso',
-            'v_r2ma'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_uhk0'
       to: [
         CustomMapping {
           block: [
@@ -3417,7 +2966,8 @@ Dashboard squad_command_center {
           block: [
             'v_ipdo',
             'v_7dso',
-            'v_r2ma'
+            'v_r2ma',
+            'v_7gn4'
           ]
           disabled: true
         }
@@ -3430,7 +2980,8 @@ Dashboard squad_command_center {
           block: [
             'v_ipdo',
             'v_7dso',
-            'v_r2ma'
+            'v_r2ma',
+            'v_7gn4'
           ]
           disabled: true
         }
@@ -3459,7 +3010,8 @@ Dashboard squad_command_center {
           block: [
             'v_ipdo',
             'v_7dso',
-            'v_r2ma'
+            'v_r2ma',
+            'v_7gn4'
           ]
           disabled: true
         }
@@ -3472,8 +3024,27 @@ Dashboard squad_command_center {
           block: [
             'v_ipdo',
             'v_7dso',
-            'v_r2ma'
+            'v_r2ma',
+            'v_7gn4'
           ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_y7bo'
+      to: [
+        CustomMapping {
+          block: 'v_7gn4'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_x2gw'
+      to: [
+        CustomMapping {
+          block: 'v_7gn4'
           disabled: true
         }
       ]
@@ -3485,7 +3056,8 @@ Dashboard squad_command_center {
           block: [
             'v_ipdo',
             'v_7dso',
-            'v_r2ma'
+            'v_r2ma',
+            'v_7gn4'
           ]
           disabled: true
         }
@@ -3498,7 +3070,8 @@ Dashboard squad_command_center {
           block: [
             'v_ipdo',
             'v_7dso',
-            'v_r2ma'
+            'v_r2ma',
+            'v_7gn4'
           ]
           disabled: true
         }
@@ -3511,7 +3084,8 @@ Dashboard squad_command_center {
           block: [
             'v_ipdo',
             'v_7dso',
-            'v_r2ma'
+            'v_r2ma',
+            'v_7gn4'
           ]
           disabled: true
         }
@@ -3524,20 +3098,8 @@ Dashboard squad_command_center {
           block: [
             'v_ipdo',
             'v_7dso',
-            'v_r2ma'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_yhu3'
-      to: [
-        CustomMapping {
-          block: [
-            'v_ipdo',
-            'v_7dso',
-            'v_r2ma'
+            'v_r2ma',
+            'v_7gn4'
           ]
           disabled: true
         }
@@ -3550,7 +3112,8 @@ Dashboard squad_command_center {
           block: [
             'v_ipdo',
             'v_7dso',
-            'v_r2ma'
+            'v_r2ma',
+            'v_7gn4'
           ]
           disabled: true
         }
@@ -3561,10 +3124,8 @@ Dashboard squad_command_center {
       to: [
         CustomMapping {
           block: [
-            'v_x8r0',
             'v_997c',
             'v_gt75',
-            'v_uhk0',
             'v_sffe',
             'v_jdaq',
             'v_3qu5',
@@ -3576,8 +3137,8 @@ Dashboard squad_command_center {
             'v_n6j9',
             'v_hl2j',
             'v_7fkd',
-            'v_yhu3',
-            'v_45a6'
+            'v_45a6',
+            'v_7gn4'
           ]
           disabled: true
         }
@@ -3588,10 +3149,8 @@ Dashboard squad_command_center {
       to: [
         CustomMapping {
           block: [
-            'v_x8r0',
             'v_997c',
             'v_gt75',
-            'v_uhk0',
             'v_sffe',
             'v_jdaq',
             'v_3qu5',
@@ -3603,8 +3162,8 @@ Dashboard squad_command_center {
             'v_n6j9',
             'v_hl2j',
             'v_7fkd',
-            'v_yhu3',
-            'v_45a6'
+            'v_45a6',
+            'v_7gn4'
           ]
           disabled: true
         }
@@ -3615,10 +3174,8 @@ Dashboard squad_command_center {
       to: [
         CustomMapping {
           block: [
-            'v_x8r0',
             'v_997c',
             'v_gt75',
-            'v_uhk0',
             'v_sffe',
             'v_jdaq',
             'v_3qu5',
@@ -3630,8 +3187,31 @@ Dashboard squad_command_center {
             'v_n6j9',
             'v_hl2j',
             'v_7fkd',
-            'v_yhu3',
-            'v_45a6'
+            'v_45a6',
+            'v_7gn4'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_7gn4'
+      to: [
+        CustomMapping {
+          block: [
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_x2gw',
+            'v_baqx',
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_45a6',
+            'v_ipdo',
+            'v_7dso',
+            'v_r2ma'
           ]
           disabled: true
         }
