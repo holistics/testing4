@@ -389,7 +389,7 @@ Dashboard squad_command_center {
       vs last month</span>
   </div>
 
-</div>              ;;
+</div>               ;;
       settings {
         show_row_total: true
         show_column_total: true
@@ -2643,18 +2643,6 @@ Dashboard squad_command_center {
         calc_type: 'measure'
         data_type: 'text'
       }
-      calculation bug_ratio {
-        label: 'Bug Ratio'
-        formula: @aql number_of_bug / count(reporting_issues.id);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation lm_bug_ratio {
-        label: 'LM - Bug Ratio'
-        formula: @aql bug_ratio - (bug_ratio | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true));;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
       filter {
         field: r(reporting_issues.completed_at)
         operator: 'matches'
@@ -2843,18 +2831,6 @@ Dashboard squad_command_center {
 );;
         calc_type: 'measure'
         data_type: 'text'
-      }
-      calculation bug_ratio {
-        label: 'Bug Ratio'
-        formula: @aql number_of_bug / count(reporting_issues.id);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation lm_bug_ratio {
-        label: 'LM - Bug Ratio'
-        formula: @aql bug_ratio - (bug_ratio | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true));;
-        calc_type: 'measure'
-        data_type: 'number'
       }
       calculation lm_bugs {
         label: 'LM - Number of Bug'
