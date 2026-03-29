@@ -198,8 +198,8 @@ Dashboard squad_command_center {
       width: 1180
     }
     tab quality_tab: CanvasLayout {
-      label: '🎯 Quality'
-      height: 1300
+      label: '🎯 Quality & Bottlenecks'
+      height: 2060
       grid_size: 20
       block t_87la {
         position: pos(40, 20, 740, 80)
@@ -218,12 +218,40 @@ Dashboard squad_command_center {
         position: pos(20, 200, 740, 60)
       }
       block v_baqx {
-        position: pos(40, 300, 540, 400)
+        position: pos(40, 480, 540, 400)
         layer: 1
       }
       block v_n6j9 {
-        position: pos(600, 300, 560, 400)
+        position: pos(600, 480, 560, 400)
         layer: 1
+      }
+      block v_hl2j {
+        position: pos(40, 900, 540, 400)
+      }
+      block v_7fkd {
+        position: pos(600, 900, 560, 400)
+        layer: 1
+      }
+      block v_8jil {
+        position: pos(40, 300, 340, 160)
+        layer: 1
+      }
+      block v_yro9 {
+        position: pos(440, 300, 340, 160)
+        layer: 1
+      }
+      block v_yhu3 {
+        position: pos(820, 300, 340, 160)
+        layer: 1
+      }
+      block t_q684 {
+        position: pos(40, 1360, 740, 60)
+      }
+      block t_lfpp {
+        position: pos(40, 1400, 1140, 60)
+      }
+      block v_45a6 {
+        position: pos(40, 1460, 1140, 400)
       }
     }
     tab bottleneck_tab: CanvasLayout {
@@ -3111,6 +3139,949 @@ Dashboard squad_command_center {
       }
     }
   }
+  block v_hl2j: VizBlock {
+    label: 'Priority vs Actual Cycle Time'
+    description: 'Do urgent issues actually ship faster?'
+    viz: ScatterChart {
+      dataset: reporting_project_management
+      x_col: VizFieldFull {
+        ref: r(reporting_issues.priority)
+        format {
+          type: 'text'
+        }
+      }
+      y_col: VizFieldFull {
+        ref: r(reporting_issues.cycle_time_hours)
+        format {
+          type: 'number'
+          pattern: 'inherited'
+        }
+      }
+      group_col: VizFieldFull {
+        ref: r(reporting_issues.priority)
+        format {
+          type: 'text'
+        }
+      }
+      settings {
+        row_limit: 5000
+      }
+    }
+  }
+  block v_7fkd: VizBlock {
+    label: 'Cycle Time by Label'
+    description: 'Average hours to ship by work type'
+    viz: BarChart {
+      dataset: reporting_project_management
+      x_axis: VizFieldFull {
+        ref: r(reporting_issues.label)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(reporting_issues.cycle_time_hours)
+            aggregation: 'avg'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color: '#60A5FAFF'
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        legend_label: 'hidden'
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_8jil: VizBlock {
+    label: 'Bug Ratio (30D)'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_abbd5a2 {
+        label: '%LM - Completed issue'
+        formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation color_condition {
+        label: 'Completed issue - Color Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "red",
+  else: "green"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation icon_condition {
+        label: 'Completed issue - Icon Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_02fef53 {
+        label: 'Cycle Time - Color Condition'
+        formula: @aql case(
+  when: avg_cycle_time < 0,
+  then: "green",
+  else: "red"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_8cf2423 {
+        label: 'Cycle Time - Icon Condition'
+        formula: @aql case(
+  when: avg_cycle_time < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation avg_cycle_time {
+        label: '%LM - Avg Cycle Time'
+        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.cycle_time_hours), avg(reporting_issues, reporting_issues.cycle_time_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation bug_ratio_color {
+        label: 'Bug Ratio Color'
+        formula: @aql case(
+  when: lm_bug_ratio > 0,
+  then: "rgb(248, 113, 113)",
+  else: "#5DB88F"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation bug_ratio_icon {
+        label: 'Bug Ratio Icon'
+        formula: @aql case(
+  when: lm_bug_ratio < 0,
+  then: "▼",
+  else: "▲"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation lm_bug_ratio {
+        label: 'LM - Bug Ratio'
+        formula: @aql bug_ratio - (bug_ratio | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: '2026-02-01 - 2026-02-28'
+      }
+      values: [
+        VizFieldFull {
+          ref: r(reporting_project_management.bug_ratio)
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'lm_bug_ratio'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'bug_ratio_icon'
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: 'bug_ratio_color'
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      content: @md <style>
+  .kpi-title {
+    margin: 0;
+    color: #8e94a5;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .kpi-bug-ratio-value {
+    font-size: 52px;
+    font-weight: 500;
+    color: #fbbf24;
+    line-height: 1;
+  }
+  .kpi-percent {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .kpi-footer {
+    margin: 12px 0 0 0;
+    font-size: 15px;
+    color: #525866;
+  }
+  .kpi-bug-ratio-compare {
+    color: {{ rows[0].values.`Bug Ratio Color` }};
+    font-weight: 500;
+  }
+  
+</style>
+
+<div>
+  <p class="kpi-title">Bug Ratio (30D)</p>
+  <span class="kpi-bug-ratio-value">
+    {{ rows[0].values.`Bug Ratio` }}
+  </span>
+
+  <div class="kpi-bug-ratio-compare" style="margin-top: 8px">
+      {{ rows[0].values.`Bug Ratio Icon` }}
+      {{ rows[0].values.`LM - Bug Ratio` }}
+  <span style="color: #525866;">
+      vs last month</span>
+  </div>
+
+</div>            ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_yro9: VizBlock {
+    label: 'Bug Ratio (30D) copy'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_abbd5a2 {
+        label: '%LM - Completed issue'
+        formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation color_condition {
+        label: 'Completed issue - Color Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "red",
+  else: "green"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation icon_condition {
+        label: 'Completed issue - Icon Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_02fef53 {
+        label: 'Cycle Time - Color Condition'
+        formula: @aql case(
+  when: avg_cycle_time < 0,
+  then: "green",
+  else: "red"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_8cf2423 {
+        label: 'Cycle Time - Icon Condition'
+        formula: @aql case(
+  when: avg_cycle_time < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation avg_cycle_time {
+        label: '%LM - Avg Cycle Time'
+        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.cycle_time_hours), avg(reporting_issues, reporting_issues.cycle_time_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation number_of_bug_color {
+        label: 'Number of Bug Color'
+        formula: @aql case(
+  when: lm_number_of_bug < 0,
+  then: "#5DB88F",
+  else: "rgb(248, 113, 113)"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation bug_ratio_icon {
+        label: 'Number of Bug Icon'
+        formula: @aql case(
+  when: lm_number_of_bug < 0,
+  then: "▼",
+  else: "▲"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation lm_bug_ratio {
+        label: 'LM - Bug Ratio'
+        formula: @aql bug_ratio - (bug_ratio | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm_number_of_bug {
+        label: 'LM - Number of Bug'
+        formula: @aql safe_divide(number_of_bug, number_of_bug | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: '2026-02-01 - 2026-02-28'
+      }
+      values: [
+        VizFieldFull {
+          ref: r(reporting_project_management.number_of_bug)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: 'lm_number_of_bug'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'bug_ratio_icon'
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: 'number_of_bug_color'
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      content: @md <style>
+  .kpi-title {
+    margin: 0;
+    color: #8e94a5;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .kpi-bug-created-value {
+    font-size: 52px;
+    font-weight: 500;
+    color: #206BC4;
+    line-height: 1;
+  }
+  .kpi-percent {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .kpi-footer {
+    margin: 12px 0 0 0;
+    font-size: 15px;
+    color: #525866;
+  }
+  .kpi-bug-ratio-compare {
+    color: {{ rows[0].values.`Number of Bug Color` }};
+    font-weight: 500;
+  }
+  
+</style>
+
+<div>
+  <p class="kpi-title">Bug Created (30D)</p>
+  <span class="kpi-bug-created-value">
+    {{ rows[0].values.`Number of Bug` }}
+  </span>
+
+  <div class="kpi-bug-ratio-compare" style="margin-top: 8px">
+      {{ rows[0].values.`Number of Bug Icon` }}
+      {{ rows[0].values.`LM - Number of Bug` }}
+  <span style="color: #525866;">
+      vs last month</span>
+  </div>
+
+</div>            ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block v_yhu3: VizBlock {
+    label: 'Bug Ratio (30D) copy copy'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      calculation metric_e98dbc4 {
+        label: 'LM - Completed issue'
+        formula: @aql metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation metric_abbd5a2 {
+        label: '%LM - Completed issue'
+        formula: @aql safe_divide(metric_63f4786, metric_63f4786 | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation color_condition {
+        label: 'Completed issue - Color Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "red",
+  else: "green"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation icon_condition {
+        label: 'Completed issue - Icon Condition'
+        formula: @aql case(
+  when: metric_abbd5a2 < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_02fef53 {
+        label: 'Cycle Time - Color Condition'
+        formula: @aql case(
+  when: avg_cycle_time < 0,
+  then: "green",
+  else: "red"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation metric_8cf2423 {
+        label: 'Cycle Time - Icon Condition'
+        formula: @aql case(
+  when: avg_cycle_time < 0,
+  then: "▾",
+  else: "▴"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation avg_cycle_time {
+        label: '%LM - Avg Cycle Time'
+        formula: @aql safe_divide(avg(reporting_issues, reporting_issues.cycle_time_hours), avg(reporting_issues, reporting_issues.cycle_time_hours) | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation tech_debt_color {
+        label: 'Tech Debt Color'
+        formula: @aql case(
+  when: lm_tech_debt < 0,
+  then: "#5DB88F",
+  else: "rgb(248, 113, 113)"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation tech_debt_icon {
+        label: 'Tech Debt Icon'
+        formula: @aql case(
+  when: lm_tech_debt < 0,
+  then: "▼",
+  else: "▲"
+);;
+        calc_type: 'measure'
+        data_type: 'text'
+      }
+      calculation lm_bug_ratio {
+        label: 'LM - Bug Ratio'
+        formula: @aql bug_ratio - (bug_ratio | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm_number_of_bug {
+        label: 'LM - Number of Bug'
+        formula: @aql safe_divide(number_of_bug, number_of_bug | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation tech_debt {
+        label: 'Number of Tech Debt'
+        formula: @aql count(reporting_issues.id) | where(reporting_issues.label == "Tech Debt");;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation lm_tech_debt {
+        label: 'LM - Number of Tech Debt'
+        formula: @aql safe_divide(tech_debt, tech_debt | relative_period(reporting_issues.completed_at, interval(-1 month), strict: true)) - 1;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: '2026-02-01 - 2026-02-28'
+      }
+      values: [
+        VizFieldFull {
+          ref: 'tech_debt'
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        },
+        VizFieldFull {
+          ref: 'lm_tech_debt'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          ref: 'tech_debt_icon'
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: 'tech_debt_color'
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      content: @md <style>
+  .kpi-title {
+    margin: 0;
+    color: #8e94a5;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .kpi-main {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .kpi-tech-debt-value {
+    font-size: 52px;
+    font-weight: 500;
+    color: #fbbf24;
+    line-height: 1;
+  }
+  .kpi-percent {
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .kpi-footer {
+    margin: 12px 0 0 0;
+    font-size: 15px;
+    color: #525866;
+  }
+  .kpi-tech-debt-compare {
+    color: {{ rows[0].values.`Tech Debt Color` }};
+    font-weight: 500;
+  }
+  
+</style>
+
+<div>
+  <p class="kpi-title">Tech Debt (30D)</p>
+  <span class="kpi-tech-debt-value">
+    {{ rows[0].values.`Number of Tech Debt` }}
+  </span>
+
+  <div class="kpi-tech-debt-compare" style="margin-top: 8px">
+      {{ rows[0].values.`Tech Debt Icon` }}
+      {{ rows[0].values.`LM - Number of Tech Debt` }}
+  <span style="color: #525866;">
+      vs last month</span>
+  </div>
+
+</div>            ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+    settings {
+      hide_label: true
+    }
+  }
+  block t_q684: TextBlock {
+    content: @md ### **⚡ Bottlenecks**;;
+    theme {
+      text {
+        font_color: '#475569'
+      }
+      border {
+        border_width: 0
+        border_color: 'transparent'
+        border_style: 'none'
+      }
+      background {
+        bg_color: 'transparent'
+      }
+      shadow: 'none'
+    }
+  }
+  block t_lfpp: TextBlock {
+    content: @md <div style="font-family: Outfit; font-size: 16px; font-weight: 700; color: rgb(26, 29, 46); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid rgb(225, 228, 236);"></div>;;
+    theme {
+      text {
+        font_color: '#ffffff'
+      }
+      border {
+        border_width: 0
+        border_style: 'none'
+        border_color: 'transparent'
+      }
+      shadow: 'none'
+      background {
+        bg_color: 'transparent'
+      }
+    }
+  }
+  block v_45a6: VizBlock {
+    label: 'Identifier, Title and 2 more'
+    viz: MarkdownViz {
+      dataset: reporting_project_management
+      rows: [
+        VizFieldFull {
+          ref: r(reporting_issues.identifier)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(reporting_issues.title)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(reporting_stage_duration.stage)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(reporting_stage_duration.duration_hours)
+          format {
+            type: 'number'
+            pattern: 'inherited'
+          }
+        }
+      ]
+      content: @md <style>
+  .issues-container {
+    background-color: #1a1d2e;
+    color: #e5e7eb;
+    padding: 2rem;
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  
+  .issues-header {
+    margin-bottom: 2rem;
+  }
+  
+  .issues-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 0.25rem 0;
+  }
+  
+  .issues-subtitle {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    margin: 0;
+  }
+  
+  .issues-table {
+    width: 100%;
+  }
+  
+  .table-header {
+    display: grid;
+    grid-template-columns: 100px 2fr 120px 200px 150px 100px;
+    gap: 1.5rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #374151;
+    margin-bottom: 0.5rem;
+  }
+  
+  .table-header-cell {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .table-row {
+    display: grid;
+    grid-template-columns: 100px 2fr 120px 200px 150px 100px;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    align-items: center;
+    border-bottom: 1px solid #2d3748;
+  }
+  
+  .table-row:last-child {
+    border-bottom: none;
+  }
+  
+  .issue-id {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #3b82f6;
+  }
+  
+  .issue-title {
+    font-size: 0.875rem;
+    color: #e5e7eb;
+  }
+  
+  .stage-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  .stage-pr-review {
+    background-color: #78350f;
+    color: #fbbf24;
+  }
+  
+  .stage-staging {
+    background-color: #164e63;
+    color: #22d3ee;
+  }
+  
+  .stage-qa {
+    background-color: #14532d;
+    color: #4ade80;
+  }
+  
+  .stage-dev {
+    background-color: #1e3a8a;
+    color: #60a5fa;
+  }
+  
+  .hours-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .hours-bar {
+    height: 8px;
+    border-radius: 4px;
+    min-width: 20px;
+  }
+  
+  .hours-bar-red {
+    background-color: #ef4444;
+  }
+  
+  .hours-bar-yellow {
+    background-color: #eab308;
+  }
+  
+  .hours-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #e5e7eb;
+    white-space: nowrap;
+  }
+  
+  .assignee {
+    font-size: 0.875rem;
+    color: #9ca3af;
+  }
+  
+  .priority {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  
+  .priority-urgent {
+    background-color: #7f1d1d;
+    color: #fca5a5;
+  }
+  
+  .priority-high {
+    background-color: #7c2d12;
+    color: #fb923c;
+  }
+  
+  .priority-medium {
+    background-color: #713f12;
+    color: #fbbf24;
+  }
+  
+  .priority-low {
+    background-color: #14532d;
+    color: #4ade80;
+  }
+  
+  @media (max-width: 1200px) {
+    .table-header,
+    .table-row {
+      grid-template-columns: 80px 1.5fr 100px 150px 120px 80px;
+      gap: 1rem;
+      font-size: 0.8rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .table-header {
+      display: none;
+    }
+    
+    .table-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      padding: 1.5rem 0;
+    }
+    
+    .table-row > div::before {
+      content: attr(data-label);
+      font-weight: 600;
+      color: #6b7280;
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+  }
+</style>
+
+<div class="issues-container">
+  <div class="issues-header">
+    <h2 class="issues-title">Stale Issues</h2>
+    <p class="issues-subtitle">Sorted by time in current stage</p>
+  </div>
+  
+  <div class="issues-table">
+    <div class="table-header">
+      <div class="table-header-cell">Issue</div>
+      <div class="table-header-cell">Title</div>
+    </div>
+
+  {% map(rows) %}
+  <div class="table-row">
+    <div class="issue-id" data-label="Issue">
+      {{ `Identifier` }}
+    </div>
+    <div class="issue-title" data-label="Title">
+      {{ `Title` }}
+    </div>
+    <div data-label="Stage">
+      {{ `Stage` }}
+    </div>
+    <div data-label="Duration Hours">
+      {{ `Duration Hours` }}
+    </div>
+  </div>
+  {% end %}
+
+  </div>
+</div> ;;
+      settings {
+        show_row_total: true
+        show_column_total: true
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   theme: ai_1773979634521_3
   interactions: [
     FilterInteraction {
@@ -3129,7 +4100,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3151,7 +4128,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3173,7 +4156,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3195,7 +4184,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3217,7 +4212,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3239,7 +4240,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3261,7 +4268,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3283,7 +4296,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3310,7 +4329,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3340,6 +4365,12 @@ Dashboard squad_command_center {
             'v_6pdw',
             'v_baqx',
             'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6',
             'f_project_name_ynq6'
           ]
           disabled: true
@@ -3383,7 +4414,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3410,7 +4447,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3435,7 +4478,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3460,7 +4509,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3485,7 +4540,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3510,7 +4571,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3535,7 +4602,13 @@ Dashboard squad_command_center {
             'v_6rg8',
             'v_6pdw',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3563,7 +4636,13 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3591,7 +4670,13 @@ Dashboard squad_command_center {
             'v_x2gw',
             'v_x4xc',
             'v_baqx',
-            'v_n6j9'
+            'v_n6j9',
+            'v_hl2j',
+            'v_7fkd',
+            'v_8jil',
+            'v_yro9',
+            'v_yhu3',
+            'v_45a6'
           ]
           disabled: true
         }
@@ -3627,6 +4712,174 @@ Dashboard squad_command_center {
     },
     FilterInteraction {
       from: 'v_n6j9'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_hl2j'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_7fkd'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_8jil'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_yro9'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_yhu3'
+      to: [
+        CustomMapping {
+          block: [
+            'v_x8r0',
+            'v_997c',
+            'v_gt75',
+            'v_uhk0',
+            'v_sffe',
+            'v_jdaq',
+            'v_3qu5',
+            'v_gq0k',
+            'v_lvp5',
+            'v_d3sa',
+            'v_22mj',
+            'v_y7bo',
+            'v_f17x',
+            'v_pdt0',
+            'v_x2gw',
+            'v_x4xc',
+            'v_6rg8',
+            'v_6pdw'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_45a6'
       to: [
         CustomMapping {
           block: [
