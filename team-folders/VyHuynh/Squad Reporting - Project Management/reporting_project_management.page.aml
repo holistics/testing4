@@ -256,26 +256,6 @@ Dashboard squad_command_center {
         position: pos(1100, 1920, 60, 40)
       }
     }
-    tab workload_tab: CanvasLayout {
-      label: '👥 Workload'
-      height: 1200
-      grid_size: 20
-      block wip_engineer {
-        position: pos(0, 0, 600, 360)
-      }
-      block done_engineer {
-        position: pos(600, 0, 600, 360)
-      }
-      block priority_workload {
-        position: pos(0, 380, 600, 360)
-      }
-      block estimate_scatter {
-        position: pos(600, 380, 600, 360)
-      }
-      block cycle_label {
-        position: pos(0, 760, 1200, 340)
-      }
-    }
   }
   block v_997c: VizBlock {
     label: 'Avg Cycle Time (30D)'
@@ -3075,37 +3055,6 @@ case(
             'v_7dso',
             'v_r2ma',
             'v_7gn4'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_project_name'
-      to: [
-        CustomMapping {
-          block: [
-            'v_45a6',
-            'v_ipdo',
-            'v_7dso',
-            'v_r2ma',
-            'v_7gn4'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_project_name_ynq6'
-      to: [
-        CustomMapping {
-          block: [
-            'v_y7bo',
-            'v_x2gw',
-            'v_ipdo',
-            'v_7dso',
-            'v_r2ma',
-            'f_project_name'
           ]
           disabled: true
         }
