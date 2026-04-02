@@ -58,6 +58,7 @@ Dashboard squad_command_center {
         position: pos(620, 400, 540, 400)
         layer: 1
       }
+      default_zoom: 0.7
     }
     tab overview_tab: CanvasLayout {
       label: '◎ Metric Overview'
@@ -1749,7 +1750,6 @@ Dashboard squad_command_center {
       shadow: 'none'
     }
   }
-
   block t_3f6l: TextBlock {
     content: @md ### **🎯 Quality**;;
     theme {
