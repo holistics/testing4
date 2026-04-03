@@ -75,7 +75,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 1
       }
       block v_nehb {
-        position: pos(20, 2320, 1160, 460)
+        position: pos(20, 2320, 540, 460)
         layer: 1
       }
       block v_cii9 {
@@ -156,7 +156,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         layer: 3
       }
       block v_qctn {
-        position: pos(20, 5660, 1160, 580)
+        position: pos(20, 5660, 560, 560)
         layer: 1
       }
       block v_9rhg {
@@ -245,6 +245,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
       block v_ufmq {
         position: pos(420, 100, 380, 180)
+        layer: 1
+      }
+      block v_t8f9 {
+        position: pos(600, 5660, 580, 560)
         layer: 1
       }
       mobile {
@@ -851,6 +855,14 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     label: 'Total Revenue and Number of Order by Month'
     viz: DataTable {
       dataset: vyhuynh_ecommerce_dataset
+      filter {
+        field: r(vyht_ecommerce_users_1.sign_up_date)
+        operator: 'matches'
+        value: '2025'
+      }
+      theme {
+
+      }
       fields: [
         VizFieldFull {
           label: 'Order Month'
@@ -862,16 +874,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           }
         },
         VizFieldFull {
-          label: 'Total Revenue'
           ref: r(vyhuynh_ecommerce_dataset.total_revenue)
-          format {
-            type: 'number'
-            pattern: '[$$]#,###'
-          }
-        },
-        VizFieldFull {
-          ref: r(vyht_ecommerce_orders_1.id)
-          aggregation: 'count distinct'
           format {
             type: 'number'
             pattern: 'inherited'
@@ -909,23 +912,21 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           }
         },
         VizFieldFull {
-          ref: r(order_master.user_id)
-          aggregation: 'count distinct'
+          ref: r(ecommerce_users.email_user)
+          format {
+            type: 'text'
+          }
+        },
+        VizFieldFull {
+          ref: r(demo_ecommerce.total_orders)
           format {
             type: 'number'
             pattern: 'inherited'
           }
-          uname: 'count_distinct_user_id_1'
         }
       ]
       settings {
         show_row_number: true
-        sorts: [
-          SortSetting {
-            key: 'count_distinct_user_id_1'
-            direction: 'desc'
-          }
-        ]
         row_limit: 5000
         aggregate_awareness {
           enabled: true
@@ -1002,9 +1003,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
   }
   block v_qctn: VizBlock {
-    label: 'Number of Order by Country Name and City Name'
+    label: 'Trend analysis'
     viz: LineChart {
       dataset: demo_ecommerce
+      theme {
+      }
       x_axis: VizFieldFull {
         ref: r(order_master.order_created_at)
         transformation: 'datetrunc month'
@@ -1035,16 +1038,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             }
           }
         }
-        series {
-          field: VizFieldFull {
-            ref: r(demo_ecommerce, order_master.aov_by_product)
-            aggregation: 'count'
-            format {
-              type: 'number'
-              pattern: 'inherited'
-            }
-          }
-        }
       }
       settings {
         row_limit: 5000
@@ -1056,6 +1049,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         }
       }
     }
+    description: '''How is each continent trending over time? 
+
+**Insights**: Seasonality patterns, growth trends, comparative performance across months
+
+'''
   }
   block v_9rhg: VizBlock {
     label: 'Number of Order by Country Name and City Name'
@@ -2451,7 +2449,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: '2025'
       }
       theme {
-
       }
       value: VizFieldFull {
         ref: r(order_master.gmv)
@@ -2475,6 +2472,57 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           debug_comments: true
         }
         alignment: 'left'
+      }
+    }
+  }
+  block v_t8f9: VizBlock {
+    label: 'Comparison anlysis'
+    description: @md Which continent generate the most revenue overall?
+
+**Insights**: Continent rankings, performance gaps, which continent dominate;;
+    viz: ColumnChart {
+      dataset: demo_ecommerce
+      theme {
+      }
+      x_axis: VizFieldFull {
+        ref: r(ecommerce_countries.continent_name)
+        format {
+          type: 'text'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(order_master.order_created_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        label: 'Total Order'
+        settings {
+          show_data_label_by: 'value'
+          stack_series_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(order_master.order_id)
+            aggregation: 'count distinct'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_label: 'Country'
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
       }
     }
   }
@@ -2535,7 +2583,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -2607,6 +2656,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_58pi',
             'v_vk4x',
             'v_ufmq',
+            'v_t8f9',
             'f1',
             'f_zwa4'
           ]
@@ -2828,7 +2878,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_0sbb',
             'v_58pi',
             'v_vk4x',
-            'v_ufmq'
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -2864,7 +2915,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_0sbb',
             'v_58pi',
             'v_vk4x',
-            'v_ufmq'
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         },
@@ -2906,7 +2958,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_0sbb',
             'v_58pi',
             'v_vk4x',
-            'v_ufmq'
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -2940,7 +2993,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_0sbb',
             'v_58pi',
             'v_vk4x',
-            'v_ufmq'
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -2969,7 +3023,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_0sbb',
             'v_58pi',
             'v_vk4x',
-            'v_ufmq'
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3042,7 +3097,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_0sbb',
             'v_58pi',
             'v_vk4x',
-            'v_ufmq'
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3076,7 +3132,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3096,7 +3153,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3116,7 +3174,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3136,7 +3195,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3156,7 +3216,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3190,7 +3251,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_0sbb',
             'v_58pi',
             'v_vk4x',
-            'v_ufmq'
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3210,7 +3272,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3244,7 +3307,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_0sbb',
             'v_58pi',
             'v_vk4x',
-            'v_ufmq'
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3264,7 +3328,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3284,7 +3349,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3304,7 +3370,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3324,7 +3391,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3344,7 +3412,37 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_nyr1',
             'v_5dpt',
             'v_ji80',
-            'v_n0qr'
+            'v_n0qr',
+            'v_t8f9'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_t8f9'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq'
           ]
           disabled: true
         }
