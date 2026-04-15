@@ -1,0 +1,41 @@
+Dataset vy_kaggle_ecomm {
+  label: 'vy_kaggle_ecomm'
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    vy_kaggle_orders,
+    vy_kaggle_sellers,
+    vy_kaggle_order_reviews,
+    vy_kaggle_order_items,
+    vy_kaggle_order_payment,
+    vy_kaggle_product,
+    vy_kaggle_product_category_name_translation,
+    vy_kaggle_customers_dataset,
+    vy_kaggle_geolocation_dataset
+  ]
+  relationships: [
+    relationship(vy_kaggle_order_payment.order_id - vy_kaggle_orders.order_id, true),
+    relationship(vy_kaggle_order_items.product_id > vy_kaggle_product.product_id, true),
+    relationship(vy_kaggle_order_reviews.order_id > vy_kaggle_orders.order_id, true),
+    relationship(vy_kaggle_order_items.order_id > vy_kaggle_orders.order_id, true),
+    relationship(vy_kaggle_order_items.seller_id > vy_kaggle_sellers.seller_id, true),
+    relationship(vy_kaggle_orders.customer_id > vy_kaggle_customers_dataset.customer_id, true),
+    relationship(vy_kaggle_sellers.seller_zip_code_prefix > vy_kaggle_geolocation_dataset.geolocation_zip_code_prefix, true),
+    relationship(vy_kaggle_customers_dataset.customer_zip_code_prefix > vy_kaggle_geolocation_dataset.geolocation_zip_code_prefix, true),
+    relationship(vy_kaggle_product.product_category_name > vy_kaggle_product_category_name_translation.product_category_name, true)
+  ]
+  metric metric_0ec961c {
+    label: "Sum of Vy kaggle order items Price"
+    type: "number"
+    hidden: false
+    description: ""
+    definition: @aql sum(vy_kaggle_order_items.price);;
+  }
+  metric order_revenue {
+    label: 'Order Revenue'
+    type: 'number'
+    definition: @aql vy_kaggle_order_items | sum(vy_kaggle_order_items.price + vy_kaggle_order_items.freight_value);;
+    format: '[\$\$]#,###0.00'
+    description: 'Sum of item price and freight value per order.'
+  }
+}
