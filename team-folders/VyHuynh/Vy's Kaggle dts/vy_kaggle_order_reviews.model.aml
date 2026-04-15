@@ -1,6 +1,6 @@
 Model vy_kaggle_order_reviews {
   type: 'table'
-  label: 'Vy kaggle order reviews'
+  label: 'Order reviews'
   description: ''
   data_source_name: 'demodb'
   dimension review_id {

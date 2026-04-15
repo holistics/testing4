@@ -1,6 +1,6 @@
 Model vy_kaggle_product {
   type: 'table'
-  label: 'Vy kaggle product'
+  label: 'Product'
   description: ''
   data_source_name: 'demodb'
   dimension product_id {

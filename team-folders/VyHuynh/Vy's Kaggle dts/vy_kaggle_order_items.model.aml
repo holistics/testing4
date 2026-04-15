@@ -1,6 +1,6 @@
 Model vy_kaggle_order_items {
   type: 'table'
-  label: 'Vy kaggle order items'
+  label: 'Order items'
   description: ''
   data_source_name: 'demodb'
   dimension order_id {

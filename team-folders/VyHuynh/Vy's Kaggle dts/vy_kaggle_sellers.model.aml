@@ -1,6 +1,6 @@
 Model vy_kaggle_sellers {
   type: 'table'
-  label: 'Vy kaggle sellers'
+  label: 'Sellers'
   description: ''
   data_source_name: 'demodb'
   dimension seller_id {

@@ -1,6 +1,6 @@
 Model vy_kaggle_geolocation_dataset {
   type: 'table'
-  label: 'Vy kaggle geolocation dataset'
+  label: 'Geolocation'
   description: ''
   data_source_name: 'demodb'
   dimension geolocation_zip_code_prefix {

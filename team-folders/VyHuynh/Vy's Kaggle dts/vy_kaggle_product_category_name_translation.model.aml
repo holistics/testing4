@@ -1,6 +1,6 @@
 Model vy_kaggle_product_category_name_translation {
   type: 'table'
-  label: 'Vy kaggle product category name translation'
+  label: 'Category mapping'
   description: ''
   data_source_name: 'demodb'
   dimension product_category_name {

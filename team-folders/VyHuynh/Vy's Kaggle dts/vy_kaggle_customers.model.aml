@@ -1,6 +1,6 @@
 Model vy_kaggle_customers_dataset {
   type: 'table'
-  label: 'Vy kaggle customers dataset'
+  label: 'Customers'
   description: ''
   data_source_name: 'demodb'
   dimension customer_id {
