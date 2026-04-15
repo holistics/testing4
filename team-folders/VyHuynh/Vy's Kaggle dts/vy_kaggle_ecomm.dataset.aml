@@ -24,13 +24,6 @@ Dataset vy_kaggle_ecomm {
     relationship(vy_kaggle_customers_dataset.customer_zip_code_prefix > vy_kaggle_geolocation_dataset.geolocation_zip_code_prefix, true),
     relationship(vy_kaggle_product.product_category_name > vy_kaggle_product_category_name_translation.product_category_name, true)
   ]
-  metric metric_0ec961c {
-    label: "Sum of Vy kaggle order items Price"
-    type: "number"
-    hidden: false
-    description: ""
-    definition: @aql sum(vy_kaggle_order_items.price);;
-  }
   metric order_revenue {
     label: 'Order Revenue'
     type: 'number'
