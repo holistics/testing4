@@ -283,6 +283,19 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
       auto_expand_horizontally: true
     }
+    tab tab_yzia: CanvasLayout {
+      label: 'Key Driver'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      block v_bj6j {
+        position: pos(20, 20, 620, 420)
+      }
+      mobile {
+        mode: 'auto'
+      }
+    }
   }
   theme: H.themes.vanilla
   block v2: VizBlock {
@@ -861,7 +874,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: '2025'
       }
       theme {
-
       }
       fields: [
         VizFieldFull {
@@ -2518,6 +2530,49 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       settings {
         row_limit: 5000
         x_axis_label: 'Country'
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_bj6j: VizBlock {
+    label: 'Monthly Order Revenue'
+    viz: LineChart {
+      dataset: vy_kaggle_ecomm
+      theme {
+
+      }
+      x_axis: VizFieldFull {
+        ref: r(vy_kaggle_orders.order_purchase_timestamp)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(vy_kaggle_ecomm.order_revenue)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color_palette: 0
+          }
+        }
+      }
+      settings {
+        show_data_points: true
+        row_limit: 5000
         x_axis_show_null_datetime: false
         aggregate_awareness {
           enabled: true
