@@ -16,7 +16,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
       width: 1220
-      height: 4900
+      height: 4060
       grid_size: 20
       block v2 {
         position: pos(920, 220, 260, 140)
@@ -117,22 +117,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       block v_96z3 {
         position: pos(580, 2320, 580, 400)
         layer: 13
-      }
-      block v_e3kq {
-        position: pos(20, 4060, 580, 400)
-        layer: 14
-      }
-      block v_0fjp {
-        position: pos(620, 4060, 580, 400)
-        layer: 15
-      }
-      block v_0x8y {
-        position: pos(20, 4480, 580, 400)
-        layer: 16
-      }
-      block v_1beq {
-        position: pos(620, 4480, 580, 400)
-        layer: 17
       }
       mobile {
         mode: 'auto'
@@ -306,11 +290,27 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     tab tab_yzia: CanvasLayout {
       label: 'Key Driver'
       width: 1300
-      height: 800
+      height: 1300
       grid_size: 20
       auto_expand_vertically: true
       block v_bj6j {
         position: pos(20, 20, 620, 420)
+      }
+      block v_1z9r {
+        position: pos(680, 880, 580, 400)
+        layer: 4
+      }
+      block v_3lnj {
+        position: pos(20, 880, 620, 240)
+        layer: 3
+      }
+      block v_gup2 {
+        position: pos(20, 460, 620, 400)
+        layer: 1
+      }
+      block v_ln1s {
+        position: pos(680, 460, 580, 400)
+        layer: 2
       }
       mobile {
         mode: 'auto'
@@ -2750,7 +2750,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_e3kq: VizBlock {
+  block v_gup2: VizBlock {
     label: 'Nov vs Dec - Revenue drop by Seller State'
     viz: PivotTable {
       dataset: vy_kaggle_ecomm
@@ -2808,6 +2808,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: '2017-11 - 2017-12'
       }
       theme {
+
       }
       rows: [
         VizFieldFull {
@@ -2820,30 +2821,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         }
       ]
       values: [
-        VizFieldFull {
-          label: 'November Revenue'
-          ref: 'november_revenue'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
-        VizFieldFull {
-          label: 'December Revenue'
-          ref: 'december_revenue'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
-        VizFieldFull {
-          label: 'Revenue Delta'
-          ref: 'revenue_delta'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
         VizFieldFull {
           label: 'Drop Amount'
           ref: 'drop_amount'
@@ -2886,7 +2863,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         sorts: [
           SortSetting {
             key: 'custom_concentration_rank_1'
-            direction: 'desc'
+            direction: 'asc'
           },
           SortSetting {
             key: 'vy_kaggle_sellers_seller_state'
@@ -2900,7 +2877,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_0fjp: VizBlock {
+  block v_ln1s: VizBlock {
     label: 'Nov vs Dec - Revenue drop by Category'
     viz: PivotTable {
       dataset: vy_kaggle_ecomm
@@ -2958,6 +2935,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: '2017-11 - 2017-12'
       }
       theme {
+
       }
       rows: [
         VizFieldFull {
@@ -2981,30 +2959,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       ]
       values: [
         VizFieldFull {
-          label: 'November Revenue'
-          ref: 'november_revenue'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
-        VizFieldFull {
-          label: 'December Revenue'
-          ref: 'december_revenue'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
-        VizFieldFull {
-          label: 'Revenue Delta'
-          ref: 'revenue_delta'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
-        VizFieldFull {
           label: 'Drop Amount'
           ref: 'drop_amount'
           format {
@@ -3046,7 +3000,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         sorts: [
           SortSetting {
             key: 'custom_concentration_rank_1'
-            direction: 'desc'
+            direction: 'asc'
           },
           SortSetting {
             key: 'vy_kaggle_product_category_name_translation_product_category_name_english'
@@ -3064,157 +3018,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_0x8y: VizBlock {
-    label: 'Nov vs Dec - Revenue drop by Payment Type'
-    viz: PivotTable {
-      dataset: vy_kaggle_ecomm
-      calculation november_revenue {
-        label: 'November Revenue'
-        formula: @aql order_revenue | exact_period(vy_kaggle_orders.order_purchase_timestamp, @(2017-11));;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation december_revenue {
-        label: 'December Revenue'
-        formula: @aql order_revenue | exact_period(vy_kaggle_orders.order_purchase_timestamp, @(2017-12));;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation revenue_delta {
-        label: 'Revenue Delta'
-        formula: @aql december_revenue - november_revenue;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation drop_amount {
-        label: 'Drop Amount'
-        formula: @aql november_revenue - december_revenue;;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation total_drop_amount {
-        label: 'Total Drop Amount'
-        formula: @aql drop_amount | keep_grains();;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation drop_contribution_share {
-        label: 'Drop Contribution Share'
-        formula: @aql safe_divide(drop_amount, total_drop_amount);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation concentration_score {
-        label: 'Concentration Score'
-        formula: @aql pow(drop_contribution_share, 2);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      calculation concentration_rank {
-        label: 'Concentration Rank'
-        formula: @aql rank(order: concentration_score | desc(), partition: []);;
-        calc_type: 'measure'
-        data_type: 'number'
-      }
-      filter {
-        field: r(vy_kaggle_orders.order_purchase_timestamp)
-        operator: 'matches'
-        value: '2017-11 - 2017-12'
-      }
-      theme {
-      }
-      rows: [
-        VizFieldFull {
-          label: 'Payment Type'
-          ref: r(vy_kaggle_order_payment.payment_type)
-          format {
-            type: 'text'
-          }
-          uname: 'vy_kaggle_order_payment_payment_type'
-        }
-      ]
-      values: [
-        VizFieldFull {
-          label: 'November Revenue'
-          ref: 'november_revenue'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
-        VizFieldFull {
-          label: 'December Revenue'
-          ref: 'december_revenue'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
-        VizFieldFull {
-          label: 'Revenue Delta'
-          ref: 'revenue_delta'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
-        VizFieldFull {
-          label: 'Drop Amount'
-          ref: 'drop_amount'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
-        VizFieldFull {
-          label: 'Drop Contribution Share'
-          ref: 'drop_contribution_share'
-          format {
-            type: 'number'
-            pattern: '#,###%'
-          }
-        },
-        VizFieldFull {
-          label: 'Concentration Score'
-          ref: 'concentration_score'
-          format {
-            type: 'number'
-            pattern: '#,###0.00'
-          }
-        },
-        VizFieldFull {
-          label: 'Concentration Rank'
-          ref: 'concentration_rank'
-          format {
-            type: 'number'
-            pattern: '#,###'
-          }
-          uname: 'custom_concentration_rank_1'
-        }
-      ]
-      settings {
-        pagination_size: 100
-        show_row_total: true
-        show_column_total: true
-        show_sub_total: true
-        sorts: [
-          SortSetting {
-            key: 'custom_concentration_rank_1'
-            direction: 'desc'
-          },
-          SortSetting {
-            key: 'vy_kaggle_order_payment_payment_type'
-            direction: 'asc'
-          }
-        ]
-        aggregate_awareness {
-          enabled: true
-          debug_comments: true
-        }
-      }
-    }
-  }
-  block v_1beq: VizBlock {
+  block v_1z9r: VizBlock {
     label: 'Nov vs Dec - Revenue drop by Customer State'
     viz: PivotTable {
       dataset: vy_kaggle_ecomm
@@ -3286,29 +3090,132 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       ]
       values: [
         VizFieldFull {
-          label: 'November Revenue'
-          ref: 'november_revenue'
+          label: 'Drop Amount'
+          ref: 'drop_amount'
           format {
             type: 'number'
             pattern: '#,###0.00'
           }
         },
         VizFieldFull {
-          label: 'December Revenue'
-          ref: 'december_revenue'
+          label: 'Drop Contribution Share'
+          ref: 'drop_contribution_share'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Score'
+          ref: 'concentration_score'
           format {
             type: 'number'
             pattern: '#,###0.00'
           }
         },
         VizFieldFull {
-          label: 'Revenue Delta'
-          ref: 'revenue_delta'
+          label: 'Concentration Rank'
+          ref: 'concentration_rank'
           format {
             type: 'number'
-            pattern: '#,###0.00'
+            pattern: '#,###'
           }
-        },
+          uname: 'custom_concentration_rank_1'
+        }
+      ]
+      settings {
+        pagination_size: 100
+        show_row_total: true
+        show_column_total: true
+        show_sub_total: true
+        sorts: [
+          SortSetting {
+            key: 'custom_concentration_rank_1'
+            direction: 'asc'
+          },
+          SortSetting {
+            key: 'vy_kaggle_customers_dataset_customer_state'
+            direction: 'asc'
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_3lnj: VizBlock {
+    label: 'Nov vs Dec - Revenue drop by Payment Type'
+    viz: PivotTable {
+      dataset: vy_kaggle_ecomm
+      calculation november_revenue {
+        label: 'November Revenue'
+        formula: @aql order_revenue | exact_period(vy_kaggle_orders.order_purchase_timestamp, @(2017-11));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation december_revenue {
+        label: 'December Revenue'
+        formula: @aql order_revenue | exact_period(vy_kaggle_orders.order_purchase_timestamp, @(2017-12));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation revenue_delta {
+        label: 'Revenue Delta'
+        formula: @aql december_revenue - november_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_amount {
+        label: 'Drop Amount'
+        formula: @aql november_revenue - december_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation total_drop_amount {
+        label: 'Total Drop Amount'
+        formula: @aql drop_amount | keep_grains();;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_contribution_share {
+        label: 'Drop Contribution Share'
+        formula: @aql safe_divide(drop_amount, total_drop_amount);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_score {
+        label: 'Concentration Score'
+        formula: @aql pow(drop_contribution_share, 2);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_rank {
+        label: 'Concentration Rank'
+        formula: @aql rank(order: concentration_score | desc(), partition: []);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(vy_kaggle_orders.order_purchase_timestamp)
+        operator: 'matches'
+        value: '2017-11 - 2017-12'
+      }
+      theme {
+
+      }
+      rows: [
+        VizFieldFull {
+          label: 'Payment Type'
+          ref: r(vy_kaggle_order_payment.payment_type)
+          format {
+            type: 'text'
+          }
+          uname: 'vy_kaggle_order_payment_payment_type'
+        }
+      ]
+      values: [
         VizFieldFull {
           label: 'Drop Amount'
           ref: 'drop_amount'
@@ -3351,10 +3258,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         sorts: [
           SortSetting {
             key: 'custom_concentration_rank_1'
-            direction: 'desc'
+            direction: 'asc'
           },
           SortSetting {
-            key: 'vy_kaggle_customers_dataset_customer_state'
+            key: 'vy_kaggle_order_payment_payment_type'
             direction: 'asc'
           }
         ]
@@ -4288,51 +4195,51 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       ]
     },
     FilterInteraction {
-      from: 'v_bj6j'
+      from: 'v_96z3'
       to: [
         CustomMapping {
           block: [
-            'v_e3kq',
-            'v_0fjp',
-            'v_0x8y',
-            'v_1beq'
+            'v_gup2',
+            'v_ln1s',
+            'v_1z9r',
+            'v_3lnj'
           ]
           disabled: true
         }
       ]
     },
     FilterInteraction {
-      from: 'v_e3kq'
+      from: 'v_gup2'
       to: [
         CustomMapping {
-          block: 'v_bj6j'
+          block: 'v_96z3'
           disabled: true
         }
       ]
     },
     FilterInteraction {
-      from: 'v_0fjp'
+      from: 'v_ln1s'
       to: [
         CustomMapping {
-          block: 'v_bj6j'
+          block: 'v_96z3'
           disabled: true
         }
       ]
     },
     FilterInteraction {
-      from: 'v_0x8y'
+      from: 'v_1z9r'
       to: [
         CustomMapping {
-          block: 'v_bj6j'
+          block: 'v_96z3'
           disabled: true
         }
       ]
     },
     FilterInteraction {
-      from: 'v_1beq'
+      from: 'v_3lnj'
       to: [
         CustomMapping {
-          block: 'v_bj6j'
+          block: 'v_96z3'
           disabled: true
         }
       ]
