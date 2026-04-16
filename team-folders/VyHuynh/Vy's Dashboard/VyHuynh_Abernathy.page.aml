@@ -114,6 +114,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         position: pos(620, 3640, 560, 400)
         layer: 3
       }
+      block v_96z3 {
+        position: pos(580, 2320, 580, 400)
+        layer: 13
+      }
       mobile {
         mode: 'auto'
       }
@@ -286,11 +290,27 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     tab tab_yzia: CanvasLayout {
       label: 'Key Driver'
       width: 1300
-      height: 800
+      height: 1300
       grid_size: 20
       auto_expand_vertically: true
       block v_bj6j {
         position: pos(20, 20, 620, 420)
+      }
+      block v_1z9r {
+        position: pos(680, 880, 580, 400)
+        layer: 4
+      }
+      block v_3lnj {
+        position: pos(20, 880, 620, 240)
+        layer: 3
+      }
+      block v_gup2 {
+        position: pos(20, 460, 620, 400)
+        layer: 1
+      }
+      block v_ln1s {
+        position: pos(680, 460, 580, 400)
+        layer: 2
       }
       mobile {
         mode: 'auto'
@@ -2543,7 +2563,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: LineChart {
       dataset: vy_kaggle_ecomm
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(vy_kaggle_orders.order_purchase_timestamp)
@@ -2574,6 +2593,678 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         show_data_points: true
         row_limit: 5000
         x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_96z3: VizBlock {
+    label: 'Nov vs Dec - Revenue drop by Order Status'
+    viz: PivotTable {
+      dataset: vy_kaggle_ecomm
+      calculation november_revenue {
+        label: 'November Revenue'
+        formula: @aql order_revenue | where(vy_kaggle_orders.order_purchase_timestamp is @(2017-11));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation december_revenue {
+        label: 'December Revenue'
+        formula: @aql order_revenue | where(vy_kaggle_orders.order_purchase_timestamp is @(2017-12));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation revenue_delta {
+        label: 'Revenue Delta'
+        formula: @aql december_revenue - november_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_amount {
+        label: 'Drop Amount'
+        formula: @aql november_revenue - december_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation total_drop_amount {
+        label: 'Total Drop Amount'
+        formula: @aql drop_amount | keep_grains();;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_contribution_share {
+        label: 'Drop Contribution Share'
+        formula: @aql safe_divide(drop_amount, total_drop_amount);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_score {
+        label: 'Concentration Score'
+        formula: @aql pow(drop_contribution_share, 2);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_rank {
+        label: 'Concentration Rank'
+        formula: @aql rank(order: concentration_score | desc(), partition: []);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(vy_kaggle_orders.order_purchase_timestamp)
+        operator: 'matches'
+        value: '2017-11 - 2017-12'
+      }
+      theme {
+      }
+      rows: [
+        VizFieldFull {
+          label: 'Order Status'
+          ref: r(vy_kaggle_orders.order_status)
+          format {
+            type: 'text'
+          }
+          uname: 'vy_kaggle_orders_order_status'
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'November Revenue'
+          ref: 'november_revenue'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'December Revenue'
+          ref: 'december_revenue'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Revenue Delta'
+          ref: 'revenue_delta'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Drop Amount'
+          ref: 'drop_amount'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Drop Contribution Share'
+          ref: 'drop_contribution_share'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Score'
+          ref: 'concentration_score'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Rank'
+          ref: 'concentration_rank'
+          format {
+            type: 'number'
+            pattern: '#,###'
+          }
+          uname: 'custom_concentration_rank_1'
+        }
+      ]
+      settings {
+        pagination_size: 100
+        show_row_total: true
+        show_column_total: true
+        show_sub_total: true
+        sorts: [
+          SortSetting {
+            key: 'custom_concentration_rank_1'
+            direction: 'desc'
+          },
+          SortSetting {
+            key: 'vy_kaggle_orders_order_status'
+            direction: 'asc'
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_gup2: VizBlock {
+    label: 'Nov vs Dec - Revenue drop by Seller State'
+    viz: PivotTable {
+      dataset: vy_kaggle_ecomm
+      calculation november_revenue {
+        label: 'November Revenue'
+        formula: @aql order_revenue | where(vy_kaggle_orders.order_purchase_timestamp is @(2017-11));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation december_revenue {
+        label: 'December Revenue'
+        formula: @aql order_revenue | where(vy_kaggle_orders.order_purchase_timestamp is @(2017-12));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation revenue_delta {
+        label: 'Revenue Delta'
+        formula: @aql december_revenue - november_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_amount {
+        label: 'Drop Amount'
+        formula: @aql november_revenue - december_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation total_drop_amount {
+        label: 'Total Drop Amount'
+        formula: @aql drop_amount | keep_grains();;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_contribution_share {
+        label: 'Drop Contribution Share'
+        formula: @aql safe_divide(drop_amount, total_drop_amount);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_score {
+        label: 'Concentration Score'
+        formula: @aql pow(drop_contribution_share, 2);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_rank {
+        label: 'Concentration Rank'
+        formula: @aql rank(order: concentration_score | desc(), partition: []);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(vy_kaggle_orders.order_purchase_timestamp)
+        operator: 'matches'
+        value: '2017-11 - 2017-12'
+      }
+      theme {
+
+      }
+      rows: [
+        VizFieldFull {
+          label: 'Seller State'
+          ref: r(vy_kaggle_sellers.seller_state)
+          format {
+            type: 'text'
+          }
+          uname: 'vy_kaggle_sellers_seller_state'
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'Drop Amount'
+          ref: 'drop_amount'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Drop Contribution Share'
+          ref: 'drop_contribution_share'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Score'
+          ref: 'concentration_score'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Rank'
+          ref: 'concentration_rank'
+          format {
+            type: 'number'
+            pattern: '#,###'
+          }
+          uname: 'custom_concentration_rank_1'
+        }
+      ]
+      settings {
+        pagination_size: 100
+        show_row_total: true
+        show_column_total: true
+        show_sub_total: true
+        sorts: [
+          SortSetting {
+            key: 'custom_concentration_rank_1'
+            direction: 'asc'
+          },
+          SortSetting {
+            key: 'vy_kaggle_sellers_seller_state'
+            direction: 'asc'
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_ln1s: VizBlock {
+    label: 'Nov vs Dec - Revenue drop by Category'
+    viz: PivotTable {
+      dataset: vy_kaggle_ecomm
+      calculation november_revenue {
+        label: 'November Revenue'
+        formula: @aql order_revenue | exact_period(vy_kaggle_orders.order_purchase_timestamp, @(2017-11));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation december_revenue {
+        label: 'December Revenue'
+        formula: @aql order_revenue | exact_period(vy_kaggle_orders.order_purchase_timestamp, @(2017-12));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation revenue_delta {
+        label: 'Revenue Delta'
+        formula: @aql december_revenue - november_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_amount {
+        label: 'Drop Amount'
+        formula: @aql november_revenue - december_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation total_drop_amount {
+        label: 'Total Drop Amount'
+        formula: @aql drop_amount | keep_grains();;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_contribution_share {
+        label: 'Drop Contribution Share'
+        formula: @aql drop_amount * 1.0 / total_drop_amount;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_score {
+        label: 'Concentration Score'
+        formula: @aql pow(drop_contribution_share, 2);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_rank {
+        label: 'Concentration Rank'
+        formula: @aql rank(order: concentration_score | desc(), partition: []);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(vy_kaggle_orders.order_purchase_timestamp)
+        operator: 'matches'
+        value: '2017-11 - 2017-12'
+      }
+      theme {
+
+      }
+      rows: [
+        VizFieldFull {
+          label: 'Order Purchase Month'
+          ref: r(vy_kaggle_orders.order_purchase_timestamp)
+          transformation: 'datetrunc month'
+          format {
+            type: 'date'
+            pattern: 'LLL yyyy'
+          }
+          uname: 'datetrunc_month_order_purchase_timestamp'
+        },
+        VizFieldFull {
+          label: 'Product Category Name English'
+          ref: r(vy_kaggle_product_category_name_translation.product_category_name_english)
+          format {
+            type: 'text'
+          }
+          uname: 'vy_kaggle_product_category_name_translation_product_category_name_english'
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'Drop Amount'
+          ref: 'drop_amount'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Drop Contribution Share'
+          ref: 'drop_contribution_share'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Score'
+          ref: 'concentration_score'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Rank'
+          ref: 'concentration_rank'
+          format {
+            type: 'number'
+            pattern: '#,###'
+          }
+          uname: 'custom_concentration_rank_1'
+        }
+      ]
+      settings {
+        pagination_size: 100
+        show_row_total: true
+        show_column_total: true
+        show_sub_total: true
+        sorts: [
+          SortSetting {
+            key: 'custom_concentration_rank_1'
+            direction: 'asc'
+          },
+          SortSetting {
+            key: 'vy_kaggle_product_category_name_translation_product_category_name_english'
+            direction: 'asc'
+          },
+          SortSetting {
+            key: 'datetrunc_month_order_purchase_timestamp'
+            direction: 'asc'
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_1z9r: VizBlock {
+    label: 'Nov vs Dec - Revenue drop by Customer State'
+    viz: PivotTable {
+      dataset: vy_kaggle_ecomm
+      calculation november_revenue {
+        label: 'November Revenue'
+        formula: @aql order_revenue | where(vy_kaggle_orders.order_purchase_timestamp is @(2017-11));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation december_revenue {
+        label: 'December Revenue'
+        formula: @aql order_revenue | where(vy_kaggle_orders.order_purchase_timestamp is @(2017-12));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation revenue_delta {
+        label: 'Revenue Delta'
+        formula: @aql december_revenue - november_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_amount {
+        label: 'Drop Amount'
+        formula: @aql november_revenue - december_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation total_drop_amount {
+        label: 'Total Drop Amount'
+        formula: @aql drop_amount | exclude_grains(vy_kaggle_customers_dataset.customer_state);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_contribution_share {
+        label: 'Drop Contribution Share'
+        formula: @aql safe_divide(drop_amount, total_drop_amount);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_score {
+        label: 'Concentration Score'
+        formula: @aql pow(drop_contribution_share, 2);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_rank {
+        label: 'Concentration Rank'
+        formula: @aql rank(order: concentration_score | desc());;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(vy_kaggle_orders.order_purchase_timestamp)
+        operator: 'matches'
+        value: '2017-11 - 2017-12'
+      }
+      theme {
+
+      }
+      rows: [
+        VizFieldFull {
+          label: 'Customer State'
+          ref: r(vy_kaggle_customers_dataset.customer_state)
+          format {
+            type: 'text'
+          }
+          uname: 'vy_kaggle_customers_dataset_customer_state'
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'Drop Amount'
+          ref: 'drop_amount'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Drop Contribution Share'
+          ref: 'drop_contribution_share'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Score'
+          ref: 'concentration_score'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Rank'
+          ref: 'concentration_rank'
+          format {
+            type: 'number'
+            pattern: '#,###'
+          }
+          uname: 'custom_concentration_rank_1'
+        }
+      ]
+      settings {
+        pagination_size: 100
+        show_row_total: true
+        show_column_total: true
+        show_sub_total: true
+        sorts: [
+          SortSetting {
+            key: 'custom_concentration_rank_1'
+            direction: 'asc'
+          },
+          SortSetting {
+            key: 'vy_kaggle_customers_dataset_customer_state'
+            direction: 'asc'
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_3lnj: VizBlock {
+    label: 'Nov vs Dec - Revenue drop by Payment Type'
+    viz: PivotTable {
+      dataset: vy_kaggle_ecomm
+      calculation november_revenue {
+        label: 'November Revenue'
+        formula: @aql order_revenue | exact_period(vy_kaggle_orders.order_purchase_timestamp, @(2017-11));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation december_revenue {
+        label: 'December Revenue'
+        formula: @aql order_revenue | exact_period(vy_kaggle_orders.order_purchase_timestamp, @(2017-12));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation revenue_delta {
+        label: 'Revenue Delta'
+        formula: @aql december_revenue - november_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_amount {
+        label: 'Drop Amount'
+        formula: @aql november_revenue - december_revenue;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation total_drop_amount {
+        label: 'Total Drop Amount'
+        formula: @aql drop_amount | keep_grains();;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation drop_contribution_share {
+        label: 'Drop Contribution Share'
+        formula: @aql safe_divide(drop_amount, total_drop_amount);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_score {
+        label: 'Concentration Score'
+        formula: @aql pow(drop_contribution_share, 2);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation concentration_rank {
+        label: 'Concentration Rank'
+        formula: @aql rank(order: concentration_score | desc(), partition: []);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(vy_kaggle_orders.order_purchase_timestamp)
+        operator: 'matches'
+        value: '2017-11 - 2017-12'
+      }
+      theme {
+
+      }
+      rows: [
+        VizFieldFull {
+          label: 'Payment Type'
+          ref: r(vy_kaggle_order_payment.payment_type)
+          format {
+            type: 'text'
+          }
+          uname: 'vy_kaggle_order_payment_payment_type'
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'Drop Amount'
+          ref: 'drop_amount'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Drop Contribution Share'
+          ref: 'drop_contribution_share'
+          format {
+            type: 'number'
+            pattern: '#,###%'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Score'
+          ref: 'concentration_score'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Concentration Rank'
+          ref: 'concentration_rank'
+          format {
+            type: 'number'
+            pattern: '#,###'
+          }
+          uname: 'custom_concentration_rank_1'
+        }
+      ]
+      settings {
+        pagination_size: 100
+        show_row_total: true
+        show_column_total: true
+        show_sub_total: true
+        sorts: [
+          SortSetting {
+            key: 'custom_concentration_rank_1'
+            direction: 'asc'
+          },
+          SortSetting {
+            key: 'vy_kaggle_order_payment_payment_type'
+            direction: 'asc'
+          }
+        ]
         aggregate_awareness {
           enabled: true
           debug_comments: true
@@ -3499,6 +4190,56 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_vk4x',
             'v_ufmq'
           ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_96z3'
+      to: [
+        CustomMapping {
+          block: [
+            'v_gup2',
+            'v_ln1s',
+            'v_1z9r',
+            'v_3lnj'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_gup2'
+      to: [
+        CustomMapping {
+          block: 'v_96z3'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_ln1s'
+      to: [
+        CustomMapping {
+          block: 'v_96z3'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_1z9r'
+      to: [
+        CustomMapping {
+          block: 'v_96z3'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_3lnj'
+      to: [
+        CustomMapping {
+          block: 'v_96z3'
           disabled: true
         }
       ]
