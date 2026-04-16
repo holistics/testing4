@@ -31,19 +31,19 @@ Dashboard squad_command_center {
         layer: 1
       }
       block t_aax1 {
-        position: pos(40, 920, 1120, 40)
+        position: pos(40, 820, 1120, 40)
         layer: 1
       }
       block t_my4d {
-        position: pos(40, 960, 200, 60)
+        position: pos(40, 860, 200, 60)
         layer: 1
       }
       block t_677a {
-        position: pos(1020, 980, 60, 40)
+        position: pos(1020, 880, 60, 40)
         layer: 1
       }
       block t_z5ve {
-        position: pos(1080, 980, 60, 40)
+        position: pos(1080, 880, 60, 40)
         layer: 1
       }
       block v_ipdo {
@@ -55,7 +55,7 @@ Dashboard squad_command_center {
         layer: 1
       }
       block v_r2ma {
-        position: pos(620, 500, 540, 400)
+        position: pos(620, 400, 540, 400)
         layer: 1
       }
       default_zoom: 0.7
