@@ -17,9 +17,11 @@ Dashboard ecommerce_dashboard_amyra {
         }
       }
       compare_value: VizPopSettings {
-        field: ref('order_master', 'order_created_at')
-        duration: 1
-        granularity: 'year'
+        field: r(order_master.order_created_at)
+        value: RelativePopValue {
+          duration: 2
+          granularity: 'year'
+        }
       }
       settings {
         aggregate_awareness {
