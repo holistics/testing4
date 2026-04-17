@@ -1,3 +1,51 @@
+
+const dark_background_color = 'green'
+const dark_text_color = 'white'
+const dark_placeholder_color = 'red'
+const dark_active_background_color = 'purple'
+const dark_active_text_color = 'black'
+
+const squad_dark_pro_max = squad_dark.extend(
+  {
+    custom_css: @css
+      .h-dac-toolbar ,
+      .h-context-menu-content ,
+      .h-dac-toolbar-right ,
+      div[data-ci="ci-controls-panel-content"] {
+         :not(.dac-canvas) {
+            background: ${dark_background_color};
+            color: ${dark_text_color} !important;
+              
+            .hui-btn {
+              color: white;
+              &:active, &:hover {
+                background: ${dark_active_background_color};
+                color: black;
+              }
+            }
+            .bg-white {
+              background: ${dark_background_color};
+            }
+            .operator-select {
+              background: ${dark_background_color} !important;
+              color: ${dark_text_color};
+            }
+            .input::placeholder {
+              color: ${dark_placeholder_color};
+            }
+          }
+          .dac-canvas {
+            .bg-white {
+              background: initial;
+            }
+          }
+      }
+    }
+     
+  ;;
+  }
+)
+
 Dashboard test_zoom {
   title: 'Insights'
   description: ''
@@ -11,9 +59,12 @@ Dashboard test_zoom {
       height: 2840
       grid_size: 20
       auto_expand_vertically: true
-     
+
       mobile {
         mode: 'auto'
+      }
+      block f_airbnb_listings_id {
+        position: pos(710, 1980, 300, 80)
       }
     }
     tab tab2: CanvasLayout {
@@ -44,5 +95,17 @@ Dashboard test_zoom {
     allow_timezone_change: true
     cache_duration: 1440
   }
- 
+  theme: squad_dark_pro_max
+  block f_airbnb_listings_id: FilterBlock {
+    label: 'Airbnb Listings Id'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: airbnb_data
+      field: r(ecommerce_demo_pointmap_airbnb.id)
+    }
+    default {
+      operator: 'is'
+      value: '$H_NIL$'
+    }
+  }
 }
