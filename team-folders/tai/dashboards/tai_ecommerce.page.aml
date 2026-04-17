@@ -1,5 +1,24 @@
+const squad_dark_pro_max = squad_dark.extend({
+  custom_css: @css
+    .h-dac-toolbar {
+      background: green;
+      color: white !important;
+      .hui-btn {
+        color: white;
+        &:active, &:hover {
+          color: black;
+        }
+      }
+    }
+    div[data-ci="ci-controls-panel-content"] {
+      background: green;
+    }
+  ;;
+})
+
 Dashboard tai_ecommerce {
-  title: '[Demo] Ecommerce Overview - vinhhh test'
+  title: 'Tai test dark promax'
+  theme: squad_dark_pro_max
 
 
   block user_country: FilterBlock {
@@ -818,7 +837,7 @@ display: block;
       layer: 1
     }
     block t9 {
-      position: pos(545, 600, 140, 140)
+      position: pos(470, 615, 150, 155)
       layer: 1
     }
     block v1 {
@@ -842,7 +861,7 @@ display: block;
       layer: 1
     }
     block t10 {
-      position: pos(365, 720, 480, 60)
+      position: pos(650, 650, 480, 75)
       layer: 2
     }
     block v10 {
@@ -914,3 +933,4 @@ display: block;
     cache_duration: 1440
   }
 }
+
