@@ -19,7 +19,7 @@ const squad_dark_pro_max = squad_dark.extend(
             .hui-btn {
               color: white;
               &:active, &:hover {
-                background: ${dark_active_background_color};
+                background: ${dark_active_background_color} !important;
                 color: black;
               }
             }
@@ -66,6 +66,9 @@ Dashboard test_zoom {
       block f_airbnb_listings_id {
         position: pos(710, 1980, 300, 80)
       }
+      block f_airbnb_listings_id_vuz1 {
+        position: pos(710, 820, 300, 80)
+      }
     }
     tab tab2: CanvasLayout {
       default_zoom: 'fit_to_width'
@@ -108,4 +111,36 @@ Dashboard test_zoom {
       value: '$H_NIL$'
     }
   }
+  block f_airbnb_listings_id_vuz1: FilterBlock {
+    label: 'Airbnb Listings Id'
+    type: 'field'
+    source: FieldFilterSource {
+      dataset: airbnb_data
+      field: r(ecommerce_demo_pointmap_airbnb.id)
+    }
+    default {
+      operator: 'is'
+      value: '$H_NIL$'
+    }
+  }
+  interactions: [
+    FilterInteraction {
+      from: 'f_airbnb_listings_id'
+      to: [
+        CustomMapping {
+          block: 'f_airbnb_listings_id_vuz1'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_airbnb_listings_id_vuz1'
+      to: [
+        CustomMapping {
+          block: 'f_airbnb_listings_id'
+          disabled: true
+        }
+      ]
+    }
+  ]
 }
