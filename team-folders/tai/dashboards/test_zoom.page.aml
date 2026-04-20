@@ -30,13 +30,11 @@ const squad_dark_pro_max = squad_dark.extend(
     border-color: ${dark_border_color} !important;
   }
  
-  /* Dashboard title ("Insights") */
   .dac-metadata *,
   .dac-metadata [data-ci="ci-dashboard-title"] {
     color: ${dark_text_color} !important;
   }
  
-  /* Icons in header/toolbar */
   .dac-metadata svg,
   .dac-metadata .h-icon,
   .h-dac-toolbar svg,
@@ -80,24 +78,29 @@ const squad_dark_pro_max = squad_dark.extend(
     border-color: ${dark_border_color} !important;
   }
  
-  /* Accordion sections: "In this tab", "From other tabs" */
+  /* ---- Accordion sections ("In this tab", "From other tabs") --
+     Styled like the top tabs: transparent bg, white text,
+     accent on hover. Text color is forced on ALL descendants
+     so utility classes like text-gray-* can't override. */
   .h-controls-accordion,
   .h-controls-accordion [data-hui-section="header"],
   .h-controls-accordion [data-hui-section="body"] {
-    background: ${dark_background_color} !important;
-    color: ${dark_text_color} !important;
+    background: transparent !important;
     border-color: ${dark_border_color} !important;
   }
-  .h-controls-accordion [data-hui-section="header"] * {
+  .h-controls-accordion [data-hui-section="header"],
+  .h-controls-accordion [data-hui-section="header"] *,
+  .h-controls-accordion [data-hui-section="body"],
+  .h-controls-accordion [data-hui-section="body"] * {
     color: ${dark_text_color} !important;
+  }
+  .h-controls-accordion [data-hui-section="header"]:hover {
+    background: ${dark_active_background_color} !important;
   }
   .h-controls-accordion svg,
   .h-controls-accordion .h-icon {
     color: ${dark_text_color} !important;
     fill: currentColor !important;
-  }
-  .h-controls-accordion [class*="text-gray-"] {
-    color: ${dark_placeholder_color} !important;
   }
  
   /* Inputs + operator select inside the panel */
@@ -170,7 +173,6 @@ const squad_dark_pro_max = squad_dark.extend(
   [data-ci*="controls-panel"] *::-webkit-scrollbar-thumb:hover {
     background: ${dark_active_background_color};
   }
-  /* Firefox — scoped the same way */
   .dac-canvas-layout,
   .dac-body,
   .dac-body-content,
@@ -182,7 +184,6 @@ const squad_dark_pro_max = squad_dark.extend(
  
  
   /* ---- Catch-all .bg-white override --------------------------- */
-  /* Preserves per-block theming inside canvas blocks. */
   .bg-white:not(.dac-canvas):not(.dac-canvas *) {
     background: ${dark_background_color} !important;
   }
