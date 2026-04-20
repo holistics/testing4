@@ -57,7 +57,6 @@ Dashboard insights_copy {
       default_zoom: 'fit_to_width'
     }
   }
-  theme: squad_dark_pro_max
   settings {
     timezone: 'Etc/UTC'
     allow_timezone_change: true
