@@ -18,99 +18,106 @@ const dark_active_text_color = 'black'
 
 const squad_dark_pro_max = squad_dark.extend({
   custom_css: @css 
-      /* ---------- Top header bar ----------
-      Contains: "Insights" title, tab list (Overview/Games/Players),
-      Controls toggle button, timezone ("Etc/UTC"). */
-    .h-embed-header,
-    .h-dashboard-header,
-    .h-page-header,
-    [data-ci*="dashboard-header"],
-    [data-ci*="page-header"],
-    [data-ci*="embed-header"] {
-      background: ${dark_background_color} !important;
+     /* ============================================================
+   Additions: top header + canvas zoom control
+   These must be TOP-LEVEL selectors — they live outside
+   .h-dashboard-container / .h-dac-toolbar and therefore won't
+   inherit from your existing nested rules.
+   ============================================================ */
+
+custom_css: @css
+
+  /* ---------- Top header bar ----------
+     Contains: "Insights" title, tab list (Overview/Games/Players),
+     Controls toggle button, timezone ("Etc/UTC"). */
+  .h-embed-header,
+  .h-dashboard-header,
+  .h-page-header,
+  [data-ci*="dashboard-header"],
+  [data-ci*="page-header"],
+  [data-ci*="embed-header"] {
+    background: ${dark_background_color} !important;
+    color: ${dark_text_color} !important;
+    border-bottom-color: ${dark_border_color} !important;
+
+    /* Title text + info icons */
+    h1, h2, h3, span, .hui-icon, svg {
       color: ${dark_text_color} !important;
-      border-bottom-color: ${dark_border_color} !important;
-  
-      /* Title text + info icons */
-      h1, h2, h3, span, .hui-icon, svg {
-        color: ${dark_text_color} !important;
-        fill: currentColor !important;
-      }
-  
-      /* Tabs: Overview / Games / Players */
-      [role="tablist"],
-      .h-tab-list,
-      .h-tabs {
-        background: transparent !important;
-        border-color: ${dark_border_color} !important;
-      }
-  
-      [role="tab"],
-      .h-tab-item {
-        color: ${dark_muted_color} !important;
-        background: transparent !important;
-        border-color: transparent !important;
-  
-        &:hover {
-          background: ${dark_active_background_color} !important;
-          color: ${dark_text_color} !important;
-        }
-  
-        &[aria-selected="true"],
-        &.is-active,
-        &.active {
-          color: ${dark_text_color} !important;
-          border-bottom-color: ${dark_text_color} !important;
-        }
-      }
-  
-      /* Buttons in header: Controls toggle, timezone picker */
-      .hui-btn,
-      button {
-        color: ${dark_text_color} !important;
-        background: transparent !important;
-        border-color: ${dark_border_color} !important;
-  
-        &:hover {
-          background: ${dark_active_background_color} !important;
-        }
-      }
-  
-      /* Defensive light-utility overrides */
-      .bg-white,
-      .bg-gray-50,
-      .bg-gray-100 {
-        background: ${dark_background_color} !important;
-      }
+      fill: currentColor !important;
     }
-  
-  
-    /* ---------- Canvas zoom control (bottom-right "68% ▼") ---------- */
-    .h-dac-zoom,
-    .h-zoom-control,
-    .h-zoom-selector,
-    .h-canvas-zoom,
-    [data-ci*="zoom"],
-    [data-ci*="canvas-zoom"] {
-      background: ${dark_background_color} !important;
-      color: ${dark_text_color} !important;
+
+    /* Tabs: Overview / Games / Players */
+    [role="tablist"],
+    .h-tab-list,
+    .h-tabs {
+      background: transparent !important;
       border-color: ${dark_border_color} !important;
-      box-shadow: none !important;
-  
-      .hui-btn,
-      button,
-      svg {
+    }
+
+    [role="tab"],
+    .h-tab-item {
+      color: ${dark_muted_color} !important;
+      background: transparent !important;
+      border-color: transparent !important;
+
+      &:hover {
+        background: ${dark_active_background_color} !important;
         color: ${dark_text_color} !important;
-        fill: currentColor !important;
-        background: transparent !important;
-  
-        &:hover {
-          background: ${dark_active_background_color} !important;
-        }
+      }
+
+      &[aria-selected="true"],
+      &.is-active,
+      &.active {
+        color: ${dark_text_color} !important;
+        border-bottom-color: ${dark_text_color} !important;
       }
     }
-  
-  
+
+    /* Buttons in header: Controls toggle, timezone picker */
+    .hui-btn,
+    button {
+      color: ${dark_text_color} !important;
+      background: transparent !important;
+      border-color: ${dark_border_color} !important;
+
+      &:hover {
+        background: ${dark_active_background_color} !important;
+      }
+    }
+
+    /* Defensive light-utility overrides */
+    .bg-white,
+    .bg-gray-50,
+    .bg-gray-100 {
+      background: ${dark_background_color} !important;
+    }
+  }
+
+
+  /* ---------- Canvas zoom control (bottom-right "68% ▼") ---------- */
+  .h-dac-zoom,
+  .h-zoom-control,
+  .h-zoom-selector,
+  .h-canvas-zoom,
+  [data-ci*="zoom"],
+  [data-ci*="canvas-zoom"] {
+    background: ${dark_background_color} !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+    box-shadow: none !important;
+
+    .hui-btn,
+    button,
+    svg {
+      color: ${dark_text_color} !important;
+      fill: currentColor !important;
+      background: transparent !important;
+
+      &:hover {
+        background: ${dark_active_background_color} !important;
+      }
+    }
+  }
   ;;
 })
 
