@@ -10,13 +10,14 @@ const squad_dark_pro_max = squad_dark.extend(
     custom_css: @css
       .h-dac-toolbar ,
       .h-context-menu-content ,
-      .h-dac-toolbar-right ,
+      .h-dac-toolbar-right,
+      .h-dashboard-container,
       div[data-ci="ci-controls-panel-content"] {
          :not(.dac-canvas) {
             background: ${dark_background_color};
             color: ${dark_text_color} !important;
               
-            .hui-btn {
+            .hui-btn, .hui-dropdown, .hui-popper-floating-inner {
               color: white;
               &:active, &:hover {
                 background: ${dark_active_background_color} !important;
@@ -39,6 +40,7 @@ const squad_dark_pro_max = squad_dark.extend(
               background: initial;
             }
           }
+
       }
     }
      
@@ -67,7 +69,7 @@ Dashboard test_zoom {
         position: pos(710, 1980, 300, 80)
       }
       block f_airbnb_listings_id_vuz1 {
-        position: pos(710, 820, 300, 80)
+        position: pos(540, 600, 300, 80)
       }
     }
     tab tab2: CanvasLayout {
