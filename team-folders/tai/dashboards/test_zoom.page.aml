@@ -1,57 +1,176 @@
 
 const dark_background_color = 'green'
+const dark_surface_color = 'green'
+const dark_border_color = 'purple'
 const dark_text_color = 'white'
+const dark_muted_color = 'gray'
 const dark_placeholder_color = 'red'
 const dark_active_background_color = 'purple'
 const dark_active_text_color = 'black'
 
+    //  ${dark_background_color}         main panel / canvas bg
+    //  ${dark_surface_color}             NEW — input/dropdown bg  (slightly lighter than main bg)
+    //  ${dark_border_color}              NEW — dividers & borders
+    //  ${dark_text_color}                primary text
+    //  ${dark_muted_color}               NEW — secondary/empty-state text
+    //  ${dark_placeholder_color}         input placeholders
+    //  ${dark_active_background_color}   hover / active states
+
 const squad_dark_pro_max = squad_dark.extend(
   {
-    // custom_css: @css
-    //   .h-dac-toolbar ,
-    //   .h-context-menu-content ,
-    //   .h-dac-toolbar-right,
-    //   .h-dashboard-container,
-    //   div[data-ci="ci-controls-panel-content"] {
-    //      :not(.dac-canvas) {
-    //         background: ${dark_background_color};
-    //         color: ${dark_text_color} !important;
-              
-    //         .hui-btn, .hui-dropdown, .hui-popper-floating-inner {
-    //           color: white;
-    //           &:active, &:hover {
-    //             background: ${dark_active_background_color} !important;
-    //             color: black;
-    //           }
-    //         }
-    //         .bg-white {
-    //           background: ${dark_background_color};
-    //         }
-    //         .operator-select {
-    //           background: ${dark_background_color} !important;
-    //           color: ${dark_text_color};
-    //         }
-    //         .input::placeholder {
-    //           color: ${dark_placeholder_color};
-    //         }
-    //       }
-    //       .hui-dropdown, .hui-popper-floating-inner {
-    //         color: white;
-    //         &:active, &:hover {
-    //           background: ${dark_active_background_color} !important;
-    //           color: black;
-    //         }
-    //       }
-    //       .dac-canvas {
-    //         .bg-white {
-    //           background: initial;
-    //         }
-    //       }
-
-    //   }
-    // }
-     
-  // ;;
+custom_css: @css
+ 
+  /* ---------- Right Controls Panel ---------- */
+  div[data-ci="ci-controls-panel-content"],
+  .h-dashboard-controls-panel,
+  .h-controls-panel {
+    background: ${dark_background_color} !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+ 
+    /* Panel header row: "Controls" title + Reset / eye / close icons */
+    .h-dashboard-controls-panel-header,
+    [data-ci*="controls-panel-header"] {
+      background: ${dark_background_color};
+      color: ${dark_text_color};
+      border-bottom-color: ${dark_border_color};
+    }
+ 
+    /* Accordion section headers: "In this tab", "From other tabs" */
+    .h-accordion-header,
+    .h-collapse-header,
+    [data-ci*="section-header"],
+    [data-ci*="accordion"] {
+      background: transparent !important;
+      color: ${dark_text_color} !important;
+      border-color: ${dark_border_color} !important;
+    }
+ 
+    /* Filter labels (e.g. "Airbnb Listings Id") */
+    label,
+    .h-filter-label,
+    .h-control-label {
+      color: ${dark_text_color} !important;
+    }
+ 
+    /* Empty state: "No filters & controls." */
+    .h-empty-state,
+    .text-muted,
+    [class*="text-gray-4"],
+    [class*="text-gray-5"] {
+      color: ${dark_muted_color} !important;
+    }
+ 
+    /* Operator select ("equal") + value input ("Type or paste…") */
+    input,
+    .hui-input,
+    .hui-input-wrapper,
+    .hui-select,
+    .hui-select-trigger,
+    .operator-select,
+    [data-ci*="filter-input"],
+    [data-ci*="operator-select"],
+    [data-ci*="filter-value"] {
+      background: ${dark_surface_color} !important;
+      color: ${dark_text_color} !important;
+      border-color: ${dark_border_color} !important;
+ 
+      &::placeholder {
+        color: ${dark_placeholder_color} !important;
+      }
+ 
+      &:hover,
+      &:focus,
+      &:focus-within {
+        background: ${dark_surface_color} !important;
+        border-color: ${dark_active_background_color} !important;
+      }
+    }
+ 
+    /* Icon buttons: Reset, visibility eye, close X, accordion chevrons */
+    .hui-btn,
+    .hui-icon-btn,
+    button[class*="icon"] {
+      color: ${dark_text_color} !important;
+      background: transparent !important;
+ 
+      svg,
+      .hui-icon {
+        color: ${dark_text_color} !important;
+        fill: currentColor !important;
+      }
+ 
+      &:hover,
+      &:active {
+        background: ${dark_active_background_color} !important;
+        color: ${dark_text_color} !important;
+      }
+    }
+ 
+    /* Defensive overrides for Tailwind light utilities inside the panel */
+    .bg-white,
+    .bg-gray-50,
+    .bg-gray-100 {
+      background: ${dark_background_color} !important;
+    }
+    .text-black,
+    .text-gray-800,
+    .text-gray-900 {
+      color: ${dark_text_color} !important;
+    }
+    [class*="border-gray-"] {
+      border-color: ${dark_border_color} !important;
+    }
+  }
+ 
+ 
+  /* ---------- Floating popovers & dropdown menus ----------
+     These portal to the body root (NOT inside the panel),
+     so they must be styled as top-level selectors.
+     Triggered by clicking the operator select or value input. */
+  .hui-popper-floating-inner,
+  .hui-dropdown-menu,
+  .hui-select-menu,
+  .h-context-menu-content {
+    background: ${dark_surface_color} !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+ 
+    .hui-dropdown-item,
+    .hui-select-option,
+    .hui-menu-item,
+    [role="option"],
+    [role="menuitem"] {
+      color: ${dark_text_color} !important;
+      background: transparent !important;
+ 
+      &:hover,
+      &[data-highlighted],
+      &[aria-selected="true"],
+      &[data-active="true"] {
+        background: ${dark_active_background_color} !important;
+        color: ${dark_text_color} !important;
+      }
+    }
+ 
+    /* Search input that appears inside dropdowns */
+    input,
+    .hui-input {
+      background: ${dark_background_color} !important;
+      color: ${dark_text_color} !important;
+      border-color: ${dark_border_color} !important;
+ 
+      &::placeholder {
+        color: ${dark_placeholder_color} !important;
+      }
+    }
+ 
+    /* Empty result states inside dropdowns */
+    .h-empty-state,
+    [class*="text-gray-"] {
+      color: ${dark_muted_color} !important;
+    }
+  };;
   }
 )
 
