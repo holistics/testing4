@@ -1,30 +1,6 @@
 Dashboard insights_copy {
   title: 'Insights (copy)'
   owner: 'tai.nguyen@holistics.io'
-  block f_airbnb_listings_id: FilterBlock {
-    label: 'Airbnb Listings Id'
-    type: 'field'
-    source: FieldFilterSource {
-      dataset: airbnb_data
-      field: r(ecommerce_demo_pointmap_airbnb.id)
-    }
-    default {
-      operator: 'is'
-      value: '$H_NIL$'
-    }
-  }
-  block f_airbnb_listings_id_vuz1: FilterBlock {
-    label: 'Airbnb Listings Id'
-    type: 'field'
-    source: FieldFilterSource {
-      dataset: airbnb_data
-      field: r(ecommerce_demo_pointmap_airbnb.id)
-    }
-    default {
-      operator: 'is'
-      value: '$H_NIL$'
-    }
-  }
   interactions: [
     FilterInteraction {
       from: 'f_airbnb_listings_id'
@@ -53,12 +29,6 @@ Dashboard insights_copy {
       height: 2840
       grid_size: 20
       auto_expand_vertically: true
-      block f_airbnb_listings_id {
-        position: pos(920, 640, 300, 80)
-      }
-      block f_airbnb_listings_id_vuz1 {
-        position: pos(540, 600, 300, 80)
-      }
       mobile {
         mode: 'auto'
       }
