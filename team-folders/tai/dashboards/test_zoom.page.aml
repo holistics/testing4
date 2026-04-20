@@ -1,12 +1,11 @@
-
-const dark_background_color = 'green'
-const dark_surface_color = 'green'
-const dark_border_color = 'purple'
-const dark_text_color = 'white'
-const dark_muted_color = 'gray'
-const dark_placeholder_color = 'red'
-const dark_active_background_color = 'purple'
-const dark_active_text_color = 'black'
+const dark_background_color = '#0b1117'    // Deep dark blue-black
+const dark_surface_color = '#111a21'       // Slightly lighter navy for cards
+const dark_border_color = '#2d3748'        // Subtle dark slate for dividers/borders
+const dark_text_color = '#ffffff'          // Pure white for headers and large metrics
+const dark_muted_color = '#94a3b8'         // Soft blue-gray for labels and axis text
+const dark_placeholder_color = '#4a5568'   // Muted gray for input placeholders
+const dark_active_background_color = '#10b981' // The vibrant mint/green used for accents
+const dark_active_text_color = '#000000'    // Black (used on the white/bright active cards)
 
 //  ${dark_background_color}         main panel / canvas bg
 //  ${dark_surface_color}             NEW — input/dropdown bg  (slightly lighter than main bg)
