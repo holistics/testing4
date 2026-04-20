@@ -18,97 +18,154 @@ const dark_active_text_color = 'black'
 
 const squad_dark_pro_max = squad_dark.extend({
   custom_css: @css 
-     /* ---------- Top header bar ----------
-     Contains: "Insights" title, tab list (Overview/Games/Players),
-     Controls toggle button, timezone ("Etc/UTC"). */
-  .h-embed-header,
-  .h-dashboard-header,
-  .h-page-header,
-  [data-ci*="dashboard-header"],
-  [data-ci*="page-header"],
-  [data-ci*="embed-header"] {
+      /* =================================================================
+     (A) ELEMENTS INSIDE .h-dac-theme
+     ================================================================= */
+ 
+  /* ---------- Top "Insights" title row (previously unstyled) ---------- */
+  /* Real class: .dac-metadata  (NOT h-embed-header / h-dashboard-header) */
+  .h-dac-theme .dac-metadata {
     background: ${dark_background_color} !important;
     color: ${dark_text_color} !important;
     border-bottom-color: ${dark_border_color} !important;
- 
-    /* Title text + info icons */
-    h1, h2, h3, span, .hui-icon, svg {
-      color: ${dark_text_color} !important;
-      fill: currentColor !important;
-    }
- 
-    /* Tabs: Overview / Games / Players */
-    [role="tablist"],
-    .h-tab-list,
-    .h-tabs {
-      background: transparent !important;
-      border-color: ${dark_border_color} !important;
-    }
- 
-    [role="tab"],
-    .h-tab-item {
-      color: ${dark_muted_color} !important;
-      background: transparent !important;
-      border-color: transparent !important;
- 
-      &:hover {
-        background: ${dark_active_background_color} !important;
-        color: ${dark_text_color} !important;
-      }
- 
-      &[aria-selected="true"],
-      &.is-active,
-      &.active {
-        color: ${dark_text_color} !important;
-        border-bottom-color: ${dark_text_color} !important;
-      }
-    }
- 
-    /* Buttons in header: Controls toggle, timezone picker */
-    .hui-btn,
-    button {
-      color: ${dark_text_color} !important;
-      background: transparent !important;
-      border-color: ${dark_border_color} !important;
- 
-      &:hover {
-        background: ${dark_active_background_color} !important;
-      }
-    }
- 
-    /* Defensive light-utility overrides */
-    .bg-white,
-    .bg-gray-50,
-    .bg-gray-100 {
-      background: ${dark_background_color} !important;
-    }
+  }
+  .h-dac-theme .dac-metadata svg,
+  .h-dac-theme .dac-metadata .h-icon {
+    color: ${dark_text_color} !important;
+    fill: currentColor !important;
   }
  
  
-  /* ---------- Canvas zoom control (bottom-right "68% ▼") ---------- */
-  .h-dac-zoom,
-  .h-zoom-control,
-  .h-zoom-selector,
-  .h-canvas-zoom,
-  [data-ci*="zoom"],
-  [data-ci*="canvas-zoom"] {
+  /* ---------- Toolbar row: tabs + Controls button + timezone ----------
+     Your existing rule listed .h-dac-toolbar but only styled its
+     *descendants* (because of the nested :not(.dac-canvas) pattern).
+     The white bg is ON the toolbar itself — we need to hit it directly. */
+  .h-dac-theme .h-dac-toolbar,
+  .h-dac-theme .h-dac-toolbar-left,
+  .h-dac-theme .h-dac-toolbar-right,
+  .h-dac-theme .h-tabs-switch {
+    background: ${dark_background_color} !important;
+    border-bottom-color: ${dark_border_color} !important;
+    border-color: ${dark_border_color} !important;
+  }
+ 
+ 
+  /* ---------- Tabs: Overview / Games / Players ----------
+     Real class: .h-tab-page
+     Active tab has utility classes: .active .border-b-blue-600 .bg-gray-100
+     Hover pseudo: .hover\:bg-gray-100 */
+  .h-dac-theme .h-tab-page {
+    color: ${dark_text_color} !important;
+    background: transparent !important;
+  }
+  .h-dac-theme .h-tab-page:hover {
+    background: ${dark_active_background_color} !important;
+    color: ${dark_text_color} !important;
+  }
+  /* Active tab — override the .bg-gray-100 utility directly */
+  .h-dac-theme .h-tab-page.active,
+  .h-dac-theme .h-tab-page.active.bg-gray-100 {
+    background: ${dark_active_background_color} !important;
+    color: ${dark_text_color} !important;
+    /* keep the bottom accent visible on dark; use your brand color if you like */
+    border-bottom-color: ${dark_text_color} !important;
+  }
+ 
+ 
+  /* ---------- Toolbar buttons: Controls toggle & timezone ----------
+     Both use the .hui-btn-light variant — that's why they stayed light. */
+  .h-dac-theme .h-dac-toolbar .hui-btn,
+  .h-dac-theme .h-dac-toolbar .hui-btn-light {
+    background: transparent !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+  }
+  .h-dac-theme .h-dac-toolbar .hui-btn:hover,
+  .h-dac-theme .h-dac-toolbar .hui-btn-light:hover {
+    background: ${dark_active_background_color} !important;
+    color: ${dark_text_color} !important;
+  }
+ 
+ 
+  /* ---------- Zoom trigger (already working from your last round) ---------- */
+  .h-dac-theme [data-ci="ci-zoom-dropdown"] {
+    background: ${dark_background_color} !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+  }
+  .h-dac-theme [data-ci="ci-zoom-dropdown"]:hover {
+    border-color: ${dark_active_background_color} !important;
+  }
+ 
+ 
+  /* =================================================================
+     (B) POPOVERS — PORTALED OUTSIDE .h-dac-theme
+     These open when you click the zoom trigger, the "equal" operator,
+     the value input dropdown, the timezone button, etc.
+     MUST be written at the top level (no .h-dac-theme prefix).
+     ================================================================= */
+  .hui-popper-floating-inner,
+  [data-hui-section="popper-floating"],
+  .hui-dropdown-menu,
+  .hui-select-menu {
     background: ${dark_background_color} !important;
     color: ${dark_text_color} !important;
     border-color: ${dark_border_color} !important;
     box-shadow: none !important;
- 
-    .hui-btn,
-    button,
-    svg {
-      color: ${dark_text_color} !important;
-      fill: currentColor !important;
-      background: transparent !important;
- 
-      &:hover {
-        background: ${dark_active_background_color} !important;
-      }
-    }
   }
+ 
+  /* Items inside popovers: menu items, options, zoom actions */
+  .hui-popper-floating-inner .hui-dropdown-item,
+  .hui-popper-floating-inner [role="menuitem"],
+  .hui-popper-floating-inner [role="option"],
+  [data-hui-section="popper-floating"] .hui-dropdown-item,
+  [data-hui-section="popper-floating"] [role="menuitem"],
+  [data-hui-section="popper-floating"] [role="option"] {
+    color: ${dark_text_color} !important;
+    background: transparent !important;
+  }
+  .hui-popper-floating-inner .hui-dropdown-item:hover,
+  .hui-popper-floating-inner [role="menuitem"]:hover,
+  .hui-popper-floating-inner [role="option"]:hover,
+  .hui-popper-floating-inner [role="menuitem"][data-highlighted],
+  .hui-popper-floating-inner [role="option"][aria-selected="true"],
+  [data-hui-section="popper-floating"] .hui-dropdown-item:hover,
+  [data-hui-section="popper-floating"] [role="menuitem"]:hover,
+  [data-hui-section="popper-floating"] [role="option"]:hover {
+    background: ${dark_active_background_color} !important;
+    color: ${dark_text_color} !important;
+  }
+ 
+  /* Inputs inside popovers (zoom % input, operator search, value search) */
+  .hui-popper-floating-inner input,
+  [data-hui-section="popper-floating"] input {
+    background: ${dark_background_color} !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+  }
+  .hui-popper-floating-inner input::placeholder,
+  [data-hui-section="popper-floating"] input::placeholder {
+    color: ${dark_placeholder_color} !important;
+  }
+ 
+  /* Tailwind .bg-white inside popovers (zoom menu wrapper uses it) */
+  .hui-popper-floating-inner .bg-white,
+  [data-hui-section="popper-floating"] .bg-white {
+    background: ${dark_background_color} !important;
+  }
+ 
+ 
+  /* =================================================================
+     OPTIONAL: the "nuclear" .bg-white override you asked about.
+     Scoped to .h-dac-theme AND excluded from .dac-canvas and its
+     descendants, so in-canvas widgets keep their per-block theming.
+     Uncomment if you prefer a broader catch-all over specific rules.
+     ================================================================= */
+  /*
+  .h-dac-theme .bg-white:not(.dac-canvas):not(.dac-canvas *) {
+    background: ${dark_background_color} !important;
+  }
+  */
   ;;
 })
 
