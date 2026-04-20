@@ -24,13 +24,13 @@ const squad_dark_pro_max = squad_dark.extend({
  
   /* ---------- Top "Insights" title row (previously unstyled) ---------- */
   /* Real class: .dac-metadata  (NOT h-embed-header / h-dashboard-header) */
-  .h-dac-theme .dac-metadata {
+  .dac-metadata {
     background: ${dark_background_color} !important;
     color: ${dark_text_color} !important;
     border-bottom-color: ${dark_border_color} !important;
   }
-  .h-dac-theme .dac-metadata svg,
-  .h-dac-theme .dac-metadata .h-icon {
+  .dac-metadata svg,
+  .dac-metadata .h-icon {
     color: ${dark_text_color} !important;
     fill: currentColor !important;
   }
@@ -40,10 +40,10 @@ const squad_dark_pro_max = squad_dark.extend({
      Your existing rule listed .h-dac-toolbar but only styled its
      *descendants* (because of the nested :not(.dac-canvas) pattern).
      The white bg is ON the toolbar itself — we need to hit it directly. */
-  .h-dac-theme .h-dac-toolbar,
-  .h-dac-theme .h-dac-toolbar-left,
-  .h-dac-theme .h-dac-toolbar-right,
-  .h-dac-theme .h-tabs-switch {
+  .h-dac-toolbar,
+  .h-dac-toolbar-left,
+  .h-dac-toolbar-right,
+  .h-tabs-switch {
     background: ${dark_background_color} !important;
     border-bottom-color: ${dark_border_color} !important;
     border-color: ${dark_border_color} !important;
@@ -54,17 +54,17 @@ const squad_dark_pro_max = squad_dark.extend({
      Real class: .h-tab-page
      Active tab has utility classes: .active .border-b-blue-600 .bg-gray-100
      Hover pseudo: .hover\:bg-gray-100 */
-  .h-dac-theme .h-tab-page {
+  .h-tab-page {
     color: ${dark_text_color} !important;
     background: transparent !important;
   }
-  .h-dac-theme .h-tab-page:hover {
+  .h-tab-page:hover {
     background: ${dark_active_background_color} !important;
     color: ${dark_text_color} !important;
   }
   /* Active tab — override the .bg-gray-100 utility directly */
-  .h-dac-theme .h-tab-page.active,
-  .h-dac-theme .h-tab-page.active.bg-gray-100 {
+  .h-tab-page.active,
+  .h-tab-page.active.bg-gray-100 {
     background: ${dark_active_background_color} !important;
     color: ${dark_text_color} !important;
     /* keep the bottom accent visible on dark; use your brand color if you like */
@@ -74,26 +74,26 @@ const squad_dark_pro_max = squad_dark.extend({
  
   /* ---------- Toolbar buttons: Controls toggle & timezone ----------
      Both use the .hui-btn-light variant — that's why they stayed light. */
-  .h-dac-theme .h-dac-toolbar .hui-btn,
-  .h-dac-theme .h-dac-toolbar .hui-btn-light {
+  .h-dac-toolbar .hui-btn,
+  .h-dac-toolbar .hui-btn-light {
     background: transparent !important;
     color: ${dark_text_color} !important;
     border-color: ${dark_border_color} !important;
   }
-  .h-dac-theme .h-dac-toolbar .hui-btn:hover,
-  .h-dac-theme .h-dac-toolbar .hui-btn-light:hover {
+  .h-dac-toolbar .hui-btn:hover,
+  .h-dac-toolbar .hui-btn-light:hover {
     background: ${dark_active_background_color} !important;
     color: ${dark_text_color} !important;
   }
  
  
   /* ---------- Zoom trigger (already working from your last round) ---------- */
-  .h-dac-theme [data-ci="ci-zoom-dropdown"] {
+  [data-ci="ci-zoom-dropdown"] {
     background: ${dark_background_color} !important;
     color: ${dark_text_color} !important;
     border-color: ${dark_border_color} !important;
   }
-  .h-dac-theme [data-ci="ci-zoom-dropdown"]:hover {
+  [data-ci="ci-zoom-dropdown"]:hover {
     border-color: ${dark_active_background_color} !important;
   }
  
@@ -102,7 +102,7 @@ const squad_dark_pro_max = squad_dark.extend({
      (B) POPOVERS — PORTALED OUTSIDE .h-dac-theme
      These open when you click the zoom trigger, the "equal" operator,
      the value input dropdown, the timezone button, etc.
-     MUST be written at the top level (no .h-dac-theme prefix).
+     MUST be written at the top level (no prefix).
      ================================================================= */
   .hui-popper-floating-inner,
   [data-hui-section="popper-floating"],
@@ -157,12 +157,12 @@ const squad_dark_pro_max = squad_dark.extend({
  
   /* =================================================================
      OPTIONAL: the "nuclear" .bg-white override you asked about.
-     Scoped to .h-dac-theme AND excluded from .dac-canvas and its
+     Scoped to AND excluded from .dac-canvas and its
      descendants, so in-canvas widgets keep their per-block theming.
      Uncomment if you prefer a broader catch-all over specific rules.
      ================================================================= */
   /*
-  .h-dac-theme .bg-white:not(.dac-canvas):not(.dac-canvas *) {
+  .bg-white:not(.dac-canvas):not(.dac-canvas *) {
     background: ${dark_background_color} !important;
   }
   */
