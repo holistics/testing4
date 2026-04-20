@@ -16,163 +16,103 @@ const dark_active_text_color = 'black'
     //  ${dark_placeholder_color}         input placeholders
     //  ${dark_active_background_color}   hover / active states
 
-const squad_dark_pro_max = squad_dark.extend(
-  {
-custom_css: @css
- 
-  /* ---------- Right Controls Panel ---------- */
-  div[data-ci="ci-controls-panel-content"],
-  .h-dashboard-controls-panel,
-  .h-controls-panel {
-    background: ${dark_background_color} !important;
-    color: ${dark_text_color} !important;
-    border-color: ${dark_border_color} !important;
- 
-    /* Panel header row: "Controls" title + Reset / eye / close icons */
-    .h-dashboard-controls-panel-header,
-    [data-ci*="controls-panel-header"] {
-      background: ${dark_background_color};
-      color: ${dark_text_color};
-      border-bottom-color: ${dark_border_color};
-    }
- 
-    /* Accordion section headers: "In this tab", "From other tabs" */
-    .h-accordion-header,
-    .h-collapse-header,
-    [data-ci*="section-header"],
-    [data-ci*="accordion"] {
-      background: transparent !important;
+const squad_dark_pro_max = squad_dark.extend({
+  custom_css: @css 
+      /* ---------- Top header bar ----------
+      Contains: "Insights" title, tab list (Overview/Games/Players),
+      Controls toggle button, timezone ("Etc/UTC"). */
+    .h-embed-header,
+    .h-dashboard-header,
+    .h-page-header,
+    [data-ci*="dashboard-header"],
+    [data-ci*="page-header"],
+    [data-ci*="embed-header"] {
+      background: ${dark_background_color} !important;
       color: ${dark_text_color} !important;
-      border-color: ${dark_border_color} !important;
-    }
- 
-    /* Filter labels (e.g. "Airbnb Listings Id") */
-    label,
-    .h-filter-label,
-    .h-control-label {
-      color: ${dark_text_color} !important;
-    }
- 
-    /* Empty state: "No filters & controls." */
-    .h-empty-state,
-    .text-muted,
-    [class*="text-gray-4"],
-    [class*="text-gray-5"] {
-      color: ${dark_muted_color} !important;
-    }
- 
-    /* Operator select ("equal") + value input ("Type or paste…") */
-    input,
-    .hui-input,
-    .hui-input-wrapper,
-    .hui-select,
-    .hui-select-trigger,
-    .operator-select,
-    [data-ci*="filter-input"],
-    [data-ci*="operator-select"],
-    [data-ci*="filter-value"] {
-      background: ${dark_surface_color} !important;
-      color: ${dark_text_color} !important;
-      border-color: ${dark_border_color} !important;
- 
-      &::placeholder {
-        color: ${dark_placeholder_color} !important;
-      }
- 
-      &:hover,
-      &:focus,
-      &:focus-within {
-        background: ${dark_surface_color} !important;
-        border-color: ${dark_active_background_color} !important;
-      }
-    }
- 
-    /* Icon buttons: Reset, visibility eye, close X, accordion chevrons */
-    .hui-btn,
-    .hui-icon-btn,
-    button[class*="icon"] {
-      color: ${dark_text_color} !important;
-      background: transparent !important;
- 
-      svg,
-      .hui-icon {
+      border-bottom-color: ${dark_border_color} !important;
+  
+      /* Title text + info icons */
+      h1, h2, h3, span, .hui-icon, svg {
         color: ${dark_text_color} !important;
         fill: currentColor !important;
       }
- 
-      &:hover,
-      &:active {
-        background: ${dark_active_background_color} !important;
+  
+      /* Tabs: Overview / Games / Players */
+      [role="tablist"],
+      .h-tab-list,
+      .h-tabs {
+        background: transparent !important;
+        border-color: ${dark_border_color} !important;
+      }
+  
+      [role="tab"],
+      .h-tab-item {
+        color: ${dark_muted_color} !important;
+        background: transparent !important;
+        border-color: transparent !important;
+  
+        &:hover {
+          background: ${dark_active_background_color} !important;
+          color: ${dark_text_color} !important;
+        }
+  
+        &[aria-selected="true"],
+        &.is-active,
+        &.active {
+          color: ${dark_text_color} !important;
+          border-bottom-color: ${dark_text_color} !important;
+        }
+      }
+  
+      /* Buttons in header: Controls toggle, timezone picker */
+      .hui-btn,
+      button {
         color: ${dark_text_color} !important;
+        background: transparent !important;
+        border-color: ${dark_border_color} !important;
+  
+        &:hover {
+          background: ${dark_active_background_color} !important;
+        }
+      }
+  
+      /* Defensive light-utility overrides */
+      .bg-white,
+      .bg-gray-50,
+      .bg-gray-100 {
+        background: ${dark_background_color} !important;
       }
     }
- 
-    /* Defensive overrides for Tailwind light utilities inside the panel */
-    .bg-white,
-    .bg-gray-50,
-    .bg-gray-100 {
+  
+  
+    /* ---------- Canvas zoom control (bottom-right "68% ▼") ---------- */
+    .h-dac-zoom,
+    .h-zoom-control,
+    .h-zoom-selector,
+    .h-canvas-zoom,
+    [data-ci*="zoom"],
+    [data-ci*="canvas-zoom"] {
       background: ${dark_background_color} !important;
-    }
-    .text-black,
-    .text-gray-800,
-    .text-gray-900 {
       color: ${dark_text_color} !important;
-    }
-    [class*="border-gray-"] {
       border-color: ${dark_border_color} !important;
-    }
-  }
- 
- 
-  /* ---------- Floating popovers & dropdown menus ----------
-     These portal to the body root (NOT inside the panel),
-     so they must be styled as top-level selectors.
-     Triggered by clicking the operator select or value input. */
-  .hui-popper-floating-inner,
-  .hui-dropdown-menu,
-  .hui-select-menu,
-  .h-context-menu-content {
-    background: ${dark_surface_color} !important;
-    color: ${dark_text_color} !important;
-    border-color: ${dark_border_color} !important;
- 
-    .hui-dropdown-item,
-    .hui-select-option,
-    .hui-menu-item,
-    [role="option"],
-    [role="menuitem"] {
-      color: ${dark_text_color} !important;
-      background: transparent !important;
- 
-      &:hover,
-      &[data-highlighted],
-      &[aria-selected="true"],
-      &[data-active="true"] {
-        background: ${dark_active_background_color} !important;
+      box-shadow: none !important;
+  
+      .hui-btn,
+      button,
+      svg {
         color: ${dark_text_color} !important;
+        fill: currentColor !important;
+        background: transparent !important;
+  
+        &:hover {
+          background: ${dark_active_background_color} !important;
+        }
       }
     }
- 
-    /* Search input that appears inside dropdowns */
-    input,
-    .hui-input {
-      background: ${dark_background_color} !important;
-      color: ${dark_text_color} !important;
-      border-color: ${dark_border_color} !important;
- 
-      &::placeholder {
-        color: ${dark_placeholder_color} !important;
-      }
-    }
- 
-    /* Empty result states inside dropdowns */
-    .h-empty-state,
-    [class*="text-gray-"] {
-      color: ${dark_muted_color} !important;
-    }
-  };;
-  }
-)
+  
+  
+  ;;
+})
 
 Dashboard test_zoom {
   title: 'Insights'
