@@ -5,7 +5,8 @@ Dataset buyers_sellers_transactions {
   models: [
     transactions_buyers_sellers,
     buyers,
-    sellers
+    sellers,
+    sellerss
   ]
   relationships: [
     relationship(transactions_buyers_sellers.seller_id > sellers.id, true),

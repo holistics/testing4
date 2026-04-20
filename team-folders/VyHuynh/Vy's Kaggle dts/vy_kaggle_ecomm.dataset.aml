@@ -27,9 +27,9 @@ Dataset vy_kaggle_ecomm {
   metric order_revenue {
     label: 'Order Revenue'
     type: 'number'
-    definition: @aql (vy_kaggle_order_items | sum(vy_kaggle_order_items.price + vy_kaggle_order_items.freight_value)) | where(vy_kaggle_orders.order_status == 'delivered');;
+    definition: @aql vy_kaggle_order_items | sum(vy_kaggle_order_items.price + vy_kaggle_order_items.freight_value);;
     format: '[\$\$]#,###0.00'
-    description: 'Sum of item price and freight value for delivered orders only.'
+    description: 'Sum of item price and freight value per order.'
   }
 
   metric total_orders {
@@ -40,20 +40,12 @@ Dataset vy_kaggle_ecomm {
     description: 'Total number of orders.'
   }
 
-  metric delivered_orders {
-    label: 'Delivered Orders'
-    type: 'number'
-    definition: @aql total_orders | where(vy_kaggle_orders.order_status == 'delivered');;
-    format: '#,###0'
-    description: 'Total number of delivered orders.'
-  }
-
   metric aov {
     label: 'AOV'
     type: 'number'
-    definition: @aql safe_divide(order_revenue, delivered_orders);;
+    definition: @aql safe_divide(order_revenue, total_orders);;
     format: '[\$\$]#,###0.00'
-    description: 'Average order value calculated as delivered order revenue divided by delivered orders.'
+    description: 'Average order value calculated as order revenue divided by total orders.'
   }
 
   metric avg_delivery_time {
