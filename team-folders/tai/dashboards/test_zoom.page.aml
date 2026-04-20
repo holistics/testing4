@@ -19,174 +19,106 @@ const dark_active_text_color = 'black'
 const squad_dark_pro_max = squad_dark.extend(
   {
     custom_css: @css 
-/* ============================================================
-   DARK MODE — consolidated, drop-in replacement
-   Verified against the exported DOM + CSS bundles.
-   Scopes:
-     (A) Inside .h-dac-theme
-     (B) Portaled popovers — top-level, NO prefix
-   ============================================================ */
-
-custom_css: @css
-
-  /* =================================================================
-     (A) INSIDE .h-dac-theme
-     ================================================================= */
-
-  /* ---- Top header rows ---------------------------------------- */
-  .dac-metadata,
-  .h-dac-toolbar,
-  .h-dac-toolbar-left,
-  .h-dac-toolbar-right,
-  .h-tabs-switch {
+ /* ---- 1. Dashboard title ("Insights") ---------------------- */
+  .dac-metadata [data-ci="ci-dashboard-title"],
+  .dac-metadata .truncate,
+  .dac-metadata * {
+    color: ${dark_text_color} !important;
+  }
+ 
+ 
+  /* ---- 2. Controls panel accordion sections ----------------- */
+  /* "In this tab" and "From other tabs" are .h-controls-accordion
+     with internal [data-hui-section="header"] and [data-hui-section="body"]. */
+  .h-controls-accordion,
+  .h-controls-accordion [data-hui-section="header"],
+  .h-controls-accordion [data-hui-section="body"] {
     background: ${dark_background_color} !important;
     color: ${dark_text_color} !important;
     border-color: ${dark_border_color} !important;
   }
-
-  /* Tabs: Overview / Games / Players */
-  .h-tab-page {
-    color: ${dark_text_color} !important;
-    background: transparent !important;
-  }
-  .h-tab-page:hover,
-  .h-tab-page.active,
-  .h-tab-page.active.bg-gray-100 {
-    background: ${dark_active_background_color} !important;
+  /* Section title text + chevron icons in the accordion header */
+  .h-controls-accordion [data-hui-section="header"] * {
     color: ${dark_text_color} !important;
   }
-
-  /* Toolbar buttons: Controls toggle + timezone (both use .hui-btn-light) */
-  .h-dac-toolbar .hui-btn,
-  .h-dac-toolbar .hui-btn-light {
-    background: transparent !important;
-    color: ${dark_text_color} !important;
-    border-color: ${dark_border_color} !important;
-  }
-  .h-dac-toolbar .hui-btn:hover,
-  .h-dac-toolbar .hui-btn-light:hover {
-    background: ${dark_active_background_color} !important;
-  }
-
-  /* Icons in header/toolbar */
-  .dac-metadata svg,
-  .h-dac-toolbar svg,
-  .dac-metadata .h-icon,
-  .h-dac-toolbar .h-icon {
+  .h-controls-accordion svg,
+  .h-controls-accordion .h-icon {
     color: ${dark_text_color} !important;
     fill: currentColor !important;
   }
-
-
-  /* ---- Right Controls panel ----------------------------------- */
-  /* The sidebar with "Controls" title, "In this tab", "From other tabs" */
-  [data-ci="ci-controls-panel-content"],
-  [data-ci*="controls-panel"] {
-    background: ${dark_background_color} !important;
-    color: ${dark_text_color} !important;
-    border-color: ${dark_border_color} !important;
-  }
-  [data-ci*="controls-panel"] * {
-    border-color: ${dark_border_color};
-  }
-  /* Inputs + operator select inside the panel */
-  [data-ci*="controls-panel"] input,
-  [data-ci*="controls-panel"] .operator-select,
-  [data-ci*="controls-panel"] .hui-select,
-  [data-ci*="controls-panel"] .hui-select-trigger,
-  [data-ci*="controls-panel"] .filter-select,
-  [data-ci*="controls-panel"] .filter-select-control {
-    background: ${dark_background_color} !important;
-    color: ${dark_text_color} !important;
-    border-color: ${dark_border_color} !important;
-  }
-  [data-ci*="controls-panel"] input::placeholder {
+  /* Empty-state text "No filters & controls." */
+  .h-controls-accordion .text-gray-500,
+  .h-controls-accordion [class*="text-gray-"] {
     color: ${dark_placeholder_color} !important;
   }
-  /* Icon buttons in the panel header: Reset, visibility, close */
-  [data-ci*="controls-panel"] .hui-btn,
-  [data-ci*="controls-panel"] button {
-    color: ${dark_text_color} !important;
-    background: transparent !important;
+ 
+ 
+  /* ---- 3. Scrollbars (WebKit/Chromium) ---------------------- */
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
   }
-  [data-ci*="controls-panel"] .hui-btn:hover,
-  [data-ci*="controls-panel"] button:hover {
-    background: ${dark_active_background_color} !important;
+  *::-webkit-scrollbar-track {
+    background: ${dark_background_color};
   }
-
-
-  /* ---- Zoom trigger (bottom-right "46% ▼") -------------------- */
-  [data-ci="ci-zoom-dropdown"] {
-    background: ${dark_background_color} !important;
-    color: ${dark_text_color} !important;
-    border-color: ${dark_border_color} !important;
+  *::-webkit-scrollbar-thumb {
+    background: ${dark_border_color};
+    border-radius: 5px;
+    border: 2px solid ${dark_background_color};
   }
-  [data-ci="ci-zoom-dropdown"]:hover {
-    border-color: ${dark_active_background_color} !important;
+  *::-webkit-scrollbar-thumb:hover {
+    background: ${dark_active_background_color};
   }
-
-
-  /* ---- Catch-all: .bg-white anywhere inside theme, except canvas ----
-     Uses :not(.dac-canvas *) to preserve per-block theming inside canvas. */
-  .bg-white:not(.dac-canvas):not(.dac-canvas *) {
-    background: ${dark_background_color} !important;
+  /* Firefox */
+  * {
+    scrollbar-color: ${dark_border_color} ${dark_background_color};
+    scrollbar-width: thin;
   }
-
-
-  /* =================================================================
-     (B) PORTALED POPOVERS — at top level, NO prefix
-     The zoom menu (46%/Zoom in/Zoom out/...), operator dropdown,
-     value-select dropdown, timezone picker — all mount here.
-     KEY: .hui-popper-content is the visible panel (not -floating-inner).
-     ================================================================= */
-  .hui-popper-content,
-  .hui-popper-floating-inner,
-  .v-popper--theme-dropdown .v-popper__inner {
+ 
+ 
+  /* ---- 4. Missed popover wrappers (zoom menu, timezone list) -
+     Last round I had .hui-popper-content + .hui-popper-floating-inner
+     but .hui-dropdown triggers mount to .hui-dropdown-floating, and
+     plain .hui-popover uses .hui-popover-floating. Adding both. */
+  .hui-dropdown-floating,
+  .hui-popover-floating,
+  .hui-popover-onboarding-floating {
     background: ${dark_background_color} !important;
     color: ${dark_text_color} !important;
     border-color: ${dark_border_color} !important;
     box-shadow: none !important;
   }
-  .hui-popper-arrow {
-    background: ${dark_background_color} !important;
-    border-color: ${dark_border_color} !important;
-  }
-
-  /* Inputs inside popovers (zoom %, search boxes) */
-  .hui-popper-content input,
-  .hui-popper-floating-inner input {
-    background: ${dark_background_color} !important;
-    color: ${dark_text_color} !important;
-    border-color: ${dark_border_color} !important;
-  }
-  .hui-popper-content input::placeholder,
-  .hui-popper-floating-inner input::placeholder {
-    color: ${dark_placeholder_color} !important;
-  }
-
-  /* Menu items: Zoom in, Zoom out, Fit to width, Etc/UTC options, etc. */
-  .hui-popper-content .hui-dropdown-item,
-  .hui-popper-content [role="menuitem"],
-  .hui-popper-content [role="option"],
-  .hui-popper-floating-inner .hui-dropdown-item,
-  .hui-popper-floating-inner [role="menuitem"],
-  .hui-popper-floating-inner [role="option"] {
+ 
+  /* Items inside these wrappers */
+  .hui-dropdown-floating .hui-dropdown-item,
+  .hui-dropdown-floating [role="menuitem"],
+  .hui-dropdown-floating [role="option"],
+  .hui-popover-floating .hui-dropdown-item,
+  .hui-popover-floating [role="menuitem"],
+  .hui-popover-floating [role="option"] {
     color: ${dark_text_color} !important;
     background: transparent !important;
   }
-  .hui-popper-content .hui-dropdown-item:hover,
-  .hui-popper-content [role="menuitem"]:hover,
-  .hui-popper-content [role="option"]:hover,
-  .hui-popper-floating-inner .hui-dropdown-item:hover,
-  .hui-popper-floating-inner [role="menuitem"]:hover,
-  .hui-popper-floating-inner [role="option"]:hover {
+  .hui-dropdown-floating .hui-dropdown-item:hover,
+  .hui-dropdown-floating [role="menuitem"]:hover,
+  .hui-dropdown-floating [role="option"]:hover,
+  .hui-popover-floating .hui-dropdown-item:hover,
+  .hui-popover-floating [role="menuitem"]:hover,
+  .hui-popover-floating [role="option"]:hover {
     background: ${dark_active_background_color} !important;
     color: ${dark_text_color} !important;
   }
-
-  /* Fallback: .bg-white inside popovers */
-  .hui-popper-content .bg-white,
-  .hui-popper-floating-inner .bg-white {
+ 
+  /* Zoom % input inside the dropdown */
+  .hui-dropdown-floating input {
+    background: ${dark_background_color} !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+  }
+ 
+  /* .bg-white fallback inside dropdown/popover wrappers */
+  .hui-dropdown-floating .bg-white,
+  .hui-popover-floating .bg-white {
     background: ${dark_background_color} !important;
   }
   ;;
