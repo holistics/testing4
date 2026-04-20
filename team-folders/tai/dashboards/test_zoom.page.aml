@@ -19,17 +19,68 @@ const dark_active_text_color = 'black'
 const squad_dark_pro_max = squad_dark.extend(
   {
     custom_css: @css 
- /* ---- 1. Dashboard title ("Insights") ---------------------- */
-  .dac-metadata [data-ci="ci-dashboard-title"],
-  .dac-metadata .truncate,
-  .dac-metadata * {
+    /* ---- Top header rows ---------------------------------------- */
+  .dac-metadata,
+  .h-dac-toolbar,
+  .h-dac-toolbar-left,
+  .h-dac-toolbar-right,
+  .h-tabs-switch {
+    background: ${dark_background_color} !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+  }
+ 
+  /* Dashboard title ("Insights") */
+  .dac-metadata *,
+  .dac-metadata [data-ci="ci-dashboard-title"] {
+    color: ${dark_text_color} !important;
+  }
+ 
+  /* Icons in header/toolbar */
+  .dac-metadata svg,
+  .dac-metadata .h-icon,
+  .h-dac-toolbar svg,
+  .h-dac-toolbar .h-icon {
+    color: ${dark_text_color} !important;
+    fill: currentColor !important;
+  }
+ 
+ 
+  /* ---- Tabs: Overview / Games / Players ----------------------- */
+  .h-tab-page {
+    color: ${dark_text_color} !important;
+    background: transparent !important;
+  }
+  .h-tab-page:hover,
+  .h-tab-page.active,
+  .h-tab-page.active.bg-gray-100 {
+    background: ${dark_active_background_color} !important;
     color: ${dark_text_color} !important;
   }
  
  
-  /* ---- 2. Controls panel accordion sections ----------------- */
-  /* "In this tab" and "From other tabs" are .h-controls-accordion
-     with internal [data-hui-section="header"] and [data-hui-section="body"]. */
+  /* ---- Toolbar buttons: Controls toggle + timezone ------------ */
+  .h-dac-toolbar .hui-btn,
+  .h-dac-toolbar .hui-btn-light {
+    background: transparent !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+  }
+  .h-dac-toolbar .hui-btn:hover,
+  .h-dac-toolbar .hui-btn-light:hover {
+    background: ${dark_active_background_color} !important;
+  }
+ 
+ 
+  /* ---- Right Controls panel ----------------------------------- */
+  [data-ci="ci-controls-panel-content"],
+  [data-ci*="controls-panel"] {
+    background: ${dark_background_color} !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+  }
+ 
+  /* Accordion sections: "In this tab", "From other tabs" */
   .h-controls-accordion,
   .h-controls-accordion [data-hui-section="header"],
   .h-controls-accordion [data-hui-section="body"] {
@@ -37,7 +88,6 @@ const squad_dark_pro_max = squad_dark.extend(
     color: ${dark_text_color} !important;
     border-color: ${dark_border_color} !important;
   }
-  /* Section title text + chevron icons in the accordion header */
   .h-controls-accordion [data-hui-section="header"] * {
     color: ${dark_text_color} !important;
   }
@@ -46,79 +96,94 @@ const squad_dark_pro_max = squad_dark.extend(
     color: ${dark_text_color} !important;
     fill: currentColor !important;
   }
-  /* Empty-state text "No filters & controls." */
-  .h-controls-accordion .text-gray-500,
   .h-controls-accordion [class*="text-gray-"] {
     color: ${dark_placeholder_color} !important;
   }
  
+  /* Inputs + operator select inside the panel */
+  [data-ci*="controls-panel"] input,
+  [data-ci*="controls-panel"] .operator-select,
+  [data-ci*="controls-panel"] .hui-select,
+  [data-ci*="controls-panel"] .hui-select-trigger,
+  [data-ci*="controls-panel"] .filter-select,
+  [data-ci*="controls-panel"] .filter-select-control {
+    background: ${dark_background_color} !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+  }
+  [data-ci*="controls-panel"] input::placeholder {
+    color: ${dark_placeholder_color} !important;
+  }
  
-  /* ---- 3. Scrollbars (WebKit/Chromium) ---------------------- */
-  *::-webkit-scrollbar {
+  /* Icon buttons in panel header: Reset, visibility, close */
+  [data-ci*="controls-panel"] .hui-btn,
+  [data-ci*="controls-panel"] button {
+    color: ${dark_text_color} !important;
+    background: transparent !important;
+  }
+  [data-ci*="controls-panel"] .hui-btn:hover,
+  [data-ci*="controls-panel"] button:hover {
+    background: ${dark_active_background_color} !important;
+  }
+ 
+ 
+  /* ---- Zoom trigger (bottom-right "46% ▼") -------------------- */
+  [data-ci="ci-zoom-dropdown"] {
+    background: ${dark_background_color} !important;
+    color: ${dark_text_color} !important;
+    border-color: ${dark_border_color} !important;
+  }
+  [data-ci="ci-zoom-dropdown"]:hover {
+    border-color: ${dark_active_background_color} !important;
+  }
+ 
+ 
+  /* ---- Scrollbars (scoped to real scroll containers) ---------- */
+  .dac-canvas-layout::-webkit-scrollbar,
+  .dac-body::-webkit-scrollbar,
+  .dac-body-content::-webkit-scrollbar,
+  [data-ci*="controls-panel"]::-webkit-scrollbar,
+  [data-ci*="controls-panel"] *::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
-  *::-webkit-scrollbar-track {
+  .dac-canvas-layout::-webkit-scrollbar-track,
+  .dac-body::-webkit-scrollbar-track,
+  .dac-body-content::-webkit-scrollbar-track,
+  [data-ci*="controls-panel"]::-webkit-scrollbar-track,
+  [data-ci*="controls-panel"] *::-webkit-scrollbar-track {
     background: ${dark_background_color};
   }
-  *::-webkit-scrollbar-thumb {
+  .dac-canvas-layout::-webkit-scrollbar-thumb,
+  .dac-body::-webkit-scrollbar-thumb,
+  .dac-body-content::-webkit-scrollbar-thumb,
+  [data-ci*="controls-panel"]::-webkit-scrollbar-thumb,
+  [data-ci*="controls-panel"] *::-webkit-scrollbar-thumb {
     background: ${dark_border_color};
     border-radius: 5px;
     border: 2px solid ${dark_background_color};
   }
-  *::-webkit-scrollbar-thumb:hover {
+  .dac-canvas-layout::-webkit-scrollbar-thumb:hover,
+  .dac-body::-webkit-scrollbar-thumb:hover,
+  .dac-body-content::-webkit-scrollbar-thumb:hover,
+  [data-ci*="controls-panel"]::-webkit-scrollbar-thumb:hover,
+  [data-ci*="controls-panel"] *::-webkit-scrollbar-thumb:hover {
     background: ${dark_active_background_color};
   }
-  /* Firefox */
-  * {
+  /* Firefox — scoped the same way */
+  .dac-canvas-layout,
+  .dac-body,
+  .dac-body-content,
+  [data-ci*="controls-panel"],
+  [data-ci*="controls-panel"] * {
     scrollbar-color: ${dark_border_color} ${dark_background_color};
     scrollbar-width: thin;
   }
  
  
-  /* ---- 4. Missed popover wrappers (zoom menu, timezone list) -
-     Last round I had .hui-popper-content + .hui-popper-floating-inner
-     but .hui-dropdown triggers mount to .hui-dropdown-floating, and
-     plain .hui-popover uses .hui-popover-floating. Adding both. */
-  .hui-dropdown-floating,
-  .hui-popover-floating,
-  .hui-popover-onboarding-floating {
-    background: ${dark_background_color} !important;
-    color: ${dark_text_color} !important;
-    border-color: ${dark_border_color} !important;
-    box-shadow: none !important;
-  }
- 
-  /* Items inside these wrappers */
-  .hui-dropdown-floating .hui-dropdown-item,
-  .hui-dropdown-floating [role="menuitem"],
-  .hui-dropdown-floating [role="option"],
-  .hui-popover-floating .hui-dropdown-item,
-  .hui-popover-floating [role="menuitem"],
-  .hui-popover-floating [role="option"] {
-    color: ${dark_text_color} !important;
-    background: transparent !important;
-  }
-  .hui-dropdown-floating .hui-dropdown-item:hover,
-  .hui-dropdown-floating [role="menuitem"]:hover,
-  .hui-dropdown-floating [role="option"]:hover,
-  .hui-popover-floating .hui-dropdown-item:hover,
-  .hui-popover-floating [role="menuitem"]:hover,
-  .hui-popover-floating [role="option"]:hover {
-    background: ${dark_active_background_color} !important;
-    color: ${dark_text_color} !important;
-  }
- 
-  /* Zoom % input inside the dropdown */
-  .hui-dropdown-floating input {
-    background: ${dark_background_color} !important;
-    color: ${dark_text_color} !important;
-    border-color: ${dark_border_color} !important;
-  }
- 
-  /* .bg-white fallback inside dropdown/popover wrappers */
-  .hui-dropdown-floating .bg-white,
-  .hui-popover-floating .bg-white {
+  /* ---- Catch-all .bg-white override --------------------------- */
+  /* Preserves per-block theming inside canvas blocks. */
+  .bg-white:not(.dac-canvas):not(.dac-canvas *) {
     background: ${dark_background_color} !important;
   }
   ;;
