@@ -183,7 +183,7 @@ const squad_dark_pro_max = squad_dark.extend(
  
  
   /* ---- Catch-all .bg-white override --------------------------- */
-  .bg-white:not(.dac-canvas):not(.dac-canvas *) {
+  .bg-white:not(.dac-canvas):not(.dac-canvas *):not(.feat-fca) {
     background: ${dark_background_color} !important;
   }
   ;;
