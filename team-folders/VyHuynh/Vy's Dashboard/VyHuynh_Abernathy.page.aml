@@ -290,7 +290,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     tab tab_yzia: CanvasLayout {
       label: 'Key Driver'
       width: 1300
-      height: 900
+      height: 1340
       grid_size: 20
       auto_expand_vertically: true
       block v_bj6j {
@@ -301,6 +301,12 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
       block v_c1ru {
         position: pos(20, 460, 620, 420)
+      }
+      block v_3pqe {
+        position: pos(20, 900, 620, 420)
+      }
+      block v_p9dt {
+        position: pos(660, 20, 620, 420)
       }
       mobile {
         mode: 'auto'
@@ -2784,7 +2790,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: LineChart {
       dataset: vy_kaggle_ecomm
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(vy_kaggle_orders.order_purchase_timestamp)
@@ -2802,6 +2807,86 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           field: VizFieldFull {
             ref: r(vy_kaggle_orders.customer_id)
             aggregation: 'count distinct'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        show_data_points: true
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_3pqe: VizBlock {
+    label: 'Monthly Cancellation Rate'
+    viz: LineChart {
+      dataset: vy_kaggle_ecomm
+      theme {
+
+      }
+      x_axis: VizFieldFull {
+        ref: r(vy_kaggle_orders.order_purchase_timestamp)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(vy_kaggle_ecomm.cancellation_rate)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        show_data_points: true
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_p9dt: VizBlock {
+    label: 'Monthly Total Order'
+    viz: LineChart {
+      dataset: vy_kaggle_ecomm
+      theme {
+
+      }
+      x_axis: VizFieldFull {
+        ref: r(vy_kaggle_orders.order_purchase_timestamp)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        settings {
+          show_data_label_by: 'value'
+        }
+        series {
+          field: VizFieldFull {
+            ref: r(vy_kaggle_ecomm.total_orders)
             format {
               type: 'number'
               pattern: 'inherited'
