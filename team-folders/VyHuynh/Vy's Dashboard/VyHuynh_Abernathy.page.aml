@@ -2913,6 +2913,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     label: 'Monthly Bug Ratio'
     viz: CombinationChart {
       dataset: reporting_project_management
+      filter {
+        field: r(reporting_project.name)
+        operator: 'is'
+        value: 'Explore 2'
+      }
       theme {
 
       }
