@@ -290,7 +290,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     tab tab_yzia: CanvasLayout {
       label: 'Key Driver'
       width: 1300
-      height: 1340
+      height: 1920
       grid_size: 20
       auto_expand_vertically: true
       block v_bj6j {
@@ -307,6 +307,12 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
       block v_p9dt {
         position: pos(660, 20, 620, 420)
+      }
+      block t_uje2 {
+        position: pos(20, 1400, 520, 60)
+      }
+      block v_d9k9 {
+        position: pos(20, 1480, 620, 420)
       }
       mobile {
         mode: 'auto'
@@ -2830,7 +2836,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: LineChart {
       dataset: vy_kaggle_ecomm
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(vy_kaggle_orders.order_purchase_timestamp)
@@ -2870,7 +2875,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: LineChart {
       dataset: vy_kaggle_ecomm
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(vy_kaggle_orders.order_purchase_timestamp)
@@ -2904,6 +2908,69 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         }
       }
     }
+  }
+  block v_d9k9: VizBlock {
+    label: 'Monthly Bug Ratio'
+    viz: CombinationChart {
+      dataset: reporting_project_management
+      theme {
+
+      }
+      x_axis: VizFieldFull {
+        ref: r(reporting_issues.completed_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      y_axis {
+        series {
+          mark_type: 'column'
+          field: VizFieldFull {
+            ref: r(reporting_project_management.number_of_bug)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color: '#982021FF'
+          }
+        }
+      }
+      y_axis {
+        settings {
+          alignment: 'right'
+        }
+        series {
+          mark_type: 'line'
+          field: VizFieldFull {
+            ref: r(reporting_project_management.bug_ratio)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            color: '#E9AA2BFF'
+            line_interpolation: 'smooth'
+          }
+        }
+      }
+      settings {
+        show_data_points: true
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block t_uje2: TextBlock {
+    content: @md ## **Squad Reporting - Project Management**;;
   }
   interactions: [
     FilterInteraction {
