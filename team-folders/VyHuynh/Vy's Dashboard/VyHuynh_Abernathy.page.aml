@@ -314,6 +314,9 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       block v_d9k9 {
         position: pos(20, 1480, 620, 420)
       }
+      block v_zspi {
+        position: pos(660, 1480, 620, 420)
+      }
       mobile {
         mode: 'auto'
       }
@@ -2919,7 +2922,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: 'Explore 2'
       }
       theme {
-
       }
       x_axis: VizFieldFull {
         ref: r(reporting_issues.completed_at)
@@ -2976,6 +2978,74 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
   }
   block t_uje2: TextBlock {
     content: @md ## **Squad Reporting - Project Management**;;
+  }
+  block v_zspi: VizBlock {
+    label: 'Project Velocity Comparison copy'
+    description: 'Issues completed per month per project'
+    viz: LineChart {
+      dataset: reporting_project_management
+      calculation completion_rate {
+        label: 'Completion Rate'
+        formula: @aql completed_issue / count(reporting_issues.id);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_project.name)
+        operator: 'is'
+        value: 'Explore 2'
+      }
+      x_axis: VizFieldFull {
+        ref: r(reporting_issues.completed_at)
+        transformation: 'datetrunc month'
+        format {
+          type: 'date'
+          pattern: 'LLL yyyy'
+        }
+      }
+      legend: VizFieldFull {
+        ref: r(reporting_project.name)
+        format {
+          type: 'text'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: 'completion_rate'
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+          settings {
+            point {
+              value: 'Explore 2'
+              color: '#206BC4FF'
+              line_interpolation: 'smooth'
+            }
+            point {
+              value: 'Data Alerts Revamp'
+              color: '#E27712'
+              line_interpolation: 'smooth'
+            }
+            point {
+              value: 'Dashboard Performance'
+              color: '#5DB88FFF'
+              line_interpolation: 'smooth'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
   }
   interactions: [
     FilterInteraction {
