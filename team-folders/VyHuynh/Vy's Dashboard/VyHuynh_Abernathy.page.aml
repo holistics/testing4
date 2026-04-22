@@ -118,6 +118,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         position: pos(580, 2320, 580, 400)
         layer: 13
       }
+      block v_mkpr {
+        position: pos(20, 4060, 580, 400)
+        layer: 14
+      }
       mobile {
         mode: 'auto'
       }
@@ -3085,7 +3089,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: 'Explore 2'
       }
       theme {
-
       }
       rows: [
         VizFieldFull {
@@ -3140,6 +3143,106 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           },
           SortSetting {
             key: 'reporting_issues_status'
+            direction: 'asc'
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_mkpr: VizBlock {
+    label: '''Bug count change by creator for May 2025 vs April 2025
+'''
+    viz: PivotTable {
+      dataset: reporting_project_management
+      calculation base_value {
+        label: 'Base Value'
+        formula: @aql number_of_bug | where(reporting_issues.completed_at is @(2025-05));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation comparison_value {
+        label: 'Comparison Value'
+        formula: @aql number_of_bug | where(reporting_issues.completed_at is @(2025-04));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation member_change {
+        label: 'Member Change'
+        formula: @aql (number_of_bug | where(reporting_issues.completed_at is @(2025-05))) - (number_of_bug | where(reporting_issues.completed_at is @(2025-04)));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation is_offsetting_member {
+        label: 'Is Offsetting Member'
+        formula: @aql ((number_of_bug | where(reporting_issues.completed_at is @(2025-05))) - (number_of_bug | where(reporting_issues.completed_at is @(2025-04)))) <= 0;;
+        calc_type: 'measure'
+        data_type: 'truefalse'
+      }
+      filter {
+        field: r(reporting_project.name)
+        operator: 'is'
+        value: 'Explore 2'
+      }
+      theme {
+
+      }
+      rows: [
+        VizFieldFull {
+          label: 'Creator Name'
+          ref: r(reporting_team.name)
+          format {
+            type: 'text'
+          }
+          uname: 'reporting_team_name'
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'Base Value'
+          ref: 'base_value'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Comparison Value'
+          ref: 'comparison_value'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Member Change'
+          ref: 'member_change'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+          uname: 'custom_member_change_1'
+        },
+        VizFieldFull {
+          label: 'Is Offsetting Member'
+          ref: 'is_offsetting_member'
+        }
+      ]
+      settings {
+        pagination_size: 100
+        show_row_total: true
+        show_column_total: true
+        show_sub_total: true
+        sorts: [
+          SortSetting {
+            key: 'custom_member_change_1'
+            direction: 'desc'
+          },
+          SortSetting {
+            key: 'reporting_team_name'
             direction: 'asc'
           }
         ]
