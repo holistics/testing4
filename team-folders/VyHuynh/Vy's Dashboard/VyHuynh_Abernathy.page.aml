@@ -118,10 +118,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         position: pos(580, 2320, 580, 400)
         layer: 13
       }
-      block v_0zav {
-        position: pos(20, 4060, 580, 400)
-        layer: 14
-      }
       mobile {
         mode: 'auto'
       }
@@ -140,6 +136,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       block v_856v {
         position: pos(20, 460, 940, 420)
         layer: 1
+      }
+      block v_9oui {
+        position: pos(20, 900, 580, 400)
+        layer: 2
       }
       mobile {
         mode: 'auto'
@@ -3051,9 +3051,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_0zav: VizBlock {
-    label: '''Number of bug change by status for May 2025 vs April 2025
-'''
+  block v_9oui: VizBlock {
+    label: 'Number of bug change by status for May 2025 vs April 2025'
     viz: PivotTable {
       dataset: reporting_project_management
       calculation number_of_bug_may_2025 {
@@ -4068,6 +4067,36 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_58pi',
             'v_vk4x',
             'v_ufmq'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_d9k9'
+      to: [
+        CustomMapping {
+          block: 'v_9oui'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_zspi'
+      to: [
+        CustomMapping {
+          block: 'v_9oui'
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_9oui'
+      to: [
+        CustomMapping {
+          block: [
+            'v_d9k9',
+            'v_zspi'
           ]
           disabled: true
         }
