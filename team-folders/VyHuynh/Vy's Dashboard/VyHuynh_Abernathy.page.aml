@@ -126,7 +126,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
     tab tab_5auh: CanvasLayout {
       label: 'Raw Data Table'
-      height: 2160
+      height: 1740
       grid_size: 20
       auto_expand_vertically: true
       block v_ztqi {
@@ -3191,7 +3191,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: 'Explore 2'
       }
       theme {
-
       }
       rows: [
         VizFieldFull {
@@ -3295,7 +3294,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: '2025-04 - 2025-05'
       }
       theme {
-
       }
       rows: [
         VizFieldFull {
