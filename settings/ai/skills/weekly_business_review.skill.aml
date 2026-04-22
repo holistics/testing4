@@ -13,8 +13,9 @@ Skill weekly_business_review {
     
     - Priority order: 
       - 1. Metrics the user explicitly names. 
-      - 2. Metrics on the dashboard or dataset the user is currently viewing or mentioned in the context.
-      - 3. If none of the above, ask the user which metrics to include. Always pull existing metrics. Never compute new metrics in this report.
+      - 2. If user has a pinned or mentioned dashboard, use the metrics extracted from the dashboard's AML. 
+      - 3. If user has a pinned or mentioned dataset, use the metrics defined in the dataset.
+      - 4. If none of the above, ask the user which metrics to include. Always pull existing metrics. Never compute new metrics in this report.
     
     
     
