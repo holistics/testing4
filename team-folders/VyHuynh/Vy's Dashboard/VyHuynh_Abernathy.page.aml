@@ -16,7 +16,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     tab tab2: CanvasLayout {
       label: 'Revenue Overview'
       width: 1220
-      height: 4060
+      height: 4480
       grid_size: 20
       block v2 {
         position: pos(920, 220, 260, 140)
@@ -117,6 +117,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       block v_96z3 {
         position: pos(580, 2320, 580, 400)
         layer: 13
+      }
+      block v_0zav {
+        position: pos(20, 4060, 580, 400)
+        layer: 14
       }
       mobile {
         mode: 'auto'
@@ -3040,6 +3044,106 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       settings {
         row_limit: 5000
         x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_0zav: VizBlock {
+    label: '''Number of bug change by status for May 2025 vs April 2025
+'''
+    viz: PivotTable {
+      dataset: reporting_project_management
+      calculation number_of_bug_may_2025 {
+        label: 'Number Of Bug May 2025'
+        formula: @aql number_of_bug | where(reporting_issues.completed_at is @(2025-05));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation number_of_bug_apr_2025 {
+        label: 'Number Of Bug Apr 2025'
+        formula: @aql number_of_bug | where(reporting_issues.completed_at is @(2025-04));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation member_change {
+        label: 'Member Change'
+        formula: @aql number_of_bug_may_2025 - number_of_bug_apr_2025;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation is_offsetting_member {
+        label: 'Is Offsetting Member'
+        formula: @aql member_change <= 0;;
+        calc_type: 'measure'
+        data_type: 'truefalse'
+      }
+      filter {
+        field: r(reporting_project.name)
+        operator: 'is'
+        value: 'Explore 2'
+      }
+      theme {
+
+      }
+      rows: [
+        VizFieldFull {
+          label: 'Status'
+          ref: r(reporting_issues.status)
+          format {
+            type: 'text'
+          }
+          uname: 'reporting_issues_status'
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'Base Value'
+          ref: 'number_of_bug_may_2025'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Comparison Value'
+          ref: 'number_of_bug_apr_2025'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Member Change'
+          ref: 'member_change'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+          uname: 'custom_member_change_1'
+        },
+        VizFieldFull {
+          label: 'Is Offsetting Member'
+          ref: 'is_offsetting_member'
+        }
+      ]
+      settings {
+        pagination_size: 100
+        show_row_total: true
+        show_column_total: true
+        show_sub_total: true
+        sorts: [
+          SortSetting {
+            key: 'custom_member_change_1'
+            direction: 'desc'
+          },
+          SortSetting {
+            key: 'reporting_issues_status'
+            direction: 'asc'
+          }
+        ]
         aggregate_awareness {
           enabled: true
           debug_comments: true
