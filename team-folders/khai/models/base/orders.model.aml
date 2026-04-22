@@ -1,11 +1,12 @@
 Model orders {
   type: 'table'
   label: 'Orders'
-  description: ''
+  description: 'test description'
   data_source_name: 'demodb'
   dimension id {
     label: 'Id'
     type: 'number'
+    primary_key: true
     hidden: false
     definition: @sql {{ #SOURCE.id }};;
   }

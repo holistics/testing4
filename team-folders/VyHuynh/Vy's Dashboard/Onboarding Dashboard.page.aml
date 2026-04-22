@@ -1,5 +1,6 @@
 Dashboard onboarding_dashboard {
   title: 'Onboarding Dashboard'
+  owner: 'vy@holistics.io'
   description: ''
   block title: TextBlock {
     content: @md # Order by Month Dashboard ;;

@@ -1,16 +1,16 @@
-Dashboard untitled_9 {
-  title: 'Untitled 9'
-  description: ''
+Dashboard test_new {
+  title: 'Test New'
+  owner: 'tan.nguyen@holistics.io'
   block title: TextBlock {
     content: @md # Your title goes here ;;
   }
-  block v1: VizBlock {
-    label: 'Percent Of Total'
+  block v_c3vu: VizBlock {
+    label: 'Total Users'
     viz: DataTable {
-      dataset: demo_ecommerce
+      dataset: bhx_demo_ecommerce
       fields: [
         VizFieldFull {
-          ref: 'percent_of_total'
+          ref: r(bhx_demo_ecommerce.total_users)
           format {
             type: 'number'
             pattern: 'inherited'
@@ -27,22 +27,22 @@ Dashboard untitled_9 {
       }
     }
   }
-
+  interactions: []
   view: CanvasLayout {
     label: 'View 1'
-    height: 840
+    width: 1300
+    height: 270
     grid_size: 20
+    auto_expand_vertically: true
     block title {
-      position: pos(20, 20, 1160, 60)
+      position: pos(20, 20, 1260, 60)
     }
-    block v1 {
-      position: pos(640, 60, 400, 300)
-      layer: 1
+    block v_c3vu {
+      position: pos(350, 100, 620, 420)
     }
     mobile {
       mode: 'auto'
     }
   }
-
   theme: H.themes.vanilla
 }

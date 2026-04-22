@@ -1,6 +1,6 @@
 Model vy_sales_revenue_demo_csv {
   type: 'table'
-  label: 'Vy sales revenue demo csv'
+  label: 'Sales & revenue demo'
   description: ''
   data_source_name: 'demodb'
   dimension sales_rep {
