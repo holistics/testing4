@@ -118,14 +118,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         position: pos(580, 2320, 580, 400)
         layer: 13
       }
-      block v_mkpr {
-        position: pos(20, 4060, 580, 400)
-        layer: 14
-      }
-      block v_a6j9 {
-        position: pos(620, 4060, 580, 400)
-        layer: 15
-      }
       mobile {
         mode: 'auto'
       }
@@ -134,25 +126,33 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     }
     tab tab_5auh: CanvasLayout {
       label: 'Raw Data Table'
-      height: 1480
+      height: 2160
       grid_size: 20
       auto_expand_vertically: true
       block v_ztqi {
-        position: pos(20, 20, 940, 420)
+        position: pos(20, 20, 1180, 420)
         layer: 1
       }
       block v_856v {
-        position: pos(20, 460, 940, 420)
+        position: pos(20, 460, 1180, 420)
         layer: 1
       }
       block v_9oui {
         position: pos(20, 900, 580, 400)
         layer: 2
       }
+      block v_02lk {
+        position: pos(20, 1320, 580, 400)
+        layer: 4
+      }
+      block v_lrzt {
+        position: pos(620, 900, 580, 400)
+        layer: 3
+      }
       mobile {
         mode: 'auto'
       }
-      width: 980
+      width: 1220
       default_zoom: 1
     }
     tab tab3: CanvasLayout {
@@ -3157,9 +3157,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_mkpr: VizBlock {
-    label: '''Bug count change by creator for May 2025 vs April 2025
-'''
+  block v_lrzt: VizBlock {
+    label: 'Bug count change by creator for May 2025 vs April 2025'
     viz: PivotTable {
       dataset: reporting_project_management
       calculation base_value {
@@ -3192,6 +3191,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: 'Explore 2'
       }
       theme {
+
       }
       rows: [
         VizFieldFull {
@@ -3256,9 +3256,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_a6j9: VizBlock {
-    label: '''Bug count change by priority for May 2025 vs April 2025
-'''
+  block v_02lk: VizBlock {
+    label: 'Bug count change by priority for May 2025 vs April 2025'
     viz: PivotTable {
       dataset: reporting_project_management
       calculation base_value_metric {
@@ -4288,7 +4287,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v_9oui',
-            'v_a6j9'
+            'v_lrzt',
+            'v_02lk'
           ]
           disabled: true
         }
@@ -4300,7 +4300,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v_9oui',
-            'v_a6j9'
+            'v_lrzt',
+            'v_02lk'
           ]
           disabled: true
         }
@@ -4312,21 +4313,31 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v_d9k9',
-            'v_zspi',
-            'v_a6j9'
+            'v_zspi'
           ]
           disabled: true
         }
       ]
     },
     FilterInteraction {
-      from: 'v_a6j9'
+      from: 'v_lrzt'
       to: [
         CustomMapping {
           block: [
             'v_d9k9',
-            'v_zspi',
-            'v_9oui'
+            'v_zspi'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_02lk'
+      to: [
+        CustomMapping {
+          block: [
+            'v_d9k9',
+            'v_zspi'
           ]
           disabled: true
         }
