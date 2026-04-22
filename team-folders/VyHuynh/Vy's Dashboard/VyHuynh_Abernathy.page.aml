@@ -122,6 +122,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         position: pos(20, 4060, 580, 400)
         layer: 14
       }
+      block v_a6j9 {
+        position: pos(620, 4060, 580, 400)
+        layer: 15
+      }
       mobile {
         mode: 'auto'
       }
@@ -3188,7 +3192,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         value: 'Explore 2'
       }
       theme {
-
       }
       rows: [
         VizFieldFull {
@@ -3244,6 +3247,110 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           SortSetting {
             key: 'reporting_team_name'
             direction: 'asc'
+          }
+        ]
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
+  block v_a6j9: VizBlock {
+    label: '''Bug count change by priority for May 2025 vs April 2025
+'''
+    viz: PivotTable {
+      dataset: reporting_project_management
+      calculation base_value_metric {
+        label: 'Base Value Metric'
+        formula: @aql number_of_bug | where(reporting_issues.completed_at is @(2025-05));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation comparison_value_metric {
+        label: 'Comparison Value Metric'
+        formula: @aql number_of_bug | where(reporting_issues.completed_at is @(2025-04));;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation member_change_metric {
+        label: 'Member Change Metric'
+        formula: @aql base_value_metric - comparison_value_metric;;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      calculation is_offsetting_member_metric {
+        label: 'Is Offsetting Member Metric'
+        formula: @aql case(when: member_change_metric < 1, then: 1, else: 0);;
+        calc_type: 'measure'
+        data_type: 'number'
+      }
+      filter {
+        field: r(reporting_project.name)
+        operator: 'is'
+        value: 'Explore 2'
+      }
+      filter {
+        field: r(reporting_issues.completed_at)
+        operator: 'matches'
+        value: '2025-04 - 2025-05'
+      }
+      theme {
+
+      }
+      rows: [
+        VizFieldFull {
+          label: 'Priority'
+          ref: r(reporting_issues.priority)
+          format {
+            type: 'text'
+          }
+        }
+      ]
+      values: [
+        VizFieldFull {
+          label: 'Base Value'
+          ref: 'base_value_metric'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Comparison Value'
+          ref: 'comparison_value_metric'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        },
+        VizFieldFull {
+          label: 'Member Change'
+          ref: 'member_change_metric'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+          uname: 'custom_member_change_metric_1'
+        },
+        VizFieldFull {
+          label: 'Is Offsetting Member'
+          ref: 'is_offsetting_member_metric'
+          format {
+            type: 'number'
+            pattern: '#,###0.00'
+          }
+        }
+      ]
+      settings {
+        pagination_size: 100
+        show_row_total: true
+        show_column_total: true
+        show_sub_total: true
+        sorts: [
+          SortSetting {
+            key: 'custom_member_change_metric_1'
+            direction: 'desc'
           }
         ]
         aggregate_awareness {
@@ -4179,7 +4286,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       from: 'v_d9k9'
       to: [
         CustomMapping {
-          block: 'v_9oui'
+          block: [
+            'v_9oui',
+            'v_a6j9'
+          ]
           disabled: true
         }
       ]
@@ -4188,7 +4298,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       from: 'v_zspi'
       to: [
         CustomMapping {
-          block: 'v_9oui'
+          block: [
+            'v_9oui',
+            'v_a6j9'
+          ]
           disabled: true
         }
       ]
@@ -4199,7 +4312,21 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         CustomMapping {
           block: [
             'v_d9k9',
-            'v_zspi'
+            'v_zspi',
+            'v_a6j9'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_a6j9'
+      to: [
+        CustomMapping {
+          block: [
+            'v_d9k9',
+            'v_zspi',
+            'v_9oui'
           ]
           disabled: true
         }
