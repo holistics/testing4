@@ -140,7 +140,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       mobile {
         mode: 'auto'
       }
-      width: 1500
+      width: 980
       default_zoom: 1
     }
     tab tab3: CanvasLayout {
