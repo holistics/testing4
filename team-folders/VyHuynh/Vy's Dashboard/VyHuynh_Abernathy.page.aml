@@ -945,6 +945,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: DataTable {
       dataset: demo_ecommerce
       theme {
+
       }
       fields: [
         VizFieldFull {
@@ -959,12 +960,14 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           format {
             type: 'text'
           }
+          uname: 'ecommerce_countries_continent_name'
         },
         VizFieldFull {
           ref: r(ecommerce_users.email_user)
           format {
             type: 'text'
           }
+          uname: 'ecommerce_users_email_user'
         },
         VizFieldFull {
           ref: r(demo_ecommerce.total_orders)
@@ -972,6 +975,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             type: 'number'
             pattern: 'inherited'
           }
+          uname: 'custom_total_orders'
         }
       ]
       settings {
@@ -981,6 +985,20 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
           enabled: true
           debug_comments: true
         }
+        column_styles: [
+          ColumnStyle {
+            key: 'order_master_order_created_month_1'
+            width: 264
+          },
+          ColumnStyle {
+            key: 'ecommerce_countries_continent_name'
+            width: 221
+          },
+          ColumnStyle {
+            key: 'ecommerce_users_email_user'
+            width: 385
+          }
+        ]
       }
     }
   }
