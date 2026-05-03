@@ -45,6 +45,8 @@ Dataset khai_ecommerce {
     relationship(merchants.city_id > cities.id, true)
     ,
     relationship(orders.created_date > khai_date_d.date_key, true)
+    ,
+    relationship(merchants.admin_id - users.id, true)
   ]
 
   owner: 'khai.to+demo4@holistics.io'
@@ -146,5 +148,4 @@ Dataset khai_ecommerce {
   metric total_cancelled_orders_time_compare: time_compare('total_cancelled_orders', 'Total Cancelled Orders', '#,###')
 
   metric cancelled_order_ratio_time_compare: time_compare('cancelled_order_ratio', 'Cancelled Orders Ratio', '#,###0.00%')
-
 }
