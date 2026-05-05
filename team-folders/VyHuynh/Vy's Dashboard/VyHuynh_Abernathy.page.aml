@@ -3416,6 +3416,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         }
       }
       settings {
+        show_data_points: true
         row_limit: 5000
         x_axis_show_null_datetime: false
         aggregate_awareness {
@@ -3447,6 +3448,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         }
       }
       settings {
+        show_data_points: true
         row_limit: 5000
         x_axis_show_null_datetime: false
         aggregate_awareness {
