@@ -118,14 +118,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         position: pos(580, 2320, 580, 400)
         layer: 13
       }
-      block v_orh3 {
-        position: pos(20, 4060, 580, 400)
-        layer: 14
-      }
-      block v_xzco {
-        position: pos(620, 4060, 580, 400)
-        layer: 15
-      }
       mobile {
         mode: 'auto'
       }
@@ -310,32 +302,46 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     tab tab_yzia: CanvasLayout {
       label: 'Key Driver'
       width: 1300
-      height: 1920
+      height: 2520
       grid_size: 20
       auto_expand_vertically: true
       block v_bj6j {
-        position: pos(20, 20, 620, 420)
+        position: pos(20, 620, 620, 420)
       }
       block v_segi {
-        position: pos(660, 460, 620, 420)
+        position: pos(660, 1060, 620, 420)
       }
       block v_c1ru {
-        position: pos(20, 460, 620, 420)
+        position: pos(20, 1060, 620, 420)
       }
       block v_3pqe {
-        position: pos(20, 900, 620, 420)
+        position: pos(20, 1500, 620, 420)
       }
       block v_p9dt {
-        position: pos(660, 20, 620, 420)
+        position: pos(660, 620, 620, 420)
       }
       block t_uje2 {
-        position: pos(20, 1400, 520, 60)
+        position: pos(20, 2000, 520, 60)
       }
       block v_d9k9 {
-        position: pos(20, 1480, 620, 420)
+        position: pos(20, 2080, 620, 420)
       }
       block v_zspi {
-        position: pos(660, 1480, 620, 420)
+        position: pos(660, 2080, 620, 420)
+      }
+      block t_io0f {
+        position: pos(20, 540, 520, 60)
+      }
+      block t_wymk {
+        position: pos(20, 20, 520, 60)
+      }
+      block v_j070 {
+        position: pos(660, 80, 600, 400)
+        layer: 2
+      }
+      block v_qpsb {
+        position: pos(20, 80, 600, 400)
+        layer: 1
       }
       mobile {
         mode: 'auto'
@@ -953,7 +959,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
     viz: DataTable {
       dataset: demo_ecommerce
       theme {
-
       }
       fields: [
         VizFieldFull {
@@ -3383,7 +3388,13 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_orh3: VizBlock {
+  block t_io0f: TextBlock {
+    content: @md ## **Kaggle Olist Ecomm Dataset**;;
+  }
+  block t_wymk: TextBlock {
+    content: @md ## **Power BI Dataset**;;
+  }
+  block v_qpsb: VizBlock {
     label: 'Close % by Year month'
     viz: LineChart {
       dataset: vy_pbi_dts
@@ -3414,7 +3425,7 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
-  block v_xzco: VizBlock {
+  block v_j070: VizBlock {
     label: 'Revenue Won by Year month'
     viz: LineChart {
       dataset: vy_pbi_dts
