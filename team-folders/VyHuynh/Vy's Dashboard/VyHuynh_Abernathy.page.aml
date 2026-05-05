@@ -122,6 +122,10 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
         position: pos(20, 4060, 580, 400)
         layer: 14
       }
+      block v_xzco {
+        position: pos(620, 4060, 580, 400)
+        layer: 15
+      }
       mobile {
         mode: 'auto'
       }
@@ -3410,16 +3414,113 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       }
     }
   }
+  block v_xzco: VizBlock {
+    label: 'Revenue Won by Year month'
+    viz: LineChart {
+      dataset: vy_pbi_dts
+      x_axis: VizFieldFull {
+        ref: r(vy_opportunity_calendar_csv.year_month)
+        format {
+          type: 'date'
+        }
+      }
+      y_axis {
+        series {
+          field: VizFieldFull {
+            ref: r(vy_pbi_dts.revenue_won)
+            format {
+              type: 'number'
+              pattern: 'inherited'
+            }
+          }
+        }
+      }
+      settings {
+        row_limit: 5000
+        x_axis_show_null_datetime: false
+        aggregate_awareness {
+          enabled: true
+          debug_comments: true
+        }
+      }
+    }
+  }
   interactions: [
+    FilterInteraction {
+      from: 'v2'
+      to: [
+        CustomMapping {
+          block: [
+            'v3',
+            'v4',
+            'v_nehb',
+            'v_8fpj'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v3'
+      to: [
+        CustomMapping {
+          block: [
+            'v2',
+            'v4',
+            'v_nehb',
+            'v_8fpj'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v4'
+      to: [
+        CustomMapping {
+          block: [
+            'v2',
+            'v3',
+            'v_nehb',
+            'v_8fpj'
+          ]
+          disabled: true
+        }
+      ]
+    },
     FilterInteraction {
       from: 'v5'
       to: [
         CustomMapping {
           block: [
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f1'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
             'v8',
+            'v_711g',
             'v_ztqi',
             'v_hk4u',
-            'v_856v',
+            'v_wsww',
+            'v_j83d',
             'v_lpgt',
             'v_5zcz',
             'v_350o',
@@ -3427,7 +3528,82 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_tq6d',
             'v_wwiv',
             'v_6o9d',
+            'v_ji80',
             'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq',
+            'f2'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f2'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_lpgt',
+            'v_5zcz',
+            'v_5dpt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq',
+            'v_t8f9',
+            'f1',
+            'f_zwa4'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v8'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_j83d',
+            'v_lpgt',
+            'v_5zcz',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
             'v_jpzg',
             'v_0sbb',
             'v_58pi',
@@ -3439,62 +3615,31 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       ]
     },
     FilterInteraction {
-      from: 'f1'
-      to: [
-        CustomMapping {
-          block: [
-            'v_856v',
-            'v_qctn',
-            'v_9rhg',
-            'v_tusm',
-            'v_nyr1',
-            'v_5dpt',
-            'v_t8f9',
-            'f_zwa4',
-            'f_countries_continent_name'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f2'
-      to: [
-        CustomMapping {
-          block: 'f_countries_continent_name'
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v8'
-      to: [
-        CustomMapping {
-          block: [
-            'v_856v',
-            'v_qctn',
-            'v_9rhg',
-            'v_tusm',
-            'v_nyr1',
-            'v_5dpt',
-            'v_t8f9'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
       from: 'v_711g'
       to: [
         CustomMapping {
           block: [
-            'v_856v',
-            'v_qctn',
-            'v_9rhg',
-            'v_tusm',
-            'v_nyr1',
-            'v_5dpt',
-            'v_t8f9'
+            'v5',
+            'v8',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_j83d',
+            'v_lpgt',
+            'v_5zcz',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq'
           ]
           disabled: true
         }
@@ -3505,9 +3650,169 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
+            'v_hk4u',
+            'v_wsww'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_hk4u'
+      to: [
+        CustomMapping {
+          block: [
             'v5',
             'v8',
             'v_711g',
+            'v_ztqi',
+            'v_wsww',
+            'v_j83d',
+            'v_5zcz',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_wsww'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_j83d',
+            'v_5zcz',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_nehb'
+      to: [
+        CustomMapping {
+          block: [
+            'v2',
+            'v3',
+            'v4',
+            'v_8fpj'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_856v'
+      to: [
+        CustomMapping {
+          block: [
+            'v_ztqi',
+            'v_j83d',
+            'v_ji80',
+            'v_n0qr'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_qctn'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_9rhg'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v_qctn',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq',
+            'v_t8f9'
+          ]
+          disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_zwa4'
+      to: [
+        CustomMapping {
+          block: [
+            'v5',
+            'v8',
+            'v_711g',
+            'v_ztqi',
             'v_856v',
             'v_qctn',
             'v_9rhg',
@@ -3531,128 +3836,6 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_vk4x',
             'v_ufmq',
             'v_t8f9'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_hk4u'
-      to: [
-        CustomMapping {
-          block: [
-            'v_856v',
-            'v_qctn',
-            'v_9rhg',
-            'v_tusm',
-            'v_nyr1',
-            'v_lpgt',
-            'v_5dpt',
-            'v_t8f9'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_wsww'
-      to: [
-        CustomMapping {
-          block: [
-            'v_856v',
-            'v_qctn',
-            'v_9rhg',
-            'v_tusm',
-            'v_nyr1',
-            'v_lpgt',
-            'v_5dpt',
-            'v_t8f9'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_856v'
-      to: [
-        CustomMapping {
-          block: [
-            'v5',
-            'v8',
-            'v_711g',
-            'v_hk4u',
-            'v_wsww',
-            'v_qctn',
-            'v_9rhg',
-            'v_tusm',
-            'v_nyr1',
-            'v_lpgt',
-            'v_5zcz',
-            'v_5dpt',
-            'v_350o',
-            'v_qnug',
-            'v_tq6d',
-            'v_wwiv',
-            'v_6o9d',
-            'v_7vcf',
-            'v_jpzg',
-            'v_0sbb',
-            'v_58pi',
-            'v_vk4x',
-            'v_ufmq',
-            'v_t8f9'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_qctn'
-      to: [
-        CustomMapping {
-          block: [
-            'v8',
-            'v_711g',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_t8f9'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_9rhg'
-      to: [
-        CustomMapping {
-          block: [
-            'v8',
-            'v_711g',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_zwa4'
-      to: [
-        CustomMapping {
-          block: [
-            'v_hk4u',
-            'v_wsww',
-            'f1',
-            'f2',
-            'f_countries_continent_name'
           ]
           disabled: true
         },
@@ -3672,42 +3855,30 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       ]
     },
     FilterInteraction {
-      from: 'v_3mef'
-      to: [
-        CustomMapping {
-          block: [
-            'v_059z',
-            'v_ck6w'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_059z'
-      to: [
-        CustomMapping {
-          block: [
-            'v_3mef',
-            'v_ck6w'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
       from: 'v_tusm'
       to: [
         CustomMapping {
           block: [
-            'v8',
-            'v_711g',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz'
+            'v5',
+            'v_qctn',
+            'v_9rhg',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3718,9 +3889,31 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v_lpgt',
-            'v_ji80',
-            'v_n0qr'
+            'v5',
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_nyr1',
+            'v_5zcz',
+            'v_5dpt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_7vcf',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3731,14 +3924,26 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v8',
-            'v_711g',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz'
+            'v5',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_5dpt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3749,31 +3954,9 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww',
-            'v_856v',
-            'v_qctn',
-            'v_9rhg',
-            'v_tusm',
-            'v_j83d',
-            'v_nyr1',
-            'v_5dpt',
-            'v_350o',
-            'v_qnug',
-            'v_tq6d',
-            'v_wwiv',
-            'v_6o9d',
-            'v_ji80',
-            'v_7vcf',
-            'v_n0qr',
-            'v_jpzg',
-            'v_0sbb',
-            'v_58pi',
-            'v_vk4x',
-            'v_ufmq',
-            'v_t8f9'
+            'v8',
+            'v_711g',
+            'v_5zcz'
           ]
           disabled: true
         }
@@ -3784,13 +3967,27 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v_856v',
-            'v_qctn',
-            'v_9rhg',
-            'v_tusm',
-            'v_nyr1',
-            'v_5dpt',
-            'v_t8f9'
+            'v5',
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_j83d',
+            'v_lpgt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq'
           ]
           disabled: true
         }
@@ -3801,51 +3998,12 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v8',
-            'v_711g',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_ck6w'
-      to: [
-        CustomMapping {
-          block: [
-            'v_3mef',
-            'v_059z'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'f_countries_continent_name'
-      to: [
-        CustomMapping {
-          block: [
             'v5',
-            'v8',
-            'v_711g',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww',
-            'v_856v',
             'v_qctn',
             'v_9rhg',
             'v_tusm',
             'v_j83d',
             'v_nyr1',
-            'v_lpgt',
-            'v_5zcz',
-            'v_5dpt',
             'v_350o',
             'v_qnug',
             'v_tq6d',
@@ -3859,20 +4017,23 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
             'v_58pi',
             'v_vk4x',
             'v_ufmq',
-            'v_t8f9',
-            'f1',
-            'f2',
-            'f_zwa4'
+            'v_t8f9'
           ]
           disabled: true
-        },
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'v_8fpj'
+      to: [
         CustomMapping {
           block: [
-            'v_059z',
-            'v_3mef',
-            'v_ck6w'
+            'v2',
+            'v3',
+            'v4',
+            'v_nehb'
           ]
-          field: ref('ecommerce_countries', 'continent_name')
+          disabled: true
         }
       ]
     },
@@ -3881,23 +4042,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_qnug',
-            'v_tq6d',
-            'v_wwiv',
-            'v_6o9d',
-            'v_7vcf',
-            'v_jpzg',
-            'v_0sbb',
-            'v_58pi',
-            'v_vk4x',
-            'v_ufmq'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3908,23 +4063,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_350o',
-            'v_tq6d',
-            'v_wwiv',
-            'v_6o9d',
-            'v_7vcf',
-            'v_jpzg',
-            'v_0sbb',
-            'v_58pi',
-            'v_vk4x',
-            'v_ufmq'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3935,23 +4084,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_350o',
-            'v_qnug',
-            'v_wwiv',
-            'v_6o9d',
-            'v_7vcf',
-            'v_jpzg',
-            'v_0sbb',
-            'v_58pi',
-            'v_vk4x',
-            'v_ufmq'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3962,23 +4105,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_350o',
-            'v_qnug',
-            'v_tq6d',
-            'v_6o9d',
-            'v_7vcf',
-            'v_jpzg',
-            'v_0sbb',
-            'v_58pi',
-            'v_vk4x',
-            'v_ufmq'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -3989,23 +4126,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_350o',
-            'v_qnug',
-            'v_tq6d',
-            'v_wwiv',
-            'v_7vcf',
-            'v_jpzg',
-            'v_0sbb',
-            'v_58pi',
-            'v_vk4x',
-            'v_ufmq'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -4016,9 +4147,31 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v_j83d',
-            'v_lpgt',
-            'v_n0qr'
+            'v5',
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_nyr1',
+            'v_5zcz',
+            'v_5dpt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_7vcf',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -4029,23 +4182,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_350o',
-            'v_qnug',
-            'v_tq6d',
-            'v_wwiv',
-            'v_6o9d',
-            'v_jpzg',
-            'v_0sbb',
-            'v_58pi',
-            'v_vk4x',
-            'v_ufmq'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -4056,9 +4203,31 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v_j83d',
-            'v_lpgt',
-            'v_ji80'
+            'v5',
+            'v8',
+            'v_711g',
+            'v_ztqi',
+            'v_hk4u',
+            'v_wsww',
+            'v_856v',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_nyr1',
+            'v_5zcz',
+            'v_5dpt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_7vcf',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -4069,23 +4238,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_350o',
-            'v_qnug',
-            'v_tq6d',
-            'v_wwiv',
-            'v_6o9d',
-            'v_7vcf',
-            'v_0sbb',
-            'v_58pi',
-            'v_vk4x',
-            'v_ufmq'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -4096,23 +4259,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_350o',
-            'v_qnug',
-            'v_tq6d',
-            'v_wwiv',
-            'v_6o9d',
-            'v_7vcf',
-            'v_jpzg',
-            'v_58pi',
-            'v_vk4x',
-            'v_ufmq'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -4123,23 +4280,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_350o',
-            'v_qnug',
-            'v_tq6d',
-            'v_wwiv',
-            'v_6o9d',
-            'v_7vcf',
-            'v_jpzg',
-            'v_0sbb',
-            'v_vk4x',
-            'v_ufmq'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -4150,23 +4301,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_350o',
-            'v_qnug',
-            'v_tq6d',
-            'v_wwiv',
-            'v_6o9d',
-            'v_7vcf',
-            'v_jpzg',
-            'v_0sbb',
-            'v_58pi',
-            'v_ufmq'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -4177,23 +4322,17 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v5',
-            'v8',
-            'v_ztqi',
-            'v_hk4u',
-            'v_856v',
-            'v_lpgt',
-            'v_5zcz',
-            'v_350o',
-            'v_qnug',
-            'v_tq6d',
-            'v_wwiv',
-            'v_6o9d',
-            'v_7vcf',
-            'v_jpzg',
-            'v_0sbb',
-            'v_58pi',
-            'v_vk4x'
+            'v_711g',
+            'v_wsww',
+            'v_qctn',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_ji80',
+            'v_n0qr',
+            'v_t8f9'
           ]
           disabled: true
         }
@@ -4204,105 +4343,25 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v8',
-            'v_711g',
-            'v_ztqi',
-            'v_hk4u',
-            'v_wsww',
-            'v_856v',
-            'v_qctn',
-            'v_lpgt',
-            'v_5zcz'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_bj6j'
-      to: [
-        CustomMapping {
-          block: [
-            'v_96z3',
-            'v_segi',
-            'v_c1ru',
-            'v_3pqe',
-            'v_p9dt'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_96z3'
-      to: [
-        CustomMapping {
-          block: [
-            'v_bj6j',
-            'v_segi',
-            'v_c1ru',
-            'v_3pqe',
-            'v_p9dt'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_segi'
-      to: [
-        CustomMapping {
-          block: [
-            'v_bj6j',
-            'v_96z3',
-            'v_c1ru',
-            'v_3pqe',
-            'v_p9dt'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_c1ru'
-      to: [
-        CustomMapping {
-          block: [
-            'v_bj6j',
-            'v_96z3',
-            'v_segi',
-            'v_3pqe',
-            'v_p9dt'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_3pqe'
-      to: [
-        CustomMapping {
-          block: [
-            'v_bj6j',
-            'v_96z3',
-            'v_segi',
-            'v_c1ru',
-            'v_p9dt'
-          ]
-          disabled: true
-        }
-      ]
-    },
-    FilterInteraction {
-      from: 'v_p9dt'
-      to: [
-        CustomMapping {
-          block: [
-            'v_bj6j',
-            'v_96z3',
-            'v_segi',
-            'v_c1ru',
-            'v_3pqe'
+            'v5',
+            'v_9rhg',
+            'v_tusm',
+            'v_j83d',
+            'v_nyr1',
+            'v_5dpt',
+            'v_350o',
+            'v_qnug',
+            'v_tq6d',
+            'v_wwiv',
+            'v_6o9d',
+            'v_ji80',
+            'v_7vcf',
+            'v_n0qr',
+            'v_jpzg',
+            'v_0sbb',
+            'v_58pi',
+            'v_vk4x',
+            'v_ufmq'
           ]
           disabled: true
         }
@@ -4312,7 +4371,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       from: 'v_d9k9'
       to: [
         CustomMapping {
-          block: 'v_zspi'
+          block: [
+            'v_9oui',
+            'v_lrzt',
+            'v_02lk'
+          ]
           disabled: true
         }
       ]
@@ -4321,7 +4384,11 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       from: 'v_zspi'
       to: [
         CustomMapping {
-          block: 'v_d9k9'
+          block: [
+            'v_9oui',
+            'v_lrzt',
+            'v_02lk'
+          ]
           disabled: true
         }
       ]
@@ -4331,8 +4398,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v_lrzt',
-            'v_02lk'
+            'v_d9k9',
+            'v_zspi'
           ]
           disabled: true
         }
@@ -4343,8 +4410,8 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v_9oui',
-            'v_02lk'
+            'v_d9k9',
+            'v_zspi'
           ]
           disabled: true
         }
@@ -4355,10 +4422,23 @@ Morbi rhoncus tellus eget libero tincidunt, sit amet aliquam leo hendrerit. Ut a
       to: [
         CustomMapping {
           block: [
-            'v_9oui',
-            'v_lrzt'
+            'v_d9k9',
+            'v_zspi'
           ]
           disabled: true
+        }
+      ]
+    },
+    FilterInteraction {
+      from: 'f_countries_continent_name'
+      to: [
+        CustomMapping {
+          block: [
+            'v_059z',
+            'v_3mef',
+            'v_ck6w'
+          ]
+          field: ref('ecommerce_countries', 'continent_name')
         }
       ]
     }
