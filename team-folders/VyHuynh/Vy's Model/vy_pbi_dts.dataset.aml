@@ -41,4 +41,25 @@ Dataset vy_pbi_dts {
     definition: @aql safe_divide(count_of_won, count_of_won + count_of_lost) ;;
     format: '#,##0.0%'
   }
+
+  metric revenue_won {
+    label: 'Revenue Won'
+    type: 'number'
+    definition: @aql sum(vy_opportunities_csv.value) | where(vy_opportunities_csv.status == 'Won') ;;
+    format: '[$]#,##0.0'
+  }
+
+  metric revenue_open {
+    label: 'Revenue Open'
+    type: 'number'
+    definition: @aql (sum(vy_opportunities_csv.value) | where(vy_opportunities_csv.status == 'Open')) * (1 + safe_divide(sum(vy_opportunity_forecast_adjustment_csv.forecast_adjustment), 100)) ;;
+    format: '[$]#,##0.0'
+  }
+
+  metric revenue_won_average_deal_size {
+    label: 'Revenue Won Average Deal Size'
+    type: 'number'
+    definition: @aql safe_divide(revenue_won, count_of_won) ;;
+    format: '[$]#,##0.0'
+  }
 }
