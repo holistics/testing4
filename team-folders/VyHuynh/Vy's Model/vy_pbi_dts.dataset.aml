@@ -22,4 +22,23 @@ Dataset vy_pbi_dts {
     relationship(accounts_csv.industry_seq > vy_industries_csv.industry_seq, true),
     relationship(accounts_csv.territory_seq > vy_territories_csv.territory_seq, true)
   ]
+
+  metric count_of_won {
+    label: 'Count of Won'
+    type: 'number'
+    definition: @aql count(vy_opportunities_csv.opportunity_seq) | where(vy_opportunities_csv.status == 'Won') ;;
+  }
+
+  metric count_of_lost {
+    label: 'Count of Lost'
+    type: 'number'
+    definition: @aql count(vy_opportunities_csv.opportunity_seq) | where(vy_opportunities_csv.status == 'Lost') ;;
+  }
+
+  metric close_percent {
+    label: 'Close %'
+    type: 'number'
+    definition: @aql safe_divide(count_of_won, count_of_won + count_of_lost) ;;
+    format: '#,##0.0%'
+  }
 }
