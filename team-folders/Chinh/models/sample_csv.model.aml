@@ -1,0 +1,57 @@
+Model sample_csv {
+  type: 'table'
+  label: 'Sample csv'
+  description: ''
+  data_source_name: 'demodb'
+  dimension full_name {
+    label: 'Full name'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.full_name }};;
+  }
+  dimension student_id {
+    label: 'Student'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.student_id }};;
+  }
+  dimension question_text {
+    label: 'Question text'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.question_text }};;
+  }
+  dimension response_text {
+    label: 'Response text'
+    description: ''
+    type: 'text'
+    hidden: false
+    definition: @sql {{ #SOURCE.response_text }};;
+  }
+  dimension response_answered_date {
+    label: 'Response answered date'
+    description: ''
+    type: 'date'
+    hidden: false
+    definition: @sql {{ #SOURCE.response_answered_date }};;
+  }
+
+  import_source: ImportSource {
+    type: 'csv'
+    original_file_name: 'sample.csv'
+    uploaded_at: '2026-04-23 14:38:30'
+    hash: 'f1fd926f6d46440f17d2d396527f1ac0d2a64e9eba0555a5525e62f6d5ea2e5c'
+    column_configs: [
+      H.imports.column_config("full_name", "full_name", "text"),
+      H.imports.column_config("student_id", "student_id", "text"),
+      H.imports.column_config("question_text", "question_text", "text"),
+      H.imports.column_config("response_text", "response_text", "text"),
+      H.imports.column_config("response_answered_date", "response_answered_date", "date")
+    ]
+  }
+  owner: 'chinh.dm@holistics.io'
+  table_name: '"persisted_models"."holistics_sample_csv_e2b07_202604231438"'
+}

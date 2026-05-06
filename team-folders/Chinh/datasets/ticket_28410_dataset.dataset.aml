@@ -170,7 +170,7 @@ Dataset ticket_28410_dataset {
 
   // Combined forecasted demand
   metric sum_demand {
-    label: "Forecasted Demand"
+    label: "Sum Demand"
     type: "number"
     definition: @aql demand_1m + demand_5m + demand_4m + demand_3m;;
   }

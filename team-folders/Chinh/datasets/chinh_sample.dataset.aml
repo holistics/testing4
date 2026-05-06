@@ -1,0 +1,16 @@
+Dataset chinh_sample {
+  label: 'chinh_sample'
+  description: ''
+  data_source_name: 'demodb'
+  models: [
+    sample_csv
+  ]
+  relationships: []
+  metric response {
+    label: "Response"
+    type: "text"
+    hidden: false
+    description: ""
+    definition: @aql string_agg(sample_csv.response_text);;
+  }
+}
