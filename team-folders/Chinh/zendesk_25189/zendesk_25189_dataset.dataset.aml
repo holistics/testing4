@@ -1,0 +1,50 @@
+Dataset zendesk_25189_dataset {
+  label: 'zendesk_25189_dataset'
+  description: 'Test dataset to validate whether running_total(approx_count_distinct(user_id)) is date-aware (cumulative distinct) vs. simply summing per-period distinct counts.'
+  data_source_name: 'demodb'
+  models: [
+    zendesk_25189_logins_csv
+  ]
+  relationships: []
+
+  // Per-period distinct active users (baseline).
+  // Expected per month with the seeded CSV: 3, 3, 3, 3, 3
+  metric monthly_active_users {
+    label: 'Monthly active users (count_distinct)'
+    type: 'number'
+    hidden: false
+    description: 'Distinct users who logged in within each period.'
+    definition: @aql count_distinct(zendesk_25189_logins_csv.user_id) ;;
+  }
+
+  // Per-period approximate distinct active users (HLL).
+  // Expected per month with the seeded CSV: ~3, 3, 3, 3, 3
+  metric monthly_active_users_approx {
+    label: 'Monthly active users (approx_count_distinct)'
+    type: 'number'
+    hidden: false
+    description: 'Approximate distinct users who logged in within each period (HyperLogLog).'
+    definition: @aql approx_count_distinct(zendesk_25189_logins_csv.user_id) ;;
+  }
+
+  // The metric under test.
+  // If date-aware (cumulative distinct): 3, 4, 5, 6, 7
+  // If NOT date-aware (sum of monthly distinct): 3, 6, 9, 12, 15
+  metric cumulative_distinct_users_running_total {
+    label: 'Cumulative distinct users (running_total of approx_count_distinct)'
+    type: 'number'
+    hidden: false
+    description: 'Tests whether running_total over approx_count_distinct is date-aware.'
+    definition: @aql running_total(approx_count_distinct(zendesk_25189_logins_csv.user_id)) ;;
+  }
+
+  // Naive sum of per-period distincts for comparison.
+  // Expected with the seeded CSV: 3, 6, 9, 12, 15
+  metric sum_of_monthly_distinct_users {
+    label: 'Sum of monthly distinct (sanity check)'
+    type: 'number'
+    hidden: false
+    description: 'Sums per-period count_distinct via running_total — clearly NOT cumulative distinct.'
+    definition: @aql running_total(count(zendesk_25189_logins_csv.user_id)) ;;
+  }
+}
