@@ -1,15 +1,17 @@
 Skill key_driver {
   label: 'Key Driver'
-  description: 'When user ask "Explain this increase / decrease between ... "'
+  description: 'Skill to analyze and explain what drove the change in a metric. Use this only when user asks "Explain this increase / decrease between ... "'
   allow_switching_invocation: true
   content: @md
-    ## Goal
+    # Goal
     Explain what drove the change in a metric between two periods, identify which dimension members contributed most to that change, and measure whether the change is concentrated in one or a few members or spread across many.
 
     - Dataset: current dataset in the context
     - Target metric: the metric will be input by user
     - Base period: the time period will be input by user
     - Comparison period: the time period will be input by user
+
+    # Instructions
 
     Please perform the analysis in 3 parts.
 
@@ -94,7 +96,9 @@ Skill key_driver {
 
     Only include dimensions that are valid segmentation cuts for the target metric.
 
-    ## Output
+    # Output
+    Output in the following format:
+
     1. Executive summary
        - max 4 bullets
     2. Driver summary table
@@ -123,6 +127,7 @@ Skill key_driver {
        - format `contribution_amount` appropriately based on metric type
        - title format: `Contribution Amount by <dimension>`
 
+    ## Notes
     Important:
     - contributors only; offsetting members excluded
     - if a member is offsetting, `contribution_amount` and `contribution_share` should be null or blank in tables
