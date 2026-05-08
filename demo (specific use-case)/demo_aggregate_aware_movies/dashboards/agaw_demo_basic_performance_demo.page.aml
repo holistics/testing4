@@ -279,38 +279,47 @@ Dashboard aggregate_awareness_demo_dashboard_lite {
   }
 
   // 3.2. Layout & Positions
-  view: CanvasLayout {
-    label: 'Canvas Layout'
-    width: 1950
-    height: 910
-    block info_intro {
-      position: pos(30, 160, 560, 570)
+  view: TabLayout {
+    label: 'View 1'
+    tab view_1: CanvasLayout {
+      label: 'Tab 1'
+      width: 1950
+      height: 910
+      block info_intro {
+        position: pos(30, 160, 560, 570)
+      }
+      block info_title {
+        position: pos(30, 30, 560, 100)
+      }
+      block genre_filter {
+        position: pos(620, 30, 1300, 100)
+        layer: 1
+      }
+      block raw_viz {
+        position: pos(620, 160, 960, 340)
+        layer: 1
+      }
+      block raw_count_rows {
+        position: pos(1610, 160, 310, 340)
+        layer: 1
+      }
+      block agg_viz {
+        position: pos(620, 530, 960, 350)
+        layer: 1
+      }
+      block cta_btn {
+        position: pos(30, 760, 560, 120)
+      }
     }
-    block info_title {
-      position: pos(30, 30, 560, 100)
-    }
-    block genre_filter {
-      position: pos(620, 30, 1300, 100)
-      layer: 1
-    }
-    block raw_viz {
-      position: pos(620, 160, 960, 340)
-      layer: 1
-    }
-    block raw_count_rows {
-      position: pos(1610, 160, 310, 340)
-      layer: 1
-    }
-    block agg_viz {
-      position: pos(620, 530, 960, 350)
-      layer: 1
-    }
-    block agg_count_rows {
-      position: pos(1610, 530, 310, 350)
-      layer: 1
-    }
-    block cta_btn {
-      position: pos(30, 760, 560, 120)
+    tab tab_klxq: CanvasLayout {
+      label: 'Tab 2'
+      width: 1300
+      height: 800
+      grid_size: 20
+      auto_expand_vertically: true
+      mobile {
+        mode: 'auto'
+      }
     }
   }
 

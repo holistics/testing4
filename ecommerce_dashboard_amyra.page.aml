@@ -694,7 +694,7 @@ Dashboard ecommerce_dashboard_amyra {
     height: 2720
     grid_size: 20
     block v1 {
-      position: pos(20, 120, 280, 180)
+      position: pos(0, 140, 280, 180)
       layer: 1
     }
     block v2 {

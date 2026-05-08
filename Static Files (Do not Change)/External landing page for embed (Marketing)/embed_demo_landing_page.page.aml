@@ -1,5 +1,5 @@
 Dashboard embed_demo_landing_page {
-  title: 'Ecommerce Embedded Analytics'
+  title: 'Somethigns'
   owner: 'thong.do@holistics.io'
   description: ''''''
   theme {
@@ -510,93 +510,96 @@ ecommerce_users.sign_up_date
   block t16: TextBlock {
     content: @md <div style="border: 1px solid #eeeeee; width: 100%; display: block;"></div>;;
   }
-  view: CanvasLayout {
+  view: TabLayout {
     label: 'View 1'
-    width: 1440
-    height: 1080
-    block v1 {
-      position: pos(238, 16, 302, 60)
-    }
-    block override_css {
-      position: pos(-490, 100, 465, 160)
-    }
-    block f1 {
-      position: pos(-320, 10, 300, 80)
-    }
-    block v2 {
-      position: pos(750, 780, 650, 240)
-    }
-    block t1 {
-      position: pos(730, 330, 690, 710)
-      layer: -1
-    }
-    block t2 {
-      position: pos(750, 350, 650, 40)
-    }
-    block v3 {
-      position: pos(40, 780, 650, 240)
-    }
-    block v4 {
-      position: pos(50, 150, 190, 140)
-    }
-    block v5 {
-      position: pos(610, 150, 260, 140)
-    }
-    block v6 {
-      position: pos(890, 150, 220, 140)
-    }
-    block v7 {
-      position: pos(1160, 150, 220, 140)
-    }
-    block t3 {
-      position: pos(20, 120, 1400, 190)
-      layer: -1
-    }
-    block t4 {
-      position: pos(20, 330, 690, 710)
-      layer: -1
-    }
-    block v8 {
-      position: pos(40, 390, 650, 370)
-    }
-    block f2 {
-      position: pos(1110, 10, 310, 80)
-    }
-    block t5 {
-      position: pos(27, 23, 190, 50)
-    }
-    block t9 {
-      position: pos(40, 350, 650, 40)
-    }
-    block t11 {
-      position: pos(280, 120, 40, 190)
-    }
-    block t12 {
-      position: pos(560, 120, 40, 190)
-    }
-    block t13 {
-      position: pos(1120, 120, 40, 190)
-    }
-    block v9 {
-      position: pos(1480, 590, 410, 330)
-    }
-    block v11 {
-      position: pos(750, 400, 650, 360)
-    }
-    block v12 {
-      position: pos(330, 150, 200, 140)
-    }
-    block t14 {
-      position: pos(840, 120, 40, 190)
-    }
-    block t15 {
-      position: pos(149, 29, 169, 53)
-    }
-    block f3 {
-      position: pos(800, 10, 300, 80)
-    }
-    block t16 {
-      position: pos(-20, 90, 1480, 20)
+    tab view_1: CanvasLayout {
+      label: 'Tab 1'
+      width: 1440
+      height: 1080
+      block v1 {
+        position: pos(238, 16, 302, 60)
+      }
+      block override_css {
+        position: pos(-490, 100, 465, 160)
+      }
+      block f1 {
+        position: pos(-320, 10, 300, 80)
+      }
+      block v2 {
+        position: pos(750, 780, 650, 240)
+      }
+      block t1 {
+        position: pos(730, 330, 690, 710)
+        layer: -1
+      }
+      block t2 {
+        position: pos(750, 350, 650, 40)
+      }
+      block v3 {
+        position: pos(40, 780, 650, 240)
+      }
+      block v4 {
+        position: pos(50, 150, 190, 140)
+      }
+      block v5 {
+        position: pos(610, 150, 260, 140)
+      }
+      block v6 {
+        position: pos(890, 150, 220, 140)
+      }
+      block v7 {
+        position: pos(1160, 150, 220, 140)
+      }
+      block t3 {
+        position: pos(20, 120, 1400, 190)
+        layer: -1
+      }
+      block t4 {
+        position: pos(20, 330, 690, 710)
+        layer: -1
+      }
+      block v8 {
+        position: pos(40, 390, 650, 370)
+      }
+      block f2 {
+        position: pos(1110, 10, 310, 80)
+      }
+      block t5 {
+        position: pos(27, 23, 190, 50)
+      }
+      block t9 {
+        position: pos(40, 350, 650, 40)
+      }
+      block t11 {
+        position: pos(280, 120, 40, 190)
+      }
+      block t12 {
+        position: pos(560, 120, 40, 190)
+      }
+      block t13 {
+        position: pos(1120, 120, 40, 190)
+      }
+      block v9 {
+        position: pos(1480, 590, 410, 330)
+      }
+      block v11 {
+        position: pos(750, 400, 650, 360)
+      }
+      block v12 {
+        position: pos(330, 150, 200, 140)
+      }
+      block t14 {
+        position: pos(840, 120, 40, 190)
+      }
+      block t15 {
+        position: pos(149, 29, 169, 53)
+      }
+      block f3 {
+        position: pos(800, 10, 300, 80)
+      }
+      block t16 {
+        position: pos(-20, 90, 1480, 20)
+      }
     }
   }
   interactions: [
@@ -619,7 +622,7 @@ ecommerce_users.sign_up_date
             'v8',
             'v12'
           ]
-          field: ref('ecommerce_users', 'sign_up_date')
+          field: r(ecommerce_users.sign_up_date)
         },
         CustomMapping {
           block: [
@@ -627,14 +630,14 @@ ecommerce_users.sign_up_date
             'v6',
             'v7'
           ]
-          field: ref('order_master', 'order_created_at')
+          field: r(order_master.order_created_at)
         },
         CustomMapping {
           block: [
             'v9',
             'v11'
           ]
-          field: ref('dim_dates', 'date_key')
+          field: r(dim_dates.date_key)
         }
       ]
     }
