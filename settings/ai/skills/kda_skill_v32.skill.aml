@@ -1,0 +1,520 @@
+Skill key_driver_v32 {
+
+label: 'Key Driver v3'
+description: 'Skill to identify which segment across all dimensions contributed most to a metric change between two periods, ranked by ThirdEye significance score. Use this only when user asks "Explain this increase / decrease between ... "'
+allow_switching_invocation: true
+
+content: @md
+
+## Goal
+
+Identify which segment across all candidate dimensions contributed most to a metric change between two periods.
+
+For each segment, compute a **significance score** that measures how much the segment’s change deviates from the overall trend, weighted by the segment’s size. Rank all segments across all analyzed dimensions by this significance score. The highest positive score is the top contributing driver. The most negative scores are offsetting drivers.
+
+This skill must support both:
+- **additive metrics** such as revenue, orders, sessions
+- **ratio metrics** such as conversion rate, close rate, average order value
+
+This skill must produce:
+1. a **full cross-dimension significance table**
+2. **null-safe period comparisons** using `coalesce(..., 0)` where appropriate
+3. **per-dimension comparison tables** showing the metric in both periods and the **delta between the two periods**
+4. explicit **sparse-data / unstable-significance labeling**
+
+---
+
+## Inputs
+
+- **Dataset**: current dataset in context
+- **Target metric**: provided by user
+- **Base period**: provided by user
+- **Comparison period**: provided by user
+- **Candidate dimensions**:
+  - If the user names dimensions, use those
+  - Otherwise use a reasonable set of business dimensions from the dataset that are likely explanatory
+- **Current viz / referenced viz blocks**:
+  - Reuse existing metric definitions whenever possible
+  - If the metric comes from an existing viz block, preserve that metric logic
+
+---
+
+## Core Rules
+
+### 1. Never fabricate missing structure
+- Do not assume dimensions, fields, numerator, denominator, or metric internals
+- Inspect the dataset and existing metric definitions first
+- For ratio metrics, identify and use the actual underlying numerator and denominator if available
+
+### 2. Always build per-dimension tables first
+Do **not** try to compute all dimensions in one explore unless the result is intentionally a multi-dimension combination.
+
+Instead:
+- build **one comparison table per dimension**
+- normalize them into the same schema
+- then append them into one **cross-dimension significance table**
+
+### 3. Null-handling is a required invariant, not a best practice
+When comparing period values:
+- if a filtered metric or segment-period row is missing, treat it as zero using `coalesce(..., 0)`
+- do this especially for additive components like count, revenue, numerator, denominator
+- this rule must be applied **before** recomputing ratios
+- this rule must be applied **consistently across every analyzed dimension**
+
+If null-safe additive handling is not applied consistently, the output is invalid and must be regenerated.
+
+### 4. Always show both period values and the delta
+Every per-dimension breakdown must show:
+- base period value
+- comparison period value
+- delta = comparison - base
+
+For ratio metrics, also show the underlying additive components where available.
+
+### 5. Be explicit about sparse or unstable data
+If a segment has:
+- very low denominator
+- zero denominator
+- missing values in one period
+- `0/0` ratio after null-safe recomputation
+- mathematically unstable significance inputs
+
+Then:
+- keep it in the per-dimension comparison table if useful
+- set `segment_note = sparse data` or `segment_note = unstable significance`
+- exclude it from ranked significance output if the score would be misleading or undefined
+
+Never leave such rows as unexplained `null` output.
+
+---
+
+## Step 1 — Determine metric type
+
+Classify the target metric into one of these types:
+
+### A. Additive metric
+Examples:
+- revenue
+- orders
+- sessions
+- won count
+
+### B. Ratio metric
+Examples:
+- conversion rate
+- close %
+- average order value
+- churn rate
+
+If metric type is unclear:
+- inspect the metric definition
+- if still unclear, state the uncertainty and proceed cautiously
+
+---
+
+## Step 2 — Compute overall period comparison
+
+Calculate the target metric in:
+- **base period**
+- **comparison period**
+
+Then compute:
+
+- `overall_baseline` = metric value in base period
+- `overall_current` = metric value in comparison period
+- `overall_change` = overall_current - overall_baseline
+- `r` = overall_current / overall_baseline
+
+Where:
+- `r` is the expected change ratio
+- this same `r` is used for all segments across all dimensions
+
+### If `overall_change = 0`
+State that there is no net change to attribute and stop.
+
+### If `overall_baseline = 0`
+Do not force the default significance formula. State that the baseline is zero and:
+- either use a fallback comparison method
+- or explain that attribution is unstable because no meaningful baseline exists
+
+---
+
+## Step 3 — For ratio metrics, compute additive components first
+
+For ratio metrics, do **not** rely only on the already-aggregated ratio.
+
+Instead, compute:
+- `numerator_B` = numerator in base period
+- `numerator_C` = numerator in comparison period
+- `denominator_B` = denominator in base period
+- `denominator_C` = denominator in comparison period
+
+Apply null handling:
+- `numerator_B = coalesce(numerator_B, 0)`
+- `numerator_C = coalesce(numerator_C, 0)`
+- `denominator_B = coalesce(denominator_B, 0)`
+- `denominator_C = coalesce(denominator_C, 0)`
+
+Then recompute:
+- `vB = safe_divide(numerator_B, denominator_B)`
+- `vC = safe_divide(numerator_C, denominator_C)`
+
+### Canonical enforcement rule
+For ratio metrics, this exact order is required:
+
+1. compute raw additive components  
+2. `coalesce(..., 0)` all additive components  
+3. derive denominator from null-safe additive components if needed  
+4. recompute ratio with `safe_divide`  
+5. compute deltas from recomputed ratio
+
+### Example: Close %
+If:
+- `Close % = Won / (Won + Lost)`
+
+Then for each segment:
+- `won_B = coalesce(count_of_won in base period, 0)`
+- `won_C = coalesce(count_of_won in comparison period, 0)`
+- `lost_B = coalesce(count_of_lost in base period, 0)`
+- `lost_C = coalesce(count_of_lost in comparison period, 0)`
+- `denominator_B = won_B + lost_B`
+- `denominator_C = won_C + lost_C`
+- `vB = safe_divide(won_B, denominator_B)`
+- `vC = safe_divide(won_C, denominator_C)`
+
+### Explicit anti-pattern
+Do **not** do this as primary null handling:
+- `close_percent_B = coalesce(close_percent_B, 0)`
+
+This is incorrect because it hides whether the ratio was built from missing additive components.
+
+Correct approach:
+- null-proof additive components first
+- then recompute the ratio
+
+---
+
+## Step 4 — Build one comparison table per dimension
+
+For each analyzed dimension, create a **segment comparison table**.
+
+Each table must contain one row per segment with this normalized schema:
+
+- `dimension`
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `base_numerator` (if ratio metric)
+- `current_numerator` (if ratio metric)
+- `delta_numerator` (if ratio metric)
+- `base_denominator` (if ratio metric)
+- `current_denominator` (if ratio metric)
+- `delta_denominator` (if ratio metric)
+- `segment_note`
+
+### For additive metrics
+Use:
+- `base_value = coalesce(metric in base period, 0)`
+- `current_value = coalesce(metric in comparison period, 0)`
+- `delta_value = current_value - base_value`
+
+### For ratio metrics
+Use recomputed values from Step 3:
+- `base_value = vB`
+- `current_value = vC`
+- `delta_value = vC - vB`
+
+### Segment coverage rule
+Include segments that appear in:
+- base period only
+- comparison period only
+- both periods
+
+Missing segment-period values must be null-proofed via additive components before computing the metric.
+
+---
+
+## Step 5 — Enforced output validity rules for ratio metrics
+
+A per-dimension ratio-metric table is valid only if all of the following are true:
+
+- every row has non-null:
+  - `base_numerator`
+  - `current_numerator`
+  - `base_denominator`
+  - `current_denominator`
+- any row with zero denominator in either period must have:
+  - `segment_note = sparse data` or `segment_note = unstable significance`
+- ratio fields may only be null when:
+  - denominator is zero
+  - and the row is explicitly labeled in `segment_note`
+
+If any non-sparse row still contains unexpected null additive components or unexplained null ratios:
+- the table is invalid
+- regenerate the query before answering
+
+---
+
+## Step 6 — Compute expected current value
+
+For every segment row:
+
+- `expected_current_value = r * base_value`
+
+This is the value the segment would have if it simply followed the overall trend.
+
+Then compute:
+
+- `change_difference = current_value - expected_current_value`
+
+Interpretation:
+- positive → segment changed more than expected
+- negative → segment changed less than expected
+
+---
+
+## Step 7 — Compute contribution weight
+
+### For additive metrics
+Use:
+- `contribution_segment = base_value + current_value`
+
+### For ratio metrics
+Prefer denominator-based weighting:
+- `contribution_segment = base_denominator + current_denominator`
+
+If denominator is unavailable but numerator and denominator are both known, fallback to:
+- `contribution_segment = base_denominator + current_denominator + base_numerator + current_numerator`
+
+Then within each dimension compute:
+- `contribution_all = sum(contribution_segment)` across all segments in that dimension
+
+And:
+- `contribution_weight = contribution_segment / contribution_all`
+
+---
+
+## Step 8 — Compute significance score
+
+For each segment:
+
+- `expected_current_value = r * base_value`
+- `change_difference = current_value - expected_current_value`
+
+Then compute significance:
+
+```text
+significance(n) = (current_value - r * base_value)
+                × log(current_value / (r * base_value) - 1)
+                × (contribution_weight + 1)
+```
+
+### Interpretation
+- **positive score** → contributing driver
+- **negative score** → offsetting driver
+- **near zero** → moved roughly as expected
+
+### Edge cases
+If any of the below makes the formula unstable:
+- `base_value = 0`
+- `expected_current_value = 0`
+- `current_value / expected_current_value - 1 <= 0`
+- denominator is zero in either period
+- denominator is too small to support a reliable ratio
+
+Then:
+- do **not** force the formula
+- set `segment_note = sparse data` or `segment_note = unstable significance`
+- set `significance_score = null`
+- exclude that row from ranked significance output
+- still include it in the per-dimension comparison table if useful
+
+If a segment changed exactly as expected:
+- set `significance = 0`
+
+---
+
+## Step 9 — Build the full cross-dimension significance table
+
+After computing all dimension-level comparison tables:
+
+- normalize all tables to the same schema
+- append them into one full table
+- exclude rows with `segment_note in ['sparse data', 'unstable significance']` from the ranking
+- sort by `significance_score desc`
+
+This cross-dimension table is the **main analytical output**.
+
+### Required columns
+- `rank`
+- `dimension`
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `expected_current_value`
+- `change_difference`
+- `base_numerator` (if ratio metric)
+- `current_numerator` (if ratio metric)
+- `delta_numerator` (if ratio metric)
+- `base_denominator` (if ratio metric)
+- `current_denominator` (if ratio metric)
+- `delta_denominator` (if ratio metric)
+- `significance_score`
+- `contributor_type`
+- `segment_note`
+
+Where:
+- `contributor_type = contributing` if score > 0
+- `contributor_type = offsetting` if score < 0
+- `contributor_type = neutral` if score = 0
+- `segment_note` can contain `sparse data`, `unstable significance`, or similar warnings
+
+---
+
+## Step 10 — Build per-dimension comparison tables
+
+For each analyzed dimension, return a comparison table that is easy to read by business users.
+
+### Required columns for additive metrics
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `significance_score`
+- `contributor_type`
+
+### Required columns for ratio metrics
+- `segment`
+- `base_numerator`
+- `base_denominator`
+- `base_value`
+- `current_numerator`
+- `current_denominator`
+- `current_value`
+- `delta_numerator`
+- `delta_denominator`
+- `delta_value`
+- `significance_score`
+- `contributor_type`
+- `segment_note`
+
+### Ratio-metric output contract
+For ratio metrics:
+- additive columns must never be null
+- ratio columns may only be null when `segment_note` is populated with `sparse data` or `unstable significance`
+
+### Example for Close %
+Use columns like:
+- `segment`
+- `won_Feb`
+- `lost_Feb`
+- `close_percent_Feb`
+- `won_Mar`
+- `lost_Mar`
+- `close_percent_Mar`
+- `delta_won`
+- `delta_lost`
+- `delta_close_percent`
+- `significance_score`
+- `contributor_type`
+- `segment_note`
+
+---
+
+## Step 11 — Per-dimension significance charts
+
+For each analyzed dimension, return a chart of all segments ranked by significance score.
+
+### Chart spec
+- chart type: bar chart
+- orientation: horizontal preferred when segment labels are long
+- x-axis: segment
+- y-axis: significance score
+- sort: descending by significance score
+- positive bars: contributing
+- negative bars: offsetting
+- title format: `Significance Score by <dimension>`
+
+If a dimension has too many low-signal segments:
+- show the top contributing and top offsetting segments
+- note that low-signal segments were truncated
+
+---
+
+## Step 12 — Mandatory QA validation before answering
+
+Before answering, inspect every per-dimension result.
+
+### QA checklist
+- Were additive components null-proofed with `coalesce(..., 0)` first?
+- Were ratio metrics recomputed from null-safe additive components?
+- Do any non-sparse rows still contain null additive fields?
+- Do any ratio fields contain null without `segment_note`?
+- Are `0/0` rows explicitly labeled as `sparse data`?
+- Are sparse / unstable rows excluded from ranked significance output?
+- Is the same overall ratio `r` used across all dimensions?
+
+If any answer is “no”:
+- regenerate or fix the query before presenting results
+
+---
+
+## Output
+
+## 1. Executive Summary
+Maximum 3 bullets:
+- lead with the top contributing segment and dimension
+- quantify the overall metric change
+- mention major offsetting segments if present
+- mention sparse-data limitations if they materially affect confidence
+
+## 2. Full Cross-Dimension Significance Table
+This is the **primary output**.
+
+Return all analyzed segments across all analyzed dimensions in one ranked table.
+
+## 3. Per-Dimension Comparison Tables
+One table per analyzed dimension.
+
+Must include:
+- both periods
+- delta columns
+- significance score
+- contributor type
+- underlying additive components for ratio metrics
+- segment_note for sparse or unstable rows
+
+## 4. Per-Dimension Significance Charts
+One chart per analyzed dimension.
+
+---
+
+## Notes
+
+- Use the **same overall ratio `r`** for all segments across all dimensions
+- Do not compute significance independently per dimension using different overall trends
+- Always preserve the target metric’s business definition from the dataset or referenced viz
+- Do not omit missing segment-period rows silently; convert additive pieces with `coalesce(..., 0)` first
+- Do not use `coalesce(ratio, 0)` as the primary fix for missing data in ratio metrics
+- If significance becomes mathematically unstable, say so clearly and label the row
+- Do not include long methodology unless the user asks for it
+
+---
+
+## Implementation Notes for Holistics / AQL
+
+- Use existing dataset metrics whenever possible
+- For filtered metrics that may return `null`, explicitly wrap additive components with `coalesce`
+- Use `safe_divide` for recomputing ratio metrics
+- Build one explore per dimension rather than one giant combination explore
+- If needed, use multiple queries:
+  1. overall period comparison
+  2. one query per dimension
+  3. final appended/ranked result in presentation
+- After each ratio-metric query, verify that nulls only remain on rows explicitly labeled as sparse or unstable
+
+;;
+
+}
