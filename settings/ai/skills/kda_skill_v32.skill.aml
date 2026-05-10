@@ -1,6 +1,6 @@
 Skill key_driver_v32 {
 
-label: 'Key Driver v3'
+label: 'Key Driver v32'
 description: 'Skill to identify which segment across all dimensions contributed most to a metric change between two periods, ranked by ThirdEye significance score. Use this only when user asks "Explain this increase / decrease between ... "'
 allow_switching_invocation: true
 
