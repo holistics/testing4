@@ -18,8 +18,8 @@ This skill must support both:
 
 This skill must produce:
 1. a **full cross-dimension significance table**
-2. **null-safe period comparisons** using `coalesce(..., 0)` on additive components before recomputing ratios
-3. **per-dimension comparison tables** showing the metric in both periods and the **delta between the two periods**
+2. **null-safe period comparisons** using `coalesce(..., 0)` on every filtered additive component before recomputing ratios
+3. **per-dimension comparison tables** showing both periods and the delta
 4. explicit **sparse-data / unstable-significance labeling**
 5. explicit **period-label consistency validation** for every period-specific field
 
@@ -56,60 +56,78 @@ Instead:
 - then append them into one **cross-dimension significance table**
 
 ### 3. Null-handling is a required invariant
-When comparing period values:
-- if a filtered additive metric has no matching rows, treat it as zero using `coalesce(..., 0)`
-- this rule applies to:
-  - counts
-  - revenue
-  - numerators
-  - denominators
-  - any additive input used in ratio recomputation
-- apply this rule **before** recomputing ratios
-- apply this rule **consistently across every analyzed dimension**
+When comparing period values, every **filtered additive component** must be treated as zero **before** any downstream math.
 
-If null-safe additive handling is not applied consistently, the output is invalid and must be regenerated.
+This rule is mandatory for:
+- counts
+- revenue
+- numerator inputs
+- denominator inputs
+- any additive metric used in ratio recomputation
 
-### 4. Period-label consistency is a required invariant
+Required order:
+1. filter the additive metric to the target period
+2. wrap it with `coalesce(..., 0)`
+3. derive denominator from the null-safe additive components
+4. recompute the ratio using `safe_divide`
+
+This rule applies to:
+- base-period additive components
+- comparison-period additive components
+- additive inputs used in per-dimension comparisons
+- additive inputs used in the overall comparison
+
+If any additive input remains null without explicit sparse-data labeling, the result is invalid and must be regenerated.
+
+### 4. Coalesce filtered additive metrics, not only raw fields
+The required null-safe unit is the **filtered additive metric expression**, not only the unfiltered metric definition.
+
+Correct:
+- `coalesce(count_of_won | where(period = base_period_literal), 0)`
+- `coalesce(count_of_lost | where(period = comparison_period_literal), 0)`
+- `coalesce(revenue | where(period = base_period_literal), 0)`
+
+Incorrect:
+- `coalesce(close_percent_base, 0)`
+- `coalesce(base_value, 0)` as the primary missing-data fix
+- leaving `base_won`, `base_lost`, `current_won`, or `current_lost` nullable
+
+### 5. Period-label consistency is a required invariant
 For every period-specific field:
 - the **field name**
 - the **field label**
 - the **time filter**
-- and the **intended business meaning**
+- the **intended business meaning**
 
 must all refer to the **same period**.
 
 Examples:
 - `won_feb` must use the **base period** if base period is Feb
-- `lost_feb` must use the **base period** if base period is Feb
+- `lost_feb` must use the **base period**
 - `won_mar` must use the **comparison period** if comparison period is Mar
-- `lost_mar` must use the **comparison period** if comparison period is Mar
+- `lost_mar` must use the **comparison period**
 
 If any field name or label refers to one period but its filter refers to another period, the query is invalid and must be regenerated.
 
-### 5. Canonical period aliasing is mandatory
+### 6. Canonical period aliasing is mandatory
 Before generating any query, define canonical period aliases:
 
+- `base_period_name`
+- `comparison_period_name`
 - `base_period_literal`
 - `comparison_period_literal`
 
-Then reuse these aliases consistently across all period-specific fields.
+Example:
+- `base_period_name = Feb 2021`
+- `comparison_period_name = Mar 2021`
+- `base_period_literal = @(2021-02)`
+- `comparison_period_literal = @(2021-03)`
+
+All period-specific fields must reuse these exact aliases consistently.
 
 Do **not** mix multiple literal styles for the same period unless absolutely required.
 
-Preferred pattern:
-- use one canonical literal style for both periods
-- example:
-  - `base_period_literal = @(2021-02)`
-  - `comparison_period_literal = @(2021-03)`
-
-Avoid mixing:
-- `@(2021-02)`
-- `@(2021-03)`
-- `@(2021-03-01 - 2021-03-31)`
-
-inside the same comparison unless there is a documented reason.
-
-### 6. Always show both period values and the delta
+### 7. Always show both period values and the delta
 Every per-dimension breakdown must show:
 - base period value
 - comparison period value
@@ -117,11 +135,11 @@ Every per-dimension breakdown must show:
 
 For ratio metrics, also show the underlying additive components where available.
 
-### 7. Be explicit about sparse or unstable data
+### 8. Be explicit about sparse or unstable data
 If a segment has:
 - very low denominator
 - zero denominator
-- missing values in one period
+- missing values in one period before null-safe correction
 - `0/0` ratio after null-safe recomputation
 - mathematically unstable significance inputs
 
@@ -161,7 +179,6 @@ If metric type is unclear:
 ## Step 2 — Declare canonical periods first
 
 Before writing any metric expressions, explicitly define:
-
 - `base_period_name`
 - `comparison_period_name`
 - `base_period_literal`
@@ -173,9 +190,7 @@ Example:
 - `base_period_literal = @(2021-02)`
 - `comparison_period_literal = @(2021-03)`
 
-All period-specific fields must reuse these exact period aliases.
-
-This declaration is mandatory and must be checked again during QA.
+All period-specific fields must reuse these exact aliases.
 
 ---
 
@@ -193,7 +208,7 @@ Then compute:
 
 Where:
 - `r` is the expected change ratio
-- this same `r` is used for all segments across all dimensions
+- this same `r` must be used for all segments across all dimensions
 
 ### If `overall_change = 0`
 State that there is no net change to attribute and stop.
@@ -210,13 +225,11 @@ Do not force the default significance formula. State that the baseline is zero a
 For ratio metrics, do **not** rely only on the already-aggregated ratio.
 
 Instead, compute:
-- `numerator_B` = numerator in base period
-- `numerator_C` = numerator in comparison period
-- `denominator_component_B_*` as needed
-- `denominator_component_C_*` as needed
+- `numerator_B`
+- `numerator_C`
+- denominator components for each period as needed
 
-Apply null handling:
-- every filtered additive component must be wrapped with `coalesce(..., 0)`
+Every filtered additive component must be wrapped in `coalesce(..., 0)`.
 
 Then recompute:
 - `denominator_B` from null-safe additive components
@@ -225,38 +238,39 @@ Then recompute:
 - `vC = safe_divide(numerator_C, denominator_C)`
 
 ### Canonical enforcement rule
-For ratio metrics, this exact order is required:
-
-1. define canonical period aliases  
-2. compute raw additive components using the correct canonical period alias  
-3. wrap every filtered additive component with `coalesce(..., 0)`  
-4. derive denominator from null-safe additive components  
-5. recompute ratio with `safe_divide`  
-6. compute deltas from recomputed ratio  
+For ratio metrics, this order is required:
+1. define canonical period aliases
+2. compute raw additive components using the correct canonical period alias
+3. wrap every filtered additive component with `coalesce(..., 0)`
+4. derive denominator from null-safe additive components
+5. recompute ratio with `safe_divide`
+6. compute deltas from the recomputed ratio
 7. validate field-name-to-period consistency
 
 ### Example: Close %
 If:
 - `Close % = Won / (Won + Lost)`
 
-Then for each segment:
-- `won_B = coalesce(count_of_won in base_period_literal, 0)`
-- `lost_B = coalesce(count_of_lost in base_period_literal, 0)`
-- `won_C = coalesce(count_of_won in comparison_period_literal, 0)`
-- `lost_C = coalesce(count_of_lost in comparison_period_literal, 0)`
+Then the required implementation is:
+- `won_B = coalesce(count_of_won | where(base_period_literal), 0)`
+- `lost_B = coalesce(count_of_lost | where(base_period_literal), 0)`
+- `won_C = coalesce(count_of_won | where(comparison_period_literal), 0)`
+- `lost_C = coalesce(count_of_lost | where(comparison_period_literal), 0)`
 - `denominator_B = won_B + lost_B`
 - `denominator_C = won_C + lost_C`
 - `vB = safe_divide(won_B, denominator_B)`
 - `vC = safe_divide(won_C, denominator_C)`
 
 ### Explicit anti-patterns
-Do **not** do any of the following:
-- `close_percent_B = coalesce(close_percent_B, 0)` as the primary fix
-- define `lost_feb` using the comparison-period literal
-- define `won_mar` using the base-period literal
-- mix handwritten date literals across fields when canonical aliases are available
-
-If any of these patterns appear, the query is invalid.
+The query is invalid if it does any of the following:
+- leaves filtered additive inputs nullable when they can be zero-filled safely
+- computes `base_won`, `base_lost`, `current_won`, or `current_lost` without `coalesce(..., 0)`
+- uses `coalesce(ratio, 0)` instead of fixing additive inputs
+- recomputes denominator from nullable additive fields
+- defines `lost_feb` using the comparison-period literal
+- defines `won_mar` using the base-period literal
+- mixes period labels and filter periods inconsistently
+- allows non-sparse rows to retain null additive inputs
 
 ---
 
@@ -265,7 +279,6 @@ If any of these patterns appear, the query is invalid.
 For each analyzed dimension, create a **segment comparison table**.
 
 Each table must contain one row per segment with this normalized schema:
-
 - `dimension`
 - `segment`
 - `base_value`
@@ -297,24 +310,30 @@ Include segments that appear in:
 - comparison period only
 - both periods
 
-Missing segment-period values must be null-proofed via additive components before computing the metric.
+Missing segment-period values must be handled through null-safe additive components first.
 
 ---
 
 ## Step 6 — Enforced output validity rules for ratio metrics
 
-A per-dimension ratio-metric table is valid only if all of the following are true:
+A per-dimension ratio comparison table is valid only if all of the following are true:
+- every filtered additive component is wrapped in `coalesce(..., 0)`
+- every additive base/current field is non-null unless the row is explicitly marked sparse or unstable
+- denominator is derived from null-safe additive components
+- ratio is recomputed from null-safe additive components using `safe_divide`
+- any zero-denominator row is explicitly labeled:
+  - `segment_note = sparse data`
+  - or `segment_note = unstable significance`
 
-- every row has non-null additive components unless explicitly zero-filled via `coalesce`
-- any row with zero denominator in either period must have:
-  - `segment_note = sparse data` or `segment_note = unstable significance`
-- ratio fields may only be null when:
-  - denominator is zero
-  - and the row is explicitly labeled in `segment_note`
+If any non-sparse row still contains:
+- `base_won = null`
+- `base_lost = null`
+- `current_won = null`
+- `current_lost = null`
+- `base_denominator = null`
+- `current_denominator = null`
 
-If any non-sparse row still contains unexpected null additive components or unexplained null ratios:
-- the table is invalid
-- regenerate the query before answering
+then the result is invalid and must be regenerated.
 
 ---
 
@@ -363,73 +382,86 @@ significance(n) = (current_value - r * base_value)
                 × log(current_value / (r * base_value) - 1)
                 × (contribution_weight + 1)
 
-
 Edge cases
 If any of the below makes the formula unstable:
 
-- base_value = 0
-- expected_current_value = 0
-- current_value / expected_current_value - 1 <= 0
-- denominator is zero in either period
-- denominator is too small to support a reliable ratio
-
+base_value = 0
+expected_current_value = 0
+current_value / expected_current_value - 1 <= 0
+denominator is zero in either period
+denominator is too small to support a reliable ratio
 Then:
-- do not force the formula
-- set significance_score = 0
-- If a segment changed exactly as expected: set significance = 0
 
+do not force the formula
+set significance_score = 0
+set segment_note = unstable significance unless a better sparse-data label applies
+If a segment changed exactly as expected:
+
+set significance_score = 0
 Step 10 — Build the full cross-dimension significance table
 After computing all dimension-level comparison tables:
 
-- normalize all tables to the same schema
-- append them into one full table
-- sort by significance_score desc
-- This cross-dimension table is the main analytical output.
+normalize all tables to the same schema
+append them into one full table
+sort by significance_score desc
+This cross-dimension table is the main analytical output.
 
 Step 11 — Per-dimension comparison tables
-For each analyzed dimension, return a comparison table that is easy to read by business users.
+For each analyzed dimension, return a comparison table that is easy to read.
 
-Required columns for ratio metrics
+Required columns for ratio metrics:
+
 segment
 base_value
 current_value
 delta_value
+base_numerator
+current_numerator
+base_denominator
+current_denominator
 significance_score
 contributor_type
+segment_note
 Ratio-metric output contract
-
 For ratio metrics:
-- additive columns must never be left as raw null from missing filtered rows
-- all missing filtered additive components must be converted with coalesce(..., 0)
 
+additive columns must never be left as raw null from missing filtered rows
+all missing filtered additive components must be converted with coalesce(..., 0)
+any remaining null ratio must be explicitly explained by zero denominator and labeled in segment_note
 Step 12 — Mandatory QA validation before answering
-
 Before answering, inspect every per-dimension result.
 
 QA checklist
 Were canonical period aliases declared first?
-Does every _base / _comparison / _feb / _mar field use the correct period alias?
+Does every period-specific field use the correct period alias?
 Does every field label match its actual filter period?
-Were filtered additive components null-proofed with coalesce(..., 0) first?
-Were ratio metrics recomputed from null-safe additive components?
+Was every filtered additive component wrapped with coalesce(..., 0)?
+Were ratios recomputed from null-safe additive components?
 Do any non-sparse rows still contain null additive fields?
 Do any ratio fields contain null without segment_note?
 Is the same overall ratio r used across all dimensions?
 Is one consistent time literal style used throughout the comparison?
-
 If any answer is “no”:
-- regenerate or fix the query before presenting results
-- Mandatory period consistency audit
 
+regenerate or fix the query before presenting results
+Mandatory period consistency audit
 Before presenting the answer, explicitly verify a mapping like:
-- field_name -> intended_period -> actual_filter_period
-Examples:
+
 won_feb -> Feb 2021 -> @(2021-02)
 lost_feb -> Feb 2021 -> @(2021-02)
 won_mar -> Mar 2021 -> @(2021-03)
 lost_mar -> Mar 2021 -> @(2021-03)
-
 If any row in this audit does not match, the query is invalid.
+
+Mandatory null-safety QA
+Before answering, explicitly verify:
+
+Was every filtered additive component wrapped with coalesce(..., 0)?
+Do base_won, base_lost, current_won, current_lost contain any unexpected nulls?
+Do base_denominator and current_denominator contain any unexpected nulls?
+Were ratios recomputed from null-safe additive components rather than from pre-aggregated ratio fields?
+Are any remaining nulls only present on explicitly labeled sparse / unstable rows?
+If any answer is “no”, the query is invalid and must be regenerated.
 
 Output
 1. Executive Summary
@@ -451,7 +483,7 @@ both periods
 delta columns
 significance score
 contributor type
-
+segment note
 4. Per-Dimension Significance Charts
 One chart per analyzed dimension.
 
@@ -465,7 +497,7 @@ If significance becomes mathematically unstable, say so clearly and label the ro
 If period label and filter period disagree anywhere, the result is invalid
 Implementation Notes for Holistics / AQL
 Use existing dataset metrics whenever possible
-For filtered metrics that may return null, explicitly wrap additive components with coalesce
+For filtered metrics that may return null, explicitly wrap the filtered additive expression with coalesce(..., 0)
 Use safe_divide for recomputing ratio metrics
 Build one explore per dimension rather than one giant combination explore
 Reuse canonical period aliases consistently across all fields
@@ -473,6 +505,12 @@ Prefer one time literal style per comparison
 After each ratio-metric query, verify:
 nulls only remain on explicitly sparse / unstable rows
 field names and labels match the actual period filters
+additive period-specific components are all zero-filled when missing
+
+Patch Note
+Patch: Null-safe ratio decomposition
+
+For ratio metrics, every filtered additive component must be wrapped with coalesce(..., 0) before denominator and ratio recomputation. This includes all period-filtered numerator and denominator inputs such as base_won, base_lost, current_won, and current_lost. Results are invalid if non-sparse rows still contain null additive fields, or if null handling is applied only at the final ratio level.
 
 ;;
 }
