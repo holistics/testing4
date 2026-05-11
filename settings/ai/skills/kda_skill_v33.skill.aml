@@ -280,7 +280,6 @@ The query is invalid if it does any of the following:
 For each analyzed dimension, create a **segment comparison table**.
 
 Each table must contain one row per segment with this normalized schema:
-- `dimension`
 - `segment`
 - `base_value`
 - `current_value`
@@ -409,6 +408,8 @@ This cross-dimension table is the main analytical output.
 Step 11 — Per-dimension comparison tables
 For each analyzed dimension, return a comparison table that is easy to read.
 
+Do not include a `dimension` column in per-dimension comparison tables, because each table already represents a single dimension.
+
 Required columns for ratio metrics:
 
 segment
@@ -479,11 +480,14 @@ One table per analyzed dimension.
 
 Must include:
 
+segment
 both periods
 delta columns
 significance score
 contributor type
 data quality note
+
+Do not include a dimension column in these per-dimension tables.
 4. Per-Dimension Significance Charts
 One chart per analyzed dimension.
 
