@@ -145,7 +145,8 @@ If a segment has:
 
 Then:
 - keep it in the per-dimension comparison table if useful
-- set `segment_note = sparse data` or `segment_note = unstable significance`
+- set `data_quality_note = sparse data`, `data_quality_note = zero denominator`, or `data_quality_note = unstable significance`
+- use `sparse data` for very low volume or missing period coverage, `zero denominator` when the denominator is 0 in either period, and `unstable significance` when the score formula is mathematically unreliable
 - exclude it from ranked significance output if the score would be misleading or undefined
 
 Never leave such rows as unexplained `null` output.
@@ -290,7 +291,7 @@ Each table must contain one row per segment with this normalized schema:
 - `base_denominator` (if ratio metric)
 - `current_denominator` (if ratio metric)
 - `delta_denominator` (if ratio metric)
-- `segment_note`
+- `data_quality_note`
 
 ### For additive metrics
 Use:
@@ -322,8 +323,8 @@ A per-dimension ratio comparison table is valid only if all of the following are
 - denominator is derived from null-safe additive components
 - ratio is recomputed from null-safe additive components using `safe_divide`
 - any zero-denominator row is explicitly labeled:
-  - `segment_note = sparse data`
-  - or `segment_note = unstable significance`
+  - `data_quality_note = zero denominator`
+  - or `data_quality_note = unstable significance`
 
 If any non-sparse row still contains:
 - `base_won = null`
@@ -394,10 +395,9 @@ Then:
 
 do not force the formula
 set significance_score = 0
-set segment_note = unstable significance unless a better sparse-data label applies
-If a segment changed exactly as expected:
+set data_quality_note = unstable significance unless a better sparse-data label applies
+If a segment changed exactly as expected: set significance_score = 0
 
-set significance_score = 0
 Step 10 — Build the full cross-dimension significance table
 After computing all dimension-level comparison tables:
 
@@ -421,13 +421,13 @@ base_denominator
 current_denominator
 significance_score
 contributor_type
-segment_note
+data_quality_note
 Ratio-metric output contract
 For ratio metrics:
 
 additive columns must never be left as raw null from missing filtered rows
 all missing filtered additive components must be converted with coalesce(..., 0)
-any remaining null ratio must be explicitly explained by zero denominator and labeled in segment_note
+any remaining null ratio must be explicitly explained by zero denominator and labeled in data_quality_note
 Step 12 — Mandatory QA validation before answering
 Before answering, inspect every per-dimension result.
 
@@ -438,7 +438,7 @@ Does every field label match its actual filter period?
 Was every filtered additive component wrapped with coalesce(..., 0)?
 Were ratios recomputed from null-safe additive components?
 Do any non-sparse rows still contain null additive fields?
-Do any ratio fields contain null without segment_note?
+Do any ratio fields contain null without data_quality_note?
 Is the same overall ratio r used across all dimensions?
 Is one consistent time literal style used throughout the comparison?
 If any answer is “no”:
@@ -483,7 +483,7 @@ both periods
 delta columns
 significance score
 contributor type
-segment note
+data quality note
 4. Per-Dimension Significance Charts
 One chart per analyzed dimension.
 
