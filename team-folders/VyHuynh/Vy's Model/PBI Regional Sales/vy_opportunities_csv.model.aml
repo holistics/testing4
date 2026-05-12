@@ -120,7 +120,7 @@ Model vy_opportunities_csv {
     description: ''
     type: 'number'
     hidden: false
-    definition: @sql {{ #SOURCE.campaign_seq }};;
+    definition: @sql CAST({{ #SOURCE.campaign_seq }} AS numeric);;
   }
   dimension blank {
     label: 'Blank'
