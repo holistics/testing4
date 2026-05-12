@@ -430,18 +430,19 @@ Do not force the default significance formula. State that the baseline is zero a
 
 For ratio metrics, do **not** rely only on the already-aggregated ratio.
 
-Instead, compute:
-- `base_numerator`
-- `current_numerator`
-- denominator components for each period as needed
+Instead, compute the necessary additive components internally.
+These internal additive components may include numerator and denominator inputs as needed for null-safe recomputation, but they are **calculation-only fields** and must **not** be shown in user-facing metric comparison outputs.
 
 Every filtered additive component must be wrapped in `coalesce(..., 0)`.
 
 Then recompute:
-- `base_denominator`
-- `current_denominator`
-- `base_value = safe_divide(base_numerator, base_denominator)`
-- `current_value = safe_divide(current_numerator, current_denominator)`
+- `base_value`
+- `current_value`
+
+### User-facing display rule
+For the metric comparison between **base period** and **current period**, show only the final metric values needed by users.
+Do **not** show numerator-related or denominator-related columns in user-facing comparison tables or summaries.
+Keep numerator / denominator logic only as internal calculation context when required for ratio metrics.
 
 ### Canonical enforcement rule
 For ratio metrics, this order is required:
@@ -467,6 +468,9 @@ For each analyzed dimension, create:
 - `current_value`
 - `delta_value`
 - `abs_delta_value`
+
+Do **not** show any numerator-related or denominator-related columns in this user-facing comparison table.
+Do **not** include `dimension_name` in this table.
 
 ### Normalized scored table must include:
 - all fields from the exact normalized intermediate schema
@@ -568,17 +572,13 @@ After computing all dimension-level normalized scored tables:
 This appended table is the **primary analytical output**.
 
 ### Required columns
-The appended table must contain:
+The appended table must contain only user-facing and scoring-relevant columns:
 - `dimension_name`
 - `segment`
 - `base_value`
 - `current_value`
 - `delta_value`
 - `abs_delta_value`
-- `base_numerator`
-- `base_denominator`
-- `current_numerator`
-- `current_denominator`
 - `expected_current_value`
 - `change_difference`
 - `contribution_segment`
@@ -586,6 +586,9 @@ The appended table must contain:
 - `contribution_weight`
 - `significance_score`
 - `data_quality_note`
+
+Do **not** include `base_numerator`, `base_denominator`, `current_numerator`, or `current_denominator` in the displayed appended output.
+Those fields may still be computed internally when needed for ratio-metric validity and weighting.
 
 If this appended table is missing, return `INCOMPLETE`.
 
@@ -708,6 +711,8 @@ Include:
 - `overall_change`
 - `r`
 
+Do **not** include numerator-related or denominator-related columns in this displayed comparison output.
+
 ## 6. Executive Summary
 Only if `Completion Status: COMPLETE`
 
@@ -722,6 +727,9 @@ This is the **primary output**.
 
 ## 8. Per-Dimension Comparison Tables
 One table per analyzed dimension.
+These displayed comparison tables must keep only user-facing value columns such as base value, current value, and change columns.
+Do **not** include numerator-related or denominator-related columns.
+Do **not** include the dimension name column in each per-dimension comparison table, since each table already represents one dimension.
 
 ## 9. Non-selected Eligible Dimensions: Why Less Useful
 For every eligible dimension not selected into the top 10, include:
@@ -740,6 +748,8 @@ Only after the full cross-dimension significance table is complete.
 - Use existing dataset metrics whenever possible
 - For filtered metrics that may return null, explicitly wrap the filtered additive expression with `coalesce(..., 0)`
 - Use `safe_divide` for recomputing ratio metrics
+- Keep numerator and denominator components as internal-only calculation fields when needed for ratio metrics
+- Hide numerator and denominator fields from all user-facing metric comparison outputs
 - Build one explore per analyzed dimension rather than one giant combination explore
 - Reuse canonical period aliases consistently across all fields
 - Prefer one time literal style per comparison
