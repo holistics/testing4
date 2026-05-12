@@ -1,0 +1,617 @@
+Skill key_driver_v34 {
+
+label: 'Key Driver v34'
+description: 'Skill to identify which segment across all dimensions contributed most to a metric change between two periods, ranked by ThirdEye significance score. Use this only when user asks "Explain this increase / decrease between ... "'
+allow_switching_invocation: true
+
+content: @md
+
+## Goal
+
+Identify which segment across all candidate dimensions contributed most to a metric change between two periods.
+
+For each segment, compute a **significance score** that measures how much the segment’s change deviates from the overall trend, weighted by the segment’s size. Rank all segments across all analyzed dimensions by this significance score. The highest positive score is the top contributing driver. The most negative scores are offsetting drivers.
+
+This skill must support both:
+- **additive metrics** such as revenue, orders, sessions
+- **ratio metrics** such as conversion rate, close rate, average order value
+
+This skill must produce:
+1. a **dimension inventory**
+2. a **full cross-dimension significance table**
+3. **null-safe period comparisons** using `coalesce(..., 0)` on every filtered additive component before recomputing ratios
+4. **per-dimension comparison tables** showing both periods and the delta
+5. explicit **sparse-data / unstable-significance labeling**
+6. explicit **period-label consistency validation** for every period-specific field
+
+---
+
+## Inputs
+
+- **Dataset**: current dataset in context
+- **Target metric**: provided by user
+- **Base period**: provided by user
+- **Comparison period**: provided by user
+- **Candidate dimensions**:
+  - If the user names dimensions, use those
+  - Otherwise enumerate all **eligible low-to-medium-cardinality business dimensions** from the dataset
+- **Current viz / referenced viz blocks**:
+  - Reuse existing metric definitions whenever possible
+  - If the metric comes from an existing viz block, preserve that metric logic
+
+---
+
+## Hard Completion Contract
+
+This task is considered **COMPLETE** only if the final answer contains all of the following:
+1. **Completion Status: COMPLETE**
+2. **Dimension inventory**
+3. **Overall comparison row**
+4. **One normalized scored table per analyzed dimension**
+5. **One appended full cross-dimension significance table**
+6. **Top ranked drivers** derived from the appended table
+
+If any of the above is missing, the task is **INCOMPLETE**.
+
+### Mandatory failure rule
+- If the appended cross-dimension significance table is not produced, return:
+  - `Completion Status: INCOMPLETE`
+  - a short explanation of which step failed
+  - the missing artifact list
+- Do **not** present a final executive summary as if the analysis were complete
+- Do **not** claim a top driver unless it comes from the appended cross-dimension significance table
+
+### Charts dependency rule
+- **Per-dimension significance charts are optional**
+- Charts may only be produced **after**:
+  1. all scored dimension tables are complete
+  2. the appended cross-dimension significance table is complete
+- If there is any tradeoff, **omit charts first**, never the appended significance table
+
+---
+
+## Core Rules
+
+### 1. Never fabricate missing structure
+- Do not assume dimensions, fields, numerator, denominator, or metric internals
+- Inspect the dataset and existing metric definitions first
+- For ratio metrics, identify and use the actual underlying numerator and denominator if available
+
+### 2. Always build per-dimension tables first
+Do **not** try to compute all dimensions in one explore unless the result is intentionally a multi-dimension combination.
+
+Instead:
+- build **one comparison table per dimension**
+- normalize them into the same schema
+- then append them into one **cross-dimension significance table**
+
+### 3. Null-handling is a required invariant
+When comparing period values, every **filtered additive component** must be treated as zero **before** any downstream math.
+
+This rule is mandatory for:
+- counts
+- revenue
+- numerator inputs
+- denominator inputs
+- any additive metric used in ratio recomputation
+
+Required order:
+1. filter the additive metric to the target period
+2. wrap it with `coalesce(..., 0)`
+3. derive denominator from the null-safe additive components
+4. recompute the ratio using `safe_divide`
+
+If any additive input remains null without explicit sparse-data labeling, the result is invalid and must be regenerated.
+
+### 4. Coalesce filtered additive metrics, not only raw fields
+The required null-safe unit is the **filtered additive metric expression**, not only the unfiltered metric definition.
+
+Correct:
+- `coalesce(count_of_won | where(period = base_period_literal), 0)`
+- `coalesce(count_of_lost | where(period = comparison_period_literal), 0)`
+- `coalesce(revenue | where(period = base_period_literal), 0)`
+
+Incorrect:
+- `coalesce(close_percent_base, 0)`
+- `coalesce(base_value, 0)` as the primary missing-data fix
+- leaving `base_won`, `base_lost`, `current_won`, or `current_lost` nullable
+
+### 5. Period-label consistency is a required invariant
+For every period-specific field:
+- the **field name**
+- the **field label**
+- the **time filter**
+- the **intended business meaning**
+
+must all refer to the **same period**.
+
+If any field name or label refers to one period but its filter refers to another period, the query is invalid and must be regenerated.
+
+### 6. Canonical period aliasing is mandatory
+Before generating any query, define canonical period aliases:
+
+- `base_period_name`
+- `comparison_period_name`
+- `base_period_literal`
+- `comparison_period_literal`
+
+Example:
+- `base_period_name = Feb 2021`
+- `comparison_period_name = Mar 2021`
+- `base_period_literal = @(2021-02)`
+- `comparison_period_literal = @(2021-03)`
+
+All period-specific fields must reuse these exact aliases consistently.
+
+### 7. Always show both period values and the delta
+Every per-dimension breakdown must show:
+- base period value
+- comparison period value
+- delta = comparison - base
+
+For ratio metrics, also show the underlying additive components where available.
+
+### 8. Be explicit about sparse or unstable data
+If a segment has:
+- very low denominator
+- zero denominator
+- missing values in one period before null-safe correction
+- `0/0` ratio after null-safe recomputation
+- mathematically unstable significance inputs
+
+Then:
+- keep it in the per-dimension comparison table if useful
+- set `data_quality_note = sparse data`, `zero denominator`, or `unstable significance`
+- exclude it from ranked significance output if the score would be misleading or undefined
+
+Never leave such rows as unexplained `null` output.
+
+---
+
+## Dimension Inventory
+
+Before any scoring work, enumerate dimensions into this required inventory.
+
+### Eligible dimensions
+If user did not explicitly name dimensions, enumerate all **eligible low-to-medium-cardinality business dimensions** and classify each into exactly one of:
+- `analyzed`
+- `excluded`
+
+### Typical exclusion reasons
+- `high_cardinality`
+- `time_dimension`
+- `primary_key`
+- `duplicate_business_meaning`
+- `unsupported_relationship_path`
+- `unsupported_metric_logic`
+- `other`
+
+### Required dimension inventory output
+Return this inventory before scoring:
+- `analyzed_dimensions`
+- `excluded_dimensions`
+- `exclusion_reason`
+
+Example:
+- `owner -> analyzed`
+- `sales_stage -> analyzed`
+- `product_category -> analyzed`
+- `account_name -> excluded: high_cardinality`
+- `close_date -> excluded: time_dimension`
+
+### Coverage rule
+The skill is incomplete unless **every candidate dimension** is accounted for in the inventory as either:
+- analyzed, or
+- excluded with reason
+
+---
+
+## Exact Normalized Intermediate Schema
+
+Every analyzed dimension must produce a **normalized scored table** using this exact schema:
+
+- `dimension_name`
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `abs_delta_value`
+- `base_numerator`
+- `base_denominator`
+- `current_numerator`
+- `current_denominator`
+- `expected_current_value`
+- `change_difference`
+- `contribution_segment`
+- `contribution_all`
+- `contribution_weight`
+- `significance_score`
+- `data_quality_note`
+
+### Notes
+- For additive metrics:
+  - `base_numerator` and `current_numerator` may equal `base_value` and `current_value`
+  - denominator fields may be reused as the same additive volume if needed for schema consistency
+- For ratio metrics:
+  - `base_numerator` and `current_numerator` must be the recomputed additive numerators
+  - `base_denominator` and `current_denominator` must be derived from null-safe additive components
+- `data_quality_note` must never be blank for excluded-from-ranking unstable rows
+
+This schema is mandatory for:
+1. all analyzed dimensions
+2. all appended rows in the full cross-dimension significance table
+
+---
+
+## Step 1 — Determine metric type
+
+Classify the target metric into one of these types:
+
+### A. Additive metric
+Examples:
+- revenue
+- orders
+- sessions
+- won count
+
+### B. Ratio metric
+Examples:
+- conversion rate
+- close %
+- average order value
+- churn rate
+
+If metric type is unclear:
+- inspect the metric definition
+- if still unclear, state the uncertainty and proceed cautiously
+
+---
+
+## Step 2 — Declare canonical periods first
+
+Before writing any metric expressions, explicitly define:
+- `base_period_name`
+- `comparison_period_name`
+- `base_period_literal`
+- `comparison_period_literal`
+
+All period-specific fields must reuse these exact aliases.
+
+---
+
+## Step 3 — Build dimension inventory first
+
+Before generating any per-dimension comparison query:
+1. enumerate candidate dimensions
+2. classify each as `analyzed` or `excluded`
+3. record exclusion reasons
+4. confirm coverage is complete
+
+If coverage is incomplete, return `INCOMPLETE`.
+
+---
+
+## Step 4 — Compute overall period comparison
+
+Calculate the target metric in:
+- **base period**
+- **comparison period**
+
+Then compute:
+- `overall_baseline`
+- `overall_current`
+- `overall_change`
+- `r = overall_current / overall_baseline`
+
+Where:
+- `r` is the expected change ratio
+- this same `r` must be reused for all segments across all dimensions
+
+### If `overall_change = 0`
+State that there is no net change to attribute and stop.
+
+### If `overall_baseline = 0`
+Do not force the default significance formula. State that the baseline is zero and either:
+- use a fallback comparison method, or
+- return `INCOMPLETE` with explanation that attribution is unstable without a meaningful baseline
+
+---
+
+## Step 5 — For ratio metrics, compute additive components first
+
+For ratio metrics, do **not** rely only on the already-aggregated ratio.
+
+Instead, compute:
+- `base_numerator`
+- `current_numerator`
+- denominator components for each period as needed
+
+Every filtered additive component must be wrapped in `coalesce(..., 0)`.
+
+Then recompute:
+- `base_denominator`
+- `current_denominator`
+- `base_value = safe_divide(base_numerator, base_denominator)`
+- `current_value = safe_divide(current_numerator, current_denominator)`
+
+### Canonical enforcement rule
+For ratio metrics, this order is required:
+1. define canonical period aliases
+2. compute raw additive components using the correct period alias
+3. wrap every filtered additive component with `coalesce(..., 0)`
+4. derive denominator from null-safe additive components
+5. recompute ratio with `safe_divide`
+6. compute deltas from the recomputed ratio
+7. validate field-name-to-period consistency
+
+---
+
+## Step 6 — Build one normalized scored table per dimension
+
+For each analyzed dimension, create:
+1. a **comparison table**
+2. a **normalized scored table** using the exact schema above
+
+### Comparison table must show:
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `abs_delta_value`
+
+### Normalized scored table must include:
+- all fields from the exact normalized intermediate schema
+
+### Segment coverage rule
+Include segments that appear in:
+- base period only
+- comparison period only
+- both periods
+
+Missing segment-period values must be handled through null-safe additive components first.
+
+---
+
+## Step 7 — Enforced output validity rules for ratio metrics
+
+A ratio-metric dimension table is valid only if all of the following are true:
+- every filtered additive component is wrapped in `coalesce(..., 0)`
+- every additive base/current field is non-null unless explicitly marked sparse or unstable
+- denominator is derived from null-safe additive components
+- ratio is recomputed from null-safe additive components using `safe_divide`
+- any zero-denominator row is explicitly labeled
+
+If any non-sparse row still contains unexpected null additive fields, the result is invalid and must be regenerated.
+
+---
+
+## Step 8 — Compute expected current value
+
+For every segment row:
+- `expected_current_value = r * base_value`
+
+Then compute:
+- `change_difference = current_value - expected_current_value`
+
+Interpretation:
+- positive → segment changed more than expected
+- negative → segment changed less than expected
+
+---
+
+## Step 9 — Compute contribution weight
+
+### For additive metrics
+Use:
+- `contribution_segment = base_value + current_value`
+
+### For ratio metrics
+Prefer denominator-based weighting:
+- `contribution_segment = base_denominator + current_denominator`
+
+Then within each dimension compute:
+- `contribution_all = sum(contribution_segment)` across all segments in that dimension
+- `contribution_weight = contribution_segment / contribution_all`
+
+---
+
+## Step 10 — Compute significance score
+
+For each segment:
+- `expected_current_value = r * base_value`
+- `change_difference = current_value - expected_current_value`
+
+Then compute:
+
+```text
+significance_score =
+  (current_value - r * base_value)
+  × log(current_value / (r * base_value) - 1)
+  × (contribution_weight + 1)
+```
+
+### Edge cases
+If any of the below makes the formula unstable:
+- `base_value = 0`
+- `expected_current_value = 0`
+- `current_value / expected_current_value - 1 <= 0`
+- denominator is zero in either period
+- denominator is too small to support a reliable ratio
+
+Then:
+- do not force the formula
+- set `significance_score = 0`
+- set `data_quality_note = unstable significance` unless a better sparse-data label applies
+
+If a segment changed exactly as expected:
+- set `significance_score = 0`
+
+---
+
+## Step 11 — Build the full cross-dimension significance table
+
+After computing all dimension-level normalized scored tables:
+1. verify that every analyzed dimension has produced one normalized scored table
+2. verify all scored tables use the exact normalized schema
+3. append them into one full table
+4. sort by `significance_score desc`
+
+This appended table is the **primary analytical output**.
+
+### Required columns
+The appended table must contain:
+- `dimension_name`
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `abs_delta_value`
+- `base_numerator`
+- `base_denominator`
+- `current_numerator`
+- `current_denominator`
+- `expected_current_value`
+- `change_difference`
+- `contribution_segment`
+- `contribution_all`
+- `contribution_weight`
+- `significance_score`
+- `data_quality_note`
+
+If this appended table is missing, return `INCOMPLETE`.
+
+---
+
+## Step 12 — Per-dimension comparison tables
+
+For each analyzed dimension, return a readable comparison table.
+
+Required columns:
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `abs_delta_value`
+
+Default sort order:
+- `delta_value desc`
+- no secondary sort
+
+Do **not** include `dimension_name` in per-dimension comparison tables.
+
+---
+
+## Step 13 — Optional per-dimension significance charts
+
+Only after Step 11 is complete:
+- one chart per analyzed dimension may be returned
+
+If scoring is incomplete:
+- do not generate charts
+
+---
+
+## Step 14 — Mandatory QA validation before answering
+
+Before answering, inspect every result.
+
+### QA checklist
+- Were canonical period aliases declared first?
+- Does every period-specific field use the correct period alias?
+- Does every field label match its actual filter period?
+- Was every filtered additive component wrapped with `coalesce(..., 0)`?
+- Were ratios recomputed from null-safe additive components?
+- Do any non-sparse rows still contain null additive fields?
+- Is the same overall ratio `r` used across all dimensions?
+- Is one consistent time literal style used throughout the comparison?
+- Does every candidate dimension appear in the inventory?
+- Does every analyzed dimension have one normalized scored table?
+- Do all scored tables share the exact normalized schema?
+- Was the appended cross-dimension significance table produced?
+
+If any answer is “no”:
+- regenerate or fix before presenting results
+- if not recoverable, return `INCOMPLETE`
+
+### Mandatory period consistency audit
+Verify mappings like:
+- `won_feb -> Feb 2021 -> @(2021-02)`
+- `lost_feb -> Feb 2021 -> @(2021-02)`
+- `won_mar -> Mar 2021 -> @(2021-03)`
+- `lost_mar -> Mar 2021 -> @(2021-03)`
+
+If any mapping does not match, the query is invalid.
+
+### Mandatory null-safety QA
+Verify:
+- every filtered additive component uses `coalesce(..., 0)`
+- no unexpected null additive values remain outside explicitly labeled sparse/unstable rows
+- ratios are recomputed from additive components, not patched at final ratio level
+
+If any answer is “no”, the query is invalid.
+
+---
+
+## Output
+
+## 1. Completion Status
+Must be one of:
+- `Completion Status: COMPLETE`
+- `Completion Status: INCOMPLETE`
+
+If `INCOMPLETE`, include:
+- missing artifacts
+- blocking issue
+- partial artifacts completed
+
+## 2. Dimension Inventory
+Include:
+- analyzed dimensions
+- excluded dimensions
+- exclusion reasons
+
+## 3. Executive Summary
+Only if `Completion Status: COMPLETE`
+
+Maximum 3 bullets:
+- lead with the top contributing segment and dimension
+- quantify the overall metric change
+- mention major offsetting segments
+- mention sparse-data limitations if they materially affect confidence
+
+## 4. Full Cross-Dimension Significance Table
+This is the **primary output**.
+
+## 5. Per-Dimension Comparison Tables
+One table per analyzed dimension.
+
+## 6. Optional Per-Dimension Significance Charts
+Only after the full cross-dimension significance table is complete.
+
+---
+
+## Implementation Notes for Holistics / AQL
+
+- Use existing dataset metrics whenever possible
+- For filtered metrics that may return null, explicitly wrap the filtered additive expression with `coalesce(..., 0)`
+- Use `safe_divide` for recomputing ratio metrics
+- Build one explore per dimension rather than one giant combination explore
+- Reuse canonical period aliases consistently across all fields
+- Prefer one time literal style per comparison
+- Normalize every analyzed dimension to the exact intermediate schema before appending
+- Do not skip the append step
+- If append step fails, return `INCOMPLETE`
+
+---
+
+## Patch Summary vs `key_driver_v33`
+
+This version adds:
+- **explicit dimension inventory**
+- **exact normalized intermediate schema**
+- **hard completion contract**
+- explicit **`INCOMPLETE` if no appended table**
+- **charts only after scoring is done**
+
+;;
+}
