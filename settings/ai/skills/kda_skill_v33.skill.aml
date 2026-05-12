@@ -20,8 +20,8 @@ This skill must produce:
 1. a **full cross-dimension significance table**
 2. **null-safe period comparisons** using `coalesce(..., 0)` on every filtered additive component before recomputing ratios
 3. **per-dimension comparison tables** showing both periods and the delta
-4. explicit **sparse-data / unstable-significance labeling**
-5. explicit **period-label consistency validation** for every period-specific field
+4. explicit **period-label consistency validation** for every period-specific field
+5. internal **sparse-data / unstable-significance handling** for validation and row exclusion
 
 ---
 
@@ -135,7 +135,7 @@ Every per-dimension breakdown must show:
 
 For ratio metrics, also show the underlying additive components where available.
 
-### 8. Be explicit about sparse or unstable data
+### 8. Handle sparse or unstable data internally
 If a segment has:
 - very low denominator
 - zero denominator
@@ -144,10 +144,9 @@ If a segment has:
 - mathematically unstable significance inputs
 
 Then:
-- keep it in the per-dimension comparison table if useful
-- set `data_quality_note = sparse data`, `data_quality_note = zero denominator`, or `data_quality_note = unstable significance`
-- use `sparse data` for very low volume or missing period coverage, `zero denominator` when the denominator is 0 in either period, and `unstable significance` when the score formula is mathematically unreliable
+- handle it internally for validation
 - exclude it from ranked significance output if the score would be misleading or undefined
+- exclude it from displayed comparison tables when it would confuse users
 
 Never leave such rows as unexplained `null` output.
 
@@ -315,14 +314,11 @@ Missing segment-period values must be handled through null-safe additive compone
 
 A per-dimension ratio comparison table is valid only if all of the following are true:
 - every filtered additive component is wrapped in `coalesce(..., 0)`
-- every additive base/current field is non-null unless the row is explicitly marked sparse or unstable
 - denominator is derived from null-safe additive components
 - ratio is recomputed from null-safe additive components using `safe_divide`
-- any zero-denominator row is explicitly labeled:
-  - `data_quality_note = zero denominator`
-  - or `data_quality_note = unstable significance`
+- zero-denominator or mathematically unstable rows are handled internally and excluded from displayed output when needed
 
-If any non-sparse row still contains:
+If any displayed non-sparse row still contains:
 - `base_won = null`
 - `base_lost = null`
 - `current_won = null`
@@ -390,8 +386,7 @@ denominator is too small to support a reliable ratio
 Then:
 
 do not force the formula
-set significance_score = 0
-set data_quality_note = unstable significance unless a better sparse-data label applies
+exclude the row from displayed ranked significance output when needed
 If a segment changed exactly as expected: set significance_score = 0
 
 Step 10 — Build the full cross-dimension significance table
@@ -422,7 +417,7 @@ Ratio-metric output contract
 For ratio metrics:
 
 additive components must still be handled internally through null-safe recomputation
-any remaining unstable rows must be handled internally and excluded from ranked output when needed
+any remaining unstable or sparse rows must be handled internally and excluded from displayed output when needed
 Step 12 — Mandatory QA validation before answering
 Before answering, inspect every per-dimension result.
 
@@ -465,7 +460,7 @@ Maximum 3 bullets:
 lead with the top contributing segment and dimension
 quantify the overall metric change
 mention major offsetting segments if present
-mention sparse-data limitations if they materially affect confidence
+mention confidence limitations only if they materially affect interpretation
 2. Full Cross-Dimension Significance Table
 This is the primary output.
 
@@ -493,7 +488,7 @@ Do not compute significance independently per dimension using different overall 
 Always preserve the target metric’s business definition from the dataset or referenced viz
 Do not omit missing segment-period rows silently; convert additive pieces with coalesce(..., 0) first
 Do not use coalesce(ratio, 0) as the primary fix for missing data in ratio metrics
-If significance becomes mathematically unstable, say so clearly and label the row
+If significance becomes mathematically unstable, handle it internally and exclude the row from displayed output when needed
 If period label and filter period disagree anywhere, the result is invalid
 Implementation Notes for Holistics / AQL
 Use existing dataset metrics whenever possible
@@ -503,14 +498,14 @@ Build one explore per dimension rather than one giant combination explore
 Reuse canonical period aliases consistently across all fields
 Prefer one time literal style per comparison
 After each ratio-metric query, verify:
-nulls only remain on explicitly sparse / unstable rows
+nulls do not remain on displayed rows
 field names and labels match the actual period filters
 additive period-specific components are all zero-filled when missing
 
 Patch Note
 Patch: Null-safe ratio decomposition
 
-For ratio metrics, every filtered additive component must be wrapped with coalesce(..., 0) before denominator and ratio recomputation. This includes all period-filtered numerator and denominator inputs such as base_won, base_lost, current_won, and current_lost. Results are invalid if non-sparse rows still contain null additive fields, or if null handling is applied only at the final ratio level.
+For ratio metrics, every filtered additive component must be wrapped with coalesce(..., 0) before denominator and ratio recomputation. This includes all period-filtered numerator and denominator inputs such as base_won, base_lost, current_won, and current_lost. Results are invalid if displayed rows still contain null additive fields, or if null handling is applied only at the final ratio level.
 
 ;;
 }
