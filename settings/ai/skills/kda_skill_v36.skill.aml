@@ -12,7 +12,7 @@ Identify which segment across all candidate dimensions contributed most to a met
 This version strengthens execution reliability by requiring:
 - a **confirmed analyzed-dimension set**
 - a **mandatory execution loop** across **all confirmed dimensions**
-- one **normalized scored table artifact per analyzed dimension**
+- one **merged per-dimension table artifact per analyzed dimension**
 - a **full appended cross-dimension significance table**
 - a **completion ledger**
 - a **no-early-summary rule**
@@ -39,14 +39,13 @@ This skill must produce:
 2. a **dimension prioritization table**
 3. explicit **user confirmation** of the analyzed dimension set
 4. an **overall comparison row**
-5. one **comparison table per analyzed dimension**
-6. one **normalized scored table per analyzed dimension**
-7. one **full appended cross-dimension significance table**
-8. a **ranked driver output**
-9. explicit **non-selected eligible dimension explanations**
-10. a **completion ledger**
-11. explicit **QA validation**
-12. strict **COMPLETE / INCOMPLETE** output handling
+5. one **merged per-dimension table per analyzed dimension**
+6. one **full appended cross-dimension significance table**
+7. a **ranked driver output**
+8. explicit **non-selected eligible dimension explanations**
+9. a **completion ledger**
+10. explicit **QA validation**
+11. strict **COMPLETE / INCOMPLETE** output handling
 
 ---
 
@@ -60,13 +59,12 @@ This task is **COMPLETE** only if all of the following exist:
 4. explicit user confirmation after prioritization
 5. frozen `confirmed_analyzed_dimensions`
 6. overall comparison row
-7. one comparison table for **every** confirmed analyzed dimension
-8. one normalized scored table for **every** confirmed analyzed dimension
-9. full appended cross-dimension significance table
-10. significance ranking derived from the appended table
-11. non-selected eligible dimension explanations
-12. completion ledger
-13. QA checklist with all required checks passing
+7. one merged per-dimension table for **every** confirmed analyzed dimension
+8. full appended cross-dimension significance table
+9. significance ranking derived from the appended table
+10. non-selected eligible dimension explanations
+11. completion ledger
+12. QA checklist with all required checks passing
 
 If any item is missing, output:
 - `Completion Status: INCOMPLETE`
@@ -144,11 +142,10 @@ If counts differ:
 ### 4. Mandatory execution loop
 After confirmation, the skill must execute this loop for **every** dimension in `confirmed_analyzed_dimensions`:
 
-1. build per-dimension comparison table
-2. build per-dimension normalized scored table
-3. validate normalized schema completeness
-4. validate null-safety and period consistency
-5. mark dimension status as `done`
+1. build one merged per-dimension table
+2. validate merged schema completeness
+3. validate null-safety and period consistency
+4. mark dimension status as `done`
 
 If any confirmed dimension is not `done`, stop and return `INCOMPLETE`.
 
@@ -174,17 +171,15 @@ must all refer to the same period.
 
 If inconsistent, the result is invalid.
 
-### 7. Comparison tables are not scored tables
-A comparison table alone is insufficient.
+### 7. Merged per-dimension table is the canonical artifact
+The skill must produce one merged per-dimension table for each confirmed analyzed dimension.
 
-The skill must always produce:
-- comparison table
-- normalized scored table
-
-for each confirmed analyzed dimension.
+This merged table must contain both:
+- comparison fields
+- significance-scoring fields
 
 ### 8. Append step is mandatory
-After all normalized scored tables are complete, append them into one full cross-dimension significance table.
+After all merged per-dimension tables are complete, append them directly into one full cross-dimension significance table.
 
 If the append step fails or is skipped:
 - return `INCOMPLETE`
@@ -331,20 +326,16 @@ For each confirmed analyzed dimension, produce a comparison table with:
 - `delta_value`
 - `abs_delta_value`
 
-For ratio metrics, also show where available:
-- `base_numerator`
-- `base_denominator`
-- `current_numerator`
-- `current_denominator`
+For ratio metrics, the comparison table does **not** need to include numerator or denominator fields.
 
 Default sort:
-- `delta_value desc`
+- `delta_value asc`
 
 ---
 
-## Exact Normalized Scored Table Schema
+## Exact Merged Per-Dimension Table Schema
 
-For **every** confirmed analyzed dimension, produce a normalized scored table artifact with this exact schema:
+For **every** confirmed analyzed dimension, produce one merged per-dimension table artifact with this exact schema:
 
 - `dimension_name`
 - `segment`
@@ -352,10 +343,6 @@ For **every** confirmed analyzed dimension, produce a normalized scored table ar
 - `current_value`
 - `delta_value`
 - `abs_delta_value`
-- `base_numerator`
-- `base_denominator`
-- `current_numerator`
-- `current_denominator`
 - `expected_current_value`
 - `change_difference`
 - `contribution_segment`
@@ -365,7 +352,7 @@ For **every** confirmed analyzed dimension, produce a normalized scored table ar
 - `data_quality_note`
 
 ### Required per-dimension artifact name
-- `normalized_scored_<dimension_name>`
+- `merged_scored_<dimension_name>`
 
 If any required field is missing:
 - the table is invalid
@@ -378,16 +365,12 @@ If any required field is missing:
 
 For ratio metrics:
 1. compute null-safe additive components first
-2. derive denominators from those components
+2. derive ratio inputs from those components
 3. recompute ratio using `safe_divide`
 4. compute delta
 5. compute expected value and significance inputs
 
-Required:
-- `base_numerator`
-- `current_numerator`
-- `base_denominator`
-- `current_denominator`
+Do not require numerator or denominator fields in the merged per-dimension output schema.
 
 Never use only the pre-aggregated ratio as the primary basis of scoring.
 
@@ -404,8 +387,8 @@ For additive metrics:
 - `contribution_segment = base_value + current_value`
 
 For ratio metrics:
-- prefer denominator-based weighting:
-- `contribution_segment = base_denominator + current_denominator`
+- use a documented null-safe weighting basis derived from the underlying additive components
+- the chosen weighting basis must be applied consistently within the dimension
 
 Then:
 - `contribution_all = sum(contribution_segment)` within each dimension
@@ -440,15 +423,15 @@ Then:
 
 ## Full Cross-Dimension Significance Table
 
-After all normalized scored tables are valid:
-1. verify one valid normalized scored table exists for each confirmed analyzed dimension
-2. append them into one table
+After all merged per-dimension tables are valid:
+1. verify one valid merged per-dimension table exists for each confirmed analyzed dimension
+2. append them directly into one table
 3. sort by `significance_score desc`
 
 This appended table is the **primary analytical output**.
 
 Required columns:
-- all columns from the exact normalized scored schema
+- all columns from the exact merged per-dimension schema
 
 If this table is missing:
 - return `INCOMPLETE`
@@ -494,8 +477,7 @@ Before final answer, produce a completion ledger containing:
 - `confirmed_dimension_count`
 - `completed_dimension_count`
 - `missing_dimension_list`
-- `comparison_table_status_by_dimension`
-- `normalized_scored_table_status_by_dimension`
+- `merged_table_status_by_dimension`
 - `append_status`
 - `ranking_status`
 - `non_selected_dimension_explanations_status`
