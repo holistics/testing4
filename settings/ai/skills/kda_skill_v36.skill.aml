@@ -1,0 +1,594 @@
+Skill key_driver_v36 {
+
+label: 'Key Driver v36'
+description: 'Skill to identify which segment across all candidate dimensions contributed most to a metric change between two periods, ranked by ThirdEye significance score. Prioritizes and analyzes only the top 10 most relevant eligible dimensions for the selected metric, while explaining why the remaining dimensions are less useful. Use this only when user asks "Explain this increase / decrease between ... "'
+allow_switching_invocation: true
+
+content: @md
+
+## Description
+Identify which segment across all candidate dimensions contributed most to a metric change between two periods.
+
+This version strengthens execution reliability by requiring:
+- a **confirmed analyzed-dimension set**
+- a **mandatory execution loop** across **all confirmed dimensions**
+- one **normalized scored table artifact per analyzed dimension**
+- a **full appended cross-dimension significance table**
+- a **completion ledger**
+- a **no-early-summary rule**
+- strict **INCOMPLETE** handling if any required artifact is missing
+
+Use this only when the user asks to explain an increase / decrease between two periods.
+
+---
+
+## Goal
+
+Identify which segment across all candidate dimensions contributed most to a metric change between two periods.
+
+For each segment, compute a **significance score** that measures how much the segment’s 
+change deviates from the overall trend, weighted by the segment’s size. 
+Rank all analyzed segments across all analyzed dimensions by this significance score.
+
+This skill must support both:
+- **additive metrics** such as revenue, orders, sessions
+- **ratio metrics** such as conversion rate, close rate, average order value
+
+This skill must produce:
+1. a **dimension inventory**
+2. a **dimension prioritization table**
+3. explicit **user confirmation** of the analyzed dimension set
+4. an **overall comparison row**
+5. one **comparison table per analyzed dimension**
+6. one **normalized scored table per analyzed dimension**
+7. one **full appended cross-dimension significance table**
+8. a **ranked driver output**
+9. explicit **non-selected eligible dimension explanations**
+10. a **completion ledger**
+11. explicit **QA validation**
+12. strict **COMPLETE / INCOMPLETE** output handling
+
+---
+
+## Hard Completion Contract
+
+This task is **COMPLETE** only if all of the following exist:
+
+1. `Completion Status: COMPLETE`
+2. dimension inventory
+3. dimension prioritization table
+4. explicit user confirmation after prioritization
+5. frozen `confirmed_analyzed_dimensions`
+6. overall comparison row
+7. one comparison table for **every** confirmed analyzed dimension
+8. one normalized scored table for **every** confirmed analyzed dimension
+9. full appended cross-dimension significance table
+10. significance ranking derived from the appended table
+11. non-selected eligible dimension explanations
+12. completion ledger
+13. QA checklist with all required checks passing
+
+If any item is missing, output:
+- `Completion Status: INCOMPLETE`
+- `blocking_issue`
+- `missing_artifacts`
+- `completed_artifacts`
+
+Do **not** present a final executive summary as if analysis is complete unless all required artifacts exist.
+
+---
+
+## No Early Summary Rule
+
+The skill must **not** present:
+- “top driver”
+- “main cause”
+- executive summary bullets
+- ranked findings
+- causal-sounding conclusions
+
+until the **full appended cross-dimension significance table** has been produced successfully.
+
+Partial comparison tables may be shown as intermediate artifacts, but they must be labeled as incomplete and non-final.
+
+---
+
+## Inputs
+
+- **Dataset**: current dataset in context
+- **Target metric**: provided by user or inherited from referenced viz
+- **Base period**: provided by user
+- **Comparison period**: provided by user
+- **Candidate dimensions**:
+  - if user names dimensions, use those
+  - otherwise enumerate all eligible low-to-medium-cardinality business dimensions
+- **Current viz / referenced viz blocks**:
+  - reuse existing metric definitions whenever possible
+  - if the metric comes from an existing viz block, preserve that metric logic
+
+---
+
+## Core Rules
+
+### 1. Never fabricate structure
+Do not assume:
+- dimensions
+- metric internals
+- numerator / denominator
+- relationship paths
+- cardinality suitability
+
+Inspect the dataset and existing metric definitions first.
+
+### 2. Freeze the analyzed dimension set after confirmation
+After the user confirms the prioritization table, define:
+
+- `confirmed_analyzed_dimensions`
+
+This is the exact dimension set that must be fully completed.
+
+No dimension may be silently dropped afterward.
+
+### 3. Exact confirmed dimension coverage rule
+The final analyzed dimension count must equal the count of `confirmed_analyzed_dimensions`.
+
+Required outputs:
+- `confirmed_dimension_count`
+- `completed_dimension_count`
+- `missing_dimension_list`
+
+If counts differ:
+- return `Completion Status: INCOMPLETE`
+- `blocking_issue: not_all_confirmed_dimensions_completed`
+
+### 4. Mandatory execution loop
+After confirmation, the skill must execute this loop for **every** dimension in `confirmed_analyzed_dimensions`:
+
+1. build per-dimension comparison table
+2. build per-dimension normalized scored table
+3. validate normalized schema completeness
+4. validate null-safety and period consistency
+5. mark dimension status as `done`
+
+If any confirmed dimension is not `done`, stop and return `INCOMPLETE`.
+
+### 5. Null-handling invariant
+For period comparisons, every filtered additive component must be wrapped with `coalesce(..., 0)` **before** any downstream math.
+
+Required order:
+1. filter additive component to period
+2. wrap with `coalesce(..., 0)`
+3. derive denominator from null-safe additive components
+4. recompute ratio using `safe_divide`
+
+Never patch only the final ratio.
+
+### 6. Period-label consistency invariant
+For every period-specific field:
+- field name
+- field label
+- time filter
+- intended business meaning
+
+must all refer to the same period.
+
+If inconsistent, the result is invalid.
+
+### 7. Comparison tables are not scored tables
+A comparison table alone is insufficient.
+
+The skill must always produce:
+- comparison table
+- normalized scored table
+
+for each confirmed analyzed dimension.
+
+### 8. Append step is mandatory
+After all normalized scored tables are complete, append them into one full cross-dimension significance table.
+
+If the append step fails or is skipped:
+- return `INCOMPLETE`
+
+---
+
+## Canonical Period Aliasing
+
+Before generating any query, define:
+
+- `base_period_name`
+- `comparison_period_name`
+- `base_period_literal`
+- `comparison_period_literal`
+
+Example:
+- `base_period_name = Feb 2021`
+- `comparison_period_name = Mar 2021`
+- `base_period_literal = @(2021-02)`
+- `comparison_period_literal = @(2021-03)`
+
+All period-specific fields must reuse these exact aliases.
+
+---
+
+## Dimension Inventory
+
+Before scoring work, enumerate candidate dimensions into:
+
+- `analyzed_dimensions`
+- `not_analyzed_dimensions`
+- `excluded_dimensions`
+
+Each candidate dimension must be classified as exactly one of:
+- `analyzed_top_10`
+- `not_analyzed_lower_priority`
+- `excluded`
+
+Typical exclusion reasons:
+- `high_cardinality`
+- `time_dimension`
+- `primary_key`
+- `duplicate_business_meaning`
+- `unsupported_relationship_path`
+- `unsupported_metric_logic`
+- `other`
+
+Coverage is incomplete unless **every candidate dimension** is classified.
+
+---
+
+## Dimension Prioritization Table
+
+Before scoring:
+1. rank all eligible dimensions
+2. select top 10
+3. classify all other eligible dimensions as `not_analyzed_lower_priority`
+4. explain every non-selected eligible dimension
+5. stop and ask for confirmation
+
+### Required columns
+- `dimension_name`
+- `priority_rank`
+- `priority_status`
+- `prioritization_reason`
+- `evidence`
+
+### Priority status values
+- `analyzed_top_10`
+- `not_analyzed_lower_priority`
+
+---
+
+## Mandatory Confirmation Gate
+
+After showing the prioritization table, stop and ask:
+
+**Do you want me to proceed with significance analysis using these confirmed dimensions?**
+
+Accept only explicit confirmation such as:
+- yes
+- proceed
+- continue
+- analyze these
+
+If not confirmed:
+- do not continue
+- return workflow status: `paused_pending_user_confirmation`
+
+---
+
+## Metric Type Determination
+
+Classify the target metric as:
+
+### A. Additive metric
+Examples:
+- revenue
+- orders
+- sessions
+- won count
+
+### B. Ratio metric
+Examples:
+- close %
+- conversion rate
+- AOV
+- churn rate
+
+If unclear:
+- inspect the metric definition
+- state uncertainty if needed
+- proceed cautiously
+
+---
+
+## Overall Comparison Row
+
+After confirmation, compute:
+- `overall_baseline`
+- `overall_current`
+- `overall_change`
+- `r = overall_current / overall_baseline`
+
+For ratio metrics:
+- recompute using null-safe additive components
+
+If `overall_baseline = 0`:
+- do not force the default significance approach
+- return `INCOMPLETE` or use an explicitly documented fallback
+
+If `overall_change = 0`:
+- state there is no net change to attribute
+- stop
+
+---
+
+## Comparison Table Requirements
+
+For each confirmed analyzed dimension, produce a comparison table with:
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `abs_delta_value`
+
+For ratio metrics, also show where available:
+- `base_numerator`
+- `base_denominator`
+- `current_numerator`
+- `current_denominator`
+
+Default sort:
+- `delta_value desc`
+
+---
+
+## Exact Normalized Scored Table Schema
+
+For **every** confirmed analyzed dimension, produce a normalized scored table artifact with this exact schema:
+
+- `dimension_name`
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `abs_delta_value`
+- `base_numerator`
+- `base_denominator`
+- `current_numerator`
+- `current_denominator`
+- `expected_current_value`
+- `change_difference`
+- `contribution_segment`
+- `contribution_all`
+- `contribution_weight`
+- `significance_score`
+- `data_quality_note`
+
+### Required per-dimension artifact name
+- `normalized_scored_<dimension_name>`
+
+If any required field is missing:
+- the table is invalid
+- mark dimension status as `failed`
+- return `INCOMPLETE`
+
+---
+
+## Ratio Metric Computation Rules
+
+For ratio metrics:
+1. compute null-safe additive components first
+2. derive denominators from those components
+3. recompute ratio using `safe_divide`
+4. compute delta
+5. compute expected value and significance inputs
+
+Required:
+- `base_numerator`
+- `current_numerator`
+- `base_denominator`
+- `current_denominator`
+
+Never use only the pre-aggregated ratio as the primary basis of scoring.
+
+---
+
+## Expected Value and Significance
+
+For every segment row:
+- `expected_current_value = r * base_value`
+- `change_difference = current_value - expected_current_value`
+
+### Contribution weight
+For additive metrics:
+- `contribution_segment = base_value + current_value`
+
+For ratio metrics:
+- prefer denominator-based weighting:
+- `contribution_segment = base_denominator + current_denominator`
+
+Then:
+- `contribution_all = sum(contribution_segment)` within each dimension
+- `contribution_weight = contribution_segment / contribution_all`
+
+### Significance score
+Compute:
+
+```text
+significance_score =
+  (current_value - r * base_value)
+  × log(current_value / (r * base_value) - 1)
+  × (contribution_weight + 1)
+```
+
+If unstable due to:
+- zero baseline
+- zero expected value
+- undefined log input
+- zero denominator
+- tiny denominator
+- sparse data
+
+Then:
+- set `significance_score = 0`
+- set `data_quality_note` appropriately:
+  - `sparse data`
+  - `zero denominator`
+  - `unstable significance`
+
+---
+
+## Full Cross-Dimension Significance Table
+
+After all normalized scored tables are valid:
+1. verify one valid normalized scored table exists for each confirmed analyzed dimension
+2. append them into one table
+3. sort by `significance_score desc`
+
+This appended table is the **primary analytical output**.
+
+Required columns:
+- all columns from the exact normalized scored schema
+
+If this table is missing:
+- return `INCOMPLETE`
+
+---
+
+## Ranked Driver Output
+
+Only after the full appended table exists:
+- identify top positive drivers
+- identify major negative / offsetting drivers
+- derive all ranked findings from the appended table only
+
+Do not infer ranking from any single per-dimension table.
+
+---
+
+## Non-selected Eligible Dimensions
+
+For every eligible dimension not selected into top 10, include:
+- `dimension_name`
+- `less_useful_reason`
+- `explanation`
+- `comparison_to_selected_dimensions`
+
+Allowed reasons:
+- `lower_metric_proximity`
+- `higher_cardinality_than_selected_dimensions`
+- `sparser_segments`
+- `weaker_business_actionability`
+- `redundant_with_selected_dimension`
+- `lower_expected_signal_to_noise`
+- `less_stable_for_significance_scoring`
+
+---
+
+## Mandatory Artifact Ledger
+
+Before final answer, produce a completion ledger containing:
+
+- `overall_comparison_row_status`
+- `confirmed_analyzed_dimensions`
+- `confirmed_dimension_count`
+- `completed_dimension_count`
+- `missing_dimension_list`
+- `comparison_table_status_by_dimension`
+- `normalized_scored_table_status_by_dimension`
+- `append_status`
+- `ranking_status`
+- `non_selected_dimension_explanations_status`
+- `qa_status`
+
+If any status is incomplete:
+- return `Completion Status: INCOMPLETE`
+
+---
+
+## Mandatory QA Checklist
+
+Before answering, validate:
+
+- canonical periods declared first
+- every field uses correct period alias
+- every filtered additive component wrapped in `coalesce(..., 0)`
+- ratios recomputed from null-safe additive components
+- no unexpected null additive values remain
+- same `r` reused across all analyzed dimensions
+- every candidate dimension accounted for in inventory
+- every eligible dimension ranked in prioritization table
+- explicit user confirmation obtained
+- all confirmed analyzed dimensions completed
+- every confirmed analyzed dimension has a valid normalized scored table
+- all normalized scored tables share exact schema
+- appended cross-dimension significance table exists
+- final ranking derived from appended table only
+
+If any check fails:
+- regenerate or return `INCOMPLETE`
+
+---
+
+## Output Format
+
+## 1. Completion Status
+One of:
+- `Completion Status: COMPLETE`
+- `Completion Status: INCOMPLETE`
+
+If incomplete, include:
+- `blocking_issue`
+- `missing_artifacts`
+- `completed_artifacts`
+
+## 2. Dimension Inventory
+Include all candidate dimensions and their classifications.
+
+## 3. Dimension Prioritization Table
+Include all eligible dimensions and ranking.
+
+## 4. User Confirmation Checkpoint
+If awaiting confirmation:
+- `workflow_status: paused_pending_user_confirmation`
+
+## 5. Overall Comparison Row
+Include:
+- `overall_baseline`
+- `overall_current`
+- `overall_change`
+- `r`
+
+## 6. Completion Ledger
+Required in both COMPLETE and INCOMPLETE outputs.
+
+## 7. Full Cross-Dimension Significance Table
+Required for COMPLETE.
+
+## 8. Per-Dimension Comparison Tables
+One per confirmed analyzed dimension.
+
+## 9. Per-Dimension Normalized Scored Tables
+One per confirmed analyzed dimension.
+
+## 10. Ranked Driver Summary
+Only for COMPLETE.
+
+## 11. Non-selected Eligible Dimensions
+Required for COMPLETE and for post-prioritization outputs.
+
+---
+
+## Implementation Notes for Holistics / AQL
+
+- Reuse dataset metrics whenever possible
+- For ratio metrics, use null-safe additive components first
+- Build one dimension at a time
+- Normalize each dimension into the exact schema before append
+- Do not skip the append step
+- Do not return a final causal summary before the append step
+- If tool/runtime limits prevent full completion, return `INCOMPLETE` with the ledger
+
+
+;;
+}
