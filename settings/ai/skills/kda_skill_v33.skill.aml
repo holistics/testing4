@@ -281,15 +281,13 @@ For each analyzed dimension, create a **segment comparison table**.
 
 Each table must contain one row per segment with this normalized schema:
 - `segment`
-- `base_value`
 - `current_value`
+- `base_value`
 - `delta_value`
-- `base_numerator` (if ratio metric)
-- `current_numerator` (if ratio metric)
-- `delta_numerator` (if ratio metric)
-- `base_denominator` (if ratio metric)
-- `current_denominator` (if ratio metric)
-- `delta_denominator` (if ratio metric)
+- `abs_delta_value`
+
+Default sort order: sort per-dimension comparison tables by `delta_value` descending.
+No secondary sort.
 
 ### For additive metrics
 Use:
@@ -409,24 +407,22 @@ For each analyzed dimension, return a comparison table that is easy to read.
 
 Do not include a `dimension` column in per-dimension comparison tables, because each table already represents a single dimension.
 
-Required columns for ratio metrics:
+Required columns:
 
 segment
-base_value
 current_value
+base_value
 delta_value
-base_numerator
-current_numerator
-base_denominator
-current_denominator
-significance_score
-contributor_type
+abs_delta_value
+
+Default sort order: `delta_value` descending.
+No secondary sort.
+
 Ratio-metric output contract
 For ratio metrics:
 
-additive columns must never be left as raw null from missing filtered rows
-all missing filtered additive components must be converted with coalesce(..., 0)
-any remaining null ratio must be handled internally through null-safe recomputation and exclusion from ranked output when unstable
+additive components must still be handled internally through null-safe recomputation
+any remaining unstable rows must be handled internally and excluded from ranked output when needed
 Step 12 — Mandatory QA validation before answering
 Before answering, inspect every per-dimension result.
 
@@ -479,12 +475,15 @@ One table per analyzed dimension.
 Must include:
 
 segment
-both periods
-delta columns
-significance score
-contributor type
+current value
+base value
+delta value
+abs delta value
 
-Do not include a dimension column or data quality note in these per-dimension tables.
+Default sort order: delta value descending.
+No secondary sort.
+
+Do not include dimension, significance score, contributor type, or data quality note in these per-dimension tables.
 4. Per-Dimension Significance Charts
 One chart per analyzed dimension.
 
