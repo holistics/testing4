@@ -87,7 +87,7 @@ The skill must **not** present:
 
 until the **full appended cross-dimension significance table** has been produced successfully.
 
-Partial comparison tables may be shown as intermediate artifacts, but they must be labeled as incomplete and non-final.
+Do not introduce or mention any intermediate artifacts.
 
 ---
 
@@ -174,9 +174,8 @@ If inconsistent, the result is invalid.
 ### 7. Merged per-dimension table is the canonical artifact
 The skill must produce one merged per-dimension table for each confirmed analyzed dimension.
 
-This merged table must contain both:
-- comparison fields
-- significance-scoring fields
+Use this merged per-dimension table as the only per-dimension artifact.
+Do not create, mention, or rely on any separate intermediate artifact.
 
 ### 8. Append step is mandatory
 After all merged per-dimension tables are complete, append them directly into one full cross-dimension significance table.
@@ -309,7 +308,7 @@ For ratio metrics:
 
 If `overall_baseline = 0`:
 - do not force the default significance approach
-- return `INCOMPLETE` or use an explicitly documented fallback
+- return `INCOMPLETE`
 
 If `overall_change = 0`:
 - state there is no net change to attribute
@@ -317,25 +316,41 @@ If `overall_change = 0`:
 
 ---
 
-## Comparison Table Requirements
+## Field Semantics by Metric Type
 
-For each confirmed analyzed dimension, produce a comparison table with:
-- `segment`
-- `base_value`
-- `current_value`
-- `delta_value`
-- `abs_delta_value`
+### For Additive Metrics (revenue, orders, sessions):
+- `base_value` = the sum of the metric in the base period for this segment
+- `current_value` = the sum of the metric in the current period for this segment
+- `expected_current_value` = r × base_value
+- `contribution_segment` = base_value + current_value
 
-For ratio metrics, the comparison table does **not** need to include numerator or denominator fields.
+### For Ratio Metrics (close rate, conversion rate, AOV):
+- `base_value` = the computed ratio for this segment in the base period
+  - Example: if segment had 10 won deals / 50 opportunities, base_value = 0.20
+- `current_value` = the computed ratio for this segment in the current period
+  - Example: if segment had 15 won deals / 40 opportunities, current_value = 0.375
+- `expected_current_value` = r × base_value
+  - Where r = overall_current / overall_baseline (both computed as ratios)
+  - Example: if overall rate went from 0.25 to 0.30, r = 1.20, so expected = 1.20 × 0.20 = 0.24
+- `contribution_segment` = base_denominator + current_denominator + base_numerator + current_numerator
+  - This weights segments by their total "volume of activity" across both periods
+  
+**Critical:** For ratio metrics, base_value and current_value are the METRIC VALUES (the ratios themselves),
+NOT the raw numerator or denominator counts. The underlying components are only used for:
+1. Computing the ratios safely (null-handling)
+2. Computing contribution_segment for weighting
 
-Default sort:
-- `delta_value asc`
+**Example for close rate by region:**
+- Region A: 20 won / 100 opps (base), 30 won / 90 opps (current)
+- base_value = 0.20
+- current_value = 0.333
+- contribution_segment = 100 + 90 + 20 + 30 = 240
 
 ---
 
 ## Exact Merged Per-Dimension Table Schema
 
-For **every** confirmed analyzed dimension, produce one merged per-dimension table artifact with this exact schema:
+For **every** confirmed analyzed dimension, produce one per-dimension table artifact with this exact schema:
 
 - `dimension_name`
 - `segment`
@@ -352,7 +367,7 @@ For **every** confirmed analyzed dimension, produce one merged per-dimension tab
 - `data_quality_note`
 
 ### Required per-dimension artifact name
-- `merged_scored_<dimension_name>`
+- `segment_scored_<dimension_name>`
 
 If any required field is missing:
 - the table is invalid
@@ -370,8 +385,11 @@ For ratio metrics:
 4. compute delta
 5. compute expected value and significance inputs
 
-Do not require numerator or denominator fields in the merged per-dimension output schema.
+The merged per-dimension schema is identical for both additive and ratio metrics.
+The difference is in what the value fields represent (see Field Semantics by Metric Type above).
 
+Numerator and denominator fields are NOT included in the output schema.
+They are used only during computation and weighting, then discarded.
 Never use only the pre-aggregated ratio as the primary basis of scoring.
 
 ---
@@ -387,8 +405,12 @@ For additive metrics:
 - `contribution_segment = base_value + current_value`
 
 For ratio metrics:
-- use a documented null-safe weighting basis derived from the underlying additive components
-- the chosen weighting basis must be applied consistently within the dimension
+- compute null-safe components first:
+  - `base_num_safe = coalesce(base_numerator, 0)`
+  - `base_denom_safe = coalesce(base_denominator, 0)`
+  - `current_num_safe = coalesce(current_numerator, 0)`
+  - `current_denom_safe = coalesce(current_denominator, 0)`
+- then: `contribution_segment = base_denom_safe + current_denom_safe + base_num_safe + current_num_safe`
 
 Then:
 - `contribution_all = sum(contribution_segment)` within each dimension
@@ -547,16 +569,13 @@ Required in both COMPLETE and INCOMPLETE outputs.
 ## 7. Full Cross-Dimension Significance Table
 Required for COMPLETE.
 
-## 8. Per-Dimension Comparison Tables
-One per confirmed analyzed dimension.
+## 8. Per-Dimension Merged Tables
+One per confirmed analyzed dimension, each using the exact merged per-dimension schema.
 
-## 9. Per-Dimension Normalized Scored Tables
-One per confirmed analyzed dimension.
-
-## 10. Ranked Driver Summary
+## 9. Ranked Driver Summary
 Only for COMPLETE.
 
-## 11. Non-selected Eligible Dimensions
+## 10. Non-selected Eligible Dimensions
 Required for COMPLETE and for post-prioritization outputs.
 
 ---
@@ -566,7 +585,7 @@ Required for COMPLETE and for post-prioritization outputs.
 - Reuse dataset metrics whenever possible
 - For ratio metrics, use null-safe additive components first
 - Build one dimension at a time
-- Normalize each dimension into the exact schema before append
+- Build each dimension directly into the exact merged per-dimension schema before append
 - Do not skip the append step
 - Do not return a final causal summary before the append step
 - If tool/runtime limits prevent full completion, return `INCOMPLETE` with the ledger
