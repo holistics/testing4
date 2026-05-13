@@ -59,8 +59,8 @@ This task is **COMPLETE** only if all of the following exist:
 4. explicit user confirmation after prioritization
 5. frozen `confirmed_analyzed_dimensions`
 6. overall comparison row
-7. one merged per-dimension table for **every** confirmed analyzed dimension
-8. full appended cross-dimension significance table
+7. one merged per-dimension table for every **successful** confirmed analyzed dimension, plus explicit failure tracking for failed dimensions
+8. full appended cross-dimension significance table built from successful dimensions only
 9. significance ranking derived from the appended table
 10. non-selected eligible dimension explanations
 11. completion ledger
@@ -128,16 +128,18 @@ This is the exact dimension set that must be fully completed.
 No dimension may be silently dropped afterward.
 
 ### 3. Exact confirmed dimension coverage rule
-The final analyzed dimension count must equal the count of `confirmed_analyzed_dimensions`.
+The final analyzed dimension count does not need to equal the count of `confirmed_analyzed_dimensions`.
+Some confirmed dimensions may fail during execution and should be recorded explicitly instead of blocking the full workflow.
 
 Required outputs:
 - `confirmed_dimension_count`
-- `completed_dimension_count`
-- `missing_dimension_list`
+- `successful_dimension_count`
+- `failed_dimension_count`
+- `successful_dimension_list`
+- `failed_dimension_list`
 
-If counts differ:
-- return `Completion Status: INCOMPLETE`
-- `blocking_issue: not_all_confirmed_dimensions_completed`
+If at least one confirmed dimension succeeds and the final appended table is produced from successful dimensions, the workflow may still return `Completion Status: COMPLETE`.
+Return `INCOMPLETE` only if all confirmed dimensions fail, or if no final appended table can be produced from the successful dimensions.
 
 ### 4. Mandatory execution loop
 After confirmation, the skill must execute this loop for **every** dimension in `confirmed_analyzed_dimensions`:
@@ -145,12 +147,15 @@ After confirmation, the skill must execute this loop for **every** dimension in 
 1. build one merged per-dimension table
 2. validate merged schema completeness
 3. validate null-safety and period consistency
-4. mark dimension status as `done`
+4. mark dimension status as `done` or `failed`
+5. capture a short failure reason for any failed dimension
 
 This dimension-by-dimension workflow is the default and preferred execution pattern.
 The skill must not fail merely because a single multi-dimension appended query is unsafe.
+The skill must not stop the whole analysis when one dimension fails.
 
-If any confirmed dimension is not `done`, stop and return `INCOMPLETE`.
+Continue processing the remaining confirmed dimensions and produce the final appended table from successful dimensions only.
+Return `INCOMPLETE` only if no successful dimensions remain for the final append.
 
 ### 5. Null-handling invariant
 For period comparisons, every filtered additive component must be wrapped with `coalesce(..., 0)` **before** any downstream math.
@@ -181,9 +186,13 @@ Use this merged per-dimension table as the only per-dimension artifact.
 Do not create, mention, or rely on any separate intermediate artifact.
 
 ### 8. Append step is mandatory
-After all merged per-dimension tables are complete, append them directly into one full cross-dimension significance table.
+After all successful merged per-dimension tables are complete, append them directly into one full cross-dimension significance table.
 
-If the append step fails or is skipped:
+The appended table must include a failure-status view of all confirmed dimensions:
+- successful dimensions contribute scored rows to the appended table
+- failed dimensions must still appear in the final dimension status tracking with a clear failed label and failure reason
+
+If the append step fails or is skipped, or if there are no successful dimensions to append:
 - return `INCOMPLETE`
 
 ---
@@ -486,21 +495,33 @@ Then:
 
 ## Full Cross-Dimension Significance Table
 
-After all merged per-dimension tables are valid:
-1. verify one valid merged per-dimension table exists for each confirmed analyzed dimension
-2. add `dimension_name` back during the append step using the per-dimension artifact identity, then append them into one table using a safe post-processing step after per-dimension execution
-3. sort by `significance_score desc`
+After all merged per-dimension tables have been attempted:
+1. verify which confirmed dimensions succeeded and which failed
+2. add `dimension_name` back during the append step using the per-dimension artifact identity
+3. append only the successful per-dimension scored tables into one table using a safe post-processing step after per-dimension execution
+4. add a `dimension_execution_status` field to the final appended output
+5. sort successful scored rows by `significance_score desc`
 
 This appended table is the **primary analytical output**.
 
-Required columns:
+Required columns for successful scored rows:
+- `dimension_name`
 - all columns from the exact merged per-dimension schema
+- `dimension_execution_status`
+
+Rules:
+- use `dimension_execution_status = success` for scored rows from successful dimensions
+- failed dimensions do not contribute scored segment rows if no valid scored table was produced
+- failed dimensions must still be represented in a separate failed-dimension status table or ledger section with:
+  - `dimension_name`
+  - `dimension_execution_status = failed`
+  - `failure_reason`
 
 Do not include row-level diagnostic columns in this appended table.
 Do not require the append to be generated in the same AQL step as the per-dimension scoring.
 The append may be produced only after all per-dimension artifacts have been completed and validated.
 
-If this table is missing:
+If this table is missing, or if all confirmed dimensions failed:
 - return `INCOMPLETE`
 
 ---
@@ -557,8 +578,10 @@ Before final answer, produce a completion ledger containing:
 - `overall_comparison_row_status`
 - `confirmed_analyzed_dimensions`
 - `confirmed_dimension_count`
-- `completed_dimension_count`
-- `missing_dimension_list`
+- `successful_dimension_count`
+- `failed_dimension_count`
+- `successful_dimension_list`
+- `failed_dimension_list`
 - `merged_table_status_by_dimension`
 - `append_status`
 - `ranking_status`
@@ -603,12 +626,13 @@ Before answering, validate:
 - every candidate dimension accounted for in inventory
 - every eligible dimension ranked in prioritization table
 - explicit user confirmation obtained
-- all confirmed analyzed dimensions completed
-- every confirmed analyzed dimension has a valid normalized scored table
-- all normalized scored tables share exact schema
-- appended cross-dimension significance table exists
+- every confirmed analyzed dimension is marked as either `done` or `failed`
+- every successful confirmed analyzed dimension has a valid normalized scored table
+- all successful normalized scored tables share exact schema
+- appended cross-dimension significance table exists when at least one dimension succeeds
 - final ranking derived from appended table only
 - dimension-level QA note exists for every confirmed analyzed dimension
+- every failed dimension has a recorded failure reason
 
 If any check fails:
 - regenerate or return `INCOMPLETE`
