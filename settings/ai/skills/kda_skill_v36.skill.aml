@@ -243,8 +243,37 @@ Before scoring:
 - `dimension_name`
 - `priority_rank`
 - `priority_status`
-- `prioritization_reason`
+- `why_this_dimension_matters`
+- `business_value`
 - `evidence`
+
+### Column guidance
+- `why_this_dimension_matters` must be a plain-English explanation of **why this dimension is useful for explaining the metric change**.
+- Write it for business users, not data modelers.
+- Keep it to **1 short sentence**.
+- Focus on one of these ideas:
+  - where the metric is likely to vary meaningfully
+  - where the business can take action
+  - where large segments could materially move the total
+  - where the dimension is close to the metric event or decision point
+- Avoid technical or vague wording such as:
+  - `metric proximity`
+  - `signal-to-noise`
+  - `eligible dimension`
+  - `stable for significance scoring`
+  - `good analytical coverage`
+- Prefer concrete business phrasing such as:
+  - `This shows whether the change came from specific customer groups.`
+  - `This helps separate product mix effects from overall demand changes.`
+  - `This is useful because teams can act on underperforming regions directly.`
+
+- `business_value` must summarize the practical question this dimension helps answer.
+- Keep it to **3 to 8 words**.
+- Examples:
+  - `Find impacted customer groups`
+  - `Spot regional performance shifts`
+  - `Separate channel mix effects`
+  - `Identify product mix changes`
 
 ### Priority status values
 - `analyzed_top_10`
@@ -364,7 +393,9 @@ For **every** confirmed analyzed dimension, produce one per-dimension table arti
 - `contribution_all`
 - `contribution_weight`
 - `significance_score`
-- `data_quality_note`
+
+Do not include row-level diagnostic fields in the merged per-dimension schema.
+Data quality issues must be summarized separately in a dimension-level QA note section.
 
 ### Required per-dimension artifact name
 - `segment_scored_<dimension_name>`
@@ -373,6 +404,11 @@ If any required field is missing:
 - the table is invalid
 - mark dimension status as `failed`
 - return `INCOMPLETE`
+
+Type consistency rule:
+- Every column that will later be appended / UNIONed across dimensions must keep the same data type in every branch.
+- Do not mix numeric fallback values with text labels in the same column.
+- If a diagnostic column cannot be guaranteed to have one stable type across all branches, exclude it from the appended output.
 
 ---
 
@@ -436,7 +472,8 @@ If unstable due to:
 
 Then:
 - set `significance_score = 0`
-- set `data_quality_note` appropriately:
+- capture the issue in the dimension-level QA note section
+- use one of these issue labels when relevant:
   - `sparse data`
   - `zero denominator`
   - `unstable significance`
@@ -454,6 +491,8 @@ This appended table is the **primary analytical output**.
 
 Required columns:
 - all columns from the exact merged per-dimension schema
+
+Do not include row-level diagnostic columns in this appended table.
 
 If this table is missing:
 - return `INCOMPLETE`
@@ -479,6 +518,12 @@ For every eligible dimension not selected into top 10, include:
 - `explanation`
 - `comparison_to_selected_dimensions`
 
+Writing rules:
+- Explain non-selection in plain business language.
+- Do not imply the dimension is bad or wrong; explain why it is less useful **for this specific metric change question**.
+- `explanation` should be 1 short sentence.
+- `comparison_to_selected_dimensions` should make the tradeoff clear in simple words.
+
 Allowed reasons:
 - `lower_metric_proximity`
 - `higher_cardinality_than_selected_dimensions`
@@ -487,6 +532,15 @@ Allowed reasons:
 - `redundant_with_selected_dimension`
 - `lower_expected_signal_to_noise`
 - `less_stable_for_significance_scoring`
+
+Preferred plain-English mappings:
+- `lower_metric_proximity` → `Less directly tied to where this metric changes`
+- `higher_cardinality_than_selected_dimensions` → `Too many small groups to give a clear summary`
+- `sparser_segments` → `Many segments have too little data`
+- `weaker_business_actionability` → `Harder for teams to act on directly`
+- `redundant_with_selected_dimension` → `Overlaps with a dimension already selected`
+- `lower_expected_signal_to_noise` → `More likely to add noise than clarity`
+- `less_stable_for_significance_scoring` → `Results may be less reliable because segment sizes are uneven`
 
 ---
 
@@ -504,6 +558,26 @@ Before final answer, produce a completion ledger containing:
 - `ranking_status`
 - `non_selected_dimension_explanations_status`
 - `qa_status`
+- `dimension_level_qa_notes_status`
+
+## Dimension-Level QA Notes
+
+For each confirmed analyzed dimension, include a small QA note section outside the scored table.
+
+Required fields:
+- `dimension_name`
+- `qa_issue_count`
+- `qa_issues`
+- `qa_summary`
+
+Rules:
+- This section is for dimension-level diagnostics only.
+- Do not append it into the cross-dimension significance table.
+- Keep `qa_summary` to 1 short sentence.
+- If there are no issues, use:
+  - `qa_issue_count = 0`
+  - `qa_issues = []`
+  - `qa_summary = No material data quality issues detected.`
 
 If any status is incomplete:
 - return `Completion Status: INCOMPLETE`
@@ -528,6 +602,7 @@ Before answering, validate:
 - all normalized scored tables share exact schema
 - appended cross-dimension significance table exists
 - final ranking derived from appended table only
+- dimension-level QA note exists for every confirmed analyzed dimension
 
 If any check fails:
 - regenerate or return `INCOMPLETE`
