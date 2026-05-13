@@ -384,7 +384,6 @@ NOT the raw numerator or denominator counts. The underlying components are only 
 
 For **every** confirmed analyzed dimension, produce one per-dimension table artifact with this exact schema:
 
-- `dimension_name`
 - `segment`
 - `base_value`
 - `current_value`
@@ -401,7 +400,9 @@ Do not include row-level diagnostic fields in the merged per-dimension schema.
 Data quality issues must be summarized separately in a dimension-level QA note section.
 
 ### Required per-dimension artifact name
-- `segment_scored_<dimension_name>`
+- `Significance score by value of <dimension_name>`
+
+The per-dimension table does not need a `dimension_name` column because the analyzed dimension is already identified by the artifact name.
 
 If any required field is missing:
 - the table is invalid
@@ -487,7 +488,7 @@ Then:
 
 After all merged per-dimension tables are valid:
 1. verify one valid merged per-dimension table exists for each confirmed analyzed dimension
-2. append them into one table using a safe post-processing step after per-dimension execution
+2. add `dimension_name` back during the append step using the per-dimension artifact identity, then append them into one table using a safe post-processing step after per-dimension execution
 3. sort by `significance_score desc`
 
 This appended table is the **primary analytical output**.
