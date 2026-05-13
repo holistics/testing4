@@ -147,6 +147,9 @@ After confirmation, the skill must execute this loop for **every** dimension in 
 3. validate null-safety and period consistency
 4. mark dimension status as `done`
 
+This dimension-by-dimension workflow is the default and preferred execution pattern.
+The skill must not fail merely because a single multi-dimension appended query is unsafe.
+
 If any confirmed dimension is not `done`, stop and return `INCOMPLETE`.
 
 ### 5. Null-handling invariant
@@ -484,7 +487,7 @@ Then:
 
 After all merged per-dimension tables are valid:
 1. verify one valid merged per-dimension table exists for each confirmed analyzed dimension
-2. append them directly into one table
+2. append them into one table using a safe post-processing step after per-dimension execution
 3. sort by `significance_score desc`
 
 This appended table is the **primary analytical output**.
@@ -493,6 +496,8 @@ Required columns:
 - all columns from the exact merged per-dimension schema
 
 Do not include row-level diagnostic columns in this appended table.
+Do not require the append to be generated in the same AQL step as the per-dimension scoring.
+The append may be produced only after all per-dimension artifacts have been completed and validated.
 
 If this table is missing:
 - return `INCOMPLETE`
@@ -661,6 +666,15 @@ Required for COMPLETE and for post-prioritization outputs.
 - For ratio metrics, use null-safe additive components first
 - Build one dimension at a time
 - Build each dimension directly into the exact merged per-dimension schema before append
+- Do not ask AQL generation to build the full cross-dimension appended table in one query across unrelated dimensions.
+- The required execution pattern is:
+  1. generate and execute one scored table per confirmed analyzed dimension
+  2. normalize the schema identically across all scored tables
+  3. present each per-dimension scored table as a completed artifact
+  4. build the final appended cross-dimension significance table only after all per-dimension tables exist
+- If a single appended query across multiple unrelated dimensions is not safe or not supported, the skill must still continue by using the per-dimension execution loop and then combine the completed scored outputs in a later step.
+- Do not treat dimension-by-dimension execution as a blocker by itself.
+- Only return `INCOMPLETE` if the per-dimension loop cannot be completed for every confirmed analyzed dimension, or if the final append/combination artifact still cannot be produced after those tables exist.
 - Do not skip the append step
 - Do not return a final causal summary before the append step
 - If tool/runtime limits prevent full completion, return `INCOMPLETE` with the ledger
