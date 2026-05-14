@@ -130,6 +130,30 @@ This is the exact dimension set that must be attempted.
 
 No dimension may be silently dropped afterward.
 
+### 2a. Do not ask user to choose dimensions by default
+If the user did not explicitly specify dimensions, the skill must **not** ask the user to choose dimensions manually before prioritization.
+
+Default workflow:
+1. enumerate eligible dimensions
+2. rank them
+3. select the top 5 dimensions automatically
+4. present the prioritization table
+5. ask the user only whether to proceed with the proposed top 5 set
+
+Allowed user choices at this stage:
+- proceed with the proposed top 5 dimensions
+- stop
+- explicitly request an override to the proposed dimension set
+
+Not allowed by default:
+- asking the user `which dimensions do you want to analyze?`
+- asking the user to manually pick dimensions before the prioritization table is shown
+- pausing for dimension selection when the skill can rank dimensions itself
+
+Only ask the user to choose dimensions manually if:
+- the user explicitly asks to customize the analyzed dimensions
+- the user explicitly rejects the proposed prioritized set and requests a different set
+
 ### 3. Exact confirmed dimension coverage rule
 The final analyzed dimension count does not need to equal the count of `confirmed_analyzed_dimensions`.
 Some confirmed dimensions may fail during execution and should be recorded explicitly instead of blocking the full workflow.
@@ -287,8 +311,36 @@ If a row is unstable under the shared guardrail set:
 - keep the same row schema
 - capture the issue in the dimension-level QA note section
 
+### Guarded evaluation rule
+The score must be computed using guarded evaluation, not fallback-after-evaluation.
+
+Required behavior:
+- evaluate the guardrail conditions first
+- compute the significance formula only for rows that pass the guardrails
+- emit `0` directly for rows that fail the guardrails
+- avoid evaluating invalid `log(...)`, division, or other unsafe intermediate expressions before the guardrail decision is made
+
+Not allowed:
+- computing a separate raw score first and then replacing it with `0`
+- relying on a post-evaluation fallback after an unsafe expression has already been evaluated
+- using a raw intermediate expression such as `raw_significance_score` if it can fail before the fallback applies
+
+### Safe conditional logic rule
+The significance score must be implemented as safe conditional logic.
+
+Required behavior:
+- express the score as a guarded conditional pattern
+- only evaluate the mathematical score expression inside the safe branch
+- keep the same guarded pattern across all dimensions
+
+This means the skill must prefer a structure equivalent to:
+- `if row passes all guardrails, then compute significance_score, else 0`
+
+and must not prefer a structure equivalent to:
+- `compute raw_significance_score first, then coalesce / overwrite / fallback to 0`
+
 ### Enforcement rule
-If a dimension requires a different formula, different guardrails, or different zeroing behavior to execute safely:
+If a dimension requires a different formula, different guardrails, different zeroing behavior, or unsafe pre-evaluation to execute safely:
 - do not customize the scoring definition for that dimension
 - mark the dimension as `failed`
 - record `failure_reason = frozen_scoring_definition_not_supported`
@@ -376,13 +428,20 @@ Before scoring:
 
 After showing the prioritization table, stop and ask:
 
-**Do you want me to proceed with significance analysis using these confirmed dimensions?**
+**Do you want me to proceed with significance analysis using these proposed top 5 dimensions?**
+
+At this checkpoint, the skill should ask only for one of these actions:
+- proceed with the proposed top 5 dimensions
+- stop
+- override the proposed dimension set
 
 Accept only explicit confirmation such as:
 - yes
 - proceed
 - continue
 - analyze these
+
+If the user asks to override, the skill may then collect the user-requested dimension set explicitly.
 
 If not confirmed:
 - do not continue
@@ -545,6 +604,7 @@ If unstable under the frozen guardrail set:
 - if `significance_score` evaluates to null, set it to `0`
 - capture the issue in the dimension-level QA note section
 - do not rewrite the formula differently for that dimension
+- do not evaluate a raw unsafe score expression before applying the guardrail decision
 
 ---
 
@@ -676,6 +736,8 @@ Before answering, validate:
 - frozen scoring definition declared before the per-dimension loop
 - every successful dimension uses the same frozen scoring definition
 - no dimension-specific scoring simplification was introduced
+- the score was computed with guarded evaluation, not fallback-after-evaluation
+- no successful dimension relied on a raw intermediate score that could fail before fallback
 - every field uses correct period alias
 - every filtered additive component wrapped in `coalesce(..., 0)`
 - ratios recomputed from null-safe additive components
@@ -686,7 +748,8 @@ Before answering, validate:
 - no successful dimension has unexpected null `significance_score`
 - every candidate dimension accounted for in inventory
 - every eligible dimension ranked in prioritization table
-- explicit user confirmation obtained
+- the skill did not ask the user to choose dimensions by default before prioritization
+- explicit user confirmation obtained after the prioritization table was shown
 - every confirmed analyzed dimension is marked as either `done` or `failed`
 - every successful confirmed analyzed dimension has a valid normalized scored table
 - all successful normalized scored tables share exact schema
@@ -755,6 +818,8 @@ Required for COMPLETE and for post-prioritization outputs.
 - Build each dimension directly into the exact merged per-dimension schema before append
 - Do not ask AQL generation to build the full cross-dimension appended table in one query across unrelated dimensions
 - Generate and execute one scored table per confirmed analyzed dimension
+- Compute significance score with guarded conditional logic, not a raw intermediate score followed by fallback
+- Do not allow unsafe `log(...)` or division expressions to evaluate before the guardrail decision
 - Reject any per-dimension scoring output that changed the frozen scoring definition
 - Reject any successful per-dimension output with unexpected null `contribution_all`, `contribution_weight`, or `significance_score`
 - Build the final appended cross-dimension significance table only after all successful per-dimension tables exist
