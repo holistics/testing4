@@ -119,11 +119,12 @@ Do not use different impact formulas across dimensions.
 ### 4. Null safety first
 Before any downstream math:
 1. compute the additive components for each period
-2. wrap additive components with `coalesce(..., 0)` where needed
-3. recompute the ratio using safe math
-4. derive `delta_value`
-5. derive `segment_weight`
-6. derive `impact_score`
+2. additive components must be wrapped with `coalesce(..., 0)`
+3. derive denominator from null-safe additive components
+4. recompute the ratio using safe math
+5. derive `delta_value`
+6. derive `segment_weight`
+7. derive `impact_score`
 
 Never rely only on a final fallback after unsafe math has already been evaluated.
 
