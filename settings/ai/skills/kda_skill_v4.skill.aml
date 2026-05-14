@@ -168,13 +168,16 @@ If the user explicitly names dimensions, still return exactly one table for the 
 After returning the prioritization table, stop.
 If the user confirms with an explicit yes / proceed / continue response:
 - freeze `confirmed_analyzed_dimensions`
-- immediately proceed through all confirmed dimensions in order without asking the user any further questions about sequencing or prioritization
+- produce all dimension tables, the ranked findings, and the final conclusion in one single continuous response
+- do not stop, pause, or wait for input between dimensions
+- do not return a partial response after the first dimension — all N confirmed dimensions must be fully analyzed before the response ends
 If the user does not confirm:
 - do not continue the calculation
 - stop and return a paused status
 ### 8. Force table output for each analyzed dimension
-After confirmation, every confirmed analyzed dimension must return exactly **one regular table**.
+After confirmation, every confirmed analyzed dimension must return exactly **one regular table** — all in the same response.
 Required behavior:
+- process every confirmed dimension before ending the response — do not stop after the first or any intermediate dimension
 - return one table per dimension
 - do not return a pivot table for any dimension
 - do not return a chart instead of the table for any dimension
@@ -313,7 +316,8 @@ Do not include any text before the table. After the table, include one short con
 After the first response table is shown, stop and wait for confirmation.
 Do not proceed with calculation or ranking before confirmation.
 ## 3. Per-Dimension Impact Tables
-After confirmation, for each confirmed analyzed dimension, include exactly one regular table with the required schema.
+After confirmation, produce all per-dimension tables in one single continuous response — do not stop after any individual dimension.
+Work through every confirmed dimension in priority order: compute, rank, and output the table for dimension 1, then dimension 2, then dimension 3, and so on until all confirmed dimensions are done.
 Do not return a pivot table for any dimension.
 ## 4. Optional Cross-Dimension Impact Table
 If the frozen formula and weighting basis are consistent across all confirmed analyzed dimensions, you may append all successful per-dimension outputs into one global ranking table.
