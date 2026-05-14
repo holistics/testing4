@@ -96,11 +96,21 @@ For every analyzed dimension, use the same impact definition:
 - `base_value` = `coalesce(base_value_raw, 0)`
 - `current_value` = `coalesce(current_value_raw, 0)`
 - `delta_value` = `current_value - base_value`
-- `overall_delta_value` = overall metric change in comparison period versus base period
+- `overall_base_value_raw` = overall metric value in base period before null handling
+- `overall_current_value_raw` = overall metric value in comparison period before null handling
+- `overall_base_value` = `coalesce(overall_base_value_raw, 0)`
+- `overall_current_value` = `coalesce(overall_current_value_raw, 0)`
+- `overall_delta_value` = `overall_current_value - overall_base_value`
 - `segment_weight` = frozen weight basis across both periods
 - `impact_score` = `delta_value × segment_weight`
 - `impact_direction` = direction of the segment's impact **relative to `overall_delta_value`**, not just the raw sign of `impact_score`
 - `change_role` = derived interpretation label based on `impact_direction`
+
+Strict null-handling rule:
+- `base_value` and `current_value` must always be produced via `coalesce(..., 0)`
+- `overall_base_value` and `overall_current_value` must always be produced via `coalesce(..., 0)`
+- do not leave base or current metric values as null at any stage used for downstream math or output
+- if a segment has no exposure in one period, represent that period value as `0`, not null
 
 The frozen weight basis must be selected once per analysis based on metric type and then reused unchanged across all analyzed dimensions.
 
@@ -125,13 +135,19 @@ Before any downstream math:
 2. additive components must be wrapped with `coalesce(..., 0)`
 3. derive denominator from null-safe additive components
 4. recompute the ratio using safe math
-5. compute `base_value_raw` and `current_value_raw`
-6. wrap `base_value_raw` and `current_value_raw` with `coalesce(..., 0)` to produce `base_value` and `current_value`
+5. compute `base_value_raw`, `current_value_raw`, `overall_base_value_raw`, and `overall_current_value_raw`
+6. wrap `base_value_raw`, `current_value_raw`, `overall_base_value_raw`, and `overall_current_value_raw` with `coalesce(..., 0)` to produce null-safe metric values
 7. derive `delta_value`
-8. derive `segment_weight`
-9. derive `impact_score`
+8. derive `overall_delta_value`
+9. derive `segment_weight`
+10. derive `impact_score`
 
-Never rely only on a final fallback after unsafe math has already been evaluated.
+Strict enforcement:
+- never output null `base_value`
+- never output null `current_value`
+- never compute `delta_value` from raw nullable values
+- never compute `overall_delta_value` from raw nullable values
+- never rely only on a final fallback after unsafe math has already been evaluated
 
 ### 5. Period consistency
 For every period-specific field:
@@ -404,6 +420,9 @@ Before answering, validate:
 - additive components are null-safe before ratio math
 - ratio metrics are recomputed safely when needed
 - `base_value_raw` and `current_value_raw` are wrapped with `coalesce(..., 0)` before `delta_value` is computed
+- `overall_base_value_raw` and `overall_current_value_raw` are wrapped with `coalesce(..., 0)` before `overall_delta_value` is computed
+- no output row has null `base_value`
+- no output row has null `current_value`
 - segment weight uses the frozen generalized weighting rule that matches the metric type
 - `overall_delta_value` is computed once and used consistently across all confirmed analyzed dimensions
 - `impact_direction` is derived relative to `overall_delta_value`, not just the raw sign of `impact_score`
