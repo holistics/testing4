@@ -30,7 +30,7 @@ Inspect the dataset fields and metric definitions directly using available tools
 ### 1. Never assume metric structure
 Do not assume numerator, denominator, dimension list, or filter values. Inspect the dataset first. If the metric is a ratio and additive components are unclear, say so and ask.
 ### 2. Delta-only ranking — no volume weighting
-Rank segments by `abs(delta_value)` only. Do not multiply by segment volume, denominator, or any weight. Do not introduce a weighting basis.
+Rank segments by `delta_value` — not by `abs(delta_value)`. For a drop, sort ascending (most negative first); for an increase, sort descending (most positive first). Do not multiply by segment volume, denominator, or any weight. Do not introduce a weighting basis.
 ### 3. Contribution percentage
 - `delta_value = current_value - base_value` for each segment
 - `overall_delta_value = overall_current_value - overall_base_value` (computed without segment grouping)
@@ -99,7 +99,11 @@ After computing all segment `contribution_pct` values, compute one summary numbe
 This represents how much of the total metric change the driver segments in this dimension collectively account for. Store it — it is used to rank dimensions in the final overview.
 
 ### Step 4. Rank
-**Within each dimension**: sort driver segments by `abs(delta_value)` descending — top movers first. Sort offset segments by `abs(delta_value)` descending — biggest buckers first.
+**Within each dimension**: sort all segments by `delta_value` — not by `abs(delta_value)`:
+- For a drop (overall_delta < 0): sort ascending — most negative delta at top, most positive at bottom. This naturally surfaces the biggest fallers first and pushes segments bucking the trend to the end.
+- For an increase (overall_delta > 0): sort descending — most positive delta at top, most negative at bottom.
+
+Apply this sort in post-processing from the result set. Do not rely on AQL query output order or Holistics visualization sort settings — Holistics applies visualization-layer sort client-side after the row limit, so query output order is not guaranteed to match display order.
 
 **Across dimensions** (for the final overview): sort analyzed dimensions by `dimension_driver_pct` descending — the dimension whose driver segments collectively explain the most of the total change appears first.
 ---
