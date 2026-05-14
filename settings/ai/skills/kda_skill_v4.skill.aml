@@ -138,12 +138,14 @@ For every period-specific field:
 must refer to the same period.
 
 ### 6. Prioritize top 5 dimensions before analysis
+Before any calculation, the skill must produce exactly **one prioritization table** for user review.
+
 If the user did not explicitly specify the exact dimensions to analyze, the skill must:
 1. enumerate eligible candidate dimensions
 2. rank them using semantic meaning and relevance to the target metric
 3. select the top 5 dimensions automatically
-4. show the proposed top 5 dimensions to the user
-5. ask whether to proceed with analysis using those proposed top 5 dimensions
+4. return exactly one table containing the proposed top 5 dimensions and the reason each dimension was chosen
+5. stop and wait for user confirmation
 
 Do not ask the user to manually pick dimensions before the prioritization table is shown.
 
@@ -153,24 +155,19 @@ Use the same prioritization principles as @File:settings/ai/skills/kda_skill_v38
 - prefer dimensions where large segments could materially move the metric
 - avoid high-cardinality, sparse, duplicate, overly technical, or weakly relevant dimensions
 
-Required prioritization output columns:
+Required prioritization table columns:
 - `dimension_name`
 - `priority_rank`
-- `priority_status`
 - `why_this_dimension_matters`
 - `business_value`
 - `evidence`
 
-Allowed priority statuses:
-- `analyzed_top_5`
-- `not_analyzed_lower_priority`
-- `excluded`
+Do not include non-selected dimensions, excluded dimensions, summaries, caveats, methodology notes, or any text outside this single table in the first response.
 
-If the user explicitly names dimensions, still show the final proposed analyzed set and ask for confirmation before calculation.
+If the user explicitly names dimensions, still return exactly one table for the final proposed analyzed set and the reason each dimension is included, then stop and wait for confirmation.
 
 ### 7. Confirmation gate is mandatory
-After showing the proposed top 5 analyzed dimensions, stop and ask:
-- `Do you want me to proceed with analysis using these proposed top 5 dimensions?`
+After returning the prioritization table, stop.
 
 If the user confirms with an explicit yes / proceed / continue response:
 - freeze `confirmed_analyzed_dimensions`
@@ -380,7 +377,9 @@ Do not overstate:
 Before answering, validate:
 - candidate dimensions are enumerated first
 - eligible dimensions are prioritized before analysis
-- the proposed top 5 dimensions are shown before calculation
+- the first response contains exactly one prioritization table only
+- the prioritization table includes the reason each proposed dimension was chosen
+- no extra text is included in the first response outside the table
 - explicit user confirmation is obtained before calculation
 - periods are defined consistently
 - the same impact formula is used across confirmed analyzed dimensions
@@ -420,10 +419,13 @@ Include:
 For ratio metrics, specify how the overall ratio was recomputed.
 
 ## 3. Dimension Prioritization Table
-Before any calculation, show the proposed top 5 dimensions with the required prioritization columns.
+The first response must contain exactly one table only.
+
+That table must contain the proposed top 5 dimensions with the required prioritization columns and the reason each dimension was chosen.
+Do not include any text before or after the table in the first response.
 
 ## 4. User Confirmation Checkpoint
-If awaiting user confirmation, stop and return a paused status.
+After the first response table is shown, stop and wait for confirmation.
 Do not proceed with calculation or ranking before confirmation.
 
 ## 5. Per-Dimension Impact Tables
