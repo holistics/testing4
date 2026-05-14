@@ -1,0 +1,351 @@
+Skill key_driver_v4 {
+
+label: 'Key Driver v4'
+description: 'Skill to identify which segments within each dimension most contributed to a drop or increase in a ratio metric using a weighted impact method. For each segment, compare the metric value between two periods, weight by segment volume across both periods, then rank the most negative and most positive impacts. Use this only when user asks "Explain this increase / decrease between ... ".'
+allow_switching_invocation: true
+
+content: @md
+
+## Description
+Identify which segments within each dimension most contributed to a metric change between two periods using a simpler weighted impact method.
+
+This version is intentionally simpler than the stricter significance-based approach. Its goal is:
+- easier execution reliability
+- easier interpretation
+- comparable ranking within each analyzed dimension
+- practical usefulness for ratio metrics such as close rate / close %
+
+Use this only when the user asks to explain an increase or decrease between two periods and a simpler segment-impact method is preferred.
+
+---
+
+## Goal
+
+For each analyzed dimension and each segment:
+1. compute the metric value in the base period
+2. compute the metric value in the comparison period
+3. compute the segment's volume weight across the two periods
+4. compute a weighted impact score
+5. rank the segments within each dimension by negative and positive impact
+
+This skill is primarily designed for **ratio metrics** such as:
+- close rate
+- close %
+- conversion rate
+- similar numerator / denominator metrics
+
+---
+
+## Inputs
+
+- **Dataset**: current dataset in context
+- **Target metric**: provided by user or inherited from referenced viz
+- **Base period**: provided by user
+- **Comparison period**: provided by user
+- **Candidate dimensions**:
+  - if user names dimensions, use those
+  - otherwise enumerate eligible low-to-medium-cardinality business dimensions
+- **Referenced viz / existing metric logic**:
+  - reuse the existing metric definition whenever possible
+  - do not redefine metric logic if the dataset already has the required metric
+
+---
+
+## Core Rules
+
+### 1. Never assume hidden metric structure
+Do not assume:
+- numerator field
+- denominator field
+- dimension list
+- relationship path
+- exact filter values
+
+Inspect the dataset and existing metric definitions first.
+
+If the metric is a ratio metric and the underlying additive components needed for weighting are unclear, say so explicitly and stop or ask for clarification.
+
+### 2. Prefer ratio-metric use cases
+This method is primarily intended for ratio metrics.
+
+For close % specifically, use this practical weighting approach:
+- `segment_weight = segment_opportunities_base + segment_opportunities_comparison`
+
+If the user asks for another ratio metric, use the most appropriate denominator-based volume weight when available.
+
+Examples:
+- conversion rate -> sessions / visitors / opportunities, depending on the metric definition
+- close % -> opportunities
+
+If denominator-based weighting is not available but numerator and denominator are both available, explain the fallback clearly before using it.
+
+### 3. Keep the formula simple and consistent
+For every analyzed dimension, use the same impact definition:
+
+- `base_value` = segment metric value in base period
+- `current_value` = segment metric value in comparison period
+- `delta_value` = `current_value - base_value`
+- `segment_weight` = practical segment volume across both periods
+- `impact_score` = `delta_value × segment_weight`
+
+Interpretation:
+- **more negative impact_score** = bigger contributor to the drop
+- **more positive impact_score** = offset that softened the drop, or contributor to an increase
+
+Do not replace this with significance-score logic.
+Do not use different impact formulas across dimensions.
+
+### 4. Null safety first
+Before any downstream math:
+1. compute the additive components for each period
+2. wrap additive components with `coalesce(..., 0)` where needed
+3. recompute the ratio using safe math
+4. derive `delta_value`
+5. derive `segment_weight`
+6. derive `impact_score`
+
+Never rely only on a final fallback after unsafe math has already been evaluated.
+
+### 5. Period consistency
+For every period-specific field:
+- field name
+- field label
+- time filter
+- intended business meaning
+
+must refer to the same period.
+
+### 6. Rank within each dimension
+This method does **not** require one cross-dimension comparable score.
+
+Instead:
+- compute and rank segments **within each analyzed dimension**
+- highlight the most negative segments and most positive segments inside each dimension
+- do not claim that scores are directly comparable across different dimensions unless the user explicitly asks for a rough cross-dimension summary and the limitations are stated
+
+### 7. Keep scope practical
+This method is intended for descriptive impact analysis, not statistical significance.
+
+Be explicit:
+- this is a weighted descriptive ranking
+- it shows which segments moved the metric most after accounting for practical segment volume
+- it does not prove causation
+- it is not a formal significance test
+
+---
+
+## Canonical Period Aliasing
+
+Before generating any query, define:
+- `base_period_name`
+- `comparison_period_name`
+- `base_period_literal`
+- `comparison_period_literal`
+
+Example:
+- `base_period_name = Feb 2021`
+- `comparison_period_name = Mar 2021`
+- `base_period_literal = @(2021-02)`
+- `comparison_period_literal = @(2021-03)`
+
+Reuse these exact aliases throughout the analysis.
+
+---
+
+## Weighted Impact Method
+
+For each dimension and each segment, compute:
+
+### Step 1. Metric values
+- `base_value` = metric value in base period
+- `current_value` = metric value in comparison period
+- `delta_value` = `current_value - base_value`
+
+For close %, these correspond to:
+- `base_close_pct`
+- `current_close_pct`
+- `delta_close_pct`
+
+### Step 2. Segment weight
+For close %, the default practical weight is:
+- `segment_weight = opportunities_base + opportunities_comparison`
+
+This gives larger importance to segments with more meaningful business volume across both periods.
+
+### Step 3. Impact score
+Compute:
+- `impact_score = delta_value × segment_weight`
+
+### Step 4. Ranking logic
+Within each dimension:
+- sort ascending by `impact_score` to find the biggest contributors to a drop
+- sort descending by `impact_score` to find the biggest positive offsets or contributors to an increase
+
+---
+
+## Metric-Type Handling
+
+### Ratio metrics
+For ratio metrics, recompute the metric from additive components whenever possible.
+
+For example, for close %:
+- `close_pct = safe_divide(won_count, opportunity_count)`
+- `segment_weight = opportunity_count_base + opportunity_count_comparison`
+
+If the metric is already defined in the dataset but the underlying denominator is also available, prefer:
+- reuse existing metric definition for the displayed metric value
+- use the denominator-based additive components for `segment_weight`
+
+### Additive metrics
+This skill is not optimized for additive metrics.
+
+If the target metric is additive, either:
+- state that this simpler weighted-impact method is mainly intended for ratio metrics, or
+- use a straightforward adapted form only if the user clearly wants that behavior
+
+Adapted additive form if needed:
+- `base_value` = additive metric in base period
+- `current_value` = additive metric in comparison period
+- `delta_value` = `current_value - base_value`
+- `segment_weight` = `base_value + current_value`
+- `impact_score` = `delta_value × segment_weight`
+
+If you use this adapted additive form, explicitly say it is an approximation and not the primary intended use case.
+
+---
+
+## Dimension Selection Workflow
+
+If the user does not specify dimensions:
+1. enumerate eligible dimensions
+2. prioritize the most useful low-to-medium-cardinality business dimensions
+3. default to a practical top set
+4. ask the user whether to proceed with that proposed set only if needed
+
+If the user explicitly names dimensions, use those dimensions.
+
+Do not ask the user to manually pick dimensions by default unless needed.
+
+---
+
+## Required Per-Dimension Output Schema
+
+For each analyzed dimension, produce one segment impact table with this schema:
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `segment_weight`
+- `impact_score`
+- `impact_direction`
+
+Where:
+- `impact_direction = negative` if `impact_score < 0`
+- `impact_direction = positive` if `impact_score > 0`
+- `impact_direction = neutral` if `impact_score = 0`
+
+Recommended artifact naming:
+- `segment_impact_<dimension_name>`
+
+---
+
+## Ranking and Interpretation
+
+For each analyzed dimension, return:
+1. the most negative-impact segments
+2. the most positive-impact segments
+3. a short interpretation in plain business language
+
+Interpretation guidance:
+- negative impact means the segment pulled the metric down after accounting for segment volume
+- positive impact means the segment improved the metric or softened the overall decline
+- neutral impact means limited contribution to the net change
+
+Do not overstate:
+- this is a weighted directional impact method
+- not a causal model
+- not a formal significance model
+
+---
+
+## QA Checks
+
+Before answering, validate:
+- periods are defined consistently
+- the same impact formula is used across analyzed dimensions
+- additive components are null-safe before ratio math
+- ratio metrics are recomputed safely when needed
+- segment weight uses a clear business-volume definition
+- impact direction matches the sign of impact_score
+- segment rankings are produced within each dimension
+- no unsupported cross-dimension comparability claim is made
+
+If any required component is missing, explain the gap clearly.
+
+---
+
+## Output Format
+
+## 1. Method Summary
+Briefly state:
+- target metric
+- base period
+- comparison period
+- weighting definition used
+- that the method is a weighted descriptive impact ranking
+
+## 2. Overall Metric Comparison
+Include:
+- `overall_base_value`
+- `overall_current_value`
+- `overall_delta_value`
+
+For ratio metrics, specify how the overall ratio was recomputed.
+
+## 3. Per-Dimension Impact Tables
+For each analyzed dimension, include the segment impact table with the required schema.
+
+## 4. Ranked Findings
+For each dimension, summarize:
+- top negative segments
+- top positive segments
+- short business interpretation
+
+## 5. Caveats
+Include brief caveats when relevant:
+- descriptive weighting, not formal significance
+- correlation / contribution pattern, not proof of causation
+- results depend on the denominator-based weighting choice
+
+---
+
+## Implementation Notes for Holistics / AQL
+
+- Reuse dataset metrics whenever possible
+- Inspect the metric definition before deciding how to compute the weight
+- For ratio metrics, recompute from additive components when needed for safe period comparison
+- Prefer denominator-based weighting for ratio metrics such as close %
+- Build one dimension at a time if needed for execution reliability
+- Keep output tables simple and readable
+- Do not introduce significance-score formulas in this skill
+- Do not claim cross-dimension score comparability
+
+---
+
+## Worked Example
+
+User question:
+- `Why did close % drop from Feb to Mar?`
+
+For segment `Enterprise` inside dimension `customer_segment`:
+- `Feb Close % = 0.24`
+- `Mar Close % = 0.18`
+- `segment_weight = 120 + 140 = 260 opportunities`
+- `impact_score = (0.18 - 0.24) × 260 = -15.6`
+
+Interpretation:
+- `Enterprise` is one of the stronger contributors to the drop because its close % fell and it had meaningful volume.
+
+;;
+
+}
