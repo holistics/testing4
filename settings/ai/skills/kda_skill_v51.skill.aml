@@ -172,8 +172,11 @@ Required prioritization table columns:
 - `why_this_dimension_matters`
 - `business_value`
 - `evidence`
-Do not include non-selected dimensions, excluded dimensions, summaries, caveats, or methodology notes in the first response. After the table, include one brief confirmation prompt asking the user whether to proceed.
-If the user explicitly names dimensions, still return exactly one table for the final proposed analyzed set and the reason each dimension is included, then append a brief confirmation prompt and stop.
+Do not include non-selected dimensions, excluded dimensions, summaries, caveats, or methodology notes in the first response.
+After the table, append this exact confirmation prompt — no variations, no radio buttons, no dimension choices:
+> "Shall I proceed with all N dimensions in the order above? (Yes / No)"
+Do not offer the user a choice of which dimension to start with. Do not present dimensions as selectable options. The order is fixed by priority rank; if the user says Yes, analysis starts automatically with dimension #1.
+If the user explicitly names dimensions, still return exactly one table for the final proposed analyzed set and the reason each dimension is included, then append the same Yes/No confirmation prompt and stop.
 ### 7. Sequential execution — one dimension at a time
 After the user confirms the proposed dimensions, analyze them **one at a time** in priority order.
 **For each dimension:**
@@ -334,10 +337,14 @@ The table must use exactly these columns — every cell must be filled with spec
 - `why_this_dimension_matters` — one sentence explaining why this dimension is relevant to the target metric
 - `business_value` — one sentence explaining what actionable insight analyzing this dimension could surface
 - `evidence` — specific field names, relationships, or dataset properties that support including this dimension
-Do not include any text before the table. After the table, include one short confirmation prompt — for example: "These are the proposed dimensions for analysis. Would you like to proceed?"
+Do not include any text before the table. After the table, append this exact confirmation prompt:
+> "Shall I proceed with all N dimensions in the order above? (Yes / No)"
+Do not offer dimension choices, radio buttons, or "which dimension first?" options. The order is fixed by priority rank.
 ## 2. User Confirmation Checkpoint
-After the first response table is shown, stop and wait for confirmation.
-Do not proceed with calculation or ranking before confirmation.
+After the prioritization table is shown, stop and wait for a Yes/No answer only.
+- If **Yes**: immediately begin analysis of dimension #1 — do not ask which dimension to start with.
+- If **No**: ask the user what they'd like to change (add, remove, or reorder dimensions), then re-show the updated table and prompt again.
+Do not proceed with calculation or ranking before receiving confirmation.
 ## 3. Sequential Per-Dimension Analysis
 After confirmation, analyze dimensions one at a time in priority order, starting with dimension #1.
 For each dimension:
