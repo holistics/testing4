@@ -103,7 +103,7 @@ This represents how much of the total metric change the driver segments in this 
 - For a drop (overall_delta < 0): sort ascending — most negative delta at top, most positive at bottom. This naturally surfaces the biggest fallers first and pushes segments bucking the trend to the end.
 - For an increase (overall_delta > 0): sort descending — most positive delta at top, most negative at bottom.
 
-Apply this sort in post-processing from the result set. Do not rely on AQL query output order or Holistics visualization sort settings — Holistics applies visualization-layer sort client-side after the row limit, so query output order is not guaranteed to match display order.
+Set this sort in the DataTable viz settings (see Implementation Notes for exact AML syntax). Do not rely on AQL query output order — Holistics does not guarantee query order matches display order.
 
 **Across dimensions** (for the final overview): sort analyzed dimensions by `dimension_driver_pct` descending — the dimension whose driver segments collectively explain the most of the total change appears first.
 ---
@@ -192,5 +192,17 @@ Do not repeat the per-dimension bullet details here. This overview is for scan-a
 - Run one AQL query per dimension — never union or batch dimensions
 - Do not introduce volume weighting of any kind
 - For ratio metrics, note in output that combined contribution % across multiple segments is an approximation
+- When generating the DataTable viz for each dimension, always set the sort on the `change` column (field_index 3, assuming columns are: segment=0, base_period=1, comparison_period=2, change=3, pct=4). Use `direction: 'asc'` for a drop and `direction: 'desc'` for an increase:
+```
+DataTable {
+  ...
+  settings {
+    sort {
+      field_index: 3
+      direction: 'asc'   // use 'desc' if overall change is an increase
+    }
+  }
+}
+```
 ;;
 }
