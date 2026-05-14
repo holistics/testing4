@@ -13,6 +13,7 @@ This version is intentionally simpler than the stricter significance-based appro
 - easier execution reliability
 - easier interpretation
 - comparable ranking within each analyzed dimension
+- optional caveated cross-dimension ranking when one frozen formula is used everywhere
 - practical usefulness for ratio metrics such as close rate / close %
 
 Use this only when the user asks to explain an increase or decrease between two periods and a simpler segment-impact method is preferred.
@@ -27,12 +28,11 @@ For each analyzed dimension and each segment:
 3. compute the segment's volume weight across the two periods
 4. compute a weighted impact score
 5. rank the segments within each dimension by negative and positive impact
+6. optionally append all dimension outputs into one caveated cross-dimension ranking table when the same frozen formula and weighting basis are used across all analyzed dimensions
 
-This skill is primarily designed for **ratio metrics** such as:
-- close rate
-- close %
-- conversion rate
-- similar numerator / denominator metrics
+This skill supports both:
+- **ratio metrics** such as close rate, close %, and conversion rate
+- **additive metrics** such as revenue, orders, sessions, and won count
 
 ---
 
@@ -65,19 +65,22 @@ Inspect the dataset and existing metric definitions first.
 
 If the metric is a ratio metric and the underlying additive components needed for weighting are unclear, say so explicitly and stop or ask for clarification.
 
-### 2. Prefer ratio-metric use cases
-This method is primarily intended for ratio metrics.
+### 2. Use a generalized weighting rule by metric type
+This method supports both ratio metrics and additive metrics, but the weighting basis must be frozen consistently within the analysis.
 
-For close % specifically, use this practical weighting approach:
-- `segment_weight = segment_opportunities_base + segment_opportunities_comparison`
+For ratio metrics, use this generalized weighting rule:
+- `segment_weight = base_denominator + comparison_denominator`
 
-If the user asks for another ratio metric, use the most appropriate denominator-based volume weight when available.
+This uses the denominator as the segment's business exposure or opportunity volume across the two periods.
 
 Examples:
-- conversion rate -> sessions / visitors / opportunities, depending on the metric definition
 - close % -> opportunities
+- conversion rate -> visitors / sessions / opportunities, depending on the metric definition
 
-If denominator-based weighting is not available but numerator and denominator are both available, explain the fallback clearly before using it.
+For additive metrics, use this generalized weighting rule:
+- `segment_weight = abs(base_value) + abs(comparison_value)`
+
+If the metric cannot be classified reliably, or if the denominator for a ratio metric cannot be determined reliably from the dataset or metric definition, do not guess. State the gap clearly and stop or ask for clarification.
 
 ### 3. Keep the formula simple and consistent
 For every analyzed dimension, use the same impact definition:
@@ -85,8 +88,10 @@ For every analyzed dimension, use the same impact definition:
 - `base_value` = segment metric value in base period
 - `current_value` = segment metric value in comparison period
 - `delta_value` = `current_value - base_value`
-- `segment_weight` = practical segment volume across both periods
+- `segment_weight` = frozen weight basis across both periods
 - `impact_score` = `delta_value × segment_weight`
+
+The frozen weight basis must be selected once per analysis based on metric type and then reused unchanged across all analyzed dimensions.
 
 Interpretation:
 - **more negative impact_score** = bigger contributor to the drop
@@ -115,15 +120,41 @@ For every period-specific field:
 
 must refer to the same period.
 
-### 6. Rank within each dimension
-This method does **not** require one cross-dimension comparable score.
+### 6. Rank within each dimension by default
+This method is primarily designed for **within-dimension ranking**.
 
-Instead:
+Default behavior:
 - compute and rank segments **within each analyzed dimension**
 - highlight the most negative segments and most positive segments inside each dimension
-- do not claim that scores are directly comparable across different dimensions unless the user explicitly asks for a rough cross-dimension summary and the limitations are stated
 
-### 7. Keep scope practical
+### 7. Caveated cross-dimension ranking is allowed
+Cross-dimension ranking is allowed only as a **practical heuristic**, not as a strictly comparable or statistically rigorous ranking.
+
+Requirements:
+- use one frozen formula across all analyzed dimensions
+- use one frozen weighting basis across all analyzed dimensions
+- use the same period definitions, null-handling rules, and output schema across all analyzed dimensions
+- append all successful per-dimension outputs into one final cross-dimension table
+
+Required formula:
+- `impact_score = (current_value - base_value) × segment_weight`
+
+Required generalized weighting rule:
+- for ratio metrics: `segment_weight = base_denominator + comparison_denominator`
+- for additive metrics: `segment_weight = abs(base_value) + abs(comparison_value)`
+
+Do not use one weighting definition for some dimensions and another weighting definition for others within the same analysis.
+
+Interpretation rules for cross-dimension ranking:
+- present it as `largest weighted impact under this method`
+- do not claim it is strictly comparable across dimensions
+- do not describe it as a formal significance ranking
+- do not describe the top row as the objectively most important driver or best explanatory dimension
+- state clearly that differences in segment granularity and partition structure can affect rank position
+
+If these conditions cannot be met, do not produce a cross-dimension ranking table.
+
+### 8. Keep scope practical
 This method is intended for descriptive impact analysis, not statistical significance.
 
 Be explicit:
@@ -161,14 +192,14 @@ For each dimension and each segment, compute:
 - `current_value` = metric value in comparison period
 - `delta_value` = `current_value - base_value`
 
-For close %, these correspond to:
-- `base_close_pct`
-- `current_close_pct`
-- `delta_close_pct`
-
 ### Step 2. Segment weight
-For close %, the default practical weight is:
-- `segment_weight = opportunities_base + opportunities_comparison`
+Choose one frozen segment-weight rule based on metric type.
+
+For ratio metrics:
+- `segment_weight = base_denominator + comparison_denominator`
+
+For additive metrics:
+- `segment_weight = abs(base_value) + abs(comparison_value)`
 
 This gives larger importance to segments with more meaningful business volume across both periods.
 
@@ -188,29 +219,22 @@ Within each dimension:
 ### Ratio metrics
 For ratio metrics, recompute the metric from additive components whenever possible.
 
-For example, for close %:
-- `close_pct = safe_divide(won_count, opportunity_count)`
-- `segment_weight = opportunity_count_base + opportunity_count_comparison`
+General rule:
+- `segment_weight = base_denominator + comparison_denominator`
 
 If the metric is already defined in the dataset but the underlying denominator is also available, prefer:
 - reuse existing metric definition for the displayed metric value
 - use the denominator-based additive components for `segment_weight`
 
+If the denominator cannot be identified reliably, do not guess.
+
 ### Additive metrics
-This skill is not optimized for additive metrics.
+For additive metrics, use:
+- `segment_weight = abs(base_value) + abs(comparison_value)`
 
-If the target metric is additive, either:
-- state that this simpler weighted-impact method is mainly intended for ratio metrics, or
-- use a straightforward adapted form only if the user clearly wants that behavior
+This keeps the weighting rule generalized and usable across metrics with positive or mixed-sign values.
 
-Adapted additive form if needed:
-- `base_value` = additive metric in base period
-- `current_value` = additive metric in comparison period
-- `delta_value` = `current_value - base_value`
-- `segment_weight` = `base_value + current_value`
-- `impact_score` = `delta_value × segment_weight`
-
-If you use this adapted additive form, explicitly say it is an approximation and not the primary intended use case.
+If the additive metric can legitimately be negative, keep this caveat explicit because large offsetting positive and negative values can still affect interpretation.
 
 ---
 
@@ -247,6 +271,21 @@ Where:
 Recommended artifact naming:
 - `segment_impact_<dimension_name>`
 
+## Required Cross-Dimension Output Schema
+
+If cross-dimension ranking is used, append successful per-dimension outputs into one table with this schema:
+- `dimension_name`
+- `segment`
+- `base_value`
+- `current_value`
+- `delta_value`
+- `segment_weight`
+- `impact_score`
+- `impact_direction`
+
+Recommended artifact naming:
+- `segment_impact_all_dimensions`
+
 ---
 
 ## Ranking and Interpretation
@@ -255,6 +294,10 @@ For each analyzed dimension, return:
 1. the most negative-impact segments
 2. the most positive-impact segments
 3. a short interpretation in plain business language
+
+If cross-dimension ranking is used, also return:
+4. one appended cross-dimension table ranked by `impact_score`
+5. a short caveated interpretation of the top negative and top positive rows
 
 Interpretation guidance:
 - negative impact means the segment pulled the metric down after accounting for segment volume
@@ -265,6 +308,7 @@ Do not overstate:
 - this is a weighted directional impact method
 - not a causal model
 - not a formal significance model
+- cross-dimension ranking is heuristic and directionally useful, not strictly comparable
 
 ---
 
@@ -273,11 +317,15 @@ Do not overstate:
 Before answering, validate:
 - periods are defined consistently
 - the same impact formula is used across analyzed dimensions
+- the metric type is classified correctly before choosing the weighting rule
 - additive components are null-safe before ratio math
 - ratio metrics are recomputed safely when needed
-- segment weight uses a clear business-volume definition
+- segment weight uses the frozen generalized weighting rule that matches the metric type
 - impact direction matches the sign of impact_score
 - segment rankings are produced within each dimension
+- if cross-dimension ranking is used, the same weighting basis is used across all analyzed dimensions
+- if cross-dimension ranking is used, the appended table uses one consistent schema across all dimensions
+- if cross-dimension ranking is used, the output explicitly states that it is heuristic and not strictly comparable across dimensions
 - no unsupported cross-dimension comparability claim is made
 
 If any required component is missing, explain the gap clearly.
@@ -305,17 +353,30 @@ For ratio metrics, specify how the overall ratio was recomputed.
 ## 3. Per-Dimension Impact Tables
 For each analyzed dimension, include the segment impact table with the required schema.
 
-## 4. Ranked Findings
+## 4. Optional Cross-Dimension Impact Table
+If the frozen formula and weighting basis are consistent across all analyzed dimensions, you may append all successful per-dimension outputs into one global ranking table.
+
+When included, explicitly label it as:
+- `Caveated cross-dimension ranking`
+- `Heuristic global ranking under one shared weighted-impact method`
+
+## 5. Ranked Findings
 For each dimension, summarize:
 - top negative segments
 - top positive segments
 - short business interpretation
 
-## 5. Caveats
+If cross-dimension ranking is included, summarize:
+- top negative rows in the appended table
+- top positive rows in the appended table
+- one caveat that the ranking is directionally useful but not strictly comparable across dimensions
+
+## 6. Caveats
 Include brief caveats when relevant:
 - descriptive weighting, not formal significance
 - correlation / contribution pattern, not proof of causation
-- results depend on the denominator-based weighting choice
+- results depend on the chosen frozen weighting basis for the metric type
+- cross-dimension ranking, if shown, is heuristic and affected by segment granularity and partition structure
 
 ---
 
@@ -324,27 +385,42 @@ Include brief caveats when relevant:
 - Reuse dataset metrics whenever possible
 - Inspect the metric definition before deciding how to compute the weight
 - For ratio metrics, recompute from additive components when needed for safe period comparison
-- Prefer denominator-based weighting for ratio metrics such as close %
+- Prefer the generalized weighting rule by metric type
 - Build one dimension at a time if needed for execution reliability
 - Keep output tables simple and readable
 - Do not introduce significance-score formulas in this skill
-- Do not claim cross-dimension score comparability
+- Cross-dimension ranking is allowed only when one frozen formula, one frozen weighting basis, and one shared schema are used across all analyzed dimensions
+- Do not claim strict cross-dimension score comparability
 
 ---
 
-## Worked Example
+## Worked Examples
 
+### Example 1: Ratio metric
 User question:
 - `Why did close % drop from Feb to Mar?`
 
 For segment `Enterprise` inside dimension `customer_segment`:
-- `Feb Close % = 0.24`
-- `Mar Close % = 0.18`
-- `segment_weight = 120 + 140 = 260 opportunities`
+- `base_value = 0.24`
+- `current_value = 0.18`
+- `segment_weight = 120 + 140 = 260` using `base_denominator + comparison_denominator`
 - `impact_score = (0.18 - 0.24) × 260 = -15.6`
 
 Interpretation:
-- `Enterprise` is one of the stronger contributors to the drop because its close % fell and it had meaningful volume.
+- `Enterprise` is one of the stronger contributors to the drop because its close % fell and it had meaningful denominator volume.
+
+### Example 2: Additive metric
+User question:
+- `Why did revenue drop from Feb to Mar?`
+
+For segment `Mid-Market` inside dimension `customer_segment`:
+- `base_value = 50000`
+- `current_value = 40000`
+- `segment_weight = abs(50000) + abs(40000) = 90000`
+- `impact_score = (40000 - 50000) × 90000 = -900000000`
+
+Interpretation:
+- `Mid-Market` is one of the stronger contributors to the drop because revenue decreased materially and the segment represented substantial business volume.
 
 ;;
 
