@@ -109,16 +109,22 @@ Apply this sort in post-processing from the result set. Do not rely on AQL query
 ---
 ## Output Format
 ### 1. Dimension Prioritization List
-The first response must open with a short 2–3 sentence intro, followed by the numbered list, followed by the confirmation prompt.
+The first response has two clearly separated parts:
 
-**Required intro format** (adapt specifics to actual metric and periods — do not copy verbatim):
+**Part A — Informational preview (plain text, not interactive):**
+Open with a short 2–3 sentence intro, then list the proposed dimensions. This part is display-only — the dimensions are not options to pick from.
+
+Intro format (adapt specifics — do not copy verbatim):
 > "To explain the [drop/increase] in [metric] from [base period] to [comparison period], I'll analyze which segments drove the change. I'll work through the most relevant dimensions one at a time. Here are the [N] dimensions I propose to analyze, in priority order:"
 
-Format each list item as one line:
+Format each dimension on its own line:
 > **N. Dimension Name** — one sentence: why this dimension is meaningful for this specific metric (business perspective only — no field names or dataset structure)
 
-After the list, append:
-> "Shall I proceed with all N dimensions in the order above? (Yes / No)"
+**Part B — Confirmation prompt (the only interactive element):**
+After the full dimension list, add a blank line separator, then the confirmation as a single yes/no question:
+> "Shall I proceed with all [N] dimensions in the order above?"
+
+The confirmation must be a single question — not a list of options. The dimension list in Part A must never be rendered as selectable choices. Only this yes/no question is interactive.
 
 Do not offer dimension choices or "which to start with" options. Order is fixed by priority rank.
 
