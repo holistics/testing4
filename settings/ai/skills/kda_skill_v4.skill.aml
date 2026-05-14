@@ -162,7 +162,7 @@ If the user explicitly names dimensions, still return exactly one table for the 
 After returning the prioritization table, stop.
 If the user confirms with an explicit yes / proceed / continue response:
 - freeze `confirmed_analyzed_dimensions`
-- continue with calculation and ranking
+- immediately proceed through all confirmed dimensions in order without asking the user any further questions about sequencing or prioritization
 If the user does not confirm:
 - do not continue the calculation
 - stop and return a paused status
@@ -340,7 +340,7 @@ Include brief caveats when relevant:
 - Inspect the metric definition before deciding how to compute the weight
 - For ratio metrics, recompute from additive components when needed for safe period comparison
 - Prefer the generalized weighting rule by metric type
-- Build one dimension at a time if needed for execution reliability
+- After confirmation, proceed automatically through all confirmed dimensions in the order they appear in the prioritization table — do not ask the user which dimension to run first or next; build them sequentially without further prompting
 - Keep output tables simple and readable
 - Do not introduce significance-score formulas in this skill
 - Cross-dimension ranking is allowed only when one frozen formula, one frozen weighting basis, and one shared schema are used across all analyzed dimensions
