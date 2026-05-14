@@ -22,13 +22,18 @@ Use this only when the user asks to explain an increase or decrease between two 
 
 ## Goal
 
-For each analyzed dimension and each segment:
-1. compute the metric value in the base period
-2. compute the metric value in the comparison period
-3. compute the segment's volume weight across the two periods
-4. compute a weighted impact score
-5. rank the segments within each dimension by negative and positive impact
-6. optionally append all dimension outputs into one caveated cross-dimension ranking table when the same frozen formula and weighting basis are used across all analyzed dimensions
+This skill must:
+1. enumerate eligible candidate dimensions
+2. prioritize the **top 5 dimensions** based on semantic meaning and relevance to the target metric
+3. show the proposed top 5 dimensions to the user and ask for confirmation
+4. if the user confirms, analyze those confirmed dimensions only
+5. for each confirmed analyzed dimension and each segment:
+   - compute the metric value in the base period
+   - compute the metric value in the comparison period
+   - compute the segment's volume weight across the two periods
+   - compute a weighted impact score
+   - rank the segments within each dimension
+6. optionally append all confirmed dimension outputs into one caveated cross-dimension ranking table when the same frozen formula and weighting basis are used across all analyzed dimensions
 
 This skill supports both:
 - **ratio metrics** such as close rate, close %, and conversion rate
@@ -43,7 +48,7 @@ This skill supports both:
 - **Base period**: provided by user
 - **Comparison period**: provided by user
 - **Candidate dimensions**:
-  - if user names dimensions, use those
+  - if user names dimensions, use those as the candidate pool
   - otherwise enumerate eligible low-to-medium-cardinality business dimensions
 - **Referenced viz / existing metric logic**:
   - reuse the existing metric definition whenever possible
@@ -88,14 +93,25 @@ For every analyzed dimension, use the same impact definition:
 - `base_value` = segment metric value in base period
 - `current_value` = segment metric value in comparison period
 - `delta_value` = `current_value - base_value`
+- `overall_delta_value` = overall metric change in comparison period versus base period
 - `segment_weight` = frozen weight basis across both periods
 - `impact_score` = `delta_value × segment_weight`
+- `impact_direction` = direction of the segment's impact **relative to `overall_delta_value`**, not just the raw sign of `impact_score`
+- `change_role` = derived interpretation label based on `impact_direction`
 
 The frozen weight basis must be selected once per analysis based on metric type and then reused unchanged across all analyzed dimensions.
 
-Interpretation:
-- **more negative impact_score** = bigger contributor to the drop
-- **more positive impact_score** = offset that softened the drop, or contributor to an increase
+Interpretation rules:
+- if `overall_delta_value < 0`:
+  - `impact_score < 0` -> `impact_direction = driver_of_change`
+  - `impact_score > 0` -> `impact_direction = offset_to_change`
+- if `overall_delta_value > 0`:
+  - `impact_score > 0` -> `impact_direction = driver_of_change`
+  - `impact_score < 0` -> `impact_direction = offset_to_change`
+- if `impact_score = 0`, use `impact_direction = neutral`
+
+Derived label rule:
+- `change_role = impact_direction`
 
 Do not replace this with significance-score logic.
 Do not use different impact formulas across dimensions.
@@ -120,14 +136,57 @@ For every period-specific field:
 
 must refer to the same period.
 
-### 6. Rank within each dimension by default
+### 6. Prioritize top 5 dimensions before analysis
+If the user did not explicitly specify the exact dimensions to analyze, the skill must:
+1. enumerate eligible candidate dimensions
+2. rank them using semantic meaning and relevance to the target metric
+3. select the top 5 dimensions automatically
+4. show the proposed top 5 dimensions to the user
+5. ask whether to proceed with analysis using those proposed top 5 dimensions
+
+Do not ask the user to manually pick dimensions before the prioritization table is shown.
+
+Use the same prioritization principles as @File:settings/ai/skills/kda_skill_v38.skill.aml:
+- prefer dimensions that are close to where the metric varies meaningfully
+- prefer dimensions with clearer business actionability
+- prefer dimensions where large segments could materially move the metric
+- avoid high-cardinality, sparse, duplicate, overly technical, or weakly relevant dimensions
+
+Required prioritization output columns:
+- `dimension_name`
+- `priority_rank`
+- `priority_status`
+- `why_this_dimension_matters`
+- `business_value`
+- `evidence`
+
+Allowed priority statuses:
+- `analyzed_top_5`
+- `not_analyzed_lower_priority`
+- `excluded`
+
+If the user explicitly names dimensions, still show the final proposed analyzed set and ask for confirmation before calculation.
+
+### 7. Confirmation gate is mandatory
+After showing the proposed top 5 analyzed dimensions, stop and ask:
+- `Do you want me to proceed with analysis using these proposed top 5 dimensions?`
+
+If the user confirms with an explicit yes / proceed / continue response:
+- freeze `confirmed_analyzed_dimensions`
+- continue with calculation and ranking
+
+If the user does not confirm:
+- do not continue the calculation
+- stop and return a paused status
+
+### 8. Rank within each dimension by default
 This method is primarily designed for **within-dimension ranking**.
 
 Default behavior:
-- compute and rank segments **within each analyzed dimension**
-- highlight the most negative segments and most positive segments inside each dimension
+- compute and rank segments **within each confirmed analyzed dimension**
+- highlight the strongest `driver_of_change` segments and `offset_to_change` segments inside each dimension
 
-### 7. Caveated cross-dimension ranking is allowed
+### 9. Caveated cross-dimension ranking is allowed
 Cross-dimension ranking is allowed only as a **practical heuristic**, not as a strictly comparable or statistically rigorous ranking.
 
 Requirements:
@@ -262,11 +321,13 @@ For each analyzed dimension, produce one segment impact table with this schema:
 - `segment_weight`
 - `impact_score`
 - `impact_direction`
+- `change_role`
 
 Where:
-- `impact_direction = negative` if `impact_score < 0`
-- `impact_direction = positive` if `impact_score > 0`
+- `impact_direction = driver_of_change` if the sign of `impact_score` is aligned with the sign of `overall_delta_value`
+- `impact_direction = offset_to_change` if the sign of `impact_score` is opposite to the sign of `overall_delta_value`
 - `impact_direction = neutral` if `impact_score = 0`
+- `change_role` repeats the derived interpretation label for readability in outputs
 
 Recommended artifact naming:
 - `segment_impact_<dimension_name>`
@@ -282,6 +343,7 @@ If cross-dimension ranking is used, append successful per-dimension outputs into
 - `segment_weight`
 - `impact_score`
 - `impact_direction`
+- `change_role`
 
 Recommended artifact naming:
 - `segment_impact_all_dimensions`
@@ -291,18 +353,18 @@ Recommended artifact naming:
 ## Ranking and Interpretation
 
 For each analyzed dimension, return:
-1. the most negative-impact segments
-2. the most positive-impact segments
+1. the strongest `driver_of_change` segments
+2. the strongest `offset_to_change` segments
 3. a short interpretation in plain business language
 
 If cross-dimension ranking is used, also return:
 4. one appended cross-dimension table ranked by `impact_score`
-5. a short caveated interpretation of the top negative and top positive rows
+5. a short caveated interpretation of the top `driver_of_change` and top `offset_to_change` rows
 
 Interpretation guidance:
-- negative impact means the segment pulled the metric down after accounting for segment volume
-- positive impact means the segment improved the metric or softened the overall decline
-- neutral impact means limited contribution to the net change
+- `driver_of_change` means the segment moved in the same direction as the overall change and amplified it after accounting for segment volume
+- `offset_to_change` means the segment moved against the overall change and softened it after accounting for segment volume
+- `neutral` means limited contribution to the net change
 
 Do not overstate:
 - this is a weighted directional impact method
@@ -315,15 +377,21 @@ Do not overstate:
 ## QA Checks
 
 Before answering, validate:
+- candidate dimensions are enumerated first
+- eligible dimensions are prioritized before analysis
+- the proposed top 5 dimensions are shown before calculation
+- explicit user confirmation is obtained before calculation
 - periods are defined consistently
-- the same impact formula is used across analyzed dimensions
+- the same impact formula is used across confirmed analyzed dimensions
 - the metric type is classified correctly before choosing the weighting rule
 - additive components are null-safe before ratio math
 - ratio metrics are recomputed safely when needed
 - segment weight uses the frozen generalized weighting rule that matches the metric type
-- impact direction matches the sign of impact_score
-- segment rankings are produced within each dimension
-- if cross-dimension ranking is used, the same weighting basis is used across all analyzed dimensions
+- `overall_delta_value` is computed once and used consistently across all confirmed analyzed dimensions
+- `impact_direction` is derived relative to `overall_delta_value`, not just the raw sign of `impact_score`
+- `change_role` matches `impact_direction`
+- segment rankings are produced within each confirmed analyzed dimension
+- if cross-dimension ranking is used, the same weighting basis is used across all confirmed analyzed dimensions
 - if cross-dimension ranking is used, the appended table uses one consistent schema across all dimensions
 - if cross-dimension ranking is used, the output explicitly states that it is heuristic and not strictly comparable across dimensions
 - no unsupported cross-dimension comparability claim is made
@@ -350,28 +418,35 @@ Include:
 
 For ratio metrics, specify how the overall ratio was recomputed.
 
-## 3. Per-Dimension Impact Tables
-For each analyzed dimension, include the segment impact table with the required schema.
+## 3. Dimension Prioritization Table
+Before any calculation, show the proposed top 5 dimensions with the required prioritization columns.
 
-## 4. Optional Cross-Dimension Impact Table
-If the frozen formula and weighting basis are consistent across all analyzed dimensions, you may append all successful per-dimension outputs into one global ranking table.
+## 4. User Confirmation Checkpoint
+If awaiting user confirmation, stop and return a paused status.
+Do not proceed with calculation or ranking before confirmation.
+
+## 5. Per-Dimension Impact Tables
+After confirmation, for each confirmed analyzed dimension, include the segment impact table with the required schema.
+
+## 6. Optional Cross-Dimension Impact Table
+If the frozen formula and weighting basis are consistent across all confirmed analyzed dimensions, you may append all successful per-dimension outputs into one global ranking table.
 
 When included, explicitly label it as:
 - `Caveated cross-dimension ranking`
 - `Heuristic global ranking under one shared weighted-impact method`
 
-## 5. Ranked Findings
+## 7. Ranked Findings
 For each dimension, summarize:
-- top negative segments
-- top positive segments
+- top `driver_of_change` segments
+- top `offset_to_change` segments
 - short business interpretation
 
 If cross-dimension ranking is included, summarize:
-- top negative rows in the appended table
-- top positive rows in the appended table
+- top `driver_of_change` rows in the appended table
+- top `offset_to_change` rows in the appended table
 - one caveat that the ranking is directionally useful but not strictly comparable across dimensions
 
-## 6. Caveats
+## 8. Caveats
 Include brief caveats when relevant:
 - descriptive weighting, not formal significance
 - correlation / contribution pattern, not proof of causation
@@ -396,31 +471,39 @@ Include brief caveats when relevant:
 
 ## Worked Examples
 
-### Example 1: Ratio metric
+### Example 1: Ratio metric with an overall drop
 User question:
 - `Why did close % drop from Feb to Mar?`
+
+Assume `overall_delta_value < 0`.
 
 For segment `Enterprise` inside dimension `customer_segment`:
 - `base_value = 0.24`
 - `current_value = 0.18`
 - `segment_weight = 120 + 140 = 260` using `base_denominator + comparison_denominator`
 - `impact_score = (0.18 - 0.24) × 260 = -15.6`
+- `impact_direction = driver_of_change`
+- `change_role = driver_of_change`
 
 Interpretation:
-- `Enterprise` is one of the stronger contributors to the drop because its close % fell and it had meaningful denominator volume.
+- `Enterprise` is one of the stronger drivers of the drop because its close % fell and it had meaningful denominator volume.
 
-### Example 2: Additive metric
+### Example 2: Additive metric with an overall increase
 User question:
-- `Why did revenue drop from Feb to Mar?`
+- `Why did revenue increase from Feb to Mar?`
+
+Assume `overall_delta_value > 0`.
 
 For segment `Mid-Market` inside dimension `customer_segment`:
 - `base_value = 50000`
-- `current_value = 40000`
-- `segment_weight = abs(50000) + abs(40000) = 90000`
-- `impact_score = (40000 - 50000) × 90000 = -900000000`
+- `current_value = 65000`
+- `segment_weight = abs(50000) + abs(65000) = 115000`
+- `impact_score = (65000 - 50000) × 115000 = 1725000000`
+- `impact_direction = driver_of_change`
+- `change_role = driver_of_change`
 
 Interpretation:
-- `Mid-Market` is one of the stronger contributors to the drop because revenue decreased materially and the segment represented substantial business volume.
+- `Mid-Market` is one of the stronger drivers of the increase because revenue rose materially and the segment represented substantial business volume.
 
 ;;
 
