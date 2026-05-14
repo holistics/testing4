@@ -109,13 +109,20 @@ Set this sort in the DataTable viz settings (see Implementation Notes for exact 
 ---
 ## Output Format
 ### 1. Dimension Prioritization List
-The first response has two clearly separated parts:
+The first response has three clearly separated parts:
 
-**Part A — Informational preview (plain text, not interactive):**
-Open with a short 2–3 sentence intro, then list the proposed dimensions. This part is display-only — the dimensions are not options to pick from.
+**Part A — Overall metric context (run the overall delta query first, then display):**
+Before listing any dimensions, compute `overall_base_value`, `overall_current_value`, and `overall_delta_value` (see Computation Step 1). Then display one context sentence in this format:
+
+> "Overall [Metric] [increased/decreased] from [overall_base_value] in [base period] to [overall_current_value] in [comparison period], a [gain/drop] of [abs(overall_delta_value)] [percentage points / units]."
+
+For ratio metrics, format values as percentages (e.g., 25.6%). For additive metrics, use the appropriate unit. This sentence must be derived from the actual queried values — do not estimate or infer from the user's prompt.
+
+**Part B — Informational preview (plain text, not interactive):**
+After Part A, add a blank line, then the intro and proposed dimensions. This part is display-only — the dimensions are not options to pick from.
 
 Intro format (adapt specifics — do not copy verbatim):
-> "To explain the [drop/increase] in [metric] from [base period] to [comparison period], I'll analyze which segments drove the change. I'll work through the most relevant dimensions one at a time. Here are the [N] dimensions I propose to analyze, in priority order:"
+> "To explain this [drop/increase], I'll analyze which segments drove the change. I'll work through the most relevant dimensions one at a time. Here are the [N] dimensions I propose to analyze, in priority order:"
 
 Format each dimension as its own paragraph with a blank line separating it from the next. Do not run dimensions together in a single block of text. Use this exact structure — one blank line between every item:
 
@@ -129,7 +136,7 @@ Format each dimension as its own paragraph with a blank line separating it from 
 
 Each item must be on its own line with a blank line before and after it. Never combine multiple dimensions into a single paragraph.
 
-**Part B — Confirmation prompt (the only interactive element):**
+**Part C — Confirmation prompt (the only interactive element):**
 After the full dimension list, add a blank line separator, then the confirmation as a single yes/no question:
 > "Shall I proceed with all [N] dimensions in the order above?"
 
