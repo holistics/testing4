@@ -102,23 +102,29 @@ Derived label rule:
 Do not replace this with significance-score logic.
 Do not use different impact formulas across dimensions.
 ### 4. Null safety first
-Before any downstream math:
-1. compute the additive components for each period
-2. additive components must be wrapped with `coalesce(..., 0)`
-3. derive denominator from null-safe additive components
-4. recompute the ratio using safe math
-5. compute `base_value_raw`, `current_value_raw`, `overall_base_value_raw`, and `overall_current_value_raw`
-6. wrap `base_value_raw`, `current_value_raw`, `overall_base_value_raw`, and `overall_current_value_raw` with `coalesce(..., 0)` to produce null-safe metric values
-7. derive `delta_value`
-8. derive `overall_delta_value`
-9. derive `segment_weight`
-10. derive `impact_score`
+AQL-specific behavior that must be accounted for:
+- `where()` returns `null` when no rows match the filter — it does NOT return `0`
+- `safe_divide(n, d)` returns `null` when `d = 0`, even if `n` and `d` were already coalesced to `0`
+- therefore a segment that exists in only one period will produce null additive components AND a null ratio unless both layers are coalesced
+The required AQL pattern for additive components:
+- `coalesce(<aggregation> where(<period_filter> and <segment_filter>), 0)`
+The required AQL pattern for ratio metrics:
+- `coalesce(safe_divide(coalesce(numerator, 0), coalesce(denominator, 0)), 0)`
+- the outer `coalesce(..., 0)` is mandatory — `safe_divide` returns null when the denominator is zero even after the inner coalesces
+Before any downstream math, follow this ordering strictly:
+1. compute raw additive components per period using `where()` — do not coalesce yet (needed for new/disappeared segment detection)
+2. record `base_value_raw` and `current_value_raw` from the raw results for segment detection
+3. apply `coalesce(..., 0)` to all additive components
+4. for ratio metrics: derive the denominator from null-safe additive components, then compute the ratio using `coalesce(safe_divide(coalesce(num, 0), coalesce(den, 0)), 0)`
+5. apply `coalesce(..., 0)` to `base_value_raw`, `current_value_raw`, `overall_base_value_raw`, and `overall_current_value_raw` to produce null-safe metric values
+6. derive `delta_value`, `overall_delta_value`, `segment_weight`, `impact_score`
 Strict enforcement:
 - never output null `base_value`
 - never output null `current_value`
 - never compute `delta_value` from raw nullable values
 - never compute `overall_delta_value` from raw nullable values
 - never rely only on a final fallback after unsafe math has already been evaluated
+- never pass a raw `where()` result directly into `safe_divide()` without coalescing the additive components first
 New and disappeared segment detection:
 - after computing `base_value_raw` and `current_value_raw`, check each segment's raw values before coalescing
 - if `base_value_raw IS NULL` and `current_value_raw IS NOT NULL`: the segment is **new** — it entered during the comparison period
@@ -214,19 +220,16 @@ Be explicit:
 For each dimension and each segment, compute:
 ### Step 1. Metric values (null-safe)
 Follow this ordering strictly — do not skip steps or reorder:
-1. compute the additive components for each period
-2. wrap all additive components with `coalesce(..., 0)`
-3. for ratio metrics: derive the denominator from null-safe additive components, then recompute the ratio using safe math
-4. compute `base_value_raw` and `current_value_raw` from the null-safe components
-5. compute `overall_base_value_raw` and `overall_current_value_raw` for the overall metric
-6. apply `coalesce(..., 0)` to all four `_raw` values to produce null-safe metric values:
-   - `base_value = coalesce(base_value_raw, 0)`
-   - `current_value = coalesce(current_value_raw, 0)`
-   - `overall_base_value = coalesce(overall_base_value_raw, 0)`
-   - `overall_current_value = coalesce(overall_current_value_raw, 0)`
+1. compute raw additive components per period using `where()` — do not coalesce yet; keep raw values for new/disappeared segment detection
+2. record `base_value_raw` and `current_value_raw` (and overall equivalents) from these raw results — null means the segment had no data in that period
+3. apply `coalesce(..., 0)` to all raw additive components
+4. for additive metrics: `base_value = coalesce(base_value_raw, 0)` and `current_value = coalesce(current_value_raw, 0)`
+5. for ratio metrics: compute using the two-layer AQL pattern — `coalesce(safe_divide(coalesce(numerator, 0), coalesce(denominator, 0)), 0)` — the outer `coalesce` is mandatory because `safe_divide` returns null when the denominator is zero even after the inner coalesces
+6. apply the same two-layer pattern to the overall metric values
 7. `delta_value = current_value - base_value`
 8. `overall_delta_value = overall_current_value - overall_base_value`
 Never compute `delta_value` or `overall_delta_value` from raw nullable values.
+Never use a bare `safe_divide()` without the outer `coalesce(..., 0)` wrapper.
 ### Step 2. Segment weight
 Choose one frozen segment-weight rule based on metric type.
 For ratio metrics:
@@ -299,7 +302,12 @@ Volume-inflated scores guidance:
 ## Output Format
 ## 1. Dimension Prioritization Table
 The first response must contain the prioritization table followed by a brief confirmation prompt.
-That table must contain the proposed dimensions (up to 5, or all eligible if fewer than 5 exist) with the required prioritization columns and the reason each dimension was chosen.
+The table must use exactly these columns — every cell must be filled with specific content, not left blank or vague:
+- `dimension_name` — the name of the dimension as it appears in the dataset
+- `priority_rank` — 1 through N in descending priority order
+- `why_this_dimension_matters` — one sentence explaining why this dimension is relevant to the target metric
+- `business_value` — one sentence explaining what actionable insight analyzing this dimension could surface
+- `evidence` — specific field names, relationships, or dataset properties that support including this dimension
 Do not include any text before the table. After the table, include one short confirmation prompt — for example: "These are the proposed dimensions for analysis. Would you like to proceed?"
 ## 2. User Confirmation Checkpoint
 After the first response table is shown, stop and wait for confirmation.
@@ -339,6 +347,8 @@ Include brief caveats when relevant:
 - Reuse dataset metrics whenever possible
 - Inspect the metric definition before deciding how to compute the weight
 - For ratio metrics, recompute from additive components when needed for safe period comparison
+- In AQL, always wrap `where()` aggregations with `coalesce(..., 0)` — `where()` returns null, not 0, when nothing matches
+- In AQL, always wrap the full ratio with an outer `coalesce`: `coalesce(safe_divide(coalesce(num, 0), coalesce(den, 0)), 0)` — `safe_divide` returns null when the denominator is zero even after the inner coalesces
 - Prefer the generalized weighting rule by metric type
 - After confirmation, proceed automatically through all confirmed dimensions in the order they appear in the prioritization table — do not ask the user which dimension to run first or next; build them sequentially without further prompting
 - Keep output tables simple and readable
@@ -351,13 +361,16 @@ Include brief caveats when relevant:
 User question:
 - `Why did close % drop from Feb to Mar?`
 Assume `overall_delta_value < 0`.
-For segment `Enterprise` inside dimension `customer_segment`:
-- `base_value = 0.24`
-- `current_value = 0.18`
-- `segment_weight = 120 + 140 = 260` using `base_denominator + comparison_denominator`
+AQL null-safe computation for segment `Enterprise` in dimension `customer_segment`:
+- `won_base = coalesce(count(won) where(month = @(2021-02) and segment = 'Enterprise'), 0)`
+- `opps_base = coalesce(count(opportunities) where(month = @(2021-02) and segment = 'Enterprise'), 0)`
+- `won_current = coalesce(count(won) where(month = @(2021-03) and segment = 'Enterprise'), 0)`
+- `opps_current = coalesce(count(opportunities) where(month = @(2021-03) and segment = 'Enterprise'), 0)`
+- `base_value = coalesce(safe_divide(won_base, opps_base), 0)` → `0.24`
+- `current_value = coalesce(safe_divide(won_current, opps_current), 0)` → `0.18`
+- `segment_weight = opps_base + opps_current = 120 + 140 = 260`
 - `impact_score = (0.18 - 0.24) × 260 = -15.6`
 - `impact_direction = driver_of_change`
-- `change_role = driver_of_change`
 Interpretation:
 - `Enterprise` is one of the stronger drivers of the drop because its close % fell and it had meaningful denominator volume.
 ### Example 2: Additive metric with an overall increase
