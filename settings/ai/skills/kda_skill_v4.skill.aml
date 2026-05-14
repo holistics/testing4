@@ -249,15 +249,16 @@ Within each dimension:
 - sort descending by `impact_score` to find the biggest positive offsets or contributors to an increase
 ---
 ## Required Per-Dimension Output Schema
-For each analyzed dimension, produce one segment impact table for user review with this schema:
+For each analyzed dimension, produce one segment impact table for user review with exactly these columns and no others:
 - `segment`
 - `base_value`
 - `current_value`
 - `delta_value`
 - `segment_weight`
 - `impact_score`
-Do not include `impact_direction` or `change_role` in the user-facing per-dimension table.
-Those fields may be derived internally for interpretation, but they must not appear in the table shown to the user.
+Do not add any extra columns beyond the six above.
+Do not include `dimension_name` — each table already represents one dimension; adding it as a column is redundant.
+Do not include `impact_direction` or `change_role` — these are internal fields only.
 Recommended artifact naming:
 - `segment_impact_<dimension_name>`
 ## Required Cross-Dimension Output Schema
