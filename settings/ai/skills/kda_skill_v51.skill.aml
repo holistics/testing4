@@ -304,22 +304,36 @@ Recommended artifact naming:
 - `segment_impact_all_dimensions`
 ---
 ## Ranking and Interpretation
-For each analyzed dimension, return:
-1. the top driver segments (those with the highest `contribution_pct` in the same direction as the overall change)
-2. the top offset segments (those with the highest `contribution_pct` against the overall change), if any
-3. a short interpretation in plain business language using this per-segment format:
-   - For each driver: "**[Segment]**: [metric] dropped from X% to Y% (−Z pp), explaining **A%** of the total drop."
-   - For each offset: "**[Segment]**: [metric] rose from X% to Y% (+Z pp), softening the drop by ~B%."
-   - Adapt wording for increases ("rose", "contributing A% of the total increase") and additive metrics as appropriate.
-   - List top 3–5 drivers, then top 1–3 offsets. Do not write more than one short paragraph per dimension.
-If cross-dimension ranking is used, also return:
-4. one appended cross-dimension table using the same user-facing schema
-5. a one-paragraph summary naming the top driver overall and the main offset, using the same plain-language format
+### Per-dimension output (after each table)
+Show only two things after the table for each dimension — nothing else:
+
+**1. One bridge sentence** explaining how to read the % column. Use this exact pattern, adapted to the metric and direction:
+> "The % shown is each segment's share of the total drop — segments with more deals and a bigger rate decline count for more."
+
+**2. A short bullet list** of the top 3–5 contributors, followed by any notable improvers. Use this exact format:
+
+What drove the drop:
+- **Phone**: close rate dropped from 47% to 33% (−14 pp) — **33% of the total drop**
+- **Sales**: 56% → 47% (−8 pp) — **29%**
+- **Promotion**: 75% → 65% (−10 pp) — **18%**
+
+What bucked the trend:
+- **Online**: close rate rose from 20% to 24% (+4 pp), partially countering the drop (7% of the countermovement)
+
+Rules for the per-dimension bullet list:
+- Do not write any narrative paragraph or "Supporting context" block — the table already shows the data
+- Do not use the word "offset" — use **"What bucked the trend:"** as the section label in all cases
+  - For a drop: "bucked the trend" = segments whose metric went up
+  - For an increase: "bucked the trend" = segments whose metric went down
+- Do not repeat the full segment list if it already appears in the table — the bullets highlight only the top 3–5 contributors each way
+- If only one or two segments bucked the trend, it is fine to skip that section entirely
+- Do not add caveats, methodology notes, or "you might want to" suggestions here — those belong in Section 6 only
+
 Interpretation rules (internal — never expose these field names in output):
-- `driver_of_change`: segment moved in the same direction as the overall change — describe as "drove the drop/increase" or "contributed to the change"
-- `offset_to_change`: segment moved against the overall change — describe as "softened the drop/increase" or "offset the change"
-- `neutral`: limited contribution — omit from the narrative unless the user asks; do not describe as "had little impact" unprompted
-Never use the words `impact_score`, `segment_weight`, `delta_value`, `driver_of_change`, `offset_to_change`, or `neutral` in any user-facing text.
+- `driver_of_change`: describe as "drove the drop/increase" or "contributed to the change"
+- `offset_to_change`: describe as "went up", "bucked the trend", or "improved against the overall trend"
+- `neutral`: omit entirely from the per-dimension narrative
+Never use the words `impact_score`, `segment_weight`, `delta_value`, `driver_of_change`, `offset_to_change`, or `neutral` in any user-facing text. Never use the word "offset" as a section label or description — use "bucked the trend" instead.
 New and disappeared segment guidance:
 - if a top driver is a new segment (no data in base period), note: "[Segment] was not present in [base period] — its contribution reflects entry into the data, not a rate change."
 - if a top driver disappeared (no data in comparison period), note: "[Segment] was absent in [comparison period] — its contribution reflects exit from the data."
@@ -354,26 +368,25 @@ For each dimension:
 4. Stop and wait for the user to respond
 Do not run more than one dimension per step. Do not batch queries across dimensions.
 If the user answers No at any point, skip remaining dimensions and proceed directly to Section 4.
-## 4. Optional Cross-Dimension Impact Table
-After the final dimension is completed (or after the user stops early), if the frozen formula and weighting basis are consistent across all analyzed dimensions, append all successful per-dimension outputs into one global ranking table.
-When included, explicitly label it as:
-- `Caveated cross-dimension ranking`
-- `Heuristic global ranking under one shared weighted-impact method`
-If produced from a partial set of dimensions, note which dimensions were included and which were skipped.
+## 4. Cross-Dimension Summary Table
+After the final dimension is completed (or after the user stops early), if all analyzed dimensions used the same formula and weighting basis, append one global summary table using the standard user-facing schema.
+Label the table simply: **"Summary across all dimensions"**. Do not use "Caveated cross-dimension ranking" or "Heuristic global ranking" as labels — these are confusing to business users.
+The table is the single source of truth for the final ranked list. Do not repeat dimension-level bullet lists here.
+If produced from a partial set of dimensions, note which dimensions were included and which were skipped — one line only.
 ## 5. Ranked Findings
-After all analyzed dimensions are scored, open with one direct conclusion sentence:
-> **Main driver**: [Segment] ([Dimension]) — [metric] changed from X to Y (±Z pp), explaining ~A% of the total [drop/increase].
-Then list the next top contributors as bullet points using the same one-line format:
-- **[Segment]** ([Dimension]): X% → Y% (±Z pp), ~A% of total [drop/increase]
-Follow with top offsets (if any), prefixed "Offset:":
-- **Offset — [Segment]** ([Dimension]): X% → Y% (+Z pp), softened the drop by ~B%
-Keep the findings section to one conclusion sentence plus the bullet list. Do not write paragraphs here.
-If some dimensions were not analyzed (user stopped early), add one line: "Note: [Dimension list] were not analyzed."
+This section replaces — not duplicates — the per-dimension bullet lists. Do not repeat the same segments that were already shown per-dimension.
+Open with one direct conclusion sentence:
+> **The main driver of the drop was [Segment] ([Dimension])** — close rate fell from X% to Y% (−Z pp), accounting for ~A% of the drop within that dimension.
+Then list the next top contributors across all dimensions as bullets:
+- **[Segment]** ([Dimension]): X% → Y% (±Z pp) — ~A% of its dimension's [drop/increase]
+For segments that bucked the trend (if worth noting):
+- **[Segment]** ([Dimension]) bucked the trend: X% → Y% (±Z pp) — partially countered the overall change
+Keep the findings section to one conclusion sentence plus the bullet list. Maximum 8 bullets total. Do not write paragraphs.
+If some dimensions were not analyzed, add one line: "Note: [Dimension list] were not analyzed."
 ## 6. Caveats
-Include only when relevant — keep to 2–3 bullets maximum:
-- These percentages show contribution to the observed change, not proof of cause.
-- Cross-dimension percentages are directionally useful but not strictly comparable — dimensions with more volume will naturally show higher contribution.
-- If some dimensions were skipped, the conclusion reflects only the analyzed set.
+Include only when relevant — keep to 2 bullets maximum:
+- These percentages show each segment's share of the drop within its own dimension — they are not directly comparable across dimensions.
+- This is a descriptive analysis, not proof of cause.
 ---
 ## Implementation Notes for Holistics / AQL
 - Before generating any query, define `base_period_name`, `comparison_period_name`, `base_period_literal`, and `comparison_period_literal` — reuse these exact aliases throughout the analysis
