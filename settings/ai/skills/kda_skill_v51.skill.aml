@@ -148,15 +148,15 @@ For every period-specific field:
 - intended business meaning
 must refer to the same period.
 ### 6. Prioritize top 5 dimensions before analysis
-Before any calculation, the skill must produce exactly **one prioritization table** for user review.
+Before any calculation, the skill must produce exactly **one prioritization list** for user review.
 If the user did not explicitly specify the exact dimensions to analyze, the skill must:
 1. enumerate eligible candidate dimensions
 2. rank them using semantic meaning and relevance to the target metric
 3. select the top 5 dimensions automatically; if fewer than 5 eligible dimensions exist, include all of them — do not pad with irrelevant or low-quality dimensions to reach 5
-4. return exactly one table containing the proposed dimensions and the reason each was chosen
-5. after the table, add a brief confirmation prompt asking the user whether to proceed with these dimensions
+4. return a numbered list of the proposed dimensions, each with one sentence of business reasoning (see Output Format Section 1)
+5. after the list, add a confirmation prompt asking the user whether to proceed
 6. stop and wait for user confirmation
-Do not ask the user to manually pick dimensions before the prioritization table is shown.
+Do not ask the user to manually pick dimensions before the list is shown.
 Use these prioritization principles:
 - prefer dimensions that are close to where the metric varies meaningfully
 - prefer dimensions with clearer business actionability
@@ -166,17 +166,18 @@ Cardinality guidance (use judgment — no hard cutoff):
 - **low-to-medium cardinality** (preferred): dimensions where the number of distinct values is small enough that each segment has meaningful business volume and a human can interpret the ranking — e.g. region, product category, customer segment, sales channel, plan tier
 - **high cardinality** (avoid): dimensions where most segments would have too little volume to be meaningful or where the ranking becomes uninterpretable — e.g. individual sales rep ID, account ID, email address, raw text fields, date at day granularity
 - when in doubt, prefer dimensions that a business stakeholder would naturally use to slice and act on the metric
-Required prioritization table columns:
-- `dimension_name`
-- `priority_rank`
-- `why_this_dimension_matters`
-- `business_value`
-- `evidence`
 Do not include non-selected dimensions, excluded dimensions, summaries, caveats, or methodology notes in the first response.
-After the table, append this exact confirmation prompt — no variations, no radio buttons, no dimension choices:
+Show the proposed dimensions as a numbered list — not a table. Each item is one line: the dimension name followed by one sentence of business reasoning. Focus on why this dimension matters for the metric being analyzed, not on technical field names or dataset structure.
+Example format:
+1. **Product Category** — deals vary significantly by product type, so a shift in mix could explain the close rate drop.
+2. **Owner / Manager** — close rates often differ by rep or team; a personnel or coaching change could show up here.
+3. **Industry** — certain industries may have pulled back on purchasing in this period, affecting win rates.
+4. **Campaign Type** — if lead quality shifted by acquisition channel, that would show up as a close rate change by campaign.
+5. **Region** — geographic factors like seasonal cycles or local competition can affect close rates differently by market.
+After the list, append this exact confirmation prompt — no variations, no radio buttons, no dimension choices:
 > "Shall I proceed with all N dimensions in the order above? (Yes / No)"
-Do not offer the user a choice of which dimension to start with. Do not present dimensions as selectable options. The order is fixed by priority rank; if the user says Yes, analysis starts automatically with dimension #1.
-If the user explicitly names dimensions, still return exactly one table for the final proposed analyzed set and the reason each dimension is included, then append the same Yes/No confirmation prompt and stop.
+Do not offer the user a choice of which dimension to start with. Do not present dimensions as selectable options. The order is fixed; if the user says Yes, analysis starts automatically with dimension #1.
+If the user explicitly names dimensions, still show the same numbered list format for the final proposed set, then append the same Yes/No confirmation prompt and stop.
 ### 7. Sequential execution — one dimension at a time
 After the user confirms the proposed dimensions, analyze them **one at a time** in priority order.
 **For each dimension:**
@@ -277,6 +278,11 @@ For each segment, compute `contribution_pct` as a normalized share of the impact
 - For `neutral` segments: `contribution_pct = 0`
 Label the column as `% of total drop`, `% of total increase`, or `% of offset` based on the direction of `overall_delta_value`.
 This is the only contribution number surfaced to the user. Never show raw `impact_score` or `segment_weight` in any output table.
+**Critical**: The denominator `sum(impact_score for all driver_of_change segments)` is a cross-segment total and must NOT be computed inside AQL's grouping context. In AQL, any measure evaluated per segment row sums only that row's values — this makes the denominator equal to the segment's own impact_score and produces 100% for every segment. The correct two-step procedure:
+1. Run one AQL query grouped by the segment dimension — retrieve metric values and compute `impact_score` for all segments in one call
+2. From the returned result set, classify each segment's `impact_direction`, then sum `impact_score` across all rows belonging to each direction group to get the cross-segment denominators
+3. Compute `contribution_pct` for each row by dividing that row's `impact_score` by the direction-group total derived in step 2
+Never attempt to express `contribution_pct` as a single AQL formula within the segment-grouped query.
 ---
 ## Required Per-Dimension Output Schema
 For each analyzed dimension, produce one segment impact table for user review with exactly these columns and no others:
@@ -343,21 +349,18 @@ Volume-inflated scores guidance:
 - use judgment: a large segment with a small but consistent directional move can still be a legitimate contributor
 ---
 ## Output Format
-## 1. Dimension Prioritization Table
-The first response must contain the prioritization table followed by a brief confirmation prompt.
-The table must use exactly these columns — every cell must be filled with specific content, not left blank or vague:
-- `dimension_name` — the name of the dimension as it appears in the dataset
-- `priority_rank` — 1 through N in descending priority order
-- `why_this_dimension_matters` — one sentence explaining why this dimension is relevant to the target metric
-- `business_value` — one sentence explaining what actionable insight analyzing this dimension could surface
-- `evidence` — specific field names, relationships, or dataset properties that support including this dimension
-Do not include any text before the table. After the table, append this exact confirmation prompt:
+## 1. Dimension Prioritization List
+The first response must be a short numbered list of the proposed dimensions followed by the confirmation prompt.
+Format each item as one line:
+> **[N]. [Dimension Name]** — [one sentence: why this dimension is meaningful for this specific metric and business question]
+The sentence must be written from a business perspective — what business pattern or behavior this dimension could reveal. Do not reference field names, join paths, or technical dataset structure.
+Do not include any text before the list. After the list, append this exact confirmation prompt:
 > "Shall I proceed with all N dimensions in the order above? (Yes / No)"
 Do not offer dimension choices, radio buttons, or "which dimension first?" options. The order is fixed by priority rank.
 ## 2. User Confirmation Checkpoint
-After the prioritization table is shown, stop and wait for a Yes/No answer only.
+After the prioritization list is shown, stop and wait for a Yes/No answer only.
 - If **Yes**: immediately begin analysis of dimension #1 — do not ask which dimension to start with.
-- If **No**: ask the user what they'd like to change (add, remove, or reorder dimensions), then re-show the updated table and prompt again.
+- If **No**: ask the user what they'd like to change (add, remove, or reorder dimensions), then re-show the updated list and prompt again.
 Do not proceed with calculation or ranking before receiving confirmation.
 ## 3. Sequential Per-Dimension Analysis
 After confirmation, analyze dimensions one at a time in priority order, starting with dimension #1.
@@ -398,6 +401,7 @@ Include only when relevant — keep to 2 bullets maximum:
 - Prefer the generalized weighting rule by metric type
 - After confirmation, run **one dimension at a time** — generate one AQL query per dimension, return the result, then stop and wait for the user to confirm before running the next dimension
 - Never union or batch multiple dimensions into a single AQL query
+- `contribution_pct` must be derived from the result set, not inside AQL: run one query grouped by segment to get all `impact_score` values, then sum those values across result rows per direction group to get the denominator, then divide — computing `sum()` inside an AQL query grouped by segment will return each segment's own value as the denominator and produce 100% for every row
 - Keep output tables simple and readable
 - Do not introduce significance-score formulas in this skill
 - Cross-dimension ranking is allowed only when one frozen formula, one frozen weighting basis, and one shared schema are used across all analyzed dimensions
