@@ -207,6 +207,7 @@ Required behavior:
 - do not return a chart instead of the table for any dimension
 - do not transpose rows into columns
 - keep the dimension result in row-based tabular form with one segment per row
+- the user-facing table must exclude `impact_direction` and `change_role`
 
 If a dimension output would naturally become a pivot table, rewrite the output so it remains a regular table.
 
@@ -344,28 +345,23 @@ Do not ask the user to manually pick dimensions by default unless needed.
 
 ## Required Per-Dimension Output Schema
 
-For each analyzed dimension, produce one segment impact table with this schema:
+For each analyzed dimension, produce one segment impact table for user review with this schema:
 - `segment`
 - `base_value`
 - `current_value`
 - `delta_value`
 - `segment_weight`
 - `impact_score`
-- `impact_direction`
-- `change_role`
 
-Where:
-- `impact_direction = driver_of_change` if the sign of `impact_score` is aligned with the sign of `overall_delta_value`
-- `impact_direction = offset_to_change` if the sign of `impact_score` is opposite to the sign of `overall_delta_value`
-- `impact_direction = neutral` if `impact_score = 0`
-- `change_role` repeats the derived interpretation label for readability in outputs
+Do not include `impact_direction` or `change_role` in the user-facing per-dimension table.
+Those fields may be derived internally for interpretation, but they must not appear in the table shown to the user.
 
 Recommended artifact naming:
 - `segment_impact_<dimension_name>`
 
 ## Required Cross-Dimension Output Schema
 
-If cross-dimension ranking is used, append successful per-dimension outputs into one table with this schema:
+If cross-dimension ranking is used, append successful per-dimension outputs into one user-facing table with this schema:
 - `dimension_name`
 - `segment`
 - `base_value`
@@ -373,8 +369,9 @@ If cross-dimension ranking is used, append successful per-dimension outputs into
 - `delta_value`
 - `segment_weight`
 - `impact_score`
-- `impact_direction`
-- `change_role`
+
+Do not include `impact_direction` or `change_role` in the user-facing cross-dimension table.
+Those fields may be derived internally for interpretation, but they must not appear in the table shown to the user.
 
 Recommended artifact naming:
 - `segment_impact_all_dimensions`
@@ -429,6 +426,8 @@ Before answering, validate:
 - `change_role` matches `impact_direction`
 - each confirmed analyzed dimension returns exactly one regular table
 - no confirmed analyzed dimension returns a pivot table
+- no user-facing table includes `impact_direction`
+- no user-facing table includes `change_role`
 - segment rankings are produced within each confirmed analyzed dimension
 - the final output identifies the strongest contributor to the change from analyzed results or states clearly that there is not enough evidence
 - if cross-dimension ranking is used, the same weighting basis is used across all confirmed analyzed dimensions
