@@ -411,6 +411,7 @@ Before answering, validate:
 - each confirmed analyzed dimension returns exactly one regular table
 - no confirmed analyzed dimension returns a pivot table
 - segment rankings are produced within each confirmed analyzed dimension
+- if `overall_delta_value < 0`, the final output identifies the strongest contributor to the drop from analyzed results or states clearly that there is not enough evidence
 - if cross-dimension ranking is used, the same weighting basis is used across all confirmed analyzed dimensions
 - if cross-dimension ranking is used, the appended table uses one consistent schema across all dimensions
 - if cross-dimension ranking is used, the output explicitly states that it is heuristic and not strictly comparable across dimensions
@@ -465,6 +466,18 @@ For each dimension, summarize:
 - top `offset_to_change` segments
 - short business interpretation
 
+After the per-dimension scoring and ranking are complete, the skill must also return one direct conclusion stating:
+- among the analyzed segments, which segment contributed the most to the drop
+
+Rules for this conclusion:
+- only return this conclusion when `overall_delta_value < 0`
+- derive it from the analyzed outputs, not from guesswork
+- identify the single strongest `driver_of_change` segment for the drop based on the ranking outputs
+- include the segment name and its dimension
+- if caveated cross-dimension ranking is available, use it to identify the strongest contributor to the drop
+- if no cross-dimension ranking is available, identify the strongest contributor to the drop from the confirmed analyzed dimensions and state that the conclusion is based on the analyzed dimensions only
+- if no segment qualifies clearly, say there is not enough evidence to identify a single strongest contributor
+
 If cross-dimension ranking is included, summarize:
 - top `driver_of_change` rows in the appended table
 - top `offset_to_change` rows in the appended table
@@ -476,6 +489,7 @@ Include brief caveats when relevant:
 - correlation / contribution pattern, not proof of causation
 - results depend on the chosen frozen weighting basis for the metric type
 - cross-dimension ranking, if shown, is heuristic and affected by segment granularity and partition structure
+- the final strongest-contributor conclusion is limited to the confirmed analyzed dimensions, unless a cross-dimension table is explicitly produced
 
 ---
 
