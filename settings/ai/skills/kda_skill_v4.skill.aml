@@ -90,8 +90,10 @@ If the metric cannot be classified reliably, or if the denominator for a ratio m
 ### 3. Keep the formula simple and consistent
 For every analyzed dimension, use the same impact definition:
 
-- `base_value` = segment metric value in base period
-- `current_value` = segment metric value in comparison period
+- `base_value_raw` = segment metric value in base period before null handling
+- `current_value_raw` = segment metric value in comparison period before null handling
+- `base_value` = `coalesce(base_value_raw, 0)`
+- `current_value` = `coalesce(current_value_raw, 0)`
 - `delta_value` = `current_value - base_value`
 - `overall_delta_value` = overall metric change in comparison period versus base period
 - `segment_weight` = frozen weight basis across both periods
@@ -122,9 +124,11 @@ Before any downstream math:
 2. additive components must be wrapped with `coalesce(..., 0)`
 3. derive denominator from null-safe additive components
 4. recompute the ratio using safe math
-5. derive `delta_value`
-6. derive `segment_weight`
-7. derive `impact_score`
+5. compute `base_value_raw` and `current_value_raw`
+6. wrap `base_value_raw` and `current_value_raw` with `coalesce(..., 0)` to produce `base_value` and `current_value`
+7. derive `delta_value`
+8. derive `segment_weight`
+9. derive `impact_score`
 
 Never rely only on a final fallback after unsafe math has already been evaluated.
 
@@ -386,6 +390,7 @@ Before answering, validate:
 - the metric type is classified correctly before choosing the weighting rule
 - additive components are null-safe before ratio math
 - ratio metrics are recomputed safely when needed
+- `base_value_raw` and `current_value_raw` are wrapped with `coalesce(..., 0)` before `delta_value` is computed
 - segment weight uses the frozen generalized weighting rule that matches the metric type
 - `overall_delta_value` is computed once and used consistently across all confirmed analyzed dimensions
 - `impact_direction` is derived relative to `overall_delta_value`, not just the raw sign of `impact_score`
