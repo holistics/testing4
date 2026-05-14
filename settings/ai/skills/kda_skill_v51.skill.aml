@@ -44,6 +44,16 @@ This skill supports both:
 - do not redefine metric logic if the dataset already has the required metric
 ---
 ## Core Rules
+### 0. Always work from the dataset directly — never ask the user to add context
+Begin the analysis immediately using the dataset already in context. Do not ask the user to:
+- pin additional viz blocks to the dashboard
+- add breakdowns or charts before starting
+- provide more context or pre-built views
+If a dataset is available, inspect its fields and metric definitions directly using available tools. Enumerate candidate dimensions from the dataset schema, not from user-pinned visualizations.
+The only questions allowed before starting are:
+- clarifying the target metric if it is genuinely ambiguous and cannot be inferred from the dataset
+- clarifying the exact date range if the user's prompt does not specify one
+Everything else — dimension discovery, metric structure, field names — must be resolved by inspecting the dataset directly.
 ### 1. Never assume hidden metric structure
 Do not assume:
 - numerator field
