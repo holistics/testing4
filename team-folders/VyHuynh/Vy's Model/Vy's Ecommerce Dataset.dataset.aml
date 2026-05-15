@@ -16,7 +16,7 @@ Dataset vyhuynh_ecommerce_dataset {
   ]
   relationships: [
     relationship(vyht_ecommerce_orders_1.user_id > vyht_ecommerce_users_1.id, true),
-    relationship(vyht_ecommerce_order_items.order_id - vyht_ecommerce_orders_1.id, true),
+    relationship(vyht_ecommerce_order_items.order_id > vyht_ecommerce_orders_1.id, true),
     relationship(vyht_ecommerce_order_items.product_id > vyht_ecommerce_products.id, true)
   ]
   owner: 'vy.ht@holistics.io'
