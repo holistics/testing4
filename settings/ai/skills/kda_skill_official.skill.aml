@@ -152,96 +152,69 @@ Set this sort in the DataTable viz settings (see Implementation Notes for exact 
 
 ### 1. Dimension Prioritization List
 
-The first response has two clearly separated parts:
+Two parts, clearly separated:
 
-**Part A — Informational preview (plain text, not interactive):**
+**Part A — Informational preview** (display-only, not interactive)
 
-Open with a short 2–3 sentence intro, then list the proposed dimensions. This part is display-only — the dimensions are not options to pick from.
+Short 2–3 sentence intro, then list each proposed dimension on its own line with a blank line between items. Never combine dimensions into a single paragraph.
 
-Intro format (adapt specifics — do not copy verbatim):
-
+_Intro template (adapt — do not copy verbatim):_
 > "To explain the [drop/increase] in [metric] from [base period] to [comparison period], I'll analyze which segments drove the change. I'll work through the most relevant dimensions one at a time. Here are the [N] dimensions I propose to analyze, in priority order:"
 
-Format each dimension as its own paragraph with a blank line separating it from the next. Do not run dimensions together in a single block of text. Use this exact structure — one blank line between every item:
+_Dimension list template:_
+> **1. Dimension Name** — one sentence reason.
+>
+> **2. Dimension Name** — one sentence reason.
+>
+> **3. Dimension Name** — one sentence reason.
 
-**1. Dimension Name** — one sentence reason.
+**Part B — Confirmation prompt** (the only interactive element)
 
-**2. Dimension Name** — one sentence reason.
-
-**3. Dimension Name** — one sentence reason.
-
-(and so on for all proposed dimensions)
-
-Each item must be on its own line with a blank line before and after it. Never combine multiple dimensions into a single paragraph.
-
-**Part B — Confirmation prompt (the only interactive element):**
-
-After the full dimension list, add a blank line separator, then the confirmation as a single yes/no question:
-
+Single yes/no question — never a list of choices:
 > "Shall I proceed with all [N] dimensions in the order above?"
-
-The confirmation must be a single question — not a list of options. The dimension list in Part A must never be rendered as selectable choices. Only this yes/no question is interactive.
-
-Do not offer dimension choices or "which to start with" options. Order is fixed by priority rank.
 
 ### 2. User Confirmation Checkpoint
 
-- **Yes**: begin dimension #1 immediately
-- **No**: ask what to change (add, remove, reorder), re-show updated list, prompt again
+- **Yes** → begin dimension #1 immediately
+- **No** → ask what to change (add, remove, reorder), re-show updated list, prompt again
 
 ### 3. Per-Dimension Text Output
 
-For each dimension, produce text — no table. Structure:
+Produce text only — no table.
 
-**[Dimension Name]** — [total segment count] segments
+**Always include:**
 
-Lead with which segments changed the most and their combined share:
+1. Header: `**[Dimension Name]** — [N] segments`
+2. Lead sentence: `"[Segment A]" and "[Segment B]" changed the most out of [N] segments. These [count] account for [X]% of the total [drop/increase].`
+3. One bullet per top 2–3 driver segments:
+   `- **[Segment]**: [base_value] → [current_value] ([±delta: X pp for ratios, +X/−X for additive]) — [contribution_pct]% of total [drop/increase]`
+4. Continuation prompt: `**Dimension N of M complete.** Continue to the next dimension (**[next dimension name]**)? (Yes / No)`
 
-> "[Segment A]" and "[Segment B]" changed the most out of [N] segments. These [count] account for [X]% of the total [drop/increase].
+**Conditionally include** (only when applicable):
 
-Follow with one bullet per top mover (top 2–3 driver segments):
-
-- **[Segment]**: [base_value] → [current_value] ([±delta formatted as X pp for ratios, or +X/−X for additive]) — [contribution_pct]% of total [drop/increase]
-
-If notable offset segments exist:
-
-> Bucking the trend: "[Segment]" ([base] → [current], [±delta])
-
-If no segment has abs(contribution_pct) > 10% and the change is distributed broadly:
-
-> The [drop/increase] in this dimension is spread broadly — no single segment dominates.
-
-New/disappeared segment flag (in prose, not as a column):
-
-> "[Segment]" was not present in [base period] — its contribution reflects entry into the data, not a rate change.
-
-> "[Segment]" was absent in [comparison period] — its contribution reflects exit from the data.
-
-After the text, display:
-
-> **Dimension N of M complete.** Continue to the next dimension (**[next dimension name]**)? (Yes / No)
+- Offset segments exist → `Bucking the trend: "[Segment]" ([base] → [current], [±delta])`
+- No segment > 10% contribution → `The [drop/increase] in this dimension is spread broadly — no single segment dominates.`
+- New segment (base_value_raw IS NULL) → `"[Segment]" was not present in [base period] — its contribution reflects entry into the data, not a rate change.`
+- Disappeared segment (current_value_raw IS NULL) → `"[Segment]" was absent in [comparison period] — its contribution reflects exit from the data.`
 
 ### 4. Final Overview Text
 
-After all confirmed dimensions are complete (or user stops early), produce a scannable overview block.
+Produced after all confirmed dimensions are complete (or user stops early).
 
-Open with the overall metric change:
+**Always include:**
 
+Opening line:
 > [Metric] [dropped/increased] from [base_value] to [current_value] ([±delta]) between [base period] and [comparison period].
 
-Then one line per analyzed dimension, **sorted by `dimension_driver_pct` descending** (highest collective contribution first):
-
+One line per analyzed dimension, **sorted by `dimension_driver_pct` descending**:
 > - **[Dimension]** ([dimension_driver_pct]% of total [drop/increase]): [top segment] had the largest individual [drop/increase]. Other movers: [segment list, or "No other major contributors."]
 
-If a dimension had no major contributors:
+**Conditionally include:**
 
-> - **[Dimension]** ([dimension_driver_pct]% of total): No dominant segment — change was spread across segments.
+- Dimension with no dominant segment → `**[Dimension]** ([dimension_driver_pct]% of total): No dominant segment — change was spread across segments.`
+- Unanalyzed dimensions → `Note: [Dimension list] were not analyzed.`
 
-If some dimensions were not analyzed, close with:
-
-> Note: [Dimension list] were not analyzed.
-
-Do not repeat the per-dimension bullet details here. This overview is for scan-ability.
+Do not repeat per-dimension bullet details here — this block is for scan-ability only.
 
 ---
 
