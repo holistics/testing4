@@ -103,7 +103,10 @@ If the user answers No at any point, skip remaining dimensions and proceed to th
 
 Before any query:
 
-1. Resolve the user's period descriptions (e.g., "Feb to Mar", "last month vs this month") to explicit date literals (e.g., `2021-02`, `2021-03`)
+1. Resolve the user's period descriptions to explicit date literals using these rules:
+   - Two periods stated explicitly (e.g., "Feb to Mar 2021") → base = first period, comparison = second period
+   - Single period stated (e.g., "explain the drop in Mar 2021") → base = stated period, comparison = immediately preceding period of the same granularity (e.g., Feb 2021 for a monthly period)
+   - Relative descriptions (e.g., "last month vs this month") → resolve against today's date
 2. Store as `base_period_literal` and `comparison_period_literal` — these must be used verbatim in every subsequent query
 3. Display to the user and wait for confirmation (see Output Format Section 0)
 
@@ -163,14 +166,16 @@ Set this sort in the DataTable viz settings (see Implementation Notes for exact 
 
 ### 0. Period Confirmation
 
-Display the resolved periods and ask for confirmation before doing anything else:
+Lead with a conversational restatement of the request, then confirm the periods before proceeding:
 
-> Base period: **[base_period_literal]** ("[base_period_name]")
-> Comparison period: **[comparison_period_literal]** ("[comparison_period_name]")
-> Are these correct?
+> You're asking me to explain the [drop/increase] in **[metric]** during **[base_period_literal]** compared to **[comparison_period_literal]**. Before I proceed with any analysis, I'd like to confirm these are the right periods.
+>
+> - Yes — that's correct, proceed
+> - No — I meant a different comparison
+> - Something else: ___
 
 - **Yes** → proceed to dimension prioritization (Section 1)
-- **No** → ask the user to clarify, re-resolve, and re-confirm
+- **No** or **Something else** → ask the user to clarify, re-resolve, and re-confirm
 
 ### 1. Dimension Prioritization List
 
